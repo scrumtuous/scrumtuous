@@ -1,0 +1,181 @@
+/*======================================
+    Testimonial CSS
+========================================*/
+.testimonials {
+    &.style2 {
+        .single-testimonial:hover {
+            border-color: $theme-color-style2;
+        }
+    }
+
+    &.style3 {
+        padding-bottom: 180px;
+
+        .single-testimonial {
+            padding: 60px 50px;
+            position: relative;
+            text-align: center;
+
+            &:hover {
+                border-color: $theme-color-style3;
+            }
+
+
+            .top-section {
+                text-align: center;
+
+                h3 {
+                    position: relative;
+                    display: block;
+                    text-align: center;
+                    padding: 0;
+                    margin-top: 13px;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+
+        .testimonial-slider-head {
+            position: relative;
+        }
+
+        .tns-nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -60px;
+            z-index: 2;
+
+            button {
+                width: 7px;
+                height: 7px;
+                border-radius: 0;
+                -webkit-transition: all 0.3s ease;
+                -moz-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+                margin: 0;
+                background: #d5d5d5;
+                display: inline-block;
+                border: none;
+                margin-right: 9px;
+                border-radius: 30px;
+            }
+
+            button.tns-nav-active {
+                width: 10px;
+                height: 10px;
+                transform: translateY(0px);
+                background: $theme-gradient-style3;
+            }
+        }
+    }
+
+    &.style4 {
+        padding-bottom: 180px;
+
+        .single-testimonial {
+            padding: 60px 50px;
+            position: relative;
+            text-align: center;
+
+            &:hover {
+                border-color: $theme-color-style4;
+            }
+
+
+            .top-section {
+                text-align: center;
+
+                h3 {
+                    position: relative;
+                    display: block;
+                    text-align: center;
+                    padding: 0;
+                    margin-top: 13px;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+
+        .testimonial-slider-head {
+            position: relative;
+        }
+
+        .tns-nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -60px;
+            z-index: 2;
+
+            button {
+                width: 7px;
+                height: 7px;
+                border-radius: 0;
+                -webkit-transition: all 0.3s ease;
+                -moz-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+                margin: 0;
+                background: #d5d5d5;
+                display: inline-block;
+                border: none;
+                margin-right: 9px;
+                border-radius: 30px;
+            }
+
+            button.tns-nav-active {
+                width: 10px;
+                height: 10px;
+                transform: translateY(0px);
+                background: $theme-gradient-style4;
+            }
+        }
+    }
+
+    .single-testimonial {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        border: 2px solid #eee;
+        margin-top: 30px;
+        padding: 40px;
+        transition: all 0.4s ease-in-out;
+
+        &:hover {
+            box-shadow: 0px 20px 50px #00000017;
+            border-color: $theme-color;
+        }
+
+        .top-section {
+            position: relative;
+
+            img {
+                height: 50px;
+                width: 50px;
+                border-radius: 50px;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 600;
+                color: $black;
+                position: absolute;
+                left: 70px;
+                top: 4px;
+
+                span {
+                    font-size: 13px;
+                    font-weight: 400;
+                    display: block;
+                    margin-top: 2px;
+                    color: #888;
+                }
+            }
+        }
+
+        p {
+            margin-top: 30px;
+        }
+    }
+}

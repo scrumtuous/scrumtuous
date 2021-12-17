@@ -1,0 +1,227 @@
+/*======================================
+	Footer CSS
+========================================*/
+.footer {
+    z-index: 2;
+    position: relative;
+    background: $theme-gradient;
+
+    &.style2 {
+        background: $theme-gradient-style2;
+    }
+
+    &.style3 {
+        background: $theme-gradient-style3;
+
+        &::before {
+            background-image: url('../images/cta/overlay.png');
+        }
+    }
+
+    &.style4 {
+        background: $theme-gradient-style4;
+
+        &::before {
+            background-image: url('../images/cta/overlay.png');
+        }
+    }
+
+    &::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-image: url('../images/hero/saas-overlay.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: top;
+        z-index: -1;
+    }
+
+    .call-action {
+        .inner-content {
+            padding: 100px 0;
+            border-bottom: 1px solid #25272E;
+
+            h2 {
+                font-size: 28px;
+                font-weight: 700;
+                display: block;
+                color: $white;
+            }
+
+            p {
+                color: rgba(255, 255, 255, 0.7);
+                display: block;
+                margin-top: 30px;
+                font-size: 15px;
+                font-weight: 500;
+                line-height: 30px;
+            }
+
+            .button {
+                float: right;
+
+                .btn {
+                    &:hover {
+                        background-color: $white;
+                        color: $theme-color;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .logo {
+        margin-bottom: 26px;
+
+        img {
+            width: 150px;
+        }
+    }
+
+
+    .f-about {
+        padding-right: 85px;
+
+        p {
+            color: #fff;
+            font-size: 14px;
+            line-height: 28px;
+        }
+    }
+
+    .footer-social {
+        margin-top: 30px;
+
+        ul li {
+            display: inline-block;
+            margin-right: 10px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            a {
+                font-size: 12px;
+                display: block;
+                background: transparent;
+                border: none;
+                color: #fff;
+                position: relative;
+                z-index: 3;
+                height: 35px;
+                width: 35px;
+                display: block;
+                border-radius: 6px;
+                border: 1px solid #eeeeeeb3;
+                text-align: center;
+                line-height: 35px;
+
+                &:hover {
+                    color: $black;
+                    background-color: $white;
+                    border-color: transparent;
+                }
+            }
+
+        }
+    }
+
+    .footer-middle {
+        padding-bottom: 120px;
+        padding-top: 90px;
+    }
+
+    .single-footer {
+        margin-top: 30px;
+
+        h3 {
+            color: $white;
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            text-transform: capitalize;
+            margin-bottom: 30px;
+        }
+    }
+
+    .f-link ul li {
+        margin-bottom: 18px;
+        position: relative;
+
+        &:last-child {
+            margin: 0;
+        }
+
+        a {
+            display: inline-block;
+            color: $white;
+            font-size: 14px;
+            font-weight: 400;
+            position: relative;
+            transition: all 0.3s ease;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .f-contact {
+        ul {
+            margin-top: 20px;
+
+            li {
+                display: block;
+                margin-bottom: 15px;
+                color: $white;
+                position: relative;
+                padding-left: 35px;
+
+                i {
+                    display: inline-block;
+                    font-size: 18px;
+                    color: $white;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+
+                &:last-child {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .footer-bottom {
+        padding: 30px 0;
+        background-color: transparent;
+        border-top: 2px solid #eeeeee69;
+
+        .inner {
+            text-align: center;
+
+            p {
+                color: $white;
+                font-size: 14px;
+
+                a {
+                    font-weight: 400;
+                    display: inline-block;
+                    margin-left: 6px;
+                    color: $white;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+}

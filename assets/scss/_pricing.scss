@@ -1,0 +1,161 @@
+/*=============================
+	Pricing Table CSS
+===============================*/
+.pricing-table {
+    background: $gray;
+    position: relative;
+
+    &.style2 {
+        .single-table {
+            .table-head {
+                border-bottom-color: $theme-color-style2;
+            }
+
+            .amount {
+                background: $theme-gradient-style2;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .button {
+                .btn {
+                    background: $theme-gradient-style2;
+                }
+            }
+        }
+
+    }
+
+    &.style3 {
+        .single-table {
+            .table-head {
+                border-bottom-color: $theme-color-style3;
+            }
+
+            .amount {
+                background: $theme-gradient-style3;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .button {
+                .btn {
+                    background: $theme-gradient-style3;
+                }
+            }
+        }
+
+    }
+
+    &.style4 {
+        .single-table {
+            .table-head {
+                border-bottom-color: $theme-color-style4;
+            }
+
+            .amount {
+                background: $theme-gradient-style4;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .button {
+                .btn {
+                    background: $theme-gradient-style4;
+                }
+            }
+        }
+
+    }
+}
+
+.pricing-table .single-table {
+    background: #fff;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0 10px 30px rgba(111, 111, 111, 0.1);
+    overflow: hidden;
+    border-radius: 10px;
+    margin-top: 30px;
+
+    .table-head {
+        background: $white;
+        padding: 40px 20px;
+        border-bottom: 1px dashed $theme-color;
+    }
+
+    &:hover {
+        box-shadow: 0 32px 54px 0 rgba(22, 28, 45, 0.16);
+    }
+
+    .title {
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            display: block;
+            margin-bottom: 0;
+            text-transform: capitalize;
+            color: $black;
+            margin-top: -5px;
+        }
+
+    }
+
+    .amount {
+        background: $theme-gradient;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 38px;
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+        letter-spacing: -2px;
+
+        .duration {
+            color: #888;
+            font-size: 13px;
+            font-weight: 400;
+            display: inline-block;
+            margin-left: 5px;
+            letter-spacing: 0;
+            position: relative;
+            top: -3px;
+        }
+    }
+
+    .table-list {
+        margin-top: 50px;
+
+        li {
+            color: #444;
+            margin-bottom: 15px;
+            font-size: 14px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .button {
+        padding: 40px 0 50px 0;
+        text-align: center;
+
+        .btn {
+            background: $theme-gradient;
+
+            i {
+                display: inline-block;
+                margin-left: 5px;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,195 @@
+/*======================================
+    App Description CSS
+========================================*/
+.app-description {
+    position: relative;
+    background-color: $gray;
+    z-index: 2;
+
+    img {
+        width: 100%;
+    }
+
+    &.white-bg {
+        background-color: $white;
+    }
+
+    .shape1 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+    }
+
+    .left {
+        text-align: center;
+    }
+
+    .right {
+        .section-title {
+            padding: 0;
+            text-align: left;
+
+            h2 {
+                margin-bottom: 30px;
+            }
+
+            p {
+                margin: 20px 0;
+            }
+        }
+
+        ul {
+            li {
+                display: block;
+                margin-bottom: 35px;
+                position: relative;
+                padding-left: 90px;
+
+                span {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: $black;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+
+                p {}
+
+                i {
+                    height: 60px;
+                    width: 60px;
+                    line-height: 60px;
+                    color: $white;
+                    background: $theme-gradient;
+                    border-radius: 10px;
+                    display: inline-block;
+                    text-align: center;
+                    font-size: 25px;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+
+                &:last-child {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    &.style2 {
+        .right {
+            ul {
+                li {
+                    position: relative;
+                    padding-left: 50px;
+                    color: #888;
+                    font-size: 14px;
+                    font-weight: 500;
+                    margin-bottom: 25px;
+
+                    i {
+                        height: 30px;
+                        width: 30px;
+                        line-height: 30px;
+                        color: #fff;
+                        background: $theme-gradient;
+                        border-radius: 8px;
+                        display: inline-block;
+                        text-align: center;
+                        font-size: 12px;
+                        position: absolute;
+                        left: 0;
+                        top: -5px;
+                    }
+                }
+            }
+        }
+    }
+
+    &.saas-page-style {
+        .content {
+            text-align: left;
+
+            .icon {
+                height: 70px;
+                width: 70px;
+                line-height: 70px;
+                text-align: center;
+                display: block;
+                background: $theme-gradient-style2;
+                color: $white;
+                border-radius: 10px;
+                font-size: 30px;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 34px;
+                margin-bottom: 40px;
+            }
+
+            p {
+                margin: 20px 0;
+            }
+
+            .button {
+                margin-top: 40px;
+            }
+        }
+
+        .second-description {
+            padding-top: 120px;
+
+            .content {
+                padding-left: 50px;
+            }
+        }
+    }
+
+    &.startup-page-style {
+        .content {
+            text-align: left;
+
+            .icon {
+                height: 70px;
+                width: 70px;
+                line-height: 70px;
+                text-align: center;
+                display: block;
+                background: $theme-gradient-style3;
+                color: $white;
+                border-radius: 10px;
+                font-size: 30px;
+                margin-bottom: 30px;
+                border-radius: 50px 50px 50px 0;
+            }
+
+            h2 {
+                font-weight: 700;
+                font-size: 30px;
+                line-height: 40px;
+                margin-bottom: 40px;
+            }
+
+            p {
+                margin: 20px 0;
+            }
+
+            .button {
+                margin-top: 40px;
+            }
+        }
+
+        .second-description {
+            padding-top: 120px;
+
+            .content {
+                padding-left: 50px;
+            }
+        }
+    }
+}
