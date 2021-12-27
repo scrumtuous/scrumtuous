@@ -2480,6 +2480,14 @@ ol {
   margin-bottom: 15px;
 }
 
+.hero-area .hero-text h3 {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 15px;
+}
+
 .hero-area .hero-text h1 {
   font-weight: 700;
   margin-bottom: 25px;
