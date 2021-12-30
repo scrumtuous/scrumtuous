@@ -1,0 +1,110 @@
+<h1>Dad Jokes</h1> 
+
+<script>
+var person = {firstName:"John", lastName:"Doe", age:46};
+var questions = [{query:"What do you call a fish without an eye?", optionA:"Fish", optionB:"Blinky", optionC:"Cod", optionD:"Fsh", correct:"D"},
+                 {query:"What do you call cheese that isn't yours?", optionA:"Gouda", optionB:"Nacho", optionC:"Cheddar", optionD:"Camembert", correct:"D"},
+                 {query:"What do you call a deer without an eye?", optionA:"Doe", optionB:"Deer", optionC:"No eye dear", optionD:"No idea", correct:"C"}];
+var answers = new Array(questions.length);
+var questionNumber = 0;
+//displayQuestion(0);
+
+
+//alert(person.firstName);
+//alert(questions[0].query);
+
+
+
+window.addEventListener('load', function () {
+  displayQuestion(0);
+})
+
+displayQuestion = function(number){
+	if(number=='next') {
+		questionNumber = questionNumber+1;
+	}
+	if(number=='previous') {
+		questionNumber = questionNumber-1;
+	}
+	
+	console.log(questionNumber);
+	let questionNumberDisplay = parseInt(questionNumber, 10) + 1;
+	document.getElementById("questionNumber").innerHTML = "Question " + questionNumberDisplay;
+	document.getElementById("query").innerHTML = questions[questionNumber].query;
+	document.getElementById("labelOptionA").innerHTML = questions[questionNumber].optionA;
+	document.getElementById("labelOptionB").innerHTML = questions[questionNumber].optionB;
+	document.getElementById("labelOptionC").innerHTML = questions[questionNumber].optionC;
+	document.getElementById("labelOptionD").innerHTML = questions[questionNumber].optionD;
+	
+	
+	var checkedRadioButtons = document.querySelector('input[name="exampleRadios"]:checked');
+	if (checkedRadioButtons!=null) {
+		checkedRadioButtons.checked = false;
+	}
+	
+	var radios = document.querySelectorAll('input[type="radio"]:checked');
+	var value = radios.length>0? radios[0].value: null;
+	
+	
+	document.getElementById("previous").setAttribute("class", "enabled btn btn-primary");
+	document.getElementById("next").setAttribute("class", "enabled btn btn-primary");
+	if (questionNumber==0) {
+		document.getElementById("previous").setAttribute("class", "disabled btn btn-primary");
+	}
+	if (questionNumber == (questions.length-1)) {
+		document.getElementById("next").setAttribute("class", "disabled btn btn-primary");
+	}
+	
+}
+
+</script>
+
+<br/><br/>
+
+
+<div class="container">
+
+<div class="card">
+  <div class="card-header" id="questionNumber">
+    
+  </div>
+  <div class="card-body">
+    <h3 class="card-title" id="query"></h3>
+	
+	
+	
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="optionA" value="optionA">
+  <label class="form-check-label" for="optionA" id="labelOptionA">
+    
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="optionB" value="optionA">
+  <label class="form-check-label" for="optionB" id="labelOptionB">
+    
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="optionC" value="optionA">
+  <label class="form-check-label" for="optionC" id="labelOptionC">
+    
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="optionD" value="optionA">
+  <label class="form-check-label" for="optionD" id="labelOptionD">
+    
+  </label>
+</div>
+<div>
+    <a href="#" id="previous" class="btn btn-primary" onclick="displayQuestion('previous')">&lt;&lt; Previous</a>
+	<!-- <a href="#" id="finish" class="btn btn-primary" onclick="displayQuestion('1')">Finish</a> -->
+	<a href="#" id="next" class="btn btn-primary" onclick="displayQuestion('next')">Next &gt;&gt;</a>
+	</div>
+  </div>
+</div>
+
+	
+	
+</div>

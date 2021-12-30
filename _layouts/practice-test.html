@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+	{% include head-common.html %}  
+     
+	{% if page.canonical %}
+	<link rel="canonical" href="{{ page.canonical }}" />
+	{% else %}
+	<!-- This is the else for if canonical -->	   
+	{% endif %}
+
+	{% if page.blurb %}
+	<meta name="description" content="{{ page.blurb }}"/>   
+	{% else %}
+	<meta name="description" content="These UiPath practice exams are the best way to test if you can successfully answer all the questions on the Uipath Associate and Deveoper Certification."/>   
+	{% endif %}
+	   
+	<title>{{ page.title }}</title>  
+
+	{% include boostrap-css.html %}
+	{% include style-common.html %}  
+	   
+   </head>		
+	
+   <body>
+      <div class="container">
+         <div class="row">
+{% include navigation.html %}  
+         </div>
+	 {% include common-cookie-row.html %}       
+         <div class="row">
+            <article class="main col col-12 col-sm-12  col-md-8 col-lg-9 order-1 order-sm-1 order-lg-1 mt-3">
+               <!--
+			   <div class="card">
+                  <div class="card-header">
+                     {{ page.title }}
+                  </div>
+                  <img src="/assets/background-small4.jpg" class="card-img-top" alt="uipath certification">
+                  <div class="card-body">
+				  </div>
+               </div>
+			   -->
+                     <!-- put a span in to stop the p tag from closing automatically -->
+                     {{ content }}   
+
+					 
+<script>
+   class Exam {
+    constructor(examQuestions) {
+   
+    this.graded=false;
+   	//console.log("The size is: " + examQuestions.length);
+   	//examQuestions = JSON.parse(examQuestions);
+   	//console.log("The size is: " + examQuestions.length);
+   	//examQuestions = examQuestions.slice(10,15);
+   	//console.log("In constructor with these: " + examQuestions);
+        this.questions = new Array();
+   		let i = 0;
+   		//console.log("Start of for loop" + questions.length);
+   		//alert("About to enter for loop");
+   	  	for (i = 0; i < examQuestions.length; i++) {
+   			let id = examQuestions[i].id;
+   			//alert(id);
+   			let query = examQuestions[i].query;
+   			let answer = examQuestions[i].answer;
+   			let options = new Array();
+   			let objectives = new Array();
+   			//console.log("Start of j loop" + examQuestions[i].options.length);
+   			let j = 0;
+   			for (j = 0; j < examQuestions[i].options.length; j++) {
+   				let text = examQuestions[i].options[j].text;
+   				let correct = examQuestions[i].options[j].correct;
+   				let selected = examQuestions[i].options[j].selected;
+   				options.push(new Option(text, correct, selected));
+   				//console.log(text);
+   				//console.log("Value of j" + j);
+   			}
+   			let k = 0;
+   			for (k = 0; k < examQuestions[i].objectives.length; k++) {
+   				objectives.push(examQuestions[i].objectives[k]);
+   				//console.log(k);
+   			}
+   			let question = new Question(id, query, answer, options, objectives);
+   			this.questions.push(question);
+   			//console.log('Question done');
+   		}
+   		//console.log("Done for loop");
+     }
+   }
+   
+   class Question {
+     constructor(id, query, answer, options, objectives) {
+       this.id=id;
+       this.query = query;
+       this.answer = answer;
+       this.options = options;
+       this.objectives = objectives;
+       this.correctCount = 0;
+      let i = 0;
+      for (i = 0; i < options.length; i++) {
+       if (options[i].correct) {
+       this.correctCount++;
+     }
+      //console.log(this.correctCount);
+      //console.log(this.isMultipleChoice());
+     }
+    }
+   
+    isMultipleChoice() {
+       return this.correctCount > 1;
+    }
+   }
+   
+   class Option {
+     constructor(text, correct, selected) {
+       this.text = text;
+       this.correct = correct;
+       this.selected = selected;
+     }
+     isAnsweredCorrectly() {
+       return (this.correct && this.selected);
+     }
+   }
+   
+   initializeQuestionJumper = function(){
+	 document.getElementById("question-jumper").innerHTML;
+	 let buttons = "";
+	 for (i = 0; i < exam.questions.length; i++) {
+		var aTag = document.createElement('a');
+		aTag.setAttribute('onClick','displayQuestion(\''+ i + '\')');
+		aTag.setAttribute('class','btn btn-info mr-2');
+		aTag.setAttribute('id', 'jumpTo'+i);
+		aTag.innerHTML = "" + (i+1);
+		document.getElementById("question-jumper").append(aTag);
+	 }
+   }
+  
+   
+   navigateQuestions = function(number){
+    //console.log('navigateQuestions' + number);
+    if(number=='next') {
+   		number = questionNumber + 1;
+    }
+    if(number=='previous') {
+   		number = questionNumber - 1;
+    }
+   	displayQuestion(number);
+   }
+   
+   displayQuestion = function(number){
+   
+   	//console.log("Number to display is " + number);
+    processTheAnswer();
+   
+   	questionNumber = parseInt(number, 10);
+   
+   	let questionNumberDisplay = parseInt(number, 10) + 1;
+   	document.getElementById("questionNumber").innerHTML = "Question " + questionNumberDisplay;
+   	document.getElementById("query").innerHTML = exam.questions[questionNumber].query + " (choose " + exam.questions[questionNumber].correctCount + ")";;
+   	document.getElementById("labelOption0").innerHTML = exam.questions[questionNumber].options[0].text;
+   	document.getElementById("labelOption1").innerHTML = exam.questions[questionNumber].options[1].text;
+   	document.getElementById("labelOption2").innerHTML = exam.questions[questionNumber].options[2].text;
+   	document.getElementById("labelOption3").innerHTML = exam.questions[questionNumber].options[3].text;
+   
+   	document.getElementById("answerLink").innerHTML = exam.questions[questionNumber].query;
+   	document.getElementById("answerLink").setAttribute("href", exam.questions[questionNumber].answer);
+   	
+    chooseBetweenRadioOrCheckbox();
+    redisplaySelectedInput();
+    handleFencepostButtons();
+     
+    if (exam.graded) {
+      highlightCorrectAnswers();
+    } else {
+      clearHighlightedAnswers();
+    }
+   	
+   }
+   
+   redisplaySelectedInput = function() {
+	   document.getElementById("option0").checked = exam.questions[questionNumber].options[0].checked;
+	   document.getElementById("option1").checked = exam.questions[questionNumber].options[1].checked;
+	   document.getElementById("option2").checked = exam.questions[questionNumber].options[2].checked;
+	   document.getElementById("option3").checked = exam.questions[questionNumber].options[3].checked;	
+   }
+   
+   handleFencepostButtons = function() {
+	   document.getElementById("previous").setAttribute("class", "enabled btn btn-primary");
+	   document.getElementById("next").setAttribute("class", "enabled btn btn-primary");
+	   if (questionNumber==0) {
+	   document.getElementById("previous").setAttribute("class", "disabled btn btn-primary");
+	   }
+	   if (questionNumber == (exam.questions.length-1)) {
+	   document.getElementById("next").setAttribute("class", "disabled btn btn-primary");
+	   }
+   }
+   
+   
+   processTheAnswer = function() {
+	   //console.log(questionNumber);
+	   //console.log("The exam at the number is: " + exam.questions[questionNumber]);
+	   
+	   exam.questions[questionNumber].options[0].checked = document.getElementById("option0").checked;
+	   exam.questions[questionNumber].options[1].checked = document.getElementById("option1").checked;
+	   exam.questions[questionNumber].options[2].checked = document.getElementById("option2").checked;
+	   exam.questions[questionNumber].options[3].checked = document.getElementById("option3").checked;
+   }
+   
+   chooseBetweenRadioOrCheckbox = function () {
+   
+       let radiosAndCheckboxes = document.querySelectorAll('.form-check-input');
+   
+	   let inputType = "radio";
+	   if (exam.questions[questionNumber].isMultipleChoice()) {
+	   inputType="checkbox"
+	   } 
+	   
+	   let i = 0;
+	   for (i=0; i<radiosAndCheckboxes.length; i++) {
+	   radiosAndCheckboxes[i].type=inputType;
+	   }
+   }
+   
+   highlightCorrectAnswers = function() {
+   
+    let i = 0;
+    for (i = 0; i < exam.questions[questionNumber].options.length; i++) {
+		if (exam.questions[questionNumber].options[i].correct) {
+			//console.log('outerOptionDiv' + i);
+			document.getElementById('outerOptionDiv' + i).classList.add("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.add("class", "border-success");
+		} else {
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border-success");
+		}
+     }
+   
+   }
+   
+   clearHighlightedAnswers = function() {
+   
+	   let i = 0;
+	   for (i = 0; i < exam.questions[questionNumber].options.length; i++) {
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border-success");
+	   }
+   
+   }
+   
+   gradeExam = function(){
+   
+    exam.graded=true;
+   	//Make sure changes on the question they asked for the grade to be there.
+   	processTheAnswer();
+   	let checkboxes = document.querySelectorAll(".option-radio");
+    let i = 0; 
+    for (i=0; i<checkboxes.length;i++) {
+     checkboxes[i].disabled=true;
+    } 
+
+   	let correctCount = 0; 
+   	for (i = 0; i < exam.questions.length; i++) {
+   		let correct = true;
+   		for (j = 0; j < exam.questions[i].options.length; j++) {
+   			correct = (exam.questions[i].options[j].checked == exam.questions[i].options[j].correct);
+   			if (correct == false) {
+   				
+   				document.getElementById('jumpTo'+i).setAttribute('class', 'btn btn-danger  mr-2');
+   				break;
+   			} else {
+   				document.getElementById('jumpTo'+i).setAttribute('class', 'btn btn-success  mr-2');
+   			}
+   		}
+   		if (correct) {correctCount++}
+   	}
+    highlightCorrectAnswers();
+   	document.getElementById('score').innerHTML = 'You got '  + correctCount + ' out of ' + exam.questions.length + ' correct.';
+    document.getElementById('finish').setAttribute('class', 'invisible');
+   }
+   
+</script>
+
+<div class="container">
+   <div class="card">
+      <div class="card-header" id="questionNumber"></div>
+      <div class="card-body">
+         <h3 class="card-title" id="query"></h3>
+         <div class="form-check my-2" id="outerOptionDiv0">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option0" value="option0">
+            <label class="form-check-label" for="option0" id="labelOption0">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv1">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option1" value="option1">
+            <label class="form-check-label" for="option1" id="labelOption1">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv2">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option2" value="option2">
+            <label class="form-check-label" for="option2" id="labelOption2">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv3">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option3" value="option3">
+            <label class="form-check-label" for="option3" id="labelOption3">
+            </label>
+         </div>
+         <div>
+            <p class="card-text mt-3">
+               <a  id="previous" class="btn btn-primary" onclick="navigateQuestions('previous')">&lt;&lt; Previous</a>
+               <a  id="next" class="btn btn-primary" onclick="navigateQuestions('next')">Next &gt;&gt;</a> 
+               <a  id="finish" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="gradeExam()">Finish</a>
+            </p>
+            <div></div>
+         </div>
+      </div>
+   </div>
+   <div class="card mt-2">
+      <div class="card-header" id="questionJumperTitle">
+         Question Jumper
+      </div>
+      <div class="card-body">
+         <h3 class="card-title" id="questionJumperCardTitle"></h3>
+         <p class="card-text"><span id="question-jumper"> </span></p>
+      </div>
+   </div>
+   <div class="card mt-2">
+      <div class="card-header" id="answerCard">
+         <a  onclick="document.getElementById('answerCardBody').classList.toggle('collapse');" >Click for Answers and Cheats</a>
+      </div>
+      <div class="card-body collapse" id="answerCardBody">
+         <h3 class="card-title" id="answer"></h3>
+         <p>Click this button to cheat.</p>
+         <a  id="cheat" class="btn btn-warning my-2" onclick="highlightCorrectAnswers()">Cheat</a>
+         <h3>Full Answer</h3>
+         <p class="card-text">If that's not enough, here's the detailed UiPath Certification question answer.</p>
+         <p class="card-text"><a  id="answerLink" target="_blank">Answer opens in a new window.</a></p>
+      </div>
+   </div>
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Quiz Results</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div id="score" class="modal-body">
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+					 
+					 
+
+
+
+					 
+            </article>
+            <aside  class="aside-2 col col-12  col-sm-12  col-md-4 col-lg-3 order-2 order-sm-2 order-lg-2 mb-3">
+               <div class="card my-2" >
+                  <div class="card-header">
+                     <h4 >Get Certified Fast</h4>
+                  </div>
+                  <div class="card-body">
+                     <h4 class="card-title mt-2 text-center">Follow our proven <a href="https://www.rpacertified.com/study-guide-uipath.html">study plan</a>.</h4>
+                     <p class="card-text text-center">Make this badge your own.</p>
+                     <a href="https://www.rpacertified.com/study-guide-uipath.html">
+                     <img src="/assets/uipath-certified-associate-badge.jpg" class="img-fluid img-thumbnail mx-auto d-block" alt="uipath certified associate badge">
+                     </a>
+                  </div>
+               </div>
+		    
+	       <div class="card my-2" >
+                  <div class="card-header">
+                     <h4>Online UiPath Training</h4>
+                  </div>
+                  <div class="card-body">
+                     <h4 class="card-title mt-2 text-center">Learn with <a href="https://www.youtube.com/playlist?list=PL_RrEj88onS-QrvtnW0EQ3i7qJUbKTdJ8">Learn UiPath on YouTube</a></h4>
+                     <div class="embed-responsive embed-responsive-16by9">
+  			<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/X2AGYqIy4kk"></iframe>
+		     </div>
+                  </div>
+               </div>  
+		    
+		    
+               <div class="card my-2">
+                  <div class="card-header">
+                     Networking
+                  </div>
+                  <img src="/assets/serge-social2.jpg" class="card-img-top" alt="UiPath Practice Test Preparation">
+                  <div class="card-body">
+                     <p class="card-text">Follow me, Serge Salerno, and all my UiPath friends on social media.</p>
+                     <ul class="nav flex-column">
+                        <li class="nav-item">
+                           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-network-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h5.5v3A1.5 1.5 0 0 0 6 11.5H.5a.5.5 0 0 0 0 1H6A1.5 1.5 0 0 0 7.5 14h1a1.5 1.5 0 0 0 1.5-1.5h5.5a.5.5 0 0 0 0-1H10A1.5 1.5 0 0 0 8.5 10V7H14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm.5 3a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2 0a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                           </svg>
+                           <a href="https://www.rpacertified.com/youtube-linkedin-twitter.html#twitter-uipath">Twitter</a>
+                        </li>
+                        <li class="nav-item">
+                           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-rack-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H2zm.5 3a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2 0a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm.5 3a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2 0a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM3 9V7h1v2H3zm9 0V7h1v2h-1z"/>
+                           </svg>
+                           <a href="https://www.rpacertified.com/youtube-linkedin-twitter.html#youtube-uipath">YouTube</a>
+                        </li>
+                        <li class="nav-item">
+                           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-network" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M14 3H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                              <path d="M5 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                              <path fill-rule="evenodd" d="M7.5 10V7h1v3a1.5 1.5 0 0 1 1.5 1.5h5.5a.5.5 0 0 1 0 1H10A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5H.5a.5.5 0 0 1 0-1H6A1.5 1.5 0 0 1 7.5 10zm0 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
+                           </svg>
+                           <a href="https://www.rpacertified.com/youtube-linkedin-twitter.html#youtube-linkedin">LinkedIn</a>
+                        </li>
+                        <li class="nav-item">
+                           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-stack" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M14 10H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1zM2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H2z"/>
+                              <path d="M5 11.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                              <path fill-rule="evenodd" d="M14 3H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                              <path d="M5 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                           </svg>
+                           <a href="https://github.com/uipath-certification/uipath-certification.github.io">GitHub</a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+
+            </aside>
+         </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+	  <script>
+
+		  
+		  var jsonQuestions = [
+
+
+	 {id:99, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0","3.0"
+      ]},
+	
+	
+	
+	{id:1, query:"Which of the following describes the most ideal type of activity to automate with UiPath?", "answer":"test-answer.md",
+			options:[
+			{text:"Multistep process with many decision points with structured data", correct:false, selected:false}, 
+			{text:"Perform Analysis on data and provide", correct:true, selected:false},
+			{text:"Varied tasks that rely heavily on user input", correct:false, selected:false},
+			{text:"Rule-based process with structured data", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  
+	  	 
+	  
+	  
+	{id:2, query:"A client receives a spreadsheet containing orders. The orders must be input into an internal web-based order system.  Which is the best activity to use?", "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	{id:3, query:"Which Activity requires the least amount of parameters?", 
+			options:[
+			{text:"SMTP", correct:false, selected:false}, 
+			{text:"Outlook", correct:true, selected:false},
+			{text:"POP3", correct:false, selected:false},
+			{text:"Mail", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},			
+	{id:4, query:"What happens if you try to save a table using Excel Write Range activity to a file that does not exist?", "answer":"test-answer.md",
+			options:[
+			{text:"Throws a “File not found” error", correct:false, selected:false}, 
+			{text:"Workflow will wait until the file appears and times out if it doesn’t", correct:false, selected:false},
+			{text:"Activity will not run and continue the sequence", correct:false, selected:false},
+			{text:"Creates the file and saves the table", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},	
+	{id:5, query:"When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},	
+	  	{id:6, query:"6When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:7, query:"7 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:8, query:" 8 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:9, query:"9 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	{id:10, query:"10 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+
+	  {id:11, query:"Which of the following is a valid UiPath variable name?",  "answer":"/2020/10/10/variable-naming-conventions.html", "difficulty": "7",
+			options:[
+			{text:"$1000000", correct:false, selected:false}, 
+			{text:"1000000$", correct:false, selected:false},
+			{text:"1milliondollars", correct:false, selected:false},
+			{text:"One1MillionDollars", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	  	{id:12, query:"The variable UIPATH_ASSOCIATE_EXAM is said to follow what naming convention?",  "answer":"/2020/10/10/screaming-snake-case.html", "difficulty": "3",
+			options:[
+			{text:"camel case", correct:false, selected:false}, 
+			{text:"snake case", correct:false, selected:false},
+			{text:"screaming snake case", correct:true, selected:false},
+			{text:"kebab case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	  	{id:13, query:"Which of the following variables is named using kebab case?",  "answer":"/2020/10/10/kebab-case-convention.html", "difficulty": "3",
+			options:[
+			{text:"WhatIsKebabCase", correct:false, selected:false}, 
+			{text:"what-is-kebab-case", correct:true, selected:false},
+			{text:"whatIsKebabCase", correct:false, selected:false},
+			{text:"what_is_kebab_case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  
+	   {id:14, query:"Which of the following is an example of the Pascal case naming convention?",  "answer":"/2020/10/10/pascal-case-naming-convention.html", "difficulty": "2",
+			options:[
+			{text:"Pascal-Case", correct:false, selected:false}, 
+			{text:"pascalCase", correct:false, selected:false},
+			{text:"PascalCase", correct:true, selected:false},
+			{text:"Pascal_case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.1"
+      ]},	
+
+	  {id:15, query:"Which of the following four is an example of a camel case naming convention?",  "answer":"/2020/10/10/camelcase-naming-convention.html", "difficulty": "4",
+			options:[
+			{text:"uipathNamingConventions", correct:true, selected:false}, 
+			{text:"UiPath-Naming-Conventions", correct:false, selected:false},
+			{text:"UIPATH_NAMING_CONVENTIONS", correct:false, selected:false},
+			{text:"UiPathNamingConventions", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},	  
+	  
+	  
+	  
+	  {id:16, query:"Which of the following violates the UiPath variable naming convention?",  "answer":"/2020/10/10/variable-names.html", "difficulty": "7",
+			options:[
+			{text:"H1Tag", correct:true, selected:false}, 
+			{text:"HWonTag", correct:false, selected:false},
+			{text:"hWonTag", correct:false, selected:false},
+			{text:"1hTag", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},	  
+
+	  
+	  {id:17, query:"You must pass exam data as an argument, but the data will be used both inside and oustide of the current workflow project. What should the variable be named?",  "answer":"/2020/11/11/input-output-argument-names.html", "difficulty": "5",
+			options:[
+			{text:"inOutExam", correct:false, selected:false}, 
+			{text:"in_out_exam", correct:false, selected:false},
+			{text:"io-Exam", correct:false, selected:false},
+			{text:"io_Exam", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0","3.0"
+      ]},
+	  
+	   {id:18, query:"The data being passed in as an argument can only be used within the current project. What should the variable be named so as not to trigger the UiPath Studio analyzer?",  "answer":"/2020/10/11/in-argument-naming-convention.html", "difficulty": "7",
+			options:[
+			{text:"in-field", correct:false, selected:false}, 
+			{text:"inField", correct:false, selected:false},
+			{text:"in_field", correct:true, selected:false},
+			{text:"InField", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.4"
+      ]},	  
+	  
+	  
+	   {id:19, query:"Which of the following is true about case sensitive variable names in UiPath",  "answer":"/2020/10/10/variables-case-sensitive-uipath.html", "difficulty": "7",
+			options:[
+			{text:"UiPath method names are case sensitive", correct:false, selected:false}, 
+			{text:"UiPath variable names are case sensitive", correct:false, selected:false},
+			{text:"UiPath method names are not case sensitive", correct:true, selected:false},
+			{text:"UiPath variable names are not case sensitive", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2", "3.0"
+      ]},	  
+	  
+	  
+	   {id:20, query:"A field that describes a name must be passed outside of a given project. What should it be named?",  "answer":"/2020/10/10/uipath-argument-naming-convention.html", "difficulty": "7",
+			options:[
+			{text:"out_name", correct:true, selected:false}, 
+			{text:"pass_name", correct:false, selected:false},
+			{text:"name", correct:false, selected:false},
+			{text:"getName", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2", "3.0"
+      ]},	  
+	  
+	   {id:21, query:"A UiPath transition activity is associated with which type of project?",  "/2020/10/11/state-machine.html":"answer", "difficulty": "8",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:true, selected:false},
+			{text:"Process Chart", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+	   {id:22, query:"A complex activity to be automated has many subroutines to be executed depending on the result of evaluating various logical conditions. What is the best approach to architecting this RPA activity?",  "answer":"/2020/10/11/sequence-flowchart-combined.html", "difficulty": "6",
+			options:[
+			{text:"Use a single workflow project", correct:false, selected:false}, 
+			{text:"Use multiple workflows projects", correct:false, selected:false},
+			{text:"Use a single sequence project which references multiple workflow projects", correct:false, selected:false},
+			{text:"Use a single workflow project that references mutliple sequence projects", correct:true, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+	   {id:23, query:"Which type of project is best for linear activities involving multiple activities such as OCR and PDF data extraction?",  "answer":"/2020/10/11/linear-sequence-projects.html", "difficulty": "6",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"Global Exception Handler", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+
+	  
+	   {id:24, query:"A task to be automated has multiple decision points with unique UiPath activities to be performed based on the outcome of various conditions. What type of project should be used in this situation?",  "answer":"/2020/10/11/flowchart-project-definition.html", "difficulty": "6",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flow Chart", correct:true, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"This task cannot be automated", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.0"
+      ]},
+	  
+	  
+	   {id:25, query:"Which type of project is most likely to be used and reused in other projects?",  "answer":"/2020/10/10/sequence-projects.html", "difficulty": "5",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"Global Exception Handler", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+
+	  
+	  {id:26, query:"A expense report submission process, in which the first step requires the user to log into the reporting system, must attach scanned image receipts and PDF files as part of the expense. This activity lends itself best to which of the following implementations:",  "answer":"/2020/11/11/unattended-robots-when-to-use.html", "difficulty": "6",
+			options:[
+			{text:"A process that uses a single unattended robot", correct:false, selected:false}, 
+			{text:"A process that uses a single attended robot", correct:true, selected:false},
+			{text:"A process that uses both a single attended robot and a single unattended robot", correct:false, selected:false},
+			{text:"This process does not lend itself to automation", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:27, query:"In contrast with attended robots, unattended robots are best used with:",  "answer":"/2020/11/11/unattended-robots-use-case.html", "difficulty": "6",
+			options:[
+			{text:"simple, one-off tasks", correct:false, selected:false}, 
+			{text:"complex, one-off tasks", correct:false, selected:false},
+			{text:"simple, repetative tasks", correct:false, selected:false},
+			{text:"complex, repetative tasks", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:28, query:"Which of the following statements are true?",  "answer":"/2020/11/11/uipath-robot-security-isoloation.html", "difficulty": "6",
+			options:[
+			{text:"Attended automations cannot guarantee security isolation between the robot and the user", correct:true, selected:false}, 
+			{text:"Unattended automations cannot guarantee security isolation between the robot and the user", correct:false, selected:false},
+			{text:"Attended automations always require a human present", correct:true, selected:false},
+			{text:"Unattended automations always require a human present", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:29, query:"A robot that is tied to a specific machine and not allowed to run on any machines other than the one it is tied to in UiPath Orchestrator is known as:",  "answer":"/2020/11/11/standard-robots-unattended-uipath.html", "difficulty": "8",
+			options:[
+			{text:"An unattended robot", correct:false, selected:false}, 
+			{text:"A standard robot", correct:true, selected:false},
+			{text:"A sticky robot", correct:false, selected:false},
+			{text:"A floating robot", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  {id:30, query:"A robot that can be used by mutiple users and run on multiple workstations without being tied to a specific machine is known as a(n):",  "answer":"/2020/11/11/floating-robots-unattended.html", "difficulty": "8",
+			options:[
+			{text:"attended robot", correct:false, selected:false}, 
+			{text:"unattended robot", correct:false, selected:false},
+			{text:"floating robot", correct:true, selected:false},
+			{text:"standard robot", correct:false, selected:false}
+			],
+      "objectives":[
+           "1.0", "1.2",
+      ]},
+	  
+	  {id:31, query:"Attended robots are best used with:",  "answer":"/2020/11/11/attend-robot-use-cases.html", "difficulty": "5",
+			options:[
+			{text:"small, continuous automations", correct:false, selected:false}, 
+			{text:"small, fragmented automations", correct:true, selected:false},
+			{text:"large, fragmented automations", correct:false, selected:false},
+			{text:"large, continuous automations", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  
+	  {id:32, query:"Which of the following statements are true about UiPath Studio Community Edition (CE)?",  "answer":"/2020/11/11/uipath-studio-updates.html", "difficulty": "5",
+			options:[
+			{text:"UiPath Studio CE is limited to a single attended robot but an unlimited number of unattended robots", correct:false, selected:false}, 
+			{text:"UiPath Studio CE is limited to a single unattended robot but an unlimited number of attended robots", correct:false, selected:false},
+			{text:"UiPath Studio CE cannot be installed in a top security environment with in Internet access", correct:true, selected:false},
+			{text:"UiPath Studio CE updates cannot be turned off", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+	  {id:33, query:"The UiPath Enterprise Server:",  "answer":"/2020/11/11/uipath-enterprise-server-saas.html", "difficulty": "5",
+			options:[
+			{text:"Is accessed through the cloud", correct:false, selected:false}, 
+			{text:"Is installed on a computer by the client", correct:true, selected:false},
+			{text:"Is not compatible with UiPath Studio Community Edition", correct:false, selected:false},
+			{text:"Is not compatible with UiPath Studio Enterprise trial editions", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+
+	  {id:34, query:"What is the standard duration of a UiPath Studio Community Edition trial?",  "answer":"/2020/11/11/uipath-studio-trail-license.html", "difficulty": "5",
+			options:[
+			{text:"30 days", correct:false, selected:false}, 
+			{text:"60 days", correct:false, selected:false},
+			{text:"90 days", correct:false, selected:false},
+			{text:"Unlimited", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+	  {id:35, query:"Which of the following is true about programs written in UiPath Stuido Community Edition?",  "answer":"/2020/11/11/uipath-studio-programs.html", "difficulty": "6",
+			options:[
+			{text:"They cannot use libraries created by UiPath Stuido Enterprise Edition", correct:false, selected:false}, 
+			{text:"Programs created in UiPath Stuido Community Edition expire if the 60 day trial is not extended", correct:false, selected:false},
+			{text:"Programs created in UiPath Studio Community Edition cannot pass arguments between projects", correct:false, selected:false},
+			{text:"Programs creating in UiPath Studio Community Edition are no different than programs created in the Enterprise Edition", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:36, query:"Which of the following is true about UiPath Studio?",  "answer":"/2020/11/11/uipath-studio-enterprise-vs-community.html", "difficulty": "7",
+			options:[
+			{text:"The Community Edition always updates if a new stable release is available", correct:true, selected:false}, 
+			{text:"The Community Edition always updates if a new preview release is available", correct:true, selected:false},
+			{text:"The Enterprise Edition always updates if a new stable release is available", correct:false, selected:false},
+			{text:"The Enterprise Edition always updates if a new preview release is available", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:37, query:"What is the standard duration of a UiPath Studio Enterprise Edition trial?",  "answer":"/2020/11/11/UiPath-Enterprise-trial.html", "difficulty": "4",
+			options:[
+			{text:"30 days", correct:false, selected:false}, 
+			{text:"60 days", correct:true, selected:false},
+			{text:"90 days", correct:false, selected:false},
+			{text:"Unlimited", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:38, query:"Which of the following is true about UiPath Stuido Community Edition (CE)?",  "answer":"/2020/11/11/Studio-Community-Orchestrator.html", "difficulty": "7",
+			options:[
+			{text:"UiPath Studio CE can only connect to UiPath Orchestrator CE", correct:true, selected:false}, 
+			{text:"UiPath Studio CE can connect to both UiPath Orchestrator CE and Enterprise", correct:false, selected:false},
+			{text:"UiPath Studio CE does not have access to AI Computer Vision", correct:false, selected:false},
+			{text:"UiPath Studio CE does have access to AI Computer Vision", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/debug-compare-files-studio.html", "difficulty": "8",
+			options:[
+			{text:"Workflow Diff", correct:false, selected:false}, 
+			{text:"Diff Compare", correct:false, selected:false},
+			{text:"Workflow Compare", correct:false, selected:false},
+			{text:"Compare Files", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+	  
+	  {id:40, query:"Which of the following statements are true about UiPath variable debugging?",  "answer":"/2020/11/11/debug-edit-variable.html", "difficulty": "6",
+			options:[
+			{text:" It is possible to edit String variables at runtime using the debugger", correct:false, selected:false}, 
+			{text:"It is possible to edit String and int values at runtime using the debugger", correct:false, selected:false},
+			{text:"It is possible to edit any variable at runtime using the debugger", correct:true, selected:false},
+			{text:"It is not possible to edit variables at runtime after the program has started", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:41, query:"What three DVCS tools are configurable during the UiPath Studio installation procedure?",  "answer":"/2020/11/11/debug-git-tfs-svn.html", "difficulty": "4",
+			options:[
+			{text:"Mercurial SCM", correct:false, selected:false}, 
+			{text:"Apache Subversion", correct:true, selected:false},
+			{text:"Microsoft Team Foundation Server", correct:true, selected:false},
+			{text:"Git", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+
+	  {id:42, query:"Which UiPath Studio screen only appears while you are actively debugging a program?",  "answer":"/2020/11/11/debug-locals-panel.html", "difficulty": "6",
+			options:[
+			{text:"Log panel", correct:false, selected:false}, 
+			{text:"Locals panel", correct:true, selected:false},
+			{text:"Breakpoints panel", correct:false, selected:false},
+			{text:"Output panel", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+	  
+	  {id:43, query:"Which of the following is true about the UiPath debugger's retry button?",  "answer":"/2020/11/11/debug-retry-uipath.html", "difficulty": "7",
+			options:[
+			{text:"It will restart your application from the first line prior to an exception being thrown", correct:false, selected:false}, 
+			{text:"It will restart your application from the beginning of the activity that threw an exception", correct:true, selected:false},
+			{text:"It will restart your application from the first activity of the project", correct:true, selected:false},
+			{text:"It will restart your application from the start of the beginning of the activity prior to the one that threw an exception", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:44, query:"Where does UiPath Studio store its log files by default?",  "answer":"/2020/11/11/debug-log-file-location.html", "difficulty": "8",
+			options:[
+			{text:"%UiPathInstallRoot%\\logs", correct:false, selected:false}, 
+			{text:"%UserHome%\\UiPath\\logs", correct:false, selected:false},
+			{text:"%UiPathInstallRoot%\\bin\\logs", correct:false, selected:false},
+			{text:"%localappdata%\\UiPath\\logs", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:45, query:"An error has occurred and you need to know which version of the UiPath.Excel.Activities library is installed. Where would you find this information?",  "answer":"/2020/11/11/debug-manage-packaged-version", "difficulty": "7",
+			options:[
+			{text:"In the Help --> About option from UiPath Studio's main menu", correct:false, selected:false}, 
+			{text:"From the installation log files", correct:false, selected:false},
+			{text:"Right click on any Excel activity and select Properties", correct:false, selected:false},
+			{text:"Locate the library in the Manage Packages window", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.2"
+      ]},
+	  
+	  {id:46, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/debug-compare-files-studio.html", "difficulty": "8",
+			options:[
+			{text:"Workflow Diff", correct:true, selected:false}, 
+			{text:"Diff Compare", correct:false, selected:false},
+			{text:"Workflow Compare", correct:false, selected:false},
+			{text:"Compare Files", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+
+	  {id:47, query:"What is the name of the UiPath debugger panel that allows you to view how the values of variables change as the program executes?",  "answer":"/2020/11/11/2020-11-11-debug-panels.html", "difficulty": "5",
+			options:[
+			{text:"Watch", correct:true, selected:false}, 
+			{text:"Inspect", correct:false, selected:false},
+			{text:"Debug", correct:false, selected:false},
+			{text:"Output", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:48, query:"Which of the following is true about the UiPath debugger's restart button?",  "answer":"/2020/11/11/debug-restart-button.html", "difficulty": "7",
+			options:[
+			{text:"It will restart your application from the first line prior to an exception being thrown", correct:false, selected:false}, 
+			{text:"It will restart your application from the beginning of the activity that threw an exception", correct:false, selected:false},
+			{text:"It will restart your application from the first activity of the project", correct:true, selected:true},
+			{text:"It will restart your application from the start of the beginning of the activity prior to the one that threw an exception", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:49, query:"Which of the following is designed to allow developers to debug their applications one activity at a time?",  "answer":"/2020/11/11/debug-step-into-over-out.html", "difficulty": "6",
+			options:[
+			{text:"Step Over", correct:false, selected:false}, 
+			{text:"Step Into", correct:true, selected:false},
+			{text:"Step Out", correct:false, selected:false},
+			{text:"Focus", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:50, query:"Which of the following are true about the UiPath Studio debugger functions? ",  "answer":"/2020/11/11/debugger-not-working-uipath.html", "difficulty": "6",
+			options:[
+			{text:"Only one Global Exception Handler can be set per automation project.", correct:true, selected:false}, 
+			{text:"The debugger will not operate if there are errors in the project", correct:true, selected:false},
+			{text:"Debug activities are displayed as Trace logs in the Output panel", correct:true, selected:false},
+			{text:"The debugger will not operate if there are exceptions in the project", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+			  
+
+	  {id:51, query:"Yolla: Cloud-native, Spring Boot microservices are typically deployed as: ",  "answer":"Section 2.1", "difficulty": "5",
+			options:[
+			{text:"Executable WAR files", correct:false, selected:false}, 
+			{text:"Executable JAR files", correct:true, selected:false},
+			{text:"Executable ZIP files", correct:false, selected:false},
+			{text:"Executable EAR files", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+
+
+	  {id:52, query:"Kunjie: Annotations like @GET and @PUT are found in what alternate to Spring REST?",  "answer":"Section 1.8", "difficulty": "5",
+			options:[
+			{text:"JAX-RS", correct:true, selected:false}, 
+			{text:"JAXB", correct:false, selected:false},
+			{text:"JAX-RPC", correct:false, selected:false},
+			{text:"JAX-WS", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:53, query:"Edward: To call a RESTful web service from within a Spring component like an MVC controller, the recommended approach is to use the:",  "answer":"Section 3.8", "difficulty": "5",
+			options:[
+			{text:"AjaxTemplate", correct:false, selected:false}, 
+			{text:"HttpTemplate", correct:false, selected:false},
+			{text:"MvcTemplate", correct:false, selected:false},
+			{text:"RestTemplate", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	
+
+
+	  {id:54, query:"Denise: Which of the following are built-in, HTML view resolution alternatives to Thymeleaf available in the Spring Starter page?",  "answer":"Section 5.7", "difficulty": "5",
+			options:[
+			{text:"FreeMarker", correct:true, selected:false}, 
+			{text:"JSP", correct:false, selected:false},
+			{text:"Groovy", correct:true, selected:false},
+			{text:"Mustache", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:55, query:"Tushar: Which two build tools does Spring Boot support?",  "answer":"Section 9.4", "difficulty": "5",
+			options:[
+			{text:"Jenkins", correct:false, selected:false}, 
+			{text:"Maven", correct:true, selected:false},
+			{text:"Make", correct:false, selected:false},
+			{text:"Gradle", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:56, query:"Ayush: An alternative to the CommandLineRunner in Spring is the :",  "answer":"Section 6.6", "difficulty": "5",
+			options:[
+			{text:"MainRunner", correct:false, selected:false}, 
+			{text:"ClassRunner", correct:false, selected:false},
+			{text:"ApplicationRunner", correct:true, selected:false},
+			{text:"SpringRunner", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  
+	  {id:57, query:"Taoran: Instead of an OAuth token, private companies typically authticate with which type of token? ",  "answer":"Section 8.16", "difficulty": "5",
+			options:[
+			{text:"SSD", correct:false, selected:false}, 
+			{text:"SSO", correct:false, selected:false},
+			{text:"SAML", correct:true, selected:false},
+			{text:"LDAP", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+	  
+	  {id:58, query:"Pierre: You can avoid direct interactions with the EntityManager by instead using a class that extends:",  "answer":"Section 7.8", "difficulty": "5",
+			options:[
+			{text:"CrudRepository", correct:true, selected:false}, 
+			{text:"PersistenceRepository", correct:false, selected:false},
+			{text:"DataRepository", correct:false, selected:false},
+			{text:"HttpRepository", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:59, query:"Moshen: Which two annotations when used together will allow you to test Spring web applications?",  "answer":"Section 10.16", "difficulty": "5",
+			options:[
+			{text:"@MvcTest and @MockMVC", correct:false, selected:false}, 
+			{text:"@WebMvcTest and @MockMVC", correct:true, selected:false},
+			{text:"@MockMvcTest and @WebMVC", correct:false, selected:false},
+			{text:"@WebMvcTest and @WebMVC", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:60, query:"Riddhi: Spring Security extends which Jakarta EE standard?",  "answer":"Section 8.1", "difficulty": "5",
+			options:[
+			{text:"JAAS", correct:true, selected:false}, 
+			{text:"Java Security", correct:false, selected:false},
+			{text:"Java Cryptography Service", correct:false, selected:false},
+			{text:"Java SSO", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+	  
+	  {id:61, query:"Mohammad: What is the name of the Spring project that adds health monitoring to your applications?",  "answer":"Section 9.1", "difficulty": "5",
+			options:[
+			{text:"Spring Boot Manager", correct:false, selected:false}, 
+			{text:"Spring Boot Monitor", correct:false, selected:false},
+			{text:"Spring Boot Optimizer", correct:false, selected:false},
+			{text:"Spring Boot Actuator", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:62, query:"Khari: What is the name of the tool used in the labs to test RESTful APIs?",  "answer":"Lab page 31", "difficulty": "5",
+			options:[
+			{text:"cUrl", correct:false, selected:false}, 
+			{text:"jQuery", correct:false, selected:false},
+			{text:"Postman", correct:true, selected:false},
+			{text:"Fiddler", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:63, query:"Karanveer: What is the name of the OpenAPI based tool used in lab 13 to visually see and interact with RESTful APIs?",  "answer":"Lab 159", "difficulty": "5",
+			options:[
+			{text:"GraphQL", correct:false, selected:false}, 
+			{text:"Flask", correct:false, selected:false},
+			{text:"RAML", correct:false, selected:false},
+			{text:"Swagger", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:64, query:"Evan: Which annotation should be placed on code that performs JDBC or uses an EntityManager?",  "answer":"Section 7.3", "difficulty": "5",
+			options:[
+			{text:"@Repository", correct:true, selected:false}, 
+			{text:"@Service", correct:false, selected:false},
+			{text:"@Component", correct:false, selected:false},
+			{text:"@Autowired", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},			  
+			  
+			  
+			  
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/abc.html", "difficulty": "8",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},	  
+	  
+	  
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:30, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+
+	  
+	];
+	
+	
+if (typeof(Storage) !== "undefined") {
+  // Store
+  //localStorage.setItem("lastname", "Smith");
+  localStorage.setItem("questions", JSON.stringify(jsonQuestions));
+  
+  
+  // Retrieve
+  //document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+  //var questions2 = localStorage.getItem("questions");
+  //questions2 = JSON.parse(questions2);
+  //console.log(questions2);
+  
+
+  //document.getElementById("quiz").innerHTML = (questions)[0].query;
+  //document.getElementById("quiz").innerHTML = questions[0].id;
+} else {
+  //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+</script>
+   </body>
+</html>

@@ -1,0 +1,101 @@
+<div class=" col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2  d-flex align-items-stretch">
+   <div class="card">
+      <div class="card-header">Free UiPath Training</div>
+      <picture>
+         <source srcset="/assets/shut-up-meme.jpg" media="(min-width: 1200px)">
+         <source srcset="/assets/shut-up-meme.jpg" media="(min-width: 992px)">
+         <source srcset="/assets/shut-up-meme.jpg" media="(min-width: 768px)">
+         <source srcset="/assets/shut-up-meme.jpg" media="(min-width: 576px)">
+         <img src="/assets/shut-up-meme.jpg" class="img-fluid" alt="Course Outline">
+      </picture>
+      <div class="card-body  d-flex flex-column">
+         <p class="card-text">I helped a friend put together a UiPath Certification site. It's pretty okay. Check it out.</p>
+         <p class="text-center mt-auto"><a href="http://www.rpacertified.com" class="text-center btn btn-outline-primary btn-sm">Get RPA Certified</a></p>
+      </div>
+   </div>
+</div>
+<div class="d-none d-lg-block col-lg-4 col-xl-4 mb-2  d-flex align-items-stretch">
+   <div class="card">
+      <div class="card-header">Let's play!!!</div>
+      <picture>
+         <source srcset="/assets/get-started-mission-control.jpg" media="(min-width: 1200px)">
+         <source srcset="/assets/get-started-mission-control.jpg" media="(min-width: 992px)">
+         <source srcset="/assets/get-started-mission-control.jpg" media="(min-width: 768px)">
+         <source srcset="/assets/get-started-mission-control.jpg" media="(min-width: 576px)">
+         <img src="/assets/get-started-mission-control.jpg" class="img-fluid" alt="Get Started Java Mission Control">
+      </picture>
+      <div class="card-body  d-flex flex-column">
+         <p >Which one will it be?</p>
+         <center>
+            <a href="#" onclick="playRoshambo('rock');return false;">rock</a><br/>
+            <a href="#" onclick="playRoshambo('paper');return false;">paper</a><br/>
+            <a href="#" onclick="playRoshambo('scissors');return false;">scissors</a>
+            <div id="results-1" class="results"></div>
+         </center>
+         <p class="text-center mt-auto">
+            <a href="https://www.theserverside.com/tutorial/Tutorial-Coding-a-simple-Rock-Paper-Scissors-application-in-JavaScript" class="text-center btn btn-outline-primary btn-sm mt-2">Code Roshambo!</a>
+         </p>
+      </div>
+   </div>
+</div>
+<div class=" col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2  d-flex align-items-stretch">
+   <div class="card">
+      <div class="card-header">Java Flight Recorder</div>
+      <picture>
+         <source srcset="/assets/java-flight-recorder-example.jpg" media="(min-width: 1200px)">
+         <source srcset="/assets/java-flight-recorder-example.jpg" media="(min-width: 992px)">
+         <source srcset="/assets/java-flight-recorder-example.jpg" media="(min-width: 768px)">
+         <source srcset="/assets/java-flight-recorder-example.jpg" media="(min-width: 576px)">
+         <img src="/assets/java-flight-recorder-example.jpg" class="img-fluid" alt="JDK JVM Flight Recorder Example">
+      </picture>
+      <div class="card-body  d-flex flex-column">
+         <p class="card-text">Here's some updates on Marcus Hirt's JFR and JMC tutorials.</p>
+         <p class="text-center mt-auto"><a href="http://missioncontrl.mcnz.com" class="text-center btn btn-outline-primary btn-sm">Mission Control</a></p>
+      </div>
+   </div>
+</div>
+
+      <script>
+         let history = new Array();
+         
+         //server always chooses rock
+         playRoshambo = function(clientGesture){
+         	if (clientGesture=='paper') {
+         		result = "win";
+         	}
+         	if (clientGesture=='rock') {
+         		result = "tie";
+         	}
+         	if (clientGesture=='scissors') {
+         		result = "lose";
+         	}	
+         
+         	gameSummary = new Object();
+         	gameSummary.result = result;
+         	gameSummary.clientGesture = clientGesture;
+         	gameSummary.serverGesture = "rock";
+         	gameSummary.timePlayed = new Date();
+         	
+         	//alert(JSON.stringify(gameSummary));
+         	//alert(JSON.stringify(history));
+         	
+         	//history.push(gameSummary);
+         
+         	//let listItems = "";
+         	
+         	//for (gs in history) {
+         	//	listItems += "<li>" + history[gs].result + " : " 
+         	//	                    + history[gs].clientGesture + " : " 
+         	//						+ history[gs].timePlayed.toLocaleString()
+         	//						+ "</li>";
+         	//	console.log(history[gs].result + " : " + history[gs].clientGesture + " : " + history[gs].timePlayed);
+         	//}
+         	
+         	//document.getElementById('history').innerHTML = listItems;
+         	
+         document.getElementById('results-1').innerHTML = result;
+         	
+         	
+         }
+         
+      </script>

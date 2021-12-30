@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+	{% include head-common.html %}  
+     
+	{% if page.canonical %}
+	<link rel="canonical" href="{{ page.canonical }}" />
+	{% else %}
+	<!-- This is the else for if canonical -->	   
+	{% endif %}
+
+	{% if page.blurb %}
+	<meta name="description" content="{{ page.blurb }}"/>   
+	{% else %}
+	<meta name="description" content="Some mock exam questions.."/>   
+	{% endif %}
+	   
+	<title>{{ page.title }}</title>  
+
+	{% include boostrap-css.html %}
+	{% include style-common.html %}  
+	   
+   </head>		
+	
+   <body>
+   
+<!-- facebook login -->
+<script>
+
+  var facebookResponse;
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '287616246137792',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v10.0'
+    });
+    
+    FB.AppEvents.logPageView();   
+    triggerLoginCheck();
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+	
+	
+function checkLoginState() {
+	triggerLoginCheck()
+}	
+	
+function triggerLoginCheck() {       
+ FB.getLoginStatus(function(response) {
+	facebookResponse = response;
+    //statusChangeCallback(response);
+    console.log(response);
+    console.log(response.status);
+    //if (response.status == 'connected'){
+    if (true){
+		//set cheat visible
+	    	console.log("authenticated user");
+		document.getElementById("answerCardBody").classList.remove('d-none');
+		document.getElementById("answerCardBodyDefault").classList.add('d-none');
+    }
+    
+    //if (response.status == 'not_authorized'){
+    if (false){
+		//set cheat invisible
+		document.getElementById("answerCardBodyDefault").classList.remove('d-none');
+		document.getElementById("answerCardBody").classList.add('d-none');
+	    FB.login();
+    }
+	
+	
+	
+	
+ });
+}	
+
+function collapseAndExpand() {
+console.log("start collapse and expand");
+	document.getElementById('answerCardBody').classList.toggle('collapse');
+	document.getElementById('answerCardBodyDefault').classList.toggle('collapse');
+console.log("end collapse and expand");
+}
+
+</script>	      
+   
+   
+   
+      <div class="container">
+         <div class="row">
+{% include navigation.html %}  
+         </div>
+	 {% include common-cookie-row.html %}       
+         <div class="row">
+            <article class="main col col-12 col-sm-12  col-md-8 col-lg-9 order-1 order-sm-1 order-lg-1 mt-3">
+               <!--
+			   <div class="card">
+                  <div class="card-header">
+                     {{ page.title }}
+                  </div>
+                  <img src="/assets/background-small4.jpg" class="card-img-top" alt="uipath certification">
+                  <div class="card-body">
+				  </div>
+               </div>
+			   -->
+                     <!-- put a span in to stop the p tag from closing automatically -->
+                     {{ content }}   
+
+					 
+<script>
+   class Exam {
+    constructor(examQuestions) {
+   
+    this.graded=false;
+   	//console.log("The size is: " + examQuestions.length);
+   	//examQuestions = JSON.parse(examQuestions);
+   	//console.log("The size is: " + examQuestions.length);
+   	//examQuestions = examQuestions.slice(10,15);
+   	//console.log("In constructor with these: " + examQuestions);
+        this.questions = new Array();
+   		let i = 0;
+   		//console.log("Start of for loop" + questions.length);
+   		//alert("About to enter for loop");
+   	  	for (i = 0; i < examQuestions.length; i++) {
+   			let id = examQuestions[i].id;
+   			//alert(id);
+   			let query = examQuestions[i].query;
+   			let answer = examQuestions[i].answer;
+   			let options = new Array();
+   			let objectives = new Array();
+   			//console.log("Start of j loop" + examQuestions[i].options.length);
+   			let j = 0;
+   			for (j = 0; j < examQuestions[i].options.length; j++) {
+   				let text = examQuestions[i].options[j].text;
+   				let correct = examQuestions[i].options[j].correct;
+   				let selected = examQuestions[i].options[j].selected;
+   				options.push(new Option(text, correct, selected));
+   				//console.log(text);
+   				//console.log("Value of j" + j);
+   			}
+   			let k = 0;
+   			for (k = 0; k < examQuestions[i].objectives.length; k++) {
+   				objectives.push(examQuestions[i].objectives[k]);
+   				//console.log(k);
+   			}
+   			let question = new Question(id, query, answer, options, objectives);
+   			this.questions.push(question);
+   			//console.log('Question done');
+   		}
+   		//console.log("Done for loop");
+     }
+   }
+   
+   class Question {
+     constructor(id, query, answer, options, objectives) {
+       this.id=id;
+       this.query = query;
+       this.answer = answer;
+       this.options = options;
+       this.objectives = objectives;
+       this.correctCount = 0;
+      let i = 0;
+      for (i = 0; i < options.length; i++) {
+       if (options[i].correct) {
+       this.correctCount++;
+     }
+      //console.log(this.correctCount);
+      //console.log(this.isMultipleChoice());
+     }
+    }
+   
+    isMultipleChoice() {
+       return this.correctCount > 1;
+    }
+   }
+   
+   class Option {
+     constructor(text, correct, selected) {
+       this.text = text;
+       this.correct = correct;
+       this.selected = selected;
+     }
+     isAnsweredCorrectly() {
+       return (this.correct && this.selected);
+     }
+   }
+   
+   initializeQuestionJumper = function(){
+	 document.getElementById("question-jumper").innerHTML;
+	 let buttons = "";
+	 for (i = 0; i < exam.questions.length; i++) {
+		var aTag = document.createElement('a');
+		aTag.setAttribute('onClick','displayQuestion(\''+ i + '\')');
+		aTag.setAttribute('class','btn btn-info mr-2');
+		aTag.setAttribute('id', 'jumpTo'+i);
+		aTag.innerHTML = "" + (i+1);
+		document.getElementById("question-jumper").append(aTag);
+	 }
+   }
+  
+   
+   navigateQuestions = function(number){
+    //console.log('navigateQuestions' + number);
+    if(number=='next') {
+   		number = questionNumber + 1;
+    }
+    if(number=='previous') {
+   		number = questionNumber - 1;
+    }
+   	displayQuestion(number);
+   }
+   
+   displayQuestion = function(number){
+   
+   	//console.log("Number to display is " + number);
+    processTheAnswer();
+   
+   	questionNumber = parseInt(number, 10);
+   
+   	let questionNumberDisplay = parseInt(number, 10) + 1;
+   	document.getElementById("questionNumber").innerHTML = "Question " + questionNumberDisplay;
+   	document.getElementById("query").innerHTML = exam.questions[questionNumber].query + " (choose " + exam.questions[questionNumber].correctCount + ")";;
+   	document.getElementById("labelOption0").innerHTML = exam.questions[questionNumber].options[0].text;
+   	document.getElementById("labelOption1").innerHTML = exam.questions[questionNumber].options[1].text;
+   	document.getElementById("labelOption2").innerHTML = exam.questions[questionNumber].options[2].text;
+   	document.getElementById("labelOption3").innerHTML = exam.questions[questionNumber].options[3].text;
+   
+   	document.getElementById("answerLink").innerHTML = exam.questions[questionNumber].answer;
+   	//document.getElementById("answerLink").setAttribute("href", exam.questions[questionNumber].answer);
+   	
+    chooseBetweenRadioOrCheckbox();
+    redisplaySelectedInput();
+    handleFencepostButtons();
+     
+    if (exam.graded) {
+		//if (facebookResponse.status == 'connected') {
+			highlightCorrectAnswers();
+	    //}
+    } else {
+      clearHighlightedAnswers();
+    }
+   	
+   }
+   
+   redisplaySelectedInput = function() {
+	   document.getElementById("option0").checked = exam.questions[questionNumber].options[0].checked;
+	   document.getElementById("option1").checked = exam.questions[questionNumber].options[1].checked;
+	   document.getElementById("option2").checked = exam.questions[questionNumber].options[2].checked;
+	   document.getElementById("option3").checked = exam.questions[questionNumber].options[3].checked;	
+   }
+   
+   handleFencepostButtons = function() {
+	   document.getElementById("previous").setAttribute("class", "enabled btn btn-primary");
+	   document.getElementById("next").setAttribute("class", "enabled btn btn-primary");
+	   if (questionNumber==0) {
+	   document.getElementById("previous").setAttribute("class", "disabled btn btn-primary");
+	   }
+	   if (questionNumber == (exam.questions.length-1)) {
+	   document.getElementById("next").setAttribute("class", "disabled btn btn-primary");
+	   }
+   }
+   
+   
+   processTheAnswer = function() {
+	   //console.log(questionNumber);
+	   //console.log("The exam at the number is: " + exam.questions[questionNumber]);
+	   
+	   exam.questions[questionNumber].options[0].checked = document.getElementById("option0").checked;
+	   exam.questions[questionNumber].options[1].checked = document.getElementById("option1").checked;
+	   exam.questions[questionNumber].options[2].checked = document.getElementById("option2").checked;
+	   exam.questions[questionNumber].options[3].checked = document.getElementById("option3").checked;
+   }
+   
+   chooseBetweenRadioOrCheckbox = function () {
+   
+       let radiosAndCheckboxes = document.querySelectorAll('.form-check-input');
+   
+	   let inputType = "radio";
+	   if (exam.questions[questionNumber].isMultipleChoice()) {
+	   inputType="checkbox"
+	   } 
+	   
+	   let i = 0;
+	   for (i=0; i<radiosAndCheckboxes.length; i++) {
+	   radiosAndCheckboxes[i].type=inputType;
+	   }
+   }
+   
+   highlightCorrectAnswers = function() {
+   
+    let i = 0;
+    for (i = 0; i < exam.questions[questionNumber].options.length; i++) {
+		if (exam.questions[questionNumber].options[i].correct) {
+			//console.log('outerOptionDiv' + i);
+			document.getElementById('outerOptionDiv' + i).classList.add("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.add("class", "border-success");
+		} else {
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border-success");
+		}
+     }
+   
+   }
+   
+   clearHighlightedAnswers = function() {
+   
+	   let i = 0;
+	   for (i = 0; i < exam.questions[questionNumber].options.length; i++) {
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border");
+			document.getElementById('outerOptionDiv' + i).classList.remove("class", "border-success");
+	   }
+   
+   }
+   
+   gradeExam = function(){
+   
+    exam.graded=true;
+   	//Make sure changes on the question they asked for the grade to be there.
+   	processTheAnswer();
+   	let checkboxes = document.querySelectorAll(".option-radio");
+    let i = 0; 
+    for (i=0; i<checkboxes.length;i++) {
+     checkboxes[i].disabled=true;
+    } 
+
+   	let correctCount = 0; 
+   	for (i = 0; i < exam.questions.length; i++) {
+   		let correct = true;
+		//if (facebookResponse.status == 'connected') {
+		if (true) {
+			for (j = 0; j < exam.questions[i].options.length; j++) {
+				correct = (exam.questions[i].options[j].checked == exam.questions[i].options[j].correct);
+				if (correct == false) {
+					document.getElementById('jumpTo'+i).setAttribute('class', 'btn btn-danger  mr-2');
+					break;
+				} else {
+					document.getElementById('jumpTo'+i).setAttribute('class', 'btn btn-success  mr-2');
+				}
+			}
+		}
+   		if (correct) {correctCount++}
+   	}
+	
+	//if (facebookResponse.status == 'connected') {
+	if (true) {
+		highlightCorrectAnswers();
+	}
+   	
+	wrongCount = exam.questions.length - correctCount;
+	//if (facebookResponse.status == 'connected') {
+	if (true) {
+		document.getElementById('score').innerHTML = 'You got '  + correctCount + ' out of ' + exam.questions.length + ' correct.';
+	} else {
+		document.getElementById('score').innerHTML = 'Login with Facebook to find out which question(s) you got right, and which ones you got wrong.';
+	}
+	
+    document.getElementById('finish').setAttribute('class', 'invisible');
+   }
+   
+</script>
+
+<div class="container">
+   <div class="card">
+      <div class="card-header" id="questionNumber"></div>
+      <div class="card-body">
+         <h3 class="card-title" id="query"></h3>
+         <div class="form-check my-2" id="outerOptionDiv0">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option0" value="option0">
+            <label class="form-check-label" for="option0" id="labelOption0">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv1">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option1" value="option1">
+            <label class="form-check-label" for="option1" id="labelOption1">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv2">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option2" value="option2">
+            <label class="form-check-label" for="option2" id="labelOption2">
+            </label>
+         </div>
+         <div class="form-check my-2" id="outerOptionDiv3">
+            <input class="form-check-input  option-radio" type="radio" name="optionRadios" id="option3" value="option3">
+            <label class="form-check-label" for="option3" id="labelOption3">
+            </label>
+         </div>
+         <div>
+            <p class="card-text mt-3">
+               <a  id="previous" class="btn btn-primary" onclick="navigateQuestions('previous')">&lt;&lt; Previous</a>
+               <a  id="next" class="btn btn-primary" onclick="navigateQuestions('next')">Next &gt;&gt;</a> 
+               <a  id="finish" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="gradeExam()">Finish</a>
+            </p>
+            <div></div>
+         </div>
+      </div>
+   </div>
+   <div class="card mt-2">
+      <div class="card-header" id="questionJumperTitle">
+         Question Jumper
+      </div>
+      <div class="card-body">
+         <h3 class="card-title" id="questionJumperCardTitle"></h3>
+         <p class="card-text"><span id="question-jumper"> </span></p>
+      </div>
+   </div>
+   <div class="card mt-2">
+      <div class="card-header" id="answerCard">
+         <a  onclick="collapseAndExpand()" >Click for Answers and Cheats</a>
+      </div>
+      <div class="card-body collapse d-none" id="answerCardBody">
+         <h3 class="card-title" id="answer"></h3>
+         <p>Click this button to cheat.</p>
+         <a  id="cheat" class="btn btn-warning my-2" onclick="highlightCorrectAnswers()">Cheat</a>
+         <h3>Full Answer</h3>
+         <p class="card-text">If the cheat is not enough, here's more detail:</p>
+         <p class="card-text"><div  id="answerLink" target="_blank">Answer opens in a new window.</a></p>
+      </div>
+	  
+	  <div class="card-body " id="answerCardBodyDefault">
+         <h3 class="card-title" id="answer"></h3>
+         <p class="card-text">Our cheats are awesome!</p>
+		 <p class="card-text">We'd just appreciate it if you logged into our rpacertified Facebook app to gain access to it.</p>
+		 
+
+         <p class="card-text">The cheat will tell you the right answer, link to documentation and explain why a certain option is right, and why other options are wrong.</p>
+			<fb:login-button 
+			  scope="public_profile,email"
+			  onlogin="checkLoginState();">
+			</fb:login-button>
+		  
+      </div>
+	  
+	  
+   </div>
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Quiz Results</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div id="score" class="modal-body">
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+					 
+					 
+
+
+
+					 
+            </article>
+            <aside  class="aside-2 col col-12  col-sm-12  col-md-4 col-lg-3 order-2 order-sm-2 order-lg-2 mb-3">
+ 
+		  		<div class="card  mt-2">
+                  <div class="card-header">
+                     <h4>Some Links</h4>
+                  </div>
+                  <div class="card-body">
+
+			  
+			  <p>Here are some cool links:</p>
+			  <ul>
+				  <li><a href="https://www.mcnz.com/course/fun-with-maven.html">Fun with Maven</a></li>
+				  <li><a href="https://www.mcnz.com/course/no-code-gradle.html">Fun with Gradle</a></li>
+				  <li><a href="https://www.mcnz.com/2021/05/12/monolith-microservices-quiz.html">Microservices Quiz</a></li>
+				  <li><a href="https://www.mcnz.com/2021/05/12/maven-gradle-quiz.html">Maven and Gradle Quiz</a></li>
+				  <li><a href="https://www.theserverside.com/quiz/10-question-Gitflow-version-control-quiz">Git Flow Quiz</a></li>
+				  <li><a href="https://www.theserverside.com/infographic/A-better-Gitflow-diagram-with-branches-merges-and-color">GitFlow Diagram</a></li>
+			  </ul>
+			  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Soling_Podium_North_Americans_2019_downwind.png/275px-Soling_Podium_North_Americans_2019_downwind.png" class="img-fluid"/>
+                  </div>
+               </div>    
+		    
+		    
+		    
+		    
+               <div class="card my-2" >
+                  <div class="card-header">
+                     <h4 >All Posts</h4>
+                  </div>
+                  <div class="card-body">
+                     <p class="card-text text-center">Here's a list of all the recent posts on the site.</p>
+                     <a href="/allposts.html">
+                     <img src="/assets/like-this-post.gif" class="img-fluid img-thumbnail mx-auto d-block" alt="All UiPath cert posts">
+                     </a>
+                  </div>
+               </div>  
+
+               <div class="card my-2" >
+                  <div class="card-header">
+                     <h4 >GitFlow Diagram</h4>
+                  </div>
+                  <div class="card-body">
+                     <p class="card-text text-center">Here's a better GitFlow diagram.</p>
+                     <a href="https://www.theserverside.com/infographic/A-better-Gitflow-diagram-with-branches-merges-and-color">
+                     <img src="https://cdn.ttgtmedia.com/rms/onlineimages/serverside-gitflow_workflow_diagram-i.png" class="img-fluid img-thumbnail mx-auto d-block" alt="All UiPath cert posts">
+                     </a>
+					 <p class="card-text text-center">And here's a <a href="https://www.theserverside.com/quiz/10-question-Gitflow-version-control-quiz">GitFlow Quiz.</a></p>
+                  </div>
+               </div>  
+
+
+				<div class="card my-2" >
+                  <div class="card-header">
+                     <h4 >Unfair Questions?</h4>
+                  </div>
+                  <div class="card-body">
+                     <h4 class="card-title mt-2 text-center">Some of the questions are unfair. </a>.</h4>
+                     <p class="card-text text-center">Guesses are allowed.</p>
+                     <a href="https://www.mcnz.com/2021/02/05/pooh-microservices-vs-monolithic-app.html">
+                     <img src="/assets/monolithic-vs-microservices-pooh-emoji.jpg" class="img-fluid img-thumbnail mx-auto d-block" alt="uipath certified associate badge">
+                     </a>
+                  </div>
+               </div>
+		    
+
+		    
+		    
+              
+
+            </aside>
+         </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+	  <script>
+
+		  
+		  var jsonQuestions = [
+
+
+	 {id:99, query:"query",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"aaaaa", correct:false, selected:false}, 
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false},
+			{text:"aaaaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0","3.0"
+      ]},
+	
+	
+	
+	{id:1, query:"Which of the following describes the most ideal type of activity to automate with UiPath?", "answer":"test-answer.md",
+			options:[
+			{text:"Multistep process with many decision points with structured data", correct:false, selected:false}, 
+			{text:"Perform Analysis on data and provide", correct:true, selected:false},
+			{text:"Varied tasks that rely heavily on user input", correct:false, selected:false},
+			{text:"Rule-based process with structured data", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  
+	  	 
+	  
+	  
+	{id:2, query:"A client receives a spreadsheet containing orders. The orders must be input into an internal web-based order system.  Which is the best activity to use?", "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	{id:3, query:"Which Activity requires the least amount of parameters?", 
+			options:[
+			{text:"SMTP", correct:false, selected:false}, 
+			{text:"Outlook", correct:true, selected:false},
+			{text:"POP3", correct:false, selected:false},
+			{text:"Mail", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},			
+	{id:4, query:"What happens if you try to save a table using Excel Write Range activity to a file that does not exist?", "answer":"test-answer.md",
+			options:[
+			{text:"Throws a “File not found” error", correct:false, selected:false}, 
+			{text:"Workflow will wait until the file appears and times out if it doesn’t", correct:false, selected:false},
+			{text:"Activity will not run and continue the sequence", correct:false, selected:false},
+			{text:"Creates the file and saves the table", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},	
+	{id:5, query:"When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},	
+	  	{id:6, query:"6When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:7, query:"7 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:8, query:" 8 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.1",
+         "2.2"
+      ]},
+	  	{id:9, query:"9 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	{id:10, query:"10 When using an Excel Application Scope activity, which activity should be used to sort a table directly in an .xlsx file?",  "answer":"test-answer.md",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flowchart", correct:false, selected:false},
+			{text:"Learning Machine", correct:false, selected:false},
+			{text:"Transactional Process", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+
+	  {id:11, query:"Which of the following is a valid UiPath variable name?",  "answer":"/2020/10/10/variable-naming-conventions.html", "difficulty": "7",
+			options:[
+			{text:"$1000000", correct:false, selected:false}, 
+			{text:"1000000$", correct:false, selected:false},
+			{text:"1milliondollars", correct:false, selected:false},
+			{text:"One1MillionDollars", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	  	{id:12, query:"The variable UIPATH_ASSOCIATE_EXAM is said to follow what naming convention?",  "answer":"/2020/10/10/screaming-snake-case.html", "difficulty": "3",
+			options:[
+			{text:"camel case", correct:false, selected:false}, 
+			{text:"snake case", correct:false, selected:false},
+			{text:"screaming snake case", correct:true, selected:false},
+			{text:"kebab case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  	  	{id:13, query:"Which of the following variables is named using kebab case?",  "answer":"/2020/10/10/kebab-case-convention.html", "difficulty": "3",
+			options:[
+			{text:"WhatIsKebabCase", correct:false, selected:false}, 
+			{text:"what-is-kebab-case", correct:true, selected:false},
+			{text:"whatIsKebabCase", correct:false, selected:false},
+			{text:"what_is_kebab_case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},
+	  
+	   {id:14, query:"Which of the following is an example of the Pascal case naming convention?",  "answer":"/2020/10/10/pascal-case-naming-convention.html", "difficulty": "2",
+			options:[
+			{text:"Pascal-Case", correct:false, selected:false}, 
+			{text:"pascalCase", correct:false, selected:false},
+			{text:"PascalCase", correct:true, selected:false},
+			{text:"Pascal_case", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.1"
+      ]},	
+
+	  {id:15, query:"Which of the following four is an example of a camel case naming convention?",  "answer":"/2020/10/10/camelcase-naming-convention.html", "difficulty": "4",
+			options:[
+			{text:"uipathNamingConventions", correct:true, selected:false}, 
+			{text:"UiPath-Naming-Conventions", correct:false, selected:false},
+			{text:"UIPATH_NAMING_CONVENTIONS", correct:false, selected:false},
+			{text:"UiPathNamingConventions", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},	  
+	  
+	  
+	  
+	  {id:16, query:"Which of the following violates the UiPath variable naming convention?",  "answer":"/2020/10/10/variable-names.html", "difficulty": "7",
+			options:[
+			{text:"H1Tag", correct:true, selected:false}, 
+			{text:"HWonTag", correct:false, selected:false},
+			{text:"hWonTag", correct:false, selected:false},
+			{text:"1hTag", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.3"
+      ]},	  
+
+	  
+	  {id:17, query:"You must pass exam data as an argument, but the data will be used both inside and oustide of the current workflow project. What should the variable be named?",  "answer":"/2020/11/11/input-output-argument-names.html", "difficulty": "5",
+			options:[
+			{text:"inOutExam", correct:false, selected:false}, 
+			{text:"in_out_exam", correct:false, selected:false},
+			{text:"io-Exam", correct:false, selected:false},
+			{text:"io_Exam", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0","3.0"
+      ]},
+	  
+	   {id:18, query:"The data being passed in as an argument can only be used within the current project. What should the variable be named so as not to trigger the UiPath Studio analyzer?",  "answer":"/2020/10/11/in-argument-naming-convention.html", "difficulty": "7",
+			options:[
+			{text:"in-field", correct:false, selected:false}, 
+			{text:"inField", correct:false, selected:false},
+			{text:"in_field", correct:true, selected:false},
+			{text:"InField", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.4"
+      ]},	  
+	  
+	  
+	   {id:19, query:"Which of the following is true about case sensitive variable names in UiPath",  "answer":"/2020/10/10/variables-case-sensitive-uipath.html", "difficulty": "7",
+			options:[
+			{text:"UiPath method names are case sensitive", correct:false, selected:false}, 
+			{text:"UiPath variable names are case sensitive", correct:false, selected:false},
+			{text:"UiPath method names are not case sensitive", correct:true, selected:false},
+			{text:"UiPath variable names are not case sensitive", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2", "3.0"
+      ]},	  
+	  
+	  
+	   {id:20, query:"A field that describes a name must be passed outside of a given project. What should it be named?",  "answer":"/2020/10/10/uipath-argument-naming-convention.html", "difficulty": "7",
+			options:[
+			{text:"out_name", correct:true, selected:false}, 
+			{text:"pass_name", correct:false, selected:false},
+			{text:"name", correct:false, selected:false},
+			{text:"getName", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2", "3.0"
+      ]},	  
+	  
+	   {id:21, query:"A UiPath transition activity is associated with which type of project?",  "/2020/10/11/state-machine.html":"answer", "difficulty": "8",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:true, selected:false},
+			{text:"Process Chart", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+	   {id:22, query:"A complex activity to be automated has many subroutines to be executed depending on the result of evaluating various logical conditions. What is the best approach to architecting this RPA activity?",  "answer":"/2020/10/11/sequence-flowchart-combined.html", "difficulty": "6",
+			options:[
+			{text:"Use a single workflow project", correct:false, selected:false}, 
+			{text:"Use multiple workflows projects", correct:false, selected:false},
+			{text:"Use a single sequence project which references multiple workflow projects", correct:false, selected:false},
+			{text:"Use a single workflow project that references mutliple sequence projects", correct:true, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+	   {id:23, query:"Which type of project is best for linear activities involving multiple activities such as OCR and PDF data extraction?",  "answer":"/2020/10/11/linear-sequence-projects.html", "difficulty": "6",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"Global Exception Handler", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+
+	  
+	   {id:24, query:"A task to be automated has multiple decision points with unique UiPath activities to be performed based on the outcome of various conditions. What type of project should be used in this situation?",  "answer":"/2020/10/11/flowchart-project-definition.html", "difficulty": "6",
+			options:[
+			{text:"Sequence", correct:false, selected:false}, 
+			{text:"Flow Chart", correct:true, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"This task cannot be automated", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.1", "3.2","3.0"
+      ]},
+	  
+	  
+	   {id:25, query:"Which type of project is most likely to be used and reused in other projects?",  "answer":"/2020/10/10/sequence-projects.html", "difficulty": "5",
+			options:[
+			{text:"Sequence", correct:true, selected:false}, 
+			{text:"Flow Chart", correct:false, selected:false},
+			{text:"State Machine", correct:false, selected:false},
+			{text:"Global Exception Handler", correct:false, selected:false}
+			],
+      "objectives":[
+         "5.0", "5.1"
+      ]},
+	  
+
+	  
+	  {id:26, query:"A expense report submission process, in which the first step requires the user to log into the reporting system, must attach scanned image receipts and PDF files as part of the expense. This activity lends itself best to which of the following implementations:",  "answer":"/2020/11/11/unattended-robots-when-to-use.html", "difficulty": "6",
+			options:[
+			{text:"A process that uses a single unattended robot", correct:false, selected:false}, 
+			{text:"A process that uses a single attended robot", correct:true, selected:false},
+			{text:"A process that uses both a single attended robot and a single unattended robot", correct:false, selected:false},
+			{text:"This process does not lend itself to automation", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:27, query:"In contrast with attended robots, unattended robots are best used with:",  "answer":"/2020/11/11/unattended-robots-use-case.html", "difficulty": "6",
+			options:[
+			{text:"simple, one-off tasks", correct:false, selected:false}, 
+			{text:"complex, one-off tasks", correct:false, selected:false},
+			{text:"simple, repetative tasks", correct:false, selected:false},
+			{text:"complex, repetative tasks", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:28, query:"Which of the following statements are true?",  "answer":"/2020/11/11/uipath-robot-security-isoloation.html", "difficulty": "6",
+			options:[
+			{text:"Attended automations cannot guarantee security isolation between the robot and the user", correct:true, selected:false}, 
+			{text:"Unattended automations cannot guarantee security isolation between the robot and the user", correct:false, selected:false},
+			{text:"Attended automations always require a human present", correct:true, selected:false},
+			{text:"Unattended automations always require a human present", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  	   {id:29, query:"A robot that is tied to a specific machine and not allowed to run on any machines other than the one it is tied to in UiPath Orchestrator is known as:",  "answer":"/2020/11/11/standard-robots-unattended-uipath.html", "difficulty": "8",
+			options:[
+			{text:"An unattended robot", correct:false, selected:false}, 
+			{text:"A standard robot", correct:true, selected:false},
+			{text:"A sticky robot", correct:false, selected:false},
+			{text:"A floating robot", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  {id:30, query:"A robot that can be used by mutiple users and run on multiple workstations without being tied to a specific machine is known as a(n):",  "answer":"/2020/11/11/floating-robots-unattended.html", "difficulty": "8",
+			options:[
+			{text:"attended robot", correct:false, selected:false}, 
+			{text:"unattended robot", correct:false, selected:false},
+			{text:"floating robot", correct:true, selected:false},
+			{text:"standard robot", correct:false, selected:false}
+			],
+      "objectives":[
+           "1.0", "1.2",
+      ]},
+	  
+	  {id:31, query:"Attended robots are best used with:",  "answer":"/2020/11/11/attend-robot-use-cases.html", "difficulty": "5",
+			options:[
+			{text:"small, continuous automations", correct:false, selected:false}, 
+			{text:"small, fragmented automations", correct:true, selected:false},
+			{text:"large, fragmented automations", correct:false, selected:false},
+			{text:"large, continuous automations", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.2",
+      ]},
+	  
+	  
+	  {id:32, query:"Which of the following statements are true about UiPath Studio Community Edition (CE)?",  "answer":"/2020/11/11/uipath-studio-updates.html", "difficulty": "5",
+			options:[
+			{text:"UiPath Studio CE is limited to a single attended robot but an unlimited number of unattended robots", correct:false, selected:false}, 
+			{text:"UiPath Studio CE is limited to a single unattended robot but an unlimited number of attended robots", correct:false, selected:false},
+			{text:"UiPath Studio CE cannot be installed in a top security environment with in Internet access", correct:true, selected:false},
+			{text:"UiPath Studio CE updates cannot be turned off", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+	  {id:33, query:"The UiPath Enterprise Server:",  "answer":"/2020/11/11/uipath-enterprise-server-saas.html", "difficulty": "5",
+			options:[
+			{text:"Is accessed through the cloud", correct:false, selected:false}, 
+			{text:"Is installed on a computer by the client", correct:true, selected:false},
+			{text:"Is not compatible with UiPath Studio Community Edition", correct:false, selected:false},
+			{text:"Is not compatible with UiPath Studio Enterprise trial editions", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+
+	  {id:34, query:"What is the standard duration of a UiPath Studio Community Edition trial?",  "answer":"/2020/11/11/uipath-studio-trail-license.html", "difficulty": "5",
+			options:[
+			{text:"30 days", correct:false, selected:false}, 
+			{text:"60 days", correct:false, selected:false},
+			{text:"90 days", correct:false, selected:false},
+			{text:"Unlimited", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+
+	  {id:35, query:"Which of the following is true about programs written in UiPath Stuido Community Edition?",  "answer":"/2020/11/11/uipath-studio-programs.html", "difficulty": "6",
+			options:[
+			{text:"They cannot use libraries created by UiPath Stuido Enterprise Edition", correct:false, selected:false}, 
+			{text:"Programs created in UiPath Stuido Community Edition expire if the 60 day trial is not extended", correct:false, selected:false},
+			{text:"Programs created in UiPath Studio Community Edition cannot pass arguments between projects", correct:false, selected:false},
+			{text:"Programs creating in UiPath Studio Community Edition are no different than programs created in the Enterprise Edition", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:36, query:"Which of the following is true about UiPath Studio?",  "answer":"/2020/11/11/uipath-studio-enterprise-vs-community.html", "difficulty": "7",
+			options:[
+			{text:"The Community Edition always updates if a new stable release is available", correct:true, selected:false}, 
+			{text:"The Community Edition always updates if a new preview release is available", correct:true, selected:false},
+			{text:"The Enterprise Edition always updates if a new stable release is available", correct:false, selected:false},
+			{text:"The Enterprise Edition always updates if a new preview release is available", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:37, query:"What is the standard duration of a UiPath Studio Enterprise Edition trial?",  "answer":"/2020/11/11/UiPath-Enterprise-trial.html", "difficulty": "4",
+			options:[
+			{text:"30 days", correct:false, selected:false}, 
+			{text:"60 days", correct:true, selected:false},
+			{text:"90 days", correct:false, selected:false},
+			{text:"Unlimited", correct:false, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:38, query:"Which of the following is true about UiPath Stuido Community Edition (CE)?",  "answer":"/2020/11/11/Studio-Community-Orchestrator.html", "difficulty": "7",
+			options:[
+			{text:"UiPath Studio CE can only connect to UiPath Orchestrator CE", correct:true, selected:false}, 
+			{text:"UiPath Studio CE can connect to both UiPath Orchestrator CE and Enterprise", correct:false, selected:false},
+			{text:"UiPath Studio CE does not have access to AI Computer Vision", correct:false, selected:false},
+			{text:"UiPath Studio CE does have access to AI Computer Vision", correct:true, selected:false}
+			],
+      "objectives":[
+         "1.0", "1.4",
+      ]},
+
+	  {id:39, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/debug-compare-files-studio.html", "difficulty": "8",
+			options:[
+			{text:"Workflow Diff", correct:false, selected:false}, 
+			{text:"Diff Compare", correct:false, selected:false},
+			{text:"Workflow Compare", correct:false, selected:false},
+			{text:"Compare Files", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+	  
+	  {id:40, query:"Which of the following statements are true about UiPath variable debugging?",  "answer":"/2020/11/11/debug-edit-variable.html", "difficulty": "6",
+			options:[
+			{text:" It is possible to edit String variables at runtime using the debugger", correct:false, selected:false}, 
+			{text:"It is possible to edit String and int values at runtime using the debugger", correct:false, selected:false},
+			{text:"It is possible to edit any variable at runtime using the debugger", correct:true, selected:false},
+			{text:"It is not possible to edit variables at runtime after the program has started", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:41, query:"What three DVCS tools are configurable during the UiPath Studio installation procedure?",  "answer":"/2020/11/11/debug-git-tfs-svn.html", "difficulty": "4",
+			options:[
+			{text:"Mercurial SCM", correct:false, selected:false}, 
+			{text:"Apache Subversion", correct:true, selected:false},
+			{text:"Microsoft Team Foundation Server", correct:true, selected:false},
+			{text:"Git", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+
+	  {id:42, query:"Which UiPath Studio screen only appears while you are actively debugging a program?",  "answer":"/2020/11/11/debug-locals-panel.html", "difficulty": "6",
+			options:[
+			{text:"Log panel", correct:false, selected:false}, 
+			{text:"Locals panel", correct:true, selected:false},
+			{text:"Breakpoints panel", correct:false, selected:false},
+			{text:"Output panel", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+	  
+	  {id:43, query:"Which of the following is true about the UiPath debugger's retry button?",  "answer":"/2020/11/11/debug-retry-uipath.html", "difficulty": "7",
+			options:[
+			{text:"It will restart your application from the first line prior to an exception being thrown", correct:false, selected:false}, 
+			{text:"It will restart your application from the beginning of the activity that threw an exception", correct:true, selected:false},
+			{text:"It will restart your application from the first activity of the project", correct:true, selected:false},
+			{text:"It will restart your application from the start of the beginning of the activity prior to the one that threw an exception", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:44, query:"Where does UiPath Studio store its log files by default?",  "answer":"/2020/11/11/debug-log-file-location.html", "difficulty": "8",
+			options:[
+			{text:"%UiPathInstallRoot%\\logs", correct:false, selected:false}, 
+			{text:"%UserHome%\\UiPath\\logs", correct:false, selected:false},
+			{text:"%UiPathInstallRoot%\\bin\\logs", correct:false, selected:false},
+			{text:"%localappdata%\\UiPath\\logs", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:45, query:"An error has occurred and you need to know which version of the UiPath.Excel.Activities library is installed. Where would you find this information?",  "answer":"/2020/11/11/debug-manage-packaged-version", "difficulty": "7",
+			options:[
+			{text:"In the Help --> About option from UiPath Studio's main menu", correct:false, selected:false}, 
+			{text:"From the installation log files", correct:false, selected:false},
+			{text:"Right click on any Excel activity and select Properties", correct:false, selected:false},
+			{text:"Locate the library in the Manage Packages window", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.2"
+      ]},
+	  
+	  {id:46, query:"What is the name of the tool provided by UiPath Studio to compare file versions stored in a Git or GitHub repo?",  "answer":"/2020/11/11/debug-compare-files-studio.html", "difficulty": "8",
+			options:[
+			{text:"Workflow Diff", correct:true, selected:false}, 
+			{text:"Diff Compare", correct:false, selected:false},
+			{text:"Workflow Compare", correct:false, selected:false},
+			{text:"Compare Files", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.3"
+      ]},
+
+	  {id:47, query:"What is the name of the UiPath debugger panel that allows you to view how the values of variables change as the program executes?",  "answer":"/2020/11/11/2020-11-11-debug-panels.html", "difficulty": "5",
+			options:[
+			{text:"Watch", correct:true, selected:false}, 
+			{text:"Inspect", correct:false, selected:false},
+			{text:"Debug", correct:false, selected:false},
+			{text:"Output", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:48, query:"Which of the following is true about the UiPath debugger's restart button?",  "answer":"/2020/11/11/debug-restart-button.html", "difficulty": "7",
+			options:[
+			{text:"It will restart your application from the first line prior to an exception being thrown", correct:false, selected:false}, 
+			{text:"It will restart your application from the beginning of the activity that threw an exception", correct:false, selected:false},
+			{text:"It will restart your application from the first activity of the project", correct:true, selected:true},
+			{text:"It will restart your application from the start of the beginning of the activity prior to the one that threw an exception", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:49, query:"Which of the following is designed to allow developers to debug their applications one activity at a time?",  "answer":"/2020/11/11/debug-step-into-over-out.html", "difficulty": "6",
+			options:[
+			{text:"Step Over", correct:false, selected:false}, 
+			{text:"Step Into", correct:true, selected:false},
+			{text:"Step Out", correct:false, selected:false},
+			{text:"Focus", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:50, query:"Which of the following are true about the UiPath Studio debugger functions? ",  "answer":"/2020/11/11/debugger-not-working-uipath.html", "difficulty": "6",
+			options:[
+			{text:"Only one Global Exception Handler can be set per automation project.", correct:true, selected:false}, 
+			{text:"The debugger will not operate if there are errors in the project", correct:true, selected:false},
+			{text:"Debug activities are displayed as Trace logs in the Output panel", correct:true, selected:false},
+			{text:"The debugger will not operate if there are exceptions in the project", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:51, query:"Docker is written in:",  "answer":"https://www.reddit.com/r/docker/comments/1w2aco/why_is_docker_written_in_go/", "difficulty": "8",
+			options:[
+			{text:"Java", correct:false, selected:false}, 
+			{text:"C", correct:false, selected:false},
+			{text:"C++", correct:false, selected:false},
+			{text:"Go", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:52, query:"A Linux container is often described as a compliment and improvement over what technology?",  "answer":"https://www.redhat.com/en/topics/containers/containers-vs-vms", "difficulty": "8",
+			options:[
+			{text:"cloud computing", correct:false, selected:false}, 
+			{text:"devops", correct:false, selected:false},
+			{text:"virtual machines", correct:true, selected:false},
+			{text:"microservices", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:53, query:"The history of containerization is intimately tied to which OS?",  "answer":"https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016", "difficulty": "8",
+			options:[
+			{text:"Windows", correct:false, selected:false}, 
+			{text:"Linux", correct:true, selected:false},
+			{text:"MacOS", correct:false, selected:false},
+			{text:"Android", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:54, query:"Which tool can be used to manage local and remote containers running on various flavors of Linux?",  "answer":"https://www.macadamian.com/learn/docker-machine-basic-examples/", "difficulty": "8",
+			options:[
+			{text:"Docker Compose", correct:false, selected:false}, 
+			{text:"Docker Machine", correct:true, selected:false},
+			{text:"Dockerfile", correct:false, selected:false},
+			{text:"Docker engine", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:55, query:"Two key goals of containerization are?",  "answer":"https://jvns.ca/blog/2016/10/10/what-even-is-a-container/", "difficulty": "8",
+			options:[
+			{text:"Application execution and failure isolation through namespaces", correct:true, selected:false}, 
+			{text:"Application execution and failure isolation through control groups", correct:false, selected:false},
+			{text:"CPU and memory metering through namespaces", correct:false, selected:false},
+			{text:"CPU and memory metering through control groups", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:56, query:"The core interface between computer hardware and the application processes that run on it is known as? (Wrong answers only)",  "answer":"https://www.redhat.com/en/topics/linux/what-is-the-linux-kernel", "difficulty": "8",
+			options:[
+			{text:"General", correct:true, selected:true}, 
+			{text:"Admiral", correct:true, selected:true},
+			{text:"Lieutenant", correct:true, selected:true},
+			{text:"Kernel", correct:false, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:57, query:"A docker container keeps which of the following completely isolated from the underlying Linux OS?",  "answer":"https://www.oreilly.com/library/view/container-security/9781492056690/ch04.html", "difficulty": "8",
+			options:[
+			{text:"enrivonrment variables", correct:false, selected:false}, 
+			{text:"users and groups", correct:false, selected:false},
+			{text:"process trees", correct:false, selected:false},
+			{text:"All of the above", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},
+
+	  {id:58, query:"Which of the following are drabacks to traditional virtualization?",  "answer":"https://www.redhat.com/en/topics/containers/containers-vs-vmswha", "difficulty": "8",
+			options:[
+			{text:"Signficant limitation on the choice of OS used in the VM", correct:false, selected:false}, 
+			{text:"VMs run a complete OS image", correct:true, selected:false},
+			{text:"Reduced deployment density", correct:true, selected:false},
+			{text:"High operational overhead", correct:true, selected:false}
+			],
+      "objectives":[
+         "2.0", "2.1"
+      ]},	  
+
+	  {id:59, query:"If you attempt to build a Docker image based on a container that has not been previously downloaded to your machine:",  "answer":"https://hub.docker.com/u/cameronmcnz", "difficulty": "5",
+			options:[
+			{text:"Docker will return a 408: image not found message", correct:false, selected:false}, 
+			{text:"Docker will pull the image from GitHub", correct:false, selected:false},
+			{text:"Docker will pull the image from DockerHub", correct:true, selected:false},
+			{text:"Docker will return a 404: file not found message", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:60, query:"Which of the following are container alternatives to Docker?",  "answer":"https://www.aquasec.com/cloud-native-academy/docker-container/docker-alternatives/", "difficulty": "5",
+			options:[
+			{text:"Kubernetes", correct:false, selected:false}, 
+			{text:"CoreOS' rkt", correct:true, selected:false},
+			{text:"Canonical's LXD", correct:true, selected:false},
+			{text:"Windows Containers (WSC)", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:61, query:"Which of the following are correct?",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"A docker image is akin to a virtual machine image", correct:true, selected:false}, 
+			{text:"A docker image is akin to an EC2 instance", correct:false, selected:false},
+			{text:"A docker container is akin to a virtual machine image", correct:false, selected:false},
+			{text:"A docker container is akin to an EC2 instance", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:62, query:"Which of the following are correct?",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"Docker images can be built", correct:false, selected:false}, 
+			{text:"Docker containers can be built", correct:false, selected:false},
+			{text:"Docker images can be started and stopped", correct:false, selected:false},
+			{text:"Docker containers can be started and stopped", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:63, query:"Docker images are:",  "answer":"https://www.dictionary.com/browse/phantasmagoric", "difficulty": "5",
+			options:[
+			{text:"idempotent", correct:false, selected:false}, 
+			{text:"immutable", correct:false, selected:false},
+			{text:"phantasmagoric", correct:false, selected:false},
+			{text:"ephemeral", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:64, query:"Docker containers:",  "answer":"https://docs.docker.com/storage/volumes/", "difficulty": "5",
+			options:[
+			{text:"Cannot access the host file system", correct:false, selected:false}, 
+			{text:"Can only access network file systems to persist data", correct:false, selected:false},
+			{text:"Can store data internally but the data is lost on shutdown", correct:false, selected:false},
+			{text:"Can use volumes to access files on the host system", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:65, query:"Information on how to build a Docker image is stored in a:",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"Dockerfile", correct:true, selected:false}, 
+			{text:"Jenkinsfile", correct:false, selected:false},
+			{text:"docker-compose yaml file", correct:false, selected:false},
+			{text:"dockerimage", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:66, query:"Which of the following two commands will successfully build a Docker image:",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"docker compose -t rps-image:v1.0", correct:false, selected:false}, 
+			{text:"docker build -t rps-image:v1.0", correct:false, selected:false},
+			{text:"docker build -t rps-image:v1.0 .", correct:true, selected:false},
+			{text:"docker build -t rps-image:v1.1 -f my-docker-image-file.txt", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:67, query:"Docker locks down all internal ports to the outside world unless they are opened up as a:",  "answer":"https://github.com/learn-devops-fast/rock-paper-scissors/wiki/Fun-with-Docker", "difficulty": "5",
+			options:[
+			{text:"runtime", correct:false, selected:false}, 
+			{text:"proxy", correct:false, selected:false},
+			{text:"process", correct:false, selected:false},
+			{text:"service", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:68, query:"Which is not a core tenant of the 12-factor app?",  "answer":"https://www.youtube.com/watch?v=_83MEuLoz9Y", "difficulty": "5",
+			options:[
+			{text:"A single codebase for service", correct:false, selected:false}, 
+			{text:"Externalization of configuration in the environment", correct:false, selected:false},
+			{text:"Export services via port bindings", correct:false, selected:false},
+			{text:"Don't throw salt in your eyes", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:69, query:"How do you run an Ubuntu docker container in interative mode?",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"docker run --hostname basic_host ubuntu /bin/bash", correct:false, selected:false}, 
+			{text:"docker run -i", correct:true, selected:false},
+			{text:"docker run -interactive --hostname basic_host ubuntu /bin/bash", correct:true, selected:false},
+			{text:"docker run -t --hostname basic_host ubuntu /bin/bash", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:70, query:"Which of the following commands will remove a docker container?",  "answer":"", "difficulty": "5",
+			options:[
+			{text:"Dockerfile remove *containerid*", correct:false, selected:false}, 
+			{text:"Dockerfile rmi *containerid*", correct:false, selected:false},
+			{text:"docker rmi *containerid*", correct:false, selected:false},
+			{text:"docker rm *containerid*", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:71, query:"Yosef: A cloud-native, microservice app will be packaged and deployed:",  "answer":"https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/", "difficulty": "5",
+			options:[
+			{text:"As a single container", correct:false, selected:false}, 
+			{text:"Normally as one, but possibly many containers that work together", correct:true, selected:false},
+			{text:"As more than one container", correct:false, selected:false},
+			{text:"Without the use of containers", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:72, query:"Felix: The Docker logo is a:",  "answer":"https://www.docker.com/sites/default/files/d8/2019-07/vertical-logo-monochromatic.png", "difficulty": "5",
+			options:[
+			{text:"Butler", correct:false, selected:false}, 
+			{text:"Sailboat", correct:false, selected:false},
+			{text:"Helm of a boat", correct:false, selected:false},
+			{text:"Whale", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:73, query:"Akeem: A group of killer whales hunting together is known as a:",  "answer":"https://youtu.be/-oqAU5VxFWs", "difficulty": "5",
+			options:[
+			{text:"congress", correct:false, selected:false}, 
+			{text:"mob", correct:false, selected:false},
+			{text:"pod", correct:true, selected:true},
+			{text:"murder", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:74, query:"Sadaf: An Kubernetes parlance, an individual, standalone computer that performs work is known as a:",  "answer":"https://kubernetes.io/docs/concepts/overview/components/", "difficulty": "5",
+			options:[
+			{text:"Node", correct:true, selected:false}, 
+			{text:"VM", correct:false, selected:false},
+			{text:"Workstation", correct:false, selected:false},
+			{text:"Server", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+	  {id:75, query:"Malik: The Kubernetes master servers that manage configuration are said to be part of the:",  "answer":"https://kubernetes.io/docs/concepts/overview/components/", "difficulty": "5",
+			options:[
+			{text:"Worker Plane", correct:false, selected:false}, 
+			{text:"Kubernetes Plane", correct:false, selected:false},
+			{text:"Kubectl Plane", correct:false, selected:false},
+			{text:"Control Plane", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  
+	  {id:76, query:"Alexis: All of the nodes participating in a Kubernetes configuration are together known as a:",  "answer":"https://kubernetes.io/docs/concepts/workloads/pods/", "difficulty": "5",
+			options:[
+			{text:"group", correct:false, selected:false}, 
+			{text:"physical cluster", correct:true, selected:false},
+			{text:"microservice", correct:false, selected:false},
+			{text:"pod", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:77, query:"Tim: Which of the following two is not installed as part of the Kubernetes master?",  "answer":"https://kubernetes.io/docs/concepts/overview/components/", "difficulty": "5",
+			options:[
+			{text:"container runtime", correct:true, selected:false}, 
+			{text:"kubelet", correct:true, selected:false},
+			{text:"kube-apiserver", correct:false, selected:false},
+			{text:"kube-controller-manager", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:78, query:"Thanh: Which of the following is not installed as part of the Kubernetes worker node?",  "answer":"https://kubernetes.io/docs/concepts/overview/components/", "difficulty": "5",
+			options:[
+			{text:"cloud-controller-manager", correct:false, selected:false}, 
+			{text:"etcd configuration database", correct:false, selected:false},
+			{text:"kubelet", correct:false, selected:false},
+			{text:"kube-proxy", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:79, query:"Joshua: In a large Kubernetes deployment, isolated access to resources (pods, services, replica sets) can be provisioned through a:",  "answer":"https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/", "difficulty": "5",
+			options:[
+			{text:"control group", correct:false, selected:false}, 
+			{text:"namespace", correct:true, selected:false},
+			{text:"cluster", correct:false, selected:false},
+			{text:"container", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:80, query:"Brian: Four nodes in your 20 node cluster have GeForce RTX 3080 GPUs specifically optimized for bitcoin mining. These nodes should be configured with:",  "answer":"https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/", "difficulty": "5",
+			options:[
+			{text:"an annotation indicating their Bitcoin processing optimization", correct:false, selected:false}, 
+			{text:"a note indicating their Bitcoin processing optimization", correct:false, selected:false},
+			{text:"an entry in the configmap indicating their Bitcoin processing optimization", correct:false, selected:false},
+			{text:"a label indicating their Bitcoin processing optimization", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:81, query:"Anisha: Decisions about workload management and scaling are typically part of:",  "answer":"https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "difficulty": "5",
+			options:[
+			{text:"development", correct:false, selected:false}, 
+			{text:"deployment", correct:true, selected:false},
+			{text:"design", correct:false, selected:false},
+			{text:"continuous integration", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:82, query:"Gilbert: When an cloud-native application is live, running and accessible over the Internet, we refer to it as a:",  "answer":"https://kubernetes.io/docs/concepts/services-networking/service/", "difficulty": "5",
+			options:[
+			{text:"agent", correct:false, selected:false}, 
+			{text:"runtime", correct:false, selected:false},
+			{text:"microservice", correct:true, selected:false},
+			{text:"cluster", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:83, query:"Brent: Non-confidential data used at application startup is best:",  "answer":"https://kubernetes.io/docs/concepts/configuration/configmap/", "difficulty": "5",
+			options:[
+			{text:"stored as property files inside the app", correct:false, selected:false}, 
+			{text:"stored as Kubernetes secrets", correct:false, selected:false},
+			{text:"stored in a ConfigMap", correct:true, selected:false},
+			{text:"stored in a Hashmap", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:84, query:"Alec: Memory and CPU limits can be placed on a namespace through:",  "answer":"https://kubernetes.io/docs/concepts/policy/resource-quotas/", "difficulty": "5",
+			options:[
+			{text:"resource quotas", correct:true, selected:false}, 
+			{text:"namespace quotas", correct:false, selected:false},
+			{text:"service quotas", correct:false, selected:false},
+			{text:"cluster quotas", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	 
+	  
+	  
+	  {id:85, query:"Hossam: The abbreviation for Kubernetes is:",  "answer":"answer", "difficulty": "5",
+			options:[
+			{text:"K8", correct:false, selected:false}, 
+			{text:"i18n", correct:false, selected:false},
+			{text:"i10n", correct:false, selected:false},
+			{text:"kubectl", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	
+
+	  {id:86, query:"Microservices can be written in any programming language so long as they use a common data exchange format. The most popular one is:",  "answer":"JSON is the defacto data exchange format for microservices. XML is also used when a more rigid structure and set of data exchange rules are required.", "difficulty": "99",
+			options:[
+			{text:"Comma separated values (CSVs)", correct:false, selected:false}, 
+			{text:"Unicode", correct:false, selected:false},
+			{text:"Binary data", correct:false, selected:false},
+			{text:"JSON", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:87, query:"The most popular popular, Java based alternative to Java EE and Jakarta EE for creating microservices, is:",  "answer":"Spring Boot is the most popular Java based framework for the creation of cloud-native applications and microservices. Eclipse Microprofile is actually another Java based microservices framework, but it's not as popular as Spring Boot. Docker is a deployment container. Kotlin is a programming language.", "difficulty": "99",
+			options:[
+			{text:"Spring Boot", correct:true, selected:false}, 
+			{text:"Docker", correct:false, selected:false},
+			{text:"Eclipse Microprofile", correct:false, selected:false},
+			{text:"Kotlin", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:88, query:"A key benefit of breaking a monolith into microservices, and running microservices inside Docker containers is:",  "answer":"When a microservice runs in its own Docker container, it is isolated from other services and containers. If a microservice fails, it can only cause the container in which it is deployed to fail. Theoretically, other containers will not be impacted.", "difficulty": "99",
+			options:[
+			{text:"Reduced chattiness between components", correct:false, selected:false}, 
+			{text:"Simplified log management", correct:false, selected:false},
+			{text:"Improved process isolation", correct:true, selected:false},
+			{text:"The ability to use more open-source programming options", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:89, query:"The decoupling of monolithic components and conversion of a monolith into a microservices based architecture can result in which of the following problems:",  "answer":"Microservices have many benefits, one of which is the increased number of scalability options. You only need to scale the microservice that is under the most load. You don't have to scale the whole thing at once. But a drawback can be increased network traffic, complexity integrating microserivces together with RESTful and JSON based APIs, and the challenge of monitoring multiple containers, rather than just one single application running on a powerful server.", "difficulty": "99",
+			options:[
+			{text:"Increased network traffic", correct:true, selected:false}, 
+			{text:"Additional complexity when integrating components together", correct:true, selected:false},
+			{text:"Accidental complexity when monitoring and troubleshooting applications", correct:true, selected:false},
+			{text:"An increase in the number of scalability options", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:90, query:"Which of the following statements are true about the approach Spring Boot recommends for microservice development:",  "answer":"Spring Boot prides themselves on having an opinionated approach to cloud-native development. Part of that is the recommendation that microservices be REST based and use JSON as the data exchange format.", "difficulty": "99",
+			options:[
+			{text:"Microservices should be SOAP based and exchange JSON", correct:false, selected:false}, 
+			{text:"Microservices should be SOAP based and exchange XML", correct:false, selected:false},
+			{text:"Microservices should be REST based and exchange JSON", correct:true, selected:false},
+			{text:"Microservices should be REST based and exchange XML", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:91, query:"When a Spring Boot application is created in Eclipse, you can chose to between which of the following two build tools?",  "answer":"Gradle and Maven are the two build tools offered with Spring Boot apps.", "difficulty": "99",
+			options:[
+			{text:"CMake", correct:false, selected:false}, 
+			{text:"Gradle", correct:true, selected:false},
+			{text:"ANT", correct:false, selected:false},
+			{text:"Maven", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:92, query:"Which of the following technologies allow for the creation of single page interfaces (SPIs), thus reducing the need for server-side web UI rendering?",  "answer":"SPIs can be created on your own with HTML or JavaScript, although frameworks like AngularJS, ReactJS and EmberJS help simplify the job creating complex, browser-based apps. Servlets and JSPs are a server-side, Java based web UI technology.", "difficulty": "99",
+			options:[
+			{text:"HTML and JavaScript", correct:true, selected:false}, 
+			{text:"AngularJS", correct:true, selected:false},
+			{text:"Servlets and JSPs", correct:false, selected:false},
+			{text:"ReactJS", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:93, query:"Spring Boot allows microservices to be coded in which of the following three Java Virtual Machine (JVM) programming languages:",  "answer":"Kotlin, Groovy and Java all run on the JVM and are Spring Boot development options. Note that any language can be used to write a microservice though.", "difficulty": "99",
+			options:[
+			{text:"Kotlin", correct:true, selected:false}, 
+			{text:"Java", correct:true, selected:false},
+			{text:"Groovy", correct:true, selected:false},
+			{text:"Golang", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:94, query:"Bonus: Which Bay Area Behemoth created Golang, the Go programming language?",  "answer":"Golang? GO? GOogle. It's the language they used to create Docker.", "difficulty": "99",
+			options:[
+			{text:"Google", correct:true, selected:false}, 
+			{text:"Microsoft", correct:false, selected:false},
+			{text:"Oracle", correct:false, selected:false},
+			{text:"Apple", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:95, query:"Which of the following statements are true:",  "answer":"More servers can lead to a larger security perimeter to secure, so that is a bit of a drawback to microservices. But the global distribution of microservices deployed to containers that are managed by Kubernetes clusters across the globe makes microservices much more resilient to failover. ", "difficulty": "99",
+			options:[
+			{text:"It is easier to secure one, monolithic application hosted on a single, powerful server.", correct:true, selected:false}, 
+			{text:"It is easier to secure multiple, independent microservices, globally deployed to multiple servers.", correct:false, selected:false},
+			{text:"A monolithic application deployed to a single, powerful server provides failover advantages over a distributed microservices architecture.", correct:false, selected:false},
+			{text:"A microservices based architecture provides failover advantages over a traditional, monolithic architecture.", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:96, query:"Although this approach to software development predates Docker and Kubernetes by 10 years, which design strategy is recommended when building a microservices based architecture:",  "answer":"Domain driven design is the commonly accepted method for designing microservices.", "difficulty": "99",
+			options:[
+			{text:"Form Driven Design", correct:false, selected:false}, 
+			{text:"Data Driven Design", correct:false, selected:false},
+			{text:"Service Oriented Design", correct:false, selected:false},
+			{text:"Domain Driven Design", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:97, query:"Which of the following statements are correct?",  "answer":"EAR and WAR files went to application servers like Tomcat or WebSphere. Modern Java based microservices are deployed as standalone JAR files and deployed in Docker containers that are managed and orchestrated by Kubernetes. Get familiar with the terms EAR, WAR and JAR. You'll heat them a fair bit if you work with traditional Java programmers. ", "difficulty": "99",
+			options:[
+			{text:"Traditional Java web apps are packaged as WAR (or EAR) files and deployed to application servers like WebSphere or Tomcat. ", correct:true, selected:false}, 
+			{text:"Traditional Java web apps are packaged as JAR files and deployed to Kubernetes orchestrated Docker containers.", correct:false, selected:false},
+			{text:"Updating a single Servlet in a traditional, monolithic Java app would require a redeployment and restarting of the entire web application.", correct:true, selected:false},
+			{text:"Updating a single microservice would require the redeployment and restarting of all microservices it interacts with.", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:98, query:"Criticism of the Score Keeper microservice created in class would be:",  "answer":"The complaint that Java is slow is largely unfounded. The programming language chosen to implement a microservices is not likely to be one of the factors that impacts performance. Both Maven and Gradle are great build tools, so that's not correct either. The 12-Factor App philosophy states that microservices should be stateless, and the Score Keeper currently violates that idea. Also, the service might be a bit too granular. Microservices shouldn't typically be nanoservices, although the Amazon Lambda services is designed exactly for that.", "difficulty": "99",
+			options:[
+			{text:"It will be slow because it is programmed in Java.", correct:false, selected:false}, 
+			{text:"It is more of a nanoservice than a microservice.", correct:true, selected:false},
+			{text:"It is stateful, and microservices should be stateless.", correct:true, selected:false},
+			{text:"It uses Maven as its build tool rather than Gradle.", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:99, query:"Which of the following statements are true about Single Page Interface applications?",  "answer":"One problem with SPIs is that older devices may not support the JavaScript libraries they use, or they may not be powerful enough to allocated memory and clock cycles to the app.", "difficulty": "99",
+			options:[
+			{text:"SPIs typically employ JavaScript, Ajax, HTML and JSON", correct:true, selected:false}, 
+			{text:"SPIs can increase cloud computing costs.", correct:false, selected:false},
+			{text:"SPIs can be used on fewer devices than a traditional web app that performs server-side rendering.", correct:true, selected:false},
+			{text:"This quiz is implemented as an SPI.", correct:true, selected:false}
+			],
+	  "objectives":[
+         "99", "99"
+      ]},
+	  
+	  
+	  	  {id:100, query:"The generally accepted guidelines for developing microservices are enshrined as part of:  ",  "answer":"The 12-Factor App, also known as the 12-Factor methodology, provides 12 points to ponder when you develop microservices and web applications to be deployed in a software-as-a-service (SAAS) environment.", "difficulty": "99",
+			options:[
+			{text:"The Agile Manifesto", correct:false, selected:false}, 
+			{text:"The Cloud Native Manifesto", correct:false, selected:false},
+			{text:"Spring Boot's Opinionated Methodology", correct:false, selected:false},
+			{text:"The 12-Factor Methodology", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:101, query:"The Gradle command to compile source code into classes is:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"gradle classes", correct:true, selected:false}, 
+			{text:"mvn compile", correct:false, selected:false},
+			{text:"gradle test", correct:false, selected:false},
+			{text:"mvn test", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:102, query:"The Maven command to compile source code into classes is:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"gradle classes", correct:false, selected:false}, 
+			{text:"mvn compile", correct:true, selected:false},
+			{text:"gradle test", correct:false, selected:false},
+			{text:"mvn test", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:103, query:"The two commands to run all of your test classes in Maven and Gradle are:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"gradle classes", correct:false, selected:false}, 
+			{text:"mvn compile", correct:false, selected:false},
+			{text:"gradle test", correct:true, selected:false},
+			{text:"mvn test", correct:true, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:104, query:"The Maven command to assemble all of your resources into a single package for deployment is:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"mvn package", correct:true, selected:false}, 
+			{text:"gradle assemble", correct:false, selected:false},
+			{text:"mvn clean", correct:false, selected:false},
+			{text:"gradle clean", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:105, query:"Lee: The Gradle command to assemble all of your compiled resources into a single package for deployment is:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"mvn package", correct:false, selected:false}, 
+			{text:"gradle assemble", correct:true, selected:false},
+			{text:"mvn clean", correct:false, selected:false},
+			{text:"gradle clean", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:106, query:"Cameron: The Maven command to run PMD, Checkstyle and FindBugs static code analysis routines on compiled code is:",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"mvn compile checkstyle:checkstyle findbugs:findbugs pmd:pmd", correct:true, selected:false}, 
+			{text:"gradle compile checkstyle:checkstyle findbugs:findbugs pmd:pmd", correct:false, selected:false},
+			{text:"mvn clean", correct:false, selected:false},
+			{text:"gradle clean", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:107, query:"Chen: The Maven command to compile, package, run tests and install the generated artifact in the local Maven repo is :",  "answer":"The question is pretty much the answer.", "difficulty": "99",
+			options:[
+			{text:"mvn compile", correct:false, selected:false}, 
+			{text:"mvn install", correct:true, selected:false},
+			{text:"mvn clean", correct:false, selected:false},
+			{text:"mvn test", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:108, query:"Edward: Maven based applications contain a:",  "answer":"The POM, or project object model, XML file should be in the root of the project.", "difficulty": "99",
+			options:[
+			{text:"POM file", correct:true, selected:false}, 
+			{text:"gradle build file", correct:false, selected:false},
+			{text:"README", correct:false, selected:false},
+			{text:".git folder", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:109, query:"Arjun: Gradle based applications contain a:",  "answer":"It is the Gradle build file you will find in the project root.", "difficulty": "99",
+			options:[
+			{text:"POM file", correct:false, selected:false}, 
+			{text:"gradle build file", correct:true, selected:false},
+			{text:"README", correct:false, selected:false},
+			{text:".git folder", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+			  
+
+	  {id:51, query:"Yolla: Cloud-native, Spring Boot microservices are typically deployed as: ",  "answer":"Section 2.1", "difficulty": "5",
+			options:[
+			{text:"Executable WAR files", correct:false, selected:false}, 
+			{text:"Executable JAR files", correct:true, selected:false},
+			{text:"Executable ZIP files", correct:false, selected:false},
+			{text:"Executable EAR files", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+
+
+
+	  {id:51, query:"Kunjie: Annotations like @GET and @PUT are found in what alternate to Spring REST?",  "answer":"Section 1.8", "difficulty": "5",
+			options:[
+			{text:"JAX-RS", correct:true, selected:false}, 
+			{text:"JAXB", correct:false, selected:false},
+			{text:"JAX-RPC", correct:false, selected:false},
+			{text:"JAX-WS", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:52, query:"Edward: To call a RESTful web service from within a Spring component like an MVC controller, the recommended approach is to use the:",  "answer":"Section 3.8", "difficulty": "5",
+			options:[
+			{text:"AjaxTemplate", correct:false, selected:false}, 
+			{text:"HttpTemplate", correct:false, selected:false},
+			{text:"MvcTemplate", correct:false, selected:false},
+			{text:"RestTemplate", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	
+
+
+	  {id:53, query:"Denise: Which of the following are built-in, HTML view resolution alternatives to Thymeleaf available in the Spring Starter page?",  "answer":"Section 5.7", "difficulty": "5",
+			options:[
+			{text:"FreeMarker", correct:true, selected:false}, 
+			{text:"JSP", correct:false, selected:false},
+			{text:"Groovy", correct:true, selected:false},
+			{text:"Mustache", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:53, query:"Tushar: Which two build tools does Spring Boot support?",  "answer":"Section 9.4", "difficulty": "5",
+			options:[
+			{text:"Jenkins", correct:false, selected:false}, 
+			{text:"Maven", correct:true, selected:false},
+			{text:"Make", correct:false, selected:false},
+			{text:"Gradle", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:54, query:"Ayush: An alternative to the CommandLineRunner in Spring is the :",  "answer":"Section 6.6", "difficulty": "5",
+			options:[
+			{text:"MainRunner", correct:false, selected:false}, 
+			{text:"ClassRunner", correct:false, selected:false},
+			{text:"ApplicationRunner", correct:true, selected:false},
+			{text:"SpringRunner", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  
+	  {id:55, query:"Taoran: Instead of an OAuth token, private companies typically authticate with which type of token? ",  "answer":"Section 8.16", "difficulty": "5",
+			options:[
+			{text:"SSD", correct:false, selected:false}, 
+			{text:"SSO", correct:false, selected:false},
+			{text:"SAML", correct:true, selected:false},
+			{text:"LDAP", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+	  
+	  {id:55, query:"Pierre: You can avoid direct interactions with the EntityManager by instead using a class that extends:",  "answer":"Section 7.8", "difficulty": "5",
+			options:[
+			{text:"CrudRepository", correct:true, selected:false}, 
+			{text:"PersistenceRepository", correct:false, selected:false},
+			{text:"DataRepository", correct:false, selected:false},
+			{text:"HttpRepository", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:56, query:"Moshen: Which two annotations when used together will allow you to test Spring web applications?",  "answer":"Section 10.16", "difficulty": "5",
+			options:[
+			{text:"@MvcTest and @MockMVC", correct:false, selected:false}, 
+			{text:"@WebMvcTest and @MockMVC", correct:true, selected:false},
+			{text:"@MockMvcTest and @WebMVC", correct:false, selected:false},
+			{text:"@WebMvcTest and @WebMVC", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:60, query:"Riddhi: Spring Security extends which Jakarta EE standard?",  "answer":"Section 8.1", "difficulty": "5",
+			options:[
+			{text:"JAAS", correct:true, selected:false}, 
+			{text:"Java Security", correct:false, selected:false},
+			{text:"Java Cryptography Service", correct:false, selected:false},
+			{text:"Java SSO", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+	  
+	  {id:57, query:"Mohammad: What is the name of the Spring project that adds health monitoring to your applications?",  "answer":"Section 9.1", "difficulty": "5",
+			options:[
+			{text:"Spring Boot Manager", correct:false, selected:false}, 
+			{text:"Spring Boot Monitor", correct:false, selected:false},
+			{text:"Spring Boot Optimizer", correct:false, selected:false},
+			{text:"Spring Boot Actuator", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:58, query:"Khari: What is the name of the tool used in the labs to test RESTful APIs?",  "answer":"Lab page 31", "difficulty": "5",
+			options:[
+			{text:"cUrl", correct:false, selected:false}, 
+			{text:"jQuery", correct:false, selected:false},
+			{text:"Postman", correct:true, selected:false},
+			{text:"Fiddler", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:59, query:"Karanveer: What is the name of the OpenAPI based tool used in lab 13 to visually see and interact with RESTful APIs?",  "answer":"Lab 159", "difficulty": "5",
+			options:[
+			{text:"GraphQL", correct:false, selected:false}, 
+			{text:"Flask", correct:false, selected:false},
+			{text:"RAML", correct:false, selected:false},
+			{text:"Swagger", correct:true, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},	  
+	  
+	  {id:60, query:"Evan: Which annotation should be placed on code that performs JDBC or uses an EntityManager?",  "answer":"Section 7.3", "difficulty": "5",
+			options:[
+			{text:"@Repository", correct:true, selected:false}, 
+			{text:"@Service", correct:false, selected:false},
+			{text:"@Component", correct:false, selected:false},
+			{text:"@Autowired", correct:false, selected:false}
+			],
+      "objectives":[
+         "3.0", "3.0"
+      ]},
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},
+
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},	  
+	  
+	  
+	  
+	  
+	  {id:999, query:"aaa:",  "answer":"aaa", "difficulty": "99",
+			options:[
+			{text:"aaa", correct:false, selected:false}, 
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false},
+			{text:"aaa", correct:false, selected:false}
+			],
+      "objectives":[
+         "99", "99"
+      ]},		  
+
+	  
+	];
+	
+	
+if (typeof(Storage) !== "undefined") {
+  // Store
+  //localStorage.setItem("lastname", "Smith");
+  localStorage.setItem("questions", JSON.stringify(jsonQuestions));
+  
+  
+  // Retrieve
+  //document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+  //var questions2 = localStorage.getItem("questions");
+  //questions2 = JSON.parse(questions2);
+  //console.log(questions2);
+  
+
+  //document.getElementById("quiz").innerHTML = (questions)[0].query;
+  //document.getElementById("quiz").innerHTML = questions[0].id;
+} else {
+  //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+</script>
+   </body>
+</html>
