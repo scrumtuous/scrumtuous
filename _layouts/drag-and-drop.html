@@ -1,10 +1,32 @@
-<html class="no-js" lang="zxx">
+<!DOCTYPE html>
+<html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Scrumtuous for Agile Coaching, DevOps Methods & Scrum Master Training</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="fb:app_id" content="287616246137792" />   
+    <title>{{ page.title }}</title>
+	
+	{% if page.canonical %}
+	<link rel="canonical" href="{{ page.canonical }}" />
+	{% else %}
+	<!-- This is the else for if canonical -->	   
+	{% endif %}
+	
+	<!-- canonical attempt: {{ page.title }} -->
+	{% if page.blurb %}
+	<meta name="description" content="{{ page.blurb }}"/>   
+	{% else %}
+	<meta name="description" content="Quickly learn to code for certification exams with these fun drag and drop examples."/>   
+	{% endif %}
+
+	{% if page.keywords %}
+	<link rel="keywords" href="{{ page.keywords }}" />
+	{% else %}
+	<meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>	   
+	{% endif %}
+	
+    
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg">
     <!-- Place favicon.ico in the root directory -->
 
@@ -50,82 +72,20 @@
 	    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
 
   
-  <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'></script>
+	<!-- partial -->
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'></script>
 
 
-<script  src="/assets/js/drag-and-drop-script.js"></script>
-<link rel="stylesheet" href="/assets/css/drag-and-drop-style.css">
+	<script  src="/assets/js/drag-and-drop-script.js"></script>
+	<link rel="stylesheet" href="/assets/css/drag-and-drop-style.css">
 
-</head>
+	</head>
 
 <body>
-    <!--[if lte IE 9]>
-      <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-        your experience and security.
-      </p>
-    <![endif]-->
 
-    <!-- Preloader -->
-    <div class="preloader" style="opacity: 0; display: none;">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
-
-    <!-- Start Header Area -->
-    <header class="header">
-        <div class="navbar-area">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-12">
-                        <nav class="navbar navbar-expand-lg">
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <ul id="nav" class="navbar-nav me-auto">
-                                    <li class="nav-item">
-                                        <a class="page-scroll active" href="#hero-area">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="#features">Agile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="#explore">Scrum</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="#testimonials">Cloud</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="#download">DevOps</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="#contact">Contact</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                        <!-- navbar -->
-                    </div>
-                </div>
-                <!-- row -->
-            </div>
-            <!-- container -->
-        </div>
-        <!-- navbar area -->
-    </header>
-    <!-- End Header Area -->
+{% include navigation.html %} 
 
     <!-- Start App Screenshort Area -->
     <section class="app-screenshorts section">
@@ -133,210 +93,15 @@
             <div class="row">
 			
 			
-			
-			
-<article style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-12 col-lg-12 order-1 order-sm-1 order-lg-1 mb-3 mt-3">
+			{{content}}
 
-
-<div class="quiz-wrapper mt-3 mb-3" style="background: #FEFEFE;">
-<span class="section-title">Code Challenge Details</span>
-<h2 class="mt-2 mb-3" >Here is your coding mission, if you choose to accept it.</h2>
-<ol class="section-ol">
-<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right to sort the scrambled code.</li>
-<li class="section-li"><i class="lni lni-checkmark"></i>When completed, copy the sorted code into a text editor.</li>
-<li class="section-li"><i class="lni lni-checkmark"></i>Then save your file as index.html on your desktop.</li>
-<li class="section-li"><i class="lni lni-checkmark"></i>Then double click on your index.html file and view your page in a web browser!</li>
-</ol>	
-<h3>WARNING: The drag and drop function is not optimized for mobile devices.</h3>
-    <div class="row mt-3 mb-3">
-	
-<div class="col-xs-12 col-sm-6  dragitems">
-		 
-<div class="unsorted w-100">
-	 
-<ul class="options w-100 p-3">
-
-
-<li class="title title-scrambled">Scrambled</li>
-<li class="option" data-target="7"><span class="option-data"> CONTENT</span></li>
-<li class="option" data-target="2"><span class="option-data">   &lt;head&gt;</span></li>		
-<li class="option" data-target="9"><span class="option-data">&lt;/html&gt;</span></li>
-<li class="option" data-target="1"><span class="option-data">&lt;html&gt;</span></li>
-<li class="option" data-target="3"><span class="option-data">      &lt;title&gt;Simple Web Page&lt;/title&gt;</span></li>
-<li class="option" data-target="6"><span class="option-data">      &lt;p&gt;Hello World!&lt;/p&gt;</span></li>
-<li class="option" data-target="5"><span class="option-data">   &lt;body&gt;</span></li>
-<li class="option" data-target="4"><span class="option-data">   &lt;/head&gt;</span></li>	
-<li class="option" data-target="8"><span class="option-data">   &lt;/body&gt;</span></li>
-
-
-
-
-</ul>
-
-</div>		 
-		 
-		 </div><!-- end dragitems -->
-
-<div class="col-xs-12 col-sm-6  border-solid border-green dropitems">
-		 
-<div class="answers w-100">
-  
-
-<ul class="options w-100 p-3">
-<li class="title title-sorted">Sorted</li>
-<li class="sink"><span class="target w-100" data-accept="1">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="2">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="3">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="4">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="5">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="6">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="7">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="8">Exit Git BASH</span></li>
-<li class="sink"><span class="target w-100" data-accept="9">Exit Git BASH</span></li>
-</ul>
-
-</div>
-		 
-		 </div><!-- end dropitems -->
-    </div>	
-	
-	
-	
-
-
- <button type="submit" value="submit">Submit</button>
- <div class="lightbox-bg"></div>
- <div class="status confirm">
-   <p>All Answers Answered</p>
- </div>
- <div class="status deny">
-   <p>Answers Remain</p>
- </div>
-</div>
-
-
-
-
-
-
-            </article>
 
             </div>
         </div>
     </section>
     <!-- End App Screenshort Area -->
 	
-
-
-
-    <!-- Start Footer Area -->
-    <footer class="footer">
-        <div class="footer-middle">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-12">
-                        <!-- Single Widget -->
-                        <div class="f-about single-footer">
-                            <div class="logo">
-                                <!--a href="index.html"><img src="/assets/images/logo/white-logo.svg" alt="Logo"></a-->
-                            </div>
-                            <p>Follow us on Twitter.</p>
-                            <div class="footer-social">
-                                <ul>
-                                    
-                                    <li><a href="https://twitter.com/scrumtuous"><i class="lni lni-twitter-original"></i></a></li>
-									<!--
-									<li><a href="#"><i class="lni lni-facebook-original"></i></a></li>
-                                    <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
-                                    <li><a href="#"><i class="lni lni-google"></i></a></li> 
-									-->
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Widget -->
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-12">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <!-- Single Widget -->
-                                <div class="single-footer sm-custom-border f-link">
-                                    <h3>About Us</h3>
-                                    <ul>
-                                        <li><a href="#">Home</a></li>
-                                        <li><a href="#">Features</a></li>
-                                        <li><a href="#">Explore</a></li>
-                                        <li><a href="#">Testimonials</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End Single Widget -->
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <!-- Single Widget -->
-                                <div class="single-footer sm-custom-border f-link">
-                                    <h3>Specialties</h3>
-                                    <ul>
-                                        <li><a href="#">Project Management</a></li>
-                                        <li><a href="#">Cloud Computing</a></li>
-                                        <li><a href="#">DevOps Stacks</a></li>
-                                        <li><a href="#">Technical Consulting</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End Single Widget -->
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <!-- Single Widget -->
-                                <div class="single-footer md-custom-border sm-custom-border f-link">
-                                    <h3>Services</h3>
-                                    <ul>
-                                        <li><a href="#">Agile Coaching</a></li>
-                                        <li><a href="#">Scrum Mentorship</a></li>
-                                        <li><a href="#">AWS Training</a></li>
-                                        <li><a href="#">SAFe Consulting</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End Single Widget -->
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <!-- Single Widget -->
-                                <div class="single-footer md-custom-border sm-custom-border f-contact">
-                                    <h3>Contact Info</h3>
-                                    <ul>
-                                        <li><i class="lni lni-map-marker"></i> 438 King Street West, Toronto, ON, Canada
-                                        </li>
-                                        <li><i class="lni lni-envelope"></i>info at scrumtuous dot com</li>
-                                        
-                                    </ul>
-                                </div>
-                                <!-- End Single Widget -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--/ End Footer Middle -->
-        <!-- Start Footer Bottom -->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="inner">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="left">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Footer Middle -->
-    </footer>
-    <!--/ End Footer Area -->
-
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top btn-hover">
-        <i class="lni lni-chevron-up"></i>
-    </a>
+{% include footer.html %} 
 
     <!-- ========================= JS here ========================= -->
     <script src="/assets/js/bootstrap.min.js"></script>

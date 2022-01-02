@@ -58,8 +58,8 @@
   vertical-align: top;
 
   list-style: none;
-  border: 1px solid #19286C;
-  border-style: dashed;
+  border: 2px dashed #000000;
+  border-style: dotted;
   text-align: center;
   font-family: "Courier New", "Courier";
   padding: 0;
