@@ -1,0 +1,145 @@
+.quiz-wrapper .section-title{
+    text-transform: capitalize;
+    color: #fff;
+    background: linear-gradient(45deg, #6831e3, #f528cb);
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 4px;
+}
+
+.section-li .lni-checkmark {
+	    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    color: #fff;
+    background: linear-gradient(45deg, #6831e3, #f528cb);
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: -5px;
+}
+
+
+.section-title .section-ol {
+	margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+	
+}
+
+.section-li {
+	position: relative;
+    padding-left: 50px;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.quiz-wrapper {
+  position: relative;
+  display: block;
+
+}
+.quiz-wrapper p.question-description {
+  background: #19286C;
+  color: white;
+  padding: 25px 20px;
+}
+.quiz-wrapper ul.options {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+
+  list-style: none;
+  border: 1px solid #19286C;
+  border-style: dashed;
+  text-align: center;
+  font-family: "Courier New", "Courier";
+  padding: 0;
+  margin: 0;
+}
+.quiz-wrapper ul.options li {
+  border: 1px solid transparent;
+  padding: 6px 8px;
+  
+}
+.quiz-wrapper ul.options li.title {
+  color: white;
+}
+
+.quiz-wrapper ul.options li.title-sorted  {
+background: linear-gradient(90deg, #f528cb, #6831e3);
+}
+
+.quiz-wrapper ul.options li.title-scrambled  {
+		background: linear-gradient(45deg, #6831e3, #f528cb);
+	
+}
+
+
+.quiz-wrapper .unsorted {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.quiz-wrapper .answers {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 20px;
+}
+.quiz-wrapper .answers .target {
+  display: inline-block;
+  background: #EAEAEA;
+  margin: 10 10px;
+  text-align: left;
+}
+
+.quiz-wrapper .unsorted .option-data {
+  display: inline-block;
+  margin: 10 10px;
+  text-align: left;
+  color: navy;
+}
+
+
+.quiz-wrapper button[type="submit"] {
+  display: block;
+  position: relative;
+  margin: 10px auto;
+  padding: 10px;
+  background: linear-gradient(90deg, #f528cb, #6831e3);
+  border: none;
+  color: white;
+  font-size: 16px;
+}
+.lightbox-bg {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+.status {
+  display: none;
+  position: absolute;
+  z-index: 110;
+  text-align: center;
+  width: 80%;
+  top: 220px;
+  left: 47px;
+}
+.status p {
+  background: white;
+  padding: 30px;
+}

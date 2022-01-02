@@ -25,7 +25,7 @@ Author: GrayGrids
         if (window.pageYOffset > sticky) {
             header_navbar.classList.add("sticky");
         } else {
-            header_navbar.classList.remove("sticky");
+            //header_navbar.classList.remove("sticky");
         }
 
 
