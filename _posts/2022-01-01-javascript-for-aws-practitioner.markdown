@@ -38,7 +38,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 	<div class="col-xs-12 col-sm-6 ">
 		<figure>
 		<img src="/assets/number-guesser-game.jpg" alt="HTML for AWS Exam" class="img-fluid mx-auto d-block img-thumbnail rounded" />
-		<figcaption>Here's what the finished webpage for this AWS HTML example will look like this.</figcaption>
+		<figcaption>Here's what the HTML and JavaScript Number Guesser example will look when finished.</figcaption>
 		</figure>
 	</div>
 
