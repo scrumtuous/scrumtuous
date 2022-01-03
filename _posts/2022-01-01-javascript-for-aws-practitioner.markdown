@@ -38,7 +38,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 	<div class="col-xs-12 col-sm-6 ">
 		<figure>
 		<img src="/assets/number-guesser-game.jpg" alt="HTML for AWS Exam" class="img-fluid mx-auto d-block img-thumbnail rounded" />
-		<figcaption>Here's what the HTML and JavaScript Number Guesser example will look when finished.</figcaption>
+		<figcaption>Here's what the HTML and JavaScript Number Guesser example will look like when finished.</figcaption>
 		</figure>
 	</div>
 
@@ -108,11 +108,15 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="option" data-target="33"><span class="option-data"> &lt;/html&gt; </span></li>
 <li class="option" data-target="31"><span class="option-data"> &lt;/script&gt; </span></li>
 <li class="option" data-target="24"><span class="option-data">    	} // close guess higher if </span></li>
-<li class="option" data-target="29"><span class="option-data"> } // end correct if </span></li>
 <li class="option" data-target="27"><span class="option-data"> response += &quot; The number was &quot; + magicNumber + &quot;.&quot;; </span></li>
 
 
-<li class="option" data-target="30"><span class="option-data"> document.getElementById(&#39;results&#39;).innerHTML = response;  </span></li>
+
+<li class="option" data-target="28a"><span class="option-data"> } // end the if  </span></li>
+<li class="option" data-target="29"><span class="option-data"> document.getElementById(&#39;results&#39;).innerHTML = response;  </span></li>
+
+<li class="option" data-target="30"><span class="option-data"> } // end the method  </span></li>
+
 
 
 
@@ -161,7 +165,8 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="sink"><span class="target w-100" data-accept="25">You're a tomato!</span></li>
 <li class="sink"><span class="target w-100" data-accept="26">Congratulate them!</span></li>
 <li class="sink"><span class="target w-100" data-accept="27">Reveal the magic number</span></li>
-<li class="sink"><span class="target w-100" data-accept="28">Close if</span></li>
+<li class="sink"><span class="target w-100" data-accept="28">Generate a new magic number</span></li>
+<li class="sink"><span class="target w-100" data-accept="28a">Close if</span></li>
 <li class="sink"><span class="target w-100" data-accept="29">Update the div named results</span></li>
 <li class="sink"><span class="target w-100" data-accept="30">End the function/method</span></li>
 <li class="sink"><span class="target w-100" data-accept="31">Close the script tag</span></li>

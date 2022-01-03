@@ -22,13 +22,15 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
 
 	<div class="col-xs-12 col-sm-6 ">
 
-		<h2 class="mt-2 mb-3" >Here is your coding mission, if you choose to accept it.</h2>
+		<h2 class="mt-2 mb-3" >Here is your AWS Certification Exam coding mission, if you choose to accept it.</h2>
+<p class="mb-3 bt-4">If you want to <a href="https://aws.amazon.com/certification/">ace</a> the AWS Certification exams, you need to know a some code. You don't have to be an expert, but you do need to know your way around web pages, Java files and modern data exchange formats like YAML and JSON.</p>
 		<ol class="section-ol">
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right to sort the scrambled code.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When completed, copy the sorted code into a text editor.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>Then save your file as index.html on your desktop.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>Then double click on your index.html file and view your page in a web browser!</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>In production, you'd deploy it to a web server like <a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.1.1/xampp-windows-x64-8.1.1-2-VS16.zip/download">Apache.</a></li>
+<li class="section-li"><i class="lni lni-checkmark"></i>It's a good idea to <a href="https://html-lint.com/">lint</a> your code when you get it to work.</li>
 		
 		
 		</ol>	
@@ -58,13 +60,13 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
 <ul class="options w-100 p-3">
 
 
-<li class="title title-scrambled">Scrambled</li>
+<li class="title title-sorted">Unsorted</li>
 <li class="option" data-target="7"><span class="option-data"> &lt;p style=&quot;color:tomato&quot;&gt;I'm a &lt;em&gt;potato&lt;/em&gt;.&lt;/p&gt;</span></li>
 <li class="option" data-target="2"><span class="option-data">   &lt;head&gt;</span></li>		
 <li class="option" data-target="9"><span class="option-data">&lt;/html&gt;</span></li>
 <li class="option" data-target="1"><span class="option-data">&lt;html&gt;</span></li>
 <li class="option" data-target="3"><span class="option-data">      &lt;title&gt;Simple Web Page&lt;/title&gt;</span></li>
-<li class="option" data-target="6"><span class="option-data">      &lt;p style=&quot;color:&quot;&gt;Hello World!&lt;/p&gt;</span></li>
+<li class="option" data-target="6"><span class="option-data">      &lt;p style=&quot;color: navy&quot;&gt;Hello World!&lt;/p&gt;</span></li>
 <li class="option" data-target="5"><span class="option-data">   &lt;body&gt;</span></li>
 <li class="option" data-target="4"><span class="option-data">   &lt;/head&gt;</span></li>	
 <li class="option" data-target="8"><span class="option-data">   &lt;/body&gt;</span></li>
@@ -108,10 +110,10 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
  <button type="submit" value="submit">Submit</button>
  <div class="lightbox-bg"></div>
  <div class="status confirm">
-   <p>All Answers Answered</p>
+   <p>Well done. You completed it!</p>
  </div>
  <div class="status deny">
-   <p>Answers Remain</p>
+   <p>Keep Going! You're not done yet.</p>
  </div>
 </div>
 
