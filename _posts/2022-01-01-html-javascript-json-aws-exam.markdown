@@ -63,7 +63,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code Roshambo Rock Paper Scissor
 </p >
 <p class="mt-2 mb-3">Here's what it looks like:</p>
 <pre class="mt-2 mb-3">{"wins":231,"losses":98,"ties":123}</pre>
-<p class="mt-2 mb-3">JSON is the standard, data-exchange format for web pages, microservices and RESTful web services.</p>
+<p class="mt-2 mb-3">JSON is the standard, data-exchange format for web pages, microservices and <a href="http://keepingscore-env.eba-x3qfnfiz.ca-central-1.elasticbeanstalk.com/score/">RESTful</a> web services.</p>
 <p class="mt-2 mb-3">If we can figure out how to display the data in this JSON file in our webpage, then we can basically handle any type of data exchanges that happen over the modern web. What a delicious thought!</p>
 <p class="mt-2 mb-3">Now get to work!</p>
 
