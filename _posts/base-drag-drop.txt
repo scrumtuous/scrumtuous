@@ -38,3 +38,44 @@
 <li class="option" data-target="38"><span class="option-data"> xxx </span></li>
 <li class="option" data-target="39"><span class="option-data"> xxx </span></li>
 <li class="option" data-target="40"><span class="option-data"> xxx </span></li>
+
+
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="1"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="3"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="4"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="5"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="7"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="8"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="9"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="10"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="11"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="12"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="13"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="14"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="15"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="16"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="17"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="18"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="19"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="20"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="21"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="22"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="25"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="26"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="27"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="28"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="29"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="30"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="31"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="33"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="34"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="35"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="36"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="37"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="38"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="39"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="40"> xxx </span></li>
