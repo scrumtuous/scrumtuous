@@ -1,6 +1,6 @@
 ---
 layout: blog
-title:  "All Blog Posts on Scrumtuous"
+title:  "Scrumtuous Blog on Agile, Scrum & DevOps"
 blurb: "Here are all of our tasty blog posts."
 date:   2022-01-01 01:11:00 -0500
 categories: 
@@ -9,10 +9,10 @@ keywords: Scrumtuous blog
 ---
 	
 			
-<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-12 col-lg-12 order-1 order-sm-1 order-lg-1 mb-5 mt-5">
+<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-12 col-lg-12 order-1 order-sm-1 order-lg-1 mb-1 mt-1">
 
                {% for post in site.posts %}
-               <div  style="border: 1px dashed #6831e3;" class="card mb-1 mt-3">
+               <div  style="border: 1px dashed #6831e3;" class="card mb-1 mt-2">
                   <div class="card-header">
                      <a href="{{ post.url }}">{{ post.title }}</a>
                   </div>
