@@ -3,7 +3,7 @@ layout: drag-and-drop
 title:  "JavaScript, HTML & JSON for the AWS Exam with Roshambo"
 blurb: "Here's the Rock Paper Scissors game with HTML, JavaScript and JSON as the data exchange format. This will help you learn what you need to know about JSON and JavaScript for the AWS exams."
 date:   2022-01-01 10:17:00 -0500
-categories: aws practitioner exam JSON JavaScript
+categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-rock-paper-scissors-roshambo-drag-drop.html
 keywords: JavaScript AWS Practitioner Exam HTML Code Roshambo Rock Paper Scissors Drag-n-Drop
 ---

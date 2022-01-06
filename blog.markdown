@@ -3,9 +3,9 @@ layout: blog
 title:  "Scrumtuous Blog on Agile, Scrum & DevOps"
 blurb: "Here are all of our tasty blog posts."
 date:   2022-01-01 01:11:00 -0500
-categories: aws exam
-canonical: http://www.scrumtuous.com/2022/01/01/allposts.html
-keywords: Scrumtuous blog
+categories: 
+canonical: http://www.scrumtuous.com/blog.html
+keywords: Scrumtuous Blog Agile DevOps AWS Certification Scrum
 ---
 	
 			
