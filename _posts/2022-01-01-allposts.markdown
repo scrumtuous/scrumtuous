@@ -1,5 +1,5 @@
 ---
-layout: drag-and-drop
+layout: blog
 title:  "All Blog Posts on Scrumtuous"
 blurb: "Here are all of our tasty blog posts."
 date:   2022-01-01 01:11:00 -0500
