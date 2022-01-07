@@ -1,5 +1,5 @@
 ---
-layout: blog
+layout: drag-and-drop
 title:  "Scrumtuous Blog on Agile, Scrum & DevOps"
 blurb: "Here are all of our tasty blog posts."
 date:   2022-01-01 01:11:00 -0500
