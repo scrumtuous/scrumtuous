@@ -1,7 +1,12 @@
-<!doctype html>
-<html lang="en">
-
-  <head>
+---
+layout: blog
+title:  "Scrumtuous Blog on Agile, Scrum & DevOps"
+blurb: "Here are all of our tasty blog posts."
+date:   2022-01-01 01:11:00 -0500
+categories: 
+canonical: http://www.scrumtuous.com/exam.html
+keywords: Scrumtuous Blog Agile DevOps AWS Certification Scrum
+---
     <meta charset="utf-8" />
     <link rel="icon" href="/exam/favicon.ico" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -11,12 +16,19 @@
     <link rel="manifest" href="/exam/manifest.json" />
     <title>React App</title>
     <link href="/exam/static/css/2.0a9ec390.chunk.css" rel="stylesheet">
-    <link href="/exam/static/css/main.f8297875.chunk.css" rel="stylesheet">
-  </head>
+    <link href="/exam/static/css/main.f8297875.chunk.css" rel="stylesheet">	
+	
+	
+			
+<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-6 col-lg-4 order-1 mb-1 mt-1">
 
-  <body><noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script>
+
+
+
+</div>
+
+   <script>
       ! function(e) {
         function r(r) {
           for (var n, p, a = r[0], l = r[1], f = r[2], c = 0, s = []; c < a.length; c++) p = a[c], Object.prototype.hasOwnProperty.call(o, p) && o[p] && s.push(o[p][0]), o[p] = 0;
@@ -93,6 +105,3 @@
     </script>
     <script src="/exam/static/js/2.98c4db80.chunk.js"></script>
     <script src="/exam/static/js/main.97d7dcc5.chunk.js"></script>
-  </body>
-
-</html>
