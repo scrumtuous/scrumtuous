@@ -987,6 +987,19 @@ ol {
   position: relative;
 }
 
+  
+.section-blue {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.section-blue2 {
+  padding-top: 50px;
+  padding-bottom: 30px;
+  position: relative;
+}
+
 /* Section Title */
 .section-title {
   text-align: center;
@@ -5012,6 +5025,8 @@ ol {
   .section {
     padding: 60px 0px;
   }
+  
+
   p {
     font-size: 13px;
   }
