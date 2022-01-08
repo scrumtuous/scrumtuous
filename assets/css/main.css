@@ -1720,7 +1720,7 @@ ol {
   position: absolute;
 }
 
-.navbar-area .style2 {
+.navbar-area.style2 {
   width: 100%;
   z-index: 99;
   -webkit-transition: all 0.3s ease-out 0s;
