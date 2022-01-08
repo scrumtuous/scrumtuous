@@ -873,6 +873,19 @@ ol {
   }
 }
 
+
+.App.container {
+  padding-left: 2px;
+  padding-right: 2px;
+  position: relative;
+}
+
+.App .container {
+  padding-left: 3px;
+  padding-right: 3px;
+  position: relative;
+}
+
 /* Bread Crumbs */
 .breadcrumbs {
   background-image: url("../images/breadcrumb/breadcrumb-bg.jpg");
