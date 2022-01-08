@@ -1297,7 +1297,7 @@ ol {
 }
 
 .button.style2 .btn {
-  background: linear-gradient(45deg, #018bff, #243ec4);
+    background: linear-gradient(45deg, #018bff, #243ec4);
 }
 
 .button.style3 .btn {
@@ -1359,7 +1359,7 @@ ol {
 }
 
 .preloader.style2 .preloader-icon span {
-  background: linear-gradient(45deg, #018bff, #243ec4);
+    background: linear-gradient(45deg, #018bff, #243ec4);
 }
 
 .preloader.style3 .preloader-icon span {
@@ -2190,7 +2190,7 @@ ol {
 
 .header.style2 .navbar-area.sticky .button .btn {
   border-color: transparent;
-  background: linear-gradient(45deg, #018bff, #243ec4);
+    background: linear-gradient(45deg, #018bff, #243ec4);
   border-color: #fff;
   padding: 15px 10px;
   border-radius: 6px;
@@ -3038,7 +3038,7 @@ ol {
   width: 30px;
   line-height: 30px;
   color: #fff;
-  background: linear-gradient(45deg, #6831e3, #f528cb);
+    background: linear-gradient(45deg, #018bff, #243ec4);
   border-radius: 8px;
   display: inline-block;
   text-align: center;
