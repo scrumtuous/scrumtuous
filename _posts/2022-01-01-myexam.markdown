@@ -8,4 +8,4 @@ canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/javascript-for-aws-prac
 keywords: Just some practice Jekyll templates for the creation of an AWS certification exam site.
 ---
 
-Hello World
+<div id="root" data-param="{ quid : { $in : [81,82,83,84,85,86,87,88,89,90,101,111,114,119,121] } }"></div>
