@@ -874,6 +874,12 @@ ol {
 }
 
 
+.app-screenshorts.container.row.main {
+  padding-left: 4px;
+  padding-right: 4px;
+  position: relative;
+}
+
 .App.container {
   padding-left: 2px;
   padding-right: 2px;
