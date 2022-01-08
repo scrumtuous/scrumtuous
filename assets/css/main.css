@@ -1738,6 +1738,7 @@ ol {
   position: absolute;
 }
 
+
 .sticky {
   position: fixed;
   z-index: 99;
