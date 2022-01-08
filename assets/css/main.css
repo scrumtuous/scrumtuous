@@ -1000,6 +1000,12 @@ ol {
   position: relative;
 }
 
+.section-blue5 {
+  padding-top: 60px;
+  padding-bottom: 60px;
+  position: relative;
+}
+
 /* Section Title */
 .section-title {
   text-align: center;
