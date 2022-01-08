@@ -1,0 +1,11 @@
+---
+layout: exam
+title:  "JavaScript and HTML for the AWS Exam"
+blurb: "Learn HTML and JavaScript with this drag and drop example!."
+date:   2022-01-01 08:17:00 -0500
+categories: aws exam
+canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/javascript-for-aws-practitioner.html
+keywords: JavaScript AWS Practitioner Exam HTML Code
+---
+
+Hello World
