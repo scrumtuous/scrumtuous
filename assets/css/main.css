@@ -1720,6 +1720,15 @@ ol {
   position: absolute;
 }
 
+.navbar-area .style2 {
+  width: 100%;
+  z-index: 99;
+  -webkit-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+    background-image: linear-gradient(45deg, #018bff, #243ec4);
+  position: absolute;
+}
+
 .sticky {
   position: fixed;
   z-index: 99;
@@ -2180,13 +2189,7 @@ ol {
   border-radius: 6px;
 }
 
-.header .style2 .navbar-area.sticky .button .btn {
-  border-color: transparent;
-  background-image: linear-gradient(45deg, #018bff, #243ec4);
-  border-color: #fff;
-  padding: 15px 10px;
-  border-radius: 6px;
-}
+
 
 .header .navbar-area.sticky .button .btn::before {
   background: #081828;
