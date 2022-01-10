@@ -23,9 +23,9 @@ Author: GrayGrids
         var sticky = header_navbar.offsetTop;
 
         if (window.pageYOffset > sticky) {
-           //header_navbar.classList.add("sticky");
+           header_navbar.classList.add("sticky");
         } else {
-            //header_navbar.classList.remove("sticky");
+            header_navbar.classList.remove("sticky");
        }
 
 
@@ -50,10 +50,10 @@ Author: GrayGrids
 			var refElement = document.querySelector(val);
 			var scrollTopMinus = scrollPos + 73;
 			if (refElement.offsetTop <= scrollTopMinus && (refElement.offsetTop + refElement.offsetHeight > scrollTopMinus)) {
-				//document.querySelector('.page-scroll').classList.remove('active');
-				//currLink.classList.add('active');
+				document.querySelector('.page-scroll').classList.remove('active');
+				currLink.classList.add('active');
 			} else {
-				//currLink.classList.remove('active');
+				currLink.classList.remove('active');
 			}
 		}
 	};
