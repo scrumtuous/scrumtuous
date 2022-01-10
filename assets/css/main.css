@@ -1733,7 +1733,7 @@ ol {
 .sticky {
   position: fixed;
   z-index: 99;
-  background-color: #fff;
+
   -webkit-box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
           box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
   -webkit-transition: all 0.3s ease-out 0s;
@@ -1747,11 +1747,11 @@ ol {
 }
 
 .sticky .navbar .navbar-nav .nav-item a {
-  color: #081828;
+  
 }
 
 .sticky .navbar .navbar-nav .nav-item a:hover {
-  color: #6831e3;
+
 }
 
 .header.style2 .sticky .navbar .navbar-nav .nav-item a {
@@ -1779,7 +1779,7 @@ ol {
 }
 
 .sticky .navbar .navbar-toggler .toggler-icon {
-  background: #081828;
+
 }
 
 .navbar {
@@ -1817,13 +1817,13 @@ ol {
 .header .navbar-area.sticky .logo .primary-logo {
   z-index: 0;
   opacity: 0;
-  visibility: hidden;
+
 }
 
 .header .navbar-area.sticky .logo .alt-logo {
   z-index: 2;
   opacity: 1;
-  visibility: visible;
+
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
