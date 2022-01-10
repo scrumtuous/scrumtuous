@@ -873,25 +873,6 @@ ol {
   }
 }
 
-
-.app-screenshorts.container.row.main {
-  padding-left: 4px;
-  padding-right: 4px;
-  position: relative;
-}
-
-.App.container {
-  padding-left: 2px;
-  padding-right: 2px;
-  position: relative;
-}
-
-.App .container {
-  padding-left: 3px;
-  padding-right: 3px;
-  position: relative;
-}
-
 /* Bread Crumbs */
 .breadcrumbs {
   background-image: url("../images/breadcrumb/breadcrumb-bg.jpg");
@@ -1000,28 +981,15 @@ ol {
   right: 0;
 }
 
+.section-blue {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
 .section {
   padding-top: 120px;
   padding-bottom: 120px;
-  position: relative;
-}
-
-  
-.section-blue {
-  padding-top: 30px;
-  padding-bottom: 30px;
-  position: relative;
-}
-
-.section-blue2 {
-  padding-top: 50px;
-  padding-bottom: 30px;
-  position: relative;
-}
-
-.section-blue5 {
-  padding-top: 60px;
-  padding-bottom: 60px;
   position: relative;
 }
 
@@ -1195,15 +1163,19 @@ ol {
   border-radius: 5px;
 }
 
-.scroll-top.style2 {
+.section-title.style2 span {
   background: linear-gradient(45deg, #018bff, #243ec4);
 }
 
-.scroll-top.style3 {
+.section-title.style3 span {
   background: linear-gradient(45deg, #4567f4, #3CD3AD);
 }
 
-.scroll-top.style4 {
+.section-title.style4 span {
+  background: linear-gradient(45deg, #DCE35B, #45B649);
+}
+
+.section-title.style5 span {
   background: linear-gradient(45deg, #DCE35B, #45B649);
 }
 
@@ -1335,7 +1307,7 @@ ol {
 }
 
 .button.style2 .btn {
-    background: linear-gradient(45deg, #018bff, #243ec4);
+  background: linear-gradient(45deg, #018bff, #243ec4);
 }
 
 .button.style3 .btn {
@@ -1397,7 +1369,7 @@ ol {
 }
 
 .preloader.style2 .preloader-icon span {
-    background: linear-gradient(45deg, #018bff, #243ec4);
+  background: linear-gradient(45deg, #018bff, #243ec4);
 }
 
 .preloader.style3 .preloader-icon span {
@@ -1754,28 +1726,9 @@ ol {
   z-index: 99;
   -webkit-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;
-    background-image: linear-gradient(45deg, #6831e3, #f528cb);
+  background: transparent;
   position: absolute;
 }
-
-.navbar-area.style2 {
-  width: 100%;
-  z-index: 99;
-  -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-    background-image: linear-gradient(45deg, #018bff, #243ec4);
-  position: absolute;
-}
-
-.style2 .navbar-area {
-  width: 100%;
-  z-index: 99;
-  -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-    background-image: linear-gradient(45deg, #018bff, #243ec4);
-  position: absolute;
-}
-
 
 .sticky {
   position: fixed;
@@ -2237,8 +2190,6 @@ ol {
   border-radius: 6px;
 }
 
-
-
 .header .navbar-area.sticky .button .btn::before {
   background: #081828;
 }
@@ -2249,7 +2200,7 @@ ol {
 
 .header.style2 .navbar-area.sticky .button .btn {
   border-color: transparent;
-    background: linear-gradient(45deg, #018bff, #243ec4);
+  background: linear-gradient(45deg, #018bff, #243ec4);
   border-color: #fff;
   padding: 15px 10px;
   border-radius: 6px;
@@ -2535,14 +2486,6 @@ ol {
   color: #fff;
   font-size: 14px;
   font-weight: 500;
-  display: block;
-  margin-bottom: 15px;
-}
-
-.hero-area .hero-text h3 {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
   display: block;
   margin-bottom: 15px;
 }
@@ -3097,7 +3040,7 @@ ol {
   width: 30px;
   line-height: 30px;
   color: #fff;
-    background: linear-gradient(45deg, #018bff, #243ec4);
+  background: linear-gradient(45deg, #6831e3, #f528cb);
   border-radius: 8px;
   display: inline-block;
   text-align: center;
@@ -4297,7 +4240,7 @@ ol {
 }
 
 .intro-video-area.style3 .intro-video-play {
-  background-image: url("http://www.scrumtuous.com/assets/video-570x450.jpg");
+  background-image: url("https://via.placeholder.com/570x450");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -4339,7 +4282,7 @@ ol {
 }
 
 .intro-video-area.style4 .intro-video-play {
-  background-image: url("http://www.scrumtuous.com/assets/video-570x450.jpg");
+  background-image: url("https://via.placeholder.com/570x450");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -4373,7 +4316,7 @@ ol {
 
 .intro-video-area .intro-video-play {
   background-color: #F4F7FA;
-  background-image: url("http://www.scrumtuous.com/assets/video-570x450.jpg");
+  background-image: url("https://via.placeholder.com/570x450");
   background-size: cover;
   background-position: center;
   padding: 150px 60px;
@@ -5050,8 +4993,6 @@ ol {
   .section {
     padding: 60px 0px;
   }
-  
-
   p {
     font-size: 13px;
   }
@@ -5198,7 +5139,7 @@ ol {
     margin: 0;
   }
   .navbar-nav .nav-item a {
-    color: #081828;
+    color: #BBBBBB;
     border: 1px solid #eee;
     display: block;
     border-radius: 4px;
