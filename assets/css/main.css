@@ -4240,7 +4240,7 @@ ol {
 }
 
 .intro-video-area.style3 .intro-video-play {
-  background-image: url("https://via.placeholder.com/570x450");
+  background-image: url("/assets/video-570x450.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -4282,7 +4282,7 @@ ol {
 }
 
 .intro-video-area.style4 .intro-video-play {
-  background-image: url("https://via.placeholder.com/570x450");
+  background-image: url("/assets/video-570x450.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -4316,7 +4316,7 @@ ol {
 
 .intro-video-area .intro-video-play {
   background-color: #F4F7FA;
-  background-image: url("https://via.placeholder.com/570x450");
+  background-image: url("/assets/video-570x450.jpg");
   background-size: cover;
   background-position: center;
   padding: 150px 60px;
