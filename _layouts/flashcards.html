@@ -1,0 +1,233 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="milligram.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+        crossorigin="anonymous">
+    <title>Flash Card App</title>
+<style>
+body {
+    padding: 2rem;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: #4e4e4e;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.green {
+    background-color: #084C61;
+}
+
+.red {
+    background-color: #db4d52;
+}
+
+.yellow {
+    background-color: #f9cf3b;
+}
+
+.blue {
+    background-color: #49b0e4;
+}
+
+.purple {
+    background-color: #996ce2;
+}
+
+/* Custom */
+
+.button-white {
+    background-color: white;
+}
+
+.button-white.button-clear {
+    color: #000000;
+    opacity: .2;
+}
+
+.button-large {
+    font-size: 1.4rem;
+    height: 4.5rem;
+    line-height: 4.5rem;
+    padding: 0 2rem;
+}
+
+ul.unstyled {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    transition: transform .5s;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 200px;
+    height: 300px;
+    padding: 4rem;
+    border-radius: 5px;
+    margin: 0 1rem;
+}
+
+.pretext {
+    color: #000000;
+    opacity: .2;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+
+.flex-grid-thirds {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-grid-thirds .col {
+    width: 32%;
+}
+
+.card-text h2 {
+    color: #000000;
+    opacity: .5;
+    font-size: 2.2rem;
+}
+
+.flip-enter-active {
+    transition: all .4s ease;
+}
+
+.flip-enter {
+    transform: rotateY(180deg);
+    opacity: 0;
+}
+
+.flip-leave {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .flex-grid-thirds {
+        display: block;
+    }
+    .flex-grid-thirds .col {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+    <ul>
+      {% for item in page.fruit %}
+        <li>{{ item.name }}, cost: {{ item.cost }}, color: {{ item.color }}</li>
+      {% endfor %}
+    </ul>
+    <div class="container text-center">
+        <h1>flashcards!</h1>
+    </div>
+
+    <div id="flashCardApp" class="container flex-grid-thirds">
+
+        <div v-for="card in cards" v-bind:class="card.colorClass" class="card card-front col">
+            <transition name="flip">
+                <div v-show="!card.flipped" @click="flipCard(card)" class="card-text card-front-text">
+                    <div class="pretext">
+                        Question
+                    </div>
+                    <h2>
+                        {{card.frontText}}
+                    </h2>
+
+                    <button class="button-white button-clear button-large">
+                        FLIP
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </transition>
+
+            <transition name="flip">
+                <div v-show="card.flipped" @click="flipCard(card)" class="card-text card-back-text">
+                    <div class="pretext">
+                        Answer
+                    </div>
+                    <h2>
+                        def
+                    </h2>
+
+                    <button class="button-white button-clear button-large">
+                        FLIP
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </transition>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+        <script src="app.js"></script>
+<script>
+const flashCardApp = new Vue({
+    el: '#flashCardApp',
+    data: {
+        cards: [
+{% for item in page.flashcards %}
+{
+            id: 1,
+            frontText: '{{item.front}}',
+            backText: '{{item.back}}',
+            colorClass: '{{item.color}}',
+            flipped: false
+        },
+{% endfor %}
+
+        {
+            id: 2,
+            frontText: 'Who invented all the parts that are now used for a modern computer?',
+            backText: 'A man by the name of Charles Babbage in 1833.',
+            colorClass: 'yellow',
+            flipped: false
+        },
+        {
+            id: 3,
+            frontText: 'Who invented the "Clarke Calculator"?',
+            backText: 'Edith Clarke in 1925',
+            colorClass: 'blue',
+            flipped: false
+        }]
+    },
+
+    methods: {
+        flipCard: function(card) {
+            card.flipped = !card.flipped;
+        }
+    }
+});
+</script>
+</body>
+
+</html>
