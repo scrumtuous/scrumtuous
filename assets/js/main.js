@@ -23,10 +23,10 @@ Author: GrayGrids
         var sticky = header_navbar.offsetTop;
 
         if (window.pageYOffset > sticky) {
-            header_navbar.classList.add("sticky");
+           header_navbar.classList.add("sticky");
         } else {
-            //header_navbar.classList.remove("sticky");
-        }
+            header_navbar.classList.remove("sticky");
+       }
 
 
 
