@@ -2,7 +2,7 @@
 layout: flashcards
 title:  "Flashcards"
 blurb: "Some AWS Flashcards"
-date:   2022-01-01 01:11:11 +0100
+date:   2022-01-01 12:11:11 -0100
 canonical: http://www.scrumtuous.com/2022/01/01/flashcards.html
 keywords: Flashcards
 flashcards:

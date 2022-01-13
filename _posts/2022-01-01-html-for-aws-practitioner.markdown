@@ -2,7 +2,7 @@
 layout: drag-and-drop
 title:  "HTML for the AWS Exam"
 blurb: "Here is a simple drag and drop code example to help you learn HTML for the AWS Certification exam."
-date:   2022-01-01 08:17:00 -0500
+date:   2022-01-01 011:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/html-for-aws-practitioner.html
 keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
