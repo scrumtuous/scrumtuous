@@ -28,11 +28,9 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 		<ol class="section-ol">
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag the command on the left to the correct option on the right.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When complete, copy all the commands on the right hand side into a text editor like Notepad++.</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>Then run these commands, one by one, in the terminal window.Git Bash works. The Ubuntu </li>
+		<li class="section-li"><i class="lni lni-checkmark"></i>Then run these commands, one by one, in the terminal window.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>Git Bash works. The Ubuntu Terminal window might be a better choice if you're on Linux.</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>Some commands require you to open a second Terminal window. Be on the lookout!</li>
-
-		
+		<li class="section-li"><i class="lni lni-checkmark"></i>Some commands may require you to open a second Terminal window. Be on the lookout!</li>
 		</ol>	
 
 	</div>
