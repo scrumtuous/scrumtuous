@@ -7,11 +7,11 @@ categories:
 canonical: http://www.scrumtuous.com/blog.html
 keywords: Scrumtuous Blog Agile DevOps AWS Certification Scrum
 ---
-	
-			
-<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-6 col-lg-4 order-1 mb-1 mt-1">
+abc
+{% for post in site.posts %}			
+<div style="border: 1px solid #DEDEDE;" class=" col-12 col-sm-12  col-md-6 col-lg-4 mb-1 mt-1">
 
-               {% for post in site.posts %}
+               
                <div  style="border: 1px dashed #6831e3;" class="card mb-1 mt-2">
                   <div class="card-header">
                      <a href="{{ post.url }}">{{ post.title }}</a>
@@ -21,8 +21,9 @@ keywords: Scrumtuous Blog Agile DevOps AWS Certification Scrum
                      <a href="{{ post.url }}" class="btn btn-primary btn-sm" style="background: linear-gradient(45deg, #6831e3, #f528cb);">Check it out</a>
                   </div>
                </div>
-               {% endfor %}
+               
 
 
 
 </div>
+{% endfor %}

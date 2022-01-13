@@ -104,25 +104,25 @@
             <div class="row">
 			
 			
-			
-<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-12  col-md-12 col-lg-12 order-1 order-sm-1 order-lg-1 mb-5 mt-1">
+{% for post in site.posts %}			
+<div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-6 col-md-4 col-lg-3  mb-3 mt-3 d-flex align-items-stretch d-flex flex-column">
 
-               {% for post in site.posts %}
-               <div  style="border: 1px dashed #6831e3;" class="card mb-1 mt-3">
+               
+               <div  style="border: 1px dashed #6831e3;" class="card h-100 mb-1 mt-3">
                   <div class="card-header">
                      <a href="{{ post.url }}">{{ post.title }}</a>
                   </div>
                   <div class="card-body">
                      <p class="card-text">{{ post.blurb }}</p>
-                     <a href="{{ post.url }}" class="btn btn-primary btn-sm" style="background: linear-gradient(45deg, #6831e3, #f528cb);">Check it out</a>
+                     <a href="{{ post.url }}" class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Check it out</a>
                   </div>
                </div>
-               {% endfor %}
+               
 
 
 
 </div>
-
+{% endfor %}
 
             </div>
         </div>
