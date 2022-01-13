@@ -2,9 +2,9 @@
 layout: exam
 title:  "AWS Practitioner Mock Exam Five"
 blurb: "Here are some morepractice exam questions for the AWS Practitioner Cert. Want to get AWS Practitioner certified? Start here.."
-date:   2022-01-15 08:17:00 -0500
+date:   2022-01-12 08:17:00 -0500
 categories: aws exam
-canonical: http://www.scrumtuous.com/aws/exam/2022/01/15/aws-practice-exam-five.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/aws-practice-exam-five.html
 keywords: AWS Mock Exam Practice Amazon Practitioner
 ---
 
