@@ -124,8 +124,8 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="option" data-target="28"><span class="option-data"> ls / -al </span></li>
 <li class="option" data-target="27"><span class="option-data"> docker run -v hello:/world -it ubuntu /bin/bash
  </span></li>
-<li class="option" data-target="29"><span class="option-data"> echo "hello world" > /world/test.txt </span></li>
-
+<li class="option" data-target="29"><span class="option-data"> echo "hello world" &gth; /world/test.txt </span></li>
+<li class="option" data-target="50"><span class="option-data"> MtN1YnoL46Q 7jjcAuEYW9M Ru4a-js4My4</span></li>
 
 </ul>
 </div>		 
@@ -140,12 +140,14 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <ul class="options w-100 p-3">
 <li class="title title-sorted">Sorted</li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="1"> Download my YouTube video </span></li>
+
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> The DockerHub website </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="2a"> Become the super user </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="2a"> You're super! </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="3"> Log into DockerHub with credentials </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="50"> Duck Songs  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="4"> Move to the Works directory </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="5"> Do a directory listing  </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Learn more about the Docker  </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Learn more about the Docker command  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="7"> Get help on the container list command </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="8"> List all your Docker images </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="9"> Wake up an entire OS to say 'Hi' </span></li>
@@ -162,11 +164,11 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="20"> Remove a Docker image  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="21"> Open a Dockerfile in an editor </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="22">  Build a custom image  </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> Run a container that supports Java apps </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> Switch to the root directory </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> Watch out for the Log4J2 virus! </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> Not Jain cuisine </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="25"> Run a JAR inside a container </span></li>
 <li><hr/></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="26"> Create a docker volume </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="26"> Create a (nRT/P) </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="27"> Run a container with a volume attached </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="28"> View a container's mount point </span></li>
 
