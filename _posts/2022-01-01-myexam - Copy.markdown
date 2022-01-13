@@ -1,10 +1,10 @@
 ---
 layout: exam
-title:  "Some Mock AWS Exam Questions"
-blurb: "I'm just testing out my ReactJS application. Want to give it a try? Then take this short mock exam."
+title:  "AWS Empty Exam Template"
+blurb: "Just an empty template."
 date:   2022-01-01 08:17:00 -0500
 categories: aws exam
-canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/myexam.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/javascript-for-aws-practitioner.html
 keywords: Just some practice Jekyll templates for the creation of an AWS certification exam site.
 ---
 
