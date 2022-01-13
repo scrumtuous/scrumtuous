@@ -66,7 +66,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 
 <li class="title title-scrambled">Scrambled</li>
 
-<li class="option" data-target="1"><span class="option-data"> docker run -v $PWD\downloads:/workdir:rw  mikenye/youtube-dl https://www.youtube.com/watch?v=ZkXh9aLkxv0 </span></li>
+<li class="option" data-target="1"><span class="option-data"> docker run -v $PWD:/workdir:rw  mikenye/youtube-dl https://www.youtube.com/watch?v=ZkXh9aLkxv0 </span></li>
 <li class="option" data-target="3"><span class="option-data"> docker login -u {your-docker-id} -p {your-access-token} </span></li>
 <li class="option" data-target="4"><span class="option-data"> cd /home/wasadmin/Works
  </span></li>
