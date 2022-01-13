@@ -107,6 +107,8 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="option" data-target="7"><span class="option-data"> docker ps --help </span></li>
 <li class="option" data-target="13"><span class="option-data"> docker run -it --hostname basic_host ubuntu /bin/bash </span></li>
 
+<li class="option" data-target="50"><span class="option-data"> MtN1YnoL46Q 7jjcAuEYW9M Ru4a-js4My4</span></li>
+
 
 <li><hr/></li>
 <li class="option" data-target="32"><span class="option-data"> cat /world/test.txt </span></li>
@@ -123,7 +125,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="option" data-target="27"><span class="option-data"> docker run -v hello:/world -it ubuntu /bin/bash
  </span></li>
 <li class="option" data-target="29"><span class="option-data"> echo "hello world" &gth; /world/test.txt </span></li>
-<li class="option" data-target="50"><span class="option-data"> MtN1YnoL46Q 7jjcAuEYW9M Ru4a-js4My4</span></li>
+
 
 </ul>
 </div>		 
