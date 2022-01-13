@@ -144,7 +144,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> The DockerHub website </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2a"> You're super! </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="3"> Log into DockerHub with credentials </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="50"> Duck Songs  </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="50"> Got any grapes?  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="4"> Move to the Works directory </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="5"> Do a directory listing  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Learn more about the Docker command  </span></li>
