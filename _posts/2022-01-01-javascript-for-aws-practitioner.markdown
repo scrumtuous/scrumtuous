@@ -77,7 +77,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="option" data-target="4"><span class="option-data">    &lt;/head&gt; </span></li>
 
 <li class="option" data-target="11"><span class="option-data"> &lt;button onclick=&quot;playTheGame(&#39;3&#39;)&quot;&gt; 3 &lt;/button&gt; &amp;nbsp; </span></li>
-
+<li class="option" data-target="77"><span class="option-data"> &lt;p&gt;Be &lt;a href=&quot;http://www.scrumtuous.com&quot;&gt;Scrumtuous!&lt;/a&gt;&lt;/p&gt;</span></li>
 
 
 
@@ -144,7 +144,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="sink"><span class="target w-100" data-accept="3">Webpage title</span></li>
 <li class="sink"><span class="target w-100" data-accept="4">Put something here</span></li>
 <li class="sink"><span class="target w-100" data-accept="5">Start the body</span></li>
-<li class="sink"><span class="target w-100" data-accept="6">Heading</span></li>
+<li class="sink"><span class="target w-100" data-accept="6">Level 3 Heading</span></li>
 <li class="sink"><span class="target w-100" data-accept="7">Prompt for a number</span></li>
 
 <li class="sink"><span class="target w-100" data-accept="9">First button</span></li>
@@ -153,6 +153,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="sink"><span class="target w-100" data-accept="12">Put something here</span></li>
 <li class="sink"><span class="target w-100" data-accept="13">Fifth button</span></li>
 <li class="sink"><span class="target w-100" data-accept="14">Put something here</span></li>
+<li class="sink"><span class="target w-100" data-accept="77">Be Scrumtuous!</span></li>
 <li><hr/></li>
 <li class="sink"><span class="target w-100" data-accept="15">script tag</span></li>
 <li class="sink"><span class="target w-100" data-accept="16">Create a magic number</span></li>
