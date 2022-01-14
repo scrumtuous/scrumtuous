@@ -90,10 +90,10 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
 <li class="sink"><span class="target w-100" data-accept="1">Start your html</span></li>
 <li class="sink"><span class="target w-100" data-accept="2">Put something here</span></li>
 <li class="sink"><span class="target w-100" data-accept="3">Webpage title</span></li>
-<li class="sink"><span class="target w-100" data-accept="4">Put something here</span></li>
+<li class="sink"><span class="target w-100" data-accept="4">End the head section</span></li>
 <li class="sink"><span class="target w-100" data-accept="5">Put something here</span></li>
 <li class="sink"><span class="target w-100" data-accept="6">Put something here</span></li>
-<li class="sink"><span class="target w-100" data-accept="7">You're a tomato!</span></li>
+<li class="sink"><span class="target w-100" data-accept="7">Text and a link!</span></li>
 <li class="sink"><span class="target w-100" data-accept="8">End the body</span></li>
 <li class="sink"><span class="target w-100" data-accept="9">Put something here</span></li>
 </ul>
