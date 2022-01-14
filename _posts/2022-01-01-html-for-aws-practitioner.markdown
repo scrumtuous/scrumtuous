@@ -61,12 +61,12 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
 
 
 <li class="title title-sorted">Unsorted</li>
-<li class="option" data-target="7"><span class="option-data"> &lt;p style=&quot;color:tomato&quot;&gt;I'm a &lt;em&gt;potato&lt;/em&gt;.&lt;/p&gt;</span></li>
+<li class="option" data-target="7"><span class="option-data"> &lt;p&gt;Be &lt;a href=&quot;http://www.scrumtuous.com&quot;&gt;Scrumtuous!&lt;/a&gt;&lt;/p&gt;</span></li>
 <li class="option" data-target="2"><span class="option-data">   &lt;head&gt;</span></li>		
 <li class="option" data-target="9"><span class="option-data">&lt;/html&gt;</span></li>
 <li class="option" data-target="1"><span class="option-data">&lt;html&gt;</span></li>
 <li class="option" data-target="3"><span class="option-data">      &lt;title&gt;Simple Web Page&lt;/title&gt;</span></li>
-<li class="option" data-target="6"><span class="option-data">      &lt;p style=&quot;color: navy&quot;&gt;Hello World!&lt;/p&gt;</span></li>
+<li class="option" data-target="6"><span class="option-data">      &lt;h1 style=&quot;color: navy&quot;&gt;Hello World!&lt;/h1&gt;</span></li>
 <li class="option" data-target="5"><span class="option-data">   &lt;body&gt;</span></li>
 <li class="option" data-target="4"><span class="option-data">   &lt;/head&gt;</span></li>	
 <li class="option" data-target="8"><span class="option-data">   &lt;/body&gt;</span></li>
