@@ -77,7 +77,7 @@ keywords: JavaScript AWS Practitioner Exam HTML Code
 <li class="option" data-target="4"><span class="option-data">    &lt;/head&gt; </span></li>
 
 <li class="option" data-target="11"><span class="option-data"> &lt;button onclick=&quot;playTheGame(&#39;3&#39;)&quot;&gt; 3 &lt;/button&gt; &amp;nbsp; </span></li>
-<li class="option" data-target="77"><span class="option-data"> &lt;p&gt;Be &lt;a href=&quot;http://www.scrumtuous.com&quot;&gt;Scrumtuous!&lt;/a&gt;&lt;/p&gt;</span></li>
+<li class="option" data-target="77"><span class="option-data"> &lt;p style="color:purple; font-weight:bold" &gt;Be &lt;a href=&quot;http://www.scrumtuous.com&quot;&gt;Scrumtuous!&lt;/a&gt;&lt;/p&gt;</span></li>
 
 
 
