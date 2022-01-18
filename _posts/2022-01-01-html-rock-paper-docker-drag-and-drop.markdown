@@ -101,21 +101,20 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 
 <li><hr/></li>
 
-<li class="option" data-target="41"><span class="option-data"> docker login -u scrumtuous -p password  </span></li>
-<li class="option" data-target="42"><span class="option-data"> docker run --name engine1 -p 80:80 -d nginx</span></li>
-<li class="option" data-target="43"><span class="option-data"> docker run --name engine2 -p 88:80 -d nginx</span></li>
-<li class="option" data-target="44"><span class="option-data"> http://localhost:88</span></li>
-<li class="option" data-target="45"><span class="option-data"> FROM nginx
-COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
+
 <li class="option" data-target="46"><span class="option-data"> docker build -t nginxuous . </span></li>
-<li class="option" data-target="47"><span class="option-data"> docker run --name rps01 -p 66:80 -d nginxuous </span></li>
-<li class="option" data-target="48"><span class="option-data"> docker run --name rps02 -p 99:80 -d nginxuous </span></li>
-
-<li class="option" data-target="49"><span class="option-data"> docker tag nginxrps scrumtuous/nginxrps:v1 </span></li>
-
 <li class="option" data-target="50"><span class="option-data"> docker push scrumtuous/nginxrps:v1 </span></li>
 
+<li class="option" data-target="49"><span class="option-data"> docker tag nginxrps scrumtuous/nginxrps:v1 </span></li>
+<li class="option" data-target="42"><span class="option-data"> docker run --name engine1 -p 80:80 -d nginx</span></li>
+<li class="option" data-target="45"><span class="option-data"> FROM nginx
+COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
+<li class="option" data-target="48"><span class="option-data"> docker run --name rps02 -p 99:80 -d nginxuous </span></li>
+<li class="option" data-target="44"><span class="option-data"> http://localhost:88</span></li>
+<li class="option" data-target="47"><span class="option-data"> docker run --name rps01 -p 66:80 -d nginxuous </span></li>
+<li class="option" data-target="41"><span class="option-data"> docker login -u scrumtuous -p password  </span></li>
 <li class="option" data-target="51"><span class="option-data"> docker stop engine1 </span></li>
+<li class="option" data-target="43"><span class="option-data"> docker run --name engine2 -p 88:80 -d nginx</span></li>
 
 </ul>
 </div>		 
@@ -168,17 +167,20 @@ COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
 
 <li><hr/></li>
 
-<li class="sink"><span class="target w-100" data-accept="45">Contents to go into Dockerfile</span></li>
-<li class="sink"><span class="target w-100" data-accept="50">Push your personal image to your DockerHub account</span></li>
-<li class="sink"><span class="target w-100" data-accept="42">Run nginx on port Antropov</span></li>
-
-<li class="sink"><span class="target w-100" data-accept="48">Run your Docker image like it was Wayne Gretzky</span></li>
-<li class="sink"><span class="target w-100" data-accept="44">View nginx in the browser</span></li>
-<li class="sink"><span class="target w-100" data-accept="49">Tag your image with your Docker username</span></li>
-<li class="sink"><span class="target w-100" data-accept="46">Build your own Docker image (dot!) </span></li>
-<li class="sink"><span class="target w-100" data-accept="51">Stop a docker container</span></li>
 <li class="sink"><span class="target w-100" data-accept="41">Login to DockerHub</span></li>
+<li class="sink"><span class="target w-100" data-accept="42">Run nginx on port Antropov</span></li>
 <li class="sink"><span class="target w-100" data-accept="43">Run nginx on port Lindros</span></li>
+<li class="sink"><span class="target w-100" data-accept="44">View nginx in the browser</span></li>
+<li class="sink"><span class="target w-100" data-accept="45">Contents to go into Dockerfile</span></li>
+<li class="sink"><span class="target w-100" data-accept="46">Build your own Docker image (dot!) </span></li>
+<li class="sink"><span class="target w-100" data-accept="47">Run your Docker image like it was Mario Lemieux</span></li>
+<li class="sink"><span class="target w-100" data-accept="48">Run your Docker image like it was Wayne Gretzky</span></li>
+<li class="sink"><span class="target w-100" data-accept="49">Tag your image with your Docker username</span></li>
+<li class="sink"><span class="target w-100" data-accept="50">Push your personal image to your DockerHub account</span></li>
+
+<li class="sink"><span class="target w-100" data-accept="51">Stop a docker container</span></li>
+
+
 
 
 
