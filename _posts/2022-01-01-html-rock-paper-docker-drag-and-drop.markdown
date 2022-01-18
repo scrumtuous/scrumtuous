@@ -168,17 +168,20 @@ COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
 
 <li><hr/></li>
 
-<li class="sink"><span class="target w-100" data-accept="41">Login to DockerHub</span></li>
-<li class="sink"><span class="target w-100" data-accept="42">Run nginx on port Antropov</span></li>
-<li class="sink"><span class="target w-100" data-accept="43">Run nginx on port Lindros</span></li>
-<li class="sink"><span class="target w-100" data-accept="44">View nginx in the browser</span></li>
 <li class="sink"><span class="target w-100" data-accept="45">Contents to go into Dockerfile</span></li>
-<li class="sink"><span class="target w-100" data-accept="46">Build your own Docker image (dot!) </span></li>
-<li class="sink"><span class="target w-100" data-accept="47">Run your Docker image like it was Mario Lemieux</span></li>
-<li class="sink"><span class="target w-100" data-accept="48">Run your Docker image like it was Wayne Gretzky</span></li>
-<li class="sink"><span class="target w-100" data-accept="49">Tag your image with your Docker username</span></li>
 <li class="sink"><span class="target w-100" data-accept="50">Push your personal image to your DockerHub account</span></li>
+<li class="sink"><span class="target w-100" data-accept="42">Run nginx on port Antropov</span></li>
+
+<li class="sink"><span class="target w-100" data-accept="48">Run your Docker image like it was Wayne Gretzky</span></li>
+<li class="sink"><span class="target w-100" data-accept="44">View nginx in the browser</span></li>
+<li class="sink"><span class="target w-100" data-accept="49">Tag your image with your Docker username</span></li>
+<li class="sink"><span class="target w-100" data-accept="46">Build your own Docker image (dot!) </span></li>
 <li class="sink"><span class="target w-100" data-accept="51">Stop a docker container</span></li>
+<li class="sink"><span class="target w-100" data-accept="41">Login to DockerHub</span></li>
+<li class="sink"><span class="target w-100" data-accept="43">Run nginx on port Lindros</span></li>
+
+
+
 </ul>
 
 </div>
