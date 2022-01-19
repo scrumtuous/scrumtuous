@@ -1,6 +1,6 @@
 ---
 layout: drag-and-drop
-title:  "Externalizing CSS, JavaScript and HTML Files Examle"
+title:  "Externalizing CSS, JavaScript and HTML Files Example"
 blurb: "Here's how to externalize JavaScript and CSS from your HTML."
 date:   2022-01-01 10:17:00 -0500
 categories: aws exam
@@ -252,7 +252,7 @@ keywords: HTML CSS JavaScript AWS Certification Practitioner
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="32"> Put something here  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="33"> Guessed to high </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="34"> Put something here  </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="35"> The poridge is just right </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="35"> The porridge is just right </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="36"> Put something here  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="37"> Put something here  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="38"> Put something here  </span></li>
