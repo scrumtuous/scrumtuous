@@ -27,9 +27,9 @@ keywords: AWS Practitioner Exam DevOps Amazon Web Services HTML Code
 		<ol class="section-ol">
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right to sort the scrambled code.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When completed, copy the sorted code into a text editor.</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>Then save your file as index.html on your desktop.</li>
+		<li class="section-li"><i class="lni lni-checkmark"></i>Then save your file as helloworld.html on your desktop.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>Then double click on your index.html file and view your page in a web browser!</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>In production, you'd deploy it to a web server like <a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.1.1/xampp-windows-x64-8.1.1-2-VS16.zip/download">Apache.</a></li>
+		<li class="section-li"><i class="lni lni-checkmark"></i>In production, you'd deploy it to a web server like <a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.1.1/xampp-windows-x64-8.1.1-2-VS16.zip/download">Apache.</a> or <a href="https://www.nginx.com">nginx</a> (pronounced 'Engine X')</li>
 <li class="section-li"><i class="lni lni-checkmark"></i>It's a good idea to <a href="https://html-lint.com/">lint</a> your code when you get it to work.</li>
 		
 		
