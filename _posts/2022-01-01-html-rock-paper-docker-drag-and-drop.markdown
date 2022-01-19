@@ -27,9 +27,9 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 		<ol class="section-ol">
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right to sort the scrambled Rock-Paper-Scissors code.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When completed, copy the Roshambo HTML and JavaScript code into a text editor.</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>Save your HTML file as roshambo.html in a folder named rps.</li>
+		<li class="section-li"><i class="lni lni-checkmark"></i>Save your HTML file as roshambo.html in a folder on your desktop named rps.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>Open your roshambo.html file in Chrome and view your page in a web browser!</li>
-<li class="section-li"><i class="lni lni-checkmark"></i>Create a file named Dockerfile in the same rps folder as roshambo.html</li>
+<li class="section-li"><i class="lni lni-checkmark"></i>Create a file named Dockerfile <b>(no extension)</b> in the same rps folder as roshambo.html</li>
 	<li class="section-li"><i class="lni lni-checkmark"></i>Run the Docker commands from that folder</li>	
 		</ol>	
 
@@ -105,7 +105,7 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 <li class="option" data-target="46"><span class="option-data"> docker build -t nginxuous . </span></li>
 <li class="option" data-target="50"><span class="option-data"> docker push scrumtuous/nginxrps:v1 </span></li>
 
-<li class="option" data-target="49"><span class="option-data"> docker tag nginxrps scrumtuous/nginxrps:v1 </span></li>
+<li class="option" data-target="49"><span class="option-data"> docker tag nginxuous scrumtuous/nginxrps:v1 </span></li>
 <li class="option" data-target="42"><span class="option-data"> docker run --name engine1 -p 80:80 -d nginx</span></li>
 <li class="option" data-target="45"><span class="option-data"> FROM nginx
 COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
