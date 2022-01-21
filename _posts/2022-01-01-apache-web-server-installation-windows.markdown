@@ -7,12 +7,23 @@ categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/apache-web-server-installation-windows.html
 keywords: Apache WebServer HTTP Server AWS
 ---
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+<div class="embed-responsive embed-responsive-16by9">
+<iframe clss="embed-responsive-item"  width="100%" height="100%" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
+    </div>
+  </div>
+</div>
+
 <span class="quiz-wrapper">
 <h1><span class="section-title">Apache Web Server Installation on Windows</span></h1>
 			
-<div class="embed-responsive embed-responsive-16by9">
-<iframe clss="embed-responsive-item" width="100%" height="100%" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-</div>
+
 
 <h2><span class="section-title quiz-wrapper">Installation of Apache on Windows</span></h2>
 
@@ -34,4 +45,5 @@ After you extract the Apache Web Server for Windows zip file, make sure you copy
 Good luck! The installation isn't that hard. Once you're done, run the httpd.exe file, put files into the htdocs folder and everything will be available to you at the localhost address on port 80.
 
 Happy Apache!
+</span>
 </span>
