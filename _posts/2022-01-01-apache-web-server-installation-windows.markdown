@@ -11,7 +11,7 @@ keywords: Apache WebServer HTTP Server AWS
 <h1><span class="section-title">Apache Web Server Installation on Windows</span></h1>
 			
 <div class="embed-responsive embed-responsive-16by9">
-<iframe clss="embed-responsive-item" width="1024" height="576" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe clss="embed-responsive-item" width="100%"  src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 </div>
 
 <h2><span class="section-title quiz-wrapper">Installation of Apache on Windows</span></h2>
