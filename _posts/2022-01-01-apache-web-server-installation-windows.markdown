@@ -10,7 +10,7 @@ keywords: Apache WebServer HTTP Server AWS
 <h1><span class="section-title">Apache Web Server Installation on Windows</span></h1>
 			
 <div class="embed-responsive embed-responsive-16by9">
-<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 </div>
 
 <h2><span class="section-title">Installation of Apache on Windows</span></h2>
