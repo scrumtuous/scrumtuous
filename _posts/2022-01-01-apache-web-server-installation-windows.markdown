@@ -14,7 +14,7 @@ keywords: Apache WebServer HTTP Server AWS
   <div class="row">
     <div class="col-lg-12">
 <div class="embed-responsive embed-responsive-16by9">
-<iframe clss="embed-responsive-item"  width="100%" height="100%" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe clss="embed-responsive-item"  src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
     </div>
   </div>
