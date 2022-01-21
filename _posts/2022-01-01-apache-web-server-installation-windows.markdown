@@ -7,13 +7,13 @@ categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/apache-web-server-installation-windows.html
 keywords: Apache WebServer HTTP Server AWS
 ---
-<h1 class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Apache Web Server Installation on Windows</h1>
+<h1><span class="section-title">Apache Web Server Installation on Windows</span></h1>
 			
 <div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tYPQFztqV4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 </div>
 
-<h2 class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Installation of Apache on Windows</h2>
+<h2><span class="section-title">Installation of Apache on Windows</span></h2>
 
 The installation of the Apache Web Server on Windows isn't straight forward.
 
@@ -26,7 +26,7 @@ In this example I actually download the web server from the Apache Lounge. I'd l
   <figcaption class="figure-caption">How to download and install the Apache Web Server on Windows 10.</figcaption>
 </figure>
 
-<h3 class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Windows Apache Install Errors</h3>
+<h3><span class="section-title">Windows Apache Install Errors</span></h3>
 
 After you extract the Apache Web Server for Windows zip file, make sure you copy the Apache24 folder right to the root of C. If you put it anywhere else, you'll end up with Apache Web Server installation errors about a missing folders.
 
