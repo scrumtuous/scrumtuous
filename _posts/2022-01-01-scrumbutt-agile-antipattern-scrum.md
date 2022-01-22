@@ -5,7 +5,7 @@ blurb: "What is Scrumbutt and why is Scrumbutt and Agile anti-pattern? We'll exp
 date:   2022-01-01 014:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/scrumbutt-agile-antipattern-scrum.html
-keywords: Apache WebServer HTTP Server AWS
+keywords: Scrumbutt scrumbut Scrum Agile Antipattern designpatterns Kanban XP DevOps DevSecOps Management
 ---
 
 <div class="row">
