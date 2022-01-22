@@ -10,7 +10,7 @@ keywords: Apache WebServer HTTP Server AWS
 
 
 
-<div class="container-fluid">
+
   <div class="row">
     <div class="col-lg-12">
 <div class="embed-responsive embed-responsive-16by9">
@@ -18,7 +18,8 @@ keywords: Apache WebServer HTTP Server AWS
 </div>
     </div>
   </div>
-</div>
+
+  
 
 <span class="quiz-wrapper">
 <h1><span class="section-title">Apache Web Server Installation on Windows</span></h1>
@@ -45,5 +46,4 @@ After you extract the Apache Web Server for Windows zip file, make sure you copy
 Good luck! The installation isn't that hard. Once you're done, run the httpd.exe file, put files into the htdocs folder and everything will be available to you at the localhost address on port 80.
 
 Happy Apache!
-</span>
-</span>
+
