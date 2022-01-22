@@ -1,7 +1,7 @@
 ---
 layout: featured-post
 title:  "Dangers of ScrumButt"
-blurb: "What is Scrumbutt and why is Scrumbutt and Agile anti-pattern? We'll explain all the problems with Scrumbutt here quickly.
+blurb: "What is Scrumbutt and why is Scrumbutt and Agile anti-pattern? We'll explain all the problems with Scrumbutt here quickly."
 date:   2022-01-01 014:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/scrumbutt-agile-antipattern-scrum.html
