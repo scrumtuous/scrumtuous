@@ -1,5 +1,5 @@
 ---
-layout: drag-and-drop
+layout: featured-post
 title:  "Installation of Apache Web Server Example"
 blurb: "Need an example of how install the Apache Web Server on Windows? This quick tutorial will get Apache installed in a hurry!"
 date:   2022-01-01 014:17:00 -0500
