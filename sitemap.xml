@@ -1,0 +1,123 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>http://www.scrumtuous.com/</loc>
+  <lastmod>2022-01-23T02:26:46+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/index.html</loc>
+  <lastmod>2022-01-23T02:26:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/blog.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-one.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/2022/01/01/flashcards.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-two.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-three.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-four.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-five.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/scrumbutt-agile-antipattern-scrum.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/apache-web-server-installation-windows.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/S3-AWS-bucket-delete-remove-files.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-for-aws-practitioner.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-rock-paper-docker-drag-and-drop.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-json-aws-exam.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/css-javascript-html-files.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-rock-paper-scissors-roshambo-drag-drop.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/docker-commands-drag-and-drop-tutorial.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/test-exam.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/myexam.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/myexam-Copy.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/javascript-for-aws-practitioner.html</loc>
+  <lastmod>2022-01-23T02:26:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
