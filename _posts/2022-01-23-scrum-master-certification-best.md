@@ -2,7 +2,7 @@
 layout: featured-post
 title:  "Best Scrum Master Certifications to Have"
 blurb: "Here's my latest Scrum video on the best Scrum Master certification to hold."
-date:   2022-01-01 014:17:00 -0500
+date:   2022-01-23 014:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/23/scrum-master-certification-best.html
 keywords: Scrum Master Certification Agile Kanban DevOps DevSecOps Project Management
@@ -19,7 +19,7 @@ keywords: Scrum Master Certification Agile Kanban DevOps DevSecOps Project Manag
     </div>
   </div>
 
-<h2>Certified Scrum Master/h2>
+<h2>Certified Scrum Master</h2>
 
 Here's the video I'll be including in my next article to be published on TechTarget and <a href="">TheServerSide.</a>
 
