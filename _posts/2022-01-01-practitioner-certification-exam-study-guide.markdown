@@ -1,11 +1,11 @@
 ---
 layout: drag-and-drop
-title:  "Installation of Apache Web Server Example"
-blurb: "Need an example of how install the Apache Web Server on Windows? This quick tutorial will get Apache installed in a hurry!"
+title:  "AWS Practitioner Study Guide"
+blurb: "Here's an AWS Practitioner Study Guide I'm currently working on."
 date:   2022-01-01 014:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/practitioner-certification-exam-study-guide.html
-keywords: Apache WebServer HTTP Server AWS
+keywords: AWS Practitioners Study Guide
 ---
 
 
