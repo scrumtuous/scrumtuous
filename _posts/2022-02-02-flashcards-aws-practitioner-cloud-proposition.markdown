@@ -13,7 +13,8 @@ keywords: Flashcards AWS Practitioner Certification 1.1 Benefits Cloud
 
 
 <div id="app" style="background-color: silver; color: #f1f1f1; font-size: 1.5REM; padding: 10px 10px 10px 10px;" 
-data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [1,2,3,4,5,6,7,8,9] } }'></div> 
+data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [1,2,3,4,5,6,7,8,9,10,11,12,14,13,14] } }'></div> 
+
 
 <span class="wow fadeInDown" data-wow-delay=".2s">Click-n-drag for hints: <span class="" style=" color:white">security, reliability, </span></span>
 
