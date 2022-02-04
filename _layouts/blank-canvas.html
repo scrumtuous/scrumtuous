@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+	{% include head-common.html %}  
+     
+	{% if page.canonical %}
+	<link rel="canonical" href="{{ page.canonical }}" />
+	{% else %}
+	<!-- This is the else for if canonical -->	   
+	{% endif %}
+
+	{% if page.blurb %}
+	<meta name="description" content="{{ page.blurb }}"/>   
+	{% else %}
+	<meta name="description" content="Learn Scrum. Master the cloud. Get AWS certified. Improve your DevOps career."/>   
+	{% endif %}
+	   
+	{% if page.keywords %}
+	<link rel="keywords" content="{{ page.keywords }}" />
+	{% else %}
+	<meta name="keywords" content="Scrumtuous, AWS, Certification, Scrum, Agile, Cloud, Practitioner, Flashcards, Mock exam, Practice exam, study guide"/>	   
+	{% endif %}
+	   
+	<title>{{ page.title }}</title>  
+
+	{% include boostrap-css.html %}
+	{% include style-common.html %}  
+	
+
+	   
+   </head>
+	   
+   <body>
+      <div class="container">
+         <div class="row">
+		{% include navigation.html %}  
+         </div>
+
+		 
+		 {{content}}
+		 
+		 
+      </div>
+{% include bootstrap-min.html %}
+   </body>
+</html>
