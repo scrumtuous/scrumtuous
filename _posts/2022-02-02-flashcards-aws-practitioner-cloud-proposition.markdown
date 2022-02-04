@@ -16,5 +16,5 @@ keywords: Flashcards AWS Practitioner Certification 1.1 Benefits Cloud
 data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [1,2,3,4,5,6,7,8,9,10,11,12,14,13,14] } }'></div> 
 
 
-<span class="wow fadeInDown" data-wow-delay=".2s">Click-n-drag for hints: <span class="" style=" color:white">security, reliability, </span></span>
+<span class="wow fadeInDown" data-wow-delay=".2s">Click-n-drag for hints: <span class="" style=" color:white">Security, Reliability, High Availability, Agility, Pay-as-you-go, Elasticity, Scalability, Economies of Scale, Global Reach, Right-Sized Architecture</span></span>
 
