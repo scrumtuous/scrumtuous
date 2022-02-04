@@ -1,0 +1,15 @@
+When and IAM user signs into the AWS console, they have to provide a difficult to remember 12 digit Account ID.
+
+To help simplify the life of your users, create an alias for the account ID.
+
+To do this, log in as an administrative user.
+
+Click on the IAM dashboard.
+
+Then create an account Alias. My account alias will be scrumtuous
+
+Save your changes and log out. 
+
+The next time a user logs in, rather than typing in that long, difficult to remember, 12 digit number, all they have to do is remember the alias.
+
+And that's how you map an alias to you AWS account ID.

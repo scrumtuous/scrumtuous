@@ -43,7 +43,7 @@ In this example I actually download the web server from the Apache Lounge. I'd l
 
 After you extract the Apache Web Server for Windows zip file, make sure you copy the Apache24 folder right to the root of C. If you put it anywhere else, you'll end up with Apache Web Server installation errors about a missing folders.
 
-Good luck! The installation isn't that hard. Once you're done, run the httpd.exe file, put files into the htdocs folder and everything will be available to you at the localhost address on port 80.
+Good luck! The <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Install-Apache-Web-Server-24-Windows-10-ServerRoot-Error">Apache install on Windows isn't that hard. Once you're done, run the httpd.exe file, put files into the htdocs folder and everything will be available to you at the localhost address on port 80.
 
 Happy Apache!
 
