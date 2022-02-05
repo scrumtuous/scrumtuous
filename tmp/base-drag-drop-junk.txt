@@ -1,0 +1,26 @@
+<li class="option" data-target="1"><span class="option-data"> OpEx </span></li>
+<li class="option" data-target="2"><span class="option-data"> CapEx </span></li>
+<li class="option" data-target="3"><span class="option-data"> On Prem Operations</span></li>
+<li class="option" data-target="4"><span class="option-data"> Benefits of Automation </span></li>
+<li class="option" data-target="5"><span class="option-data"> Managed Service </span></li>
+<li class="option" data-target="6"><span class="option-data"> Design for Failure </span></li>
+<li class="option" data-target="7"><span class="option-data"> Monolithic architectures </span></li>
+<li class="option" data-target="8"><span class="option-data"> Parallel Computing </span></li>
+<li class="option" data-target="9"><span class="option-data"> RDS </span></li>
+<li class="option" data-target="10"><span class="option-data"> ECS </span></li>
+<li class="option" data-target="11"><span class="option-data"> EKS </span></li>
+<li class="option" data-target="12"><span class="option-data"> DynamoDB </span></li>
+
+
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="1"> Day to day expenses like salaries, rent and utilities </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> Long term expenses like buildings, hardware and servers </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="3"> Servers and data centers located in a company's building or headquarters   </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="4"> Repeatability, Efficiency and Consistency </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="5"> System where AWS performs all software patches and updates </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Anticipating and architecting around system errors  </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="7"> Tightly coupled apps with many 'single points of failure' </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="8"> Splitting a large work item across multiple processes or processors </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="9"> Amazon's managed relational database service </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="10"> Amazon's managed container service </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="11"> Amazon's managed Kubernetes service </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="12"> Amazon's NoSQL database </span></li>
