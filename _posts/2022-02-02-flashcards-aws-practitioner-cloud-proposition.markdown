@@ -8,8 +8,21 @@ keywords: Flashcards AWS Practitioner Certification 1.1 Benefits Cloud
 categories: aws exam
 ---
 
+
+
+
+
+
+
+
 <span class="wow fadeInDown" data-wow-delay=".2s">AWS Flashcards: Cloud Essentials</span>
 <h2 class="wow fadeInUp" data-wow-delay=".4s">Test Your Cloud Essentials know-how</h2>
+
+
+
+
+
+
 
 
 <div id="app" style="background-color: silver; color: #f1f1f1; font-size: 1.5REM; padding: 10px 10px 10px 10px;" 
