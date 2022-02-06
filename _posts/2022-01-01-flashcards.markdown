@@ -3,9 +3,9 @@ layout: flashcards
 title:  "Sample Flashcards"
 blurb: "Some AWS Flashcards"
 date:   2022-01-01 12:11:11 -0100
-canonical: http://www.scrumtuous.com/2022/01/01/flashcards.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/flashcards.html
 keywords: Flashcards
-
+categories: aws exam
 ---
 
 

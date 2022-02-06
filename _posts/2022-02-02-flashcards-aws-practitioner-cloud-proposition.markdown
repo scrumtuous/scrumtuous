@@ -3,9 +3,9 @@ layout: flashcards
 title:  "AWS Flashcards on Cloud Computing Benefits"
 blurb: "These AWS Flashcards will reinforce your understanding of AWS cloud computing benefits, section 1.1 of the AWS Practitioner certification."
 date:   2022-02-02 12:11:11 -0100
-canonical: http://www.scrumtuous.com/2022/02/02/flashcards-aws-practitioner-cloud-proposition.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-practitioner-cloud-proposition.html
 keywords: Flashcards AWS Practitioner Certification 1.1 Benefits Cloud
-
+categories: aws exam
 ---
 
 <span class="wow fadeInDown" data-wow-delay=".2s">AWS Flashcards: Cloud Essentials</span>

@@ -3,9 +3,9 @@ layout: flashcards
 title:  "AWS Flashcards on Cloud Economics & Design"
 blurb: "Learn sections 1.2 and 1.3 of the Practitioner Exam with these AWS Flashcards on cloud economics, AWS design principles and topics like CapEx, OpEx, 'think parallel' and 'design for failure.'"
 date:   2022-02-02 12:11:11 -0100
-canonical: http://www.scrumtuous.com/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html
 keywords: Flashcards AWS Practitioner Certification 1.3 1.2 Cloud Economics Design Principles
-
+categories: aws exam
 ---
 
 <span class="wow fadeInDown" data-wow-delay=".2s">AWS Flashcards: Cloud Economics & Design Principles</span>

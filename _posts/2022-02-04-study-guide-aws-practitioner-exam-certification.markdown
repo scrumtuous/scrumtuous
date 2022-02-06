@@ -16,22 +16,7 @@ keywords: AWS Practitioner Study Guide Exam Certification
   <div class="accordion-item">
     <h2 class="accordion-header" id="headingOne">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        AWS Study Guide Chapter 1: The Hype
-      </button>
 
-	  <button type="button" class="btn btn-sm btn-primary  ms-2 mt-2 mb-2">
-		Flashcards <span class="badge bg-secondary">2</span>
-	  </button>
-	  <button type="button" class="btn  btn-sm btn-primary mt-2 mb-2">
-		Drag-n-Drops <span class="badge bg-secondary">2</span>
-	  </button>	  
-	  <button type="button" class="btn  btn-sm btn-primary mt-2 mb-2">
-		Exams <span class="badge bg-secondary">2</span>
-	  </button>	 
-
-	  <button type="button" class="btn  btn-sm btn-primary mt-2 mb-2">
-		Videos <span class="badge bg-secondary">3</span>
-	  </button>	 	  
 	  
 
     </h2>
@@ -83,7 +68,7 @@ keywords: AWS Practitioner Study Guide Exam Certification
 	  
 	  
     <label class="list-group-item d-flex gap-2">
-	<a href="/2022/02/02/flashcards-aws-opex-vs-capex-cloud-economics.html">
+	<a href="/2022/02/02/aws/exam/flashcards-aws-opex-vs-capex-cloud-economics.html">
 	<input class="form-check-input flex-shrink-0" type="checkbox" value="">
       <span>
         Task 4: OpEx vs CapEx AWS Flashcards
@@ -108,7 +93,7 @@ keywords: AWS Practitioner Study Guide Exam Certification
 	
 
 	<label class="list-group-item d-flex gap-2">
-	<a href="/2022/02/02/flashcards-aws-practitioner-cloud-proposition.html">
+	<a href="/2022/02/02/aws/exam/flashcards-aws-practitioner-cloud-proposition.html">
 	<input class="form-check-input flex-shrink-0" type="checkbox" value="">
       <span>
         Task 6: Value Proposition AWS Flashcards
@@ -120,7 +105,7 @@ keywords: AWS Practitioner Study Guide Exam Certification
 	
 
 	<label class="list-group-item d-flex gap-2">
-	<a href="/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html">
+	<a href="/2022/02/02/aws/exam/flashcards-aws-cloud-economics-design-opex-capex-exam.html">
 	<input class="form-check-input flex-shrink-0" type="checkbox" value="">
       <span>
         Task 7: AWS Cloud Concepts Flashcards

@@ -23,7 +23,7 @@ keywords: AWS Design Principles microservices parallel failure economics Practio
 	<div class="col-xs-12 col-sm-6 ">
 
 		<h2 class="mt-2 mb-3" >Here's your drag-and-drop, AWS study-guide assignment.</h2>
-<p class="mb-3 bt-4">If you want to pass the <a href="https://aws.amazon.com/certification/">AWS Certification exams</a>, you need to know about cloud economis, OpEx, CapEx, design principles and managed services. This drag and drop exercise will get you up to speed on the basics.</p>
+<p class="mb-3 bt-4">If you want to pass the <a href="https://aws.amazon.com/certification/">AWS Certification exams</a>, you need to know about cloud economics, OpEx, CapEx, design principles and managed services. This drag and drop exercise will get you up to speed on the basics.</p>
 		<ol class="section-ol">
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right .</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When completed, all of the option on the left should be used.</li>

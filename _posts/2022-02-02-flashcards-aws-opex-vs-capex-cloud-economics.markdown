@@ -3,9 +3,9 @@ layout: flashcards
 title:  "OpEx vs CapEx Examples"
 blurb: "Learn the difference between OpEx and CapEx. These fun flashcards will help reinforce your understanding of these economic terms."
 date:   2022-02-02 12:11:11 -0100
-canonical: http://www.scrumtuous.com/2022/02/02/flashcards-aws-opex-vs-capex-cloud-economics.html
+canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-opex-vs-capex-cloud-economics.html
 keywords: Flashcards AWS Practitioner Certification OpEx CapEx
-
+categories: aws exam
 ---
 
 <span class="wow fadeInDown" data-wow-delay=".2s">OpEx vs CapEx for the AWS Exam</span>

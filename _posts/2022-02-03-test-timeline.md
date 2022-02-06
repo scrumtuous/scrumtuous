@@ -1,5 +1,5 @@
 ---
-layout: timeline
+layout: guide-from-blog
 title:  "Timeline Test"
 blurb: "This is a test of the timeline layout."
 date:   2022-02-03 08:17:00 -0500
