@@ -1,6 +1,6 @@
 ---
 layout: exam
-title:  "AWS Cloud Concepts & Benefits Practice Exam"
+title:  "AWS TCO and Design Principles Exam"
 blurb: "This AWS practice exam will test you on Practitioner Exam objectives 1.2 and 1.3 on Cloud economics, TCO and architecture design patterns."
 
 date:   2022-02-02 08:17:00 -0500
