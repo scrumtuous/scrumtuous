@@ -9,127 +9,187 @@
 
 <url>
   <loc>http://www.scrumtuous.com/</loc>
-  <lastmod>2022-01-29T02:28:06+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:40+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/index.html</loc>
-  <lastmod>2022-01-29T02:28:06+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:40+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/practitioner/practice-exams-mock-tests.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/practitioner/exam-flashcards.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/practitioner/exam-drag-drop-tutorials.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/practitioner/exam-study-guide.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/blog.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-one.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/aws-exam-cloud-economics-tco-licensing-costs-design.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.scrumtuous.com/2022/01/01/flashcards.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/28/ssh-key-config-git-github-create.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/23/scrum-master-certification-best.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/aws-exam-cloud-concepts-benefits-business-value.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-two.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-three.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-one.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-four.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-five.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/scrumbutt-agile-antipattern-scrum.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/practitioner-certification-exam-study-guide.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/apache-web-server-installation-windows.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/S3-AWS-bucket-delete-remove-files.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-for-aws-practitioner.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-rock-paper-docker-drag-and-drop.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-json-aws-exam.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/css-javascript-html-files.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-rock-paper-scissors-roshambo-drag-drop.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/docker-commands-drag-and-drop-tutorial.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/test-exam.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/myexam.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/myexam-Copy.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-responsibility-model-security-of-cloud-1.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-responsibility-model-security-in-cloud-2.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-opex-vs-capex-cloud-economics.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/flashcards-benefits-of-cloud-computing.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/dnd-aws-resources-security-support-nacl-advisor-waf.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/dnd-aws-cloud-security-compliance-aes-socs-hippa.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/aws-cloud-economics-design-principles-drag-drop.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/02/02/aws-cloud-benefits-value-proposition-drag-drop.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-for-aws-practitioner.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-rock-paper-docker-drag-and-drop.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-json-aws-exam.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/css-javascript-html-files.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-rock-paper-scissors-roshambo-drag-drop.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/docker-commands-drag-and-drop-tutorial.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/javascript-for-aws-practitioner.html</loc>
-  <lastmod>2022-01-29T02:28:09+00:00</lastmod>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/28/ssh-key-config-git-github-create.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/23/scrum-master-certification-best.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/scrumbutt-agile-antipattern-scrum.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/apache-web-server-installation-windows.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.scrumtuous.com/aws/exam/2022/01/01/S3-AWS-bucket-delete-remove-files.html</loc>
+  <lastmod>2022-02-07T04:23:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 
