@@ -1,5 +1,5 @@
 ---
-layout: all-exams
+layout: answer
 title: "This AWS product is a deployment service that automates ap"
 blurb: "The correct answer is AWS CodeDeploy. CodeDeploy is a deployment service that automates application deployments to Amazon EC2 instances, on-premises inst"
 quid: 252
