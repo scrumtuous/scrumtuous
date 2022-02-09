@@ -1,7 +1,7 @@
 ---
 layout: drag-and-drop
 title:  "AWS Practitioner Exam: Cloud Benefits Drag and Drop Challenge"
-blurb: "Here's a quick way to master section one of the AWS Practitioner Exam. Domain 1 is Cloud Concepts. This fun challenge tests you on the AWS Cloud and its value proposition."
+blurb: "Here's a quick way to master Section 1 of the AWS Practitioner Exam. Domain 1 is Cloud Concepts. Do you know the AWS value proposition?"
 date:   2022-02-02 10:20:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/aws-cloud-benefits-value-proposition-drag-drop.html

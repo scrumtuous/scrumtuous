@@ -1,7 +1,7 @@
 ---
 layout: drag-and-drop
 title:  "AWS Exam Cloud Security and Compliance Concepts Drag and Drop"
-blurb: "How do you define AWS security and compliance concepts, including the use of logs, CloudWatch, AWS Config and least privileged access? This drag and drop exercise will help you pass related AWS exam questions."
+blurb: "Learn how to define AWS security and compliance concepts, including the use of logs, CloudWatch, AWS Config and least privileged access."
 date:   2022-02-02 10:21:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/dnd-aws-cloud-security-compliance-aes-socs-hippa.html

@@ -1,7 +1,7 @@
 ---
 layout: drag-and-drop
 title:  "AWS Practitioner Exam: Cloud Economics and Design Principles Drag and Drop"
-blurb: "Learn sections 1.2 & 1.3 of the AWS practioner exam by completing this fun, drag and drop lesson on AWS Cloud Economics and Design Principles like microservices, parallel computing and designing for failure."
+blurb: "Learn sections 1.2 & 1.3 of the AWS practioner exam by completing this lesson on microservices, parallel computing and designing for failure."
 date:   2022-02-02 10:21:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/02/02/aws-cloud-economics-design-principles-drag-drop.html
