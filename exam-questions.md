@@ -120,11 +120,11 @@ layout: null
                 
                <div  style="border: 1px dashed #6831e3;" class="card h-100 mb-1 mt-3">
                   <div class="card-header">
-                     <a href="{{ question.quid }}">Exam Question #{{ question.quid }}</a>
+                     <a href="/aws/practitioner/exam/dumps/question/answer-{{ question.quid }}.html">Exam Question #{{ question.quid }}</a>
                   </div>
                   <div class="card-body">
                      <p class="card-text">{{ question.query | truncate:100 }}</p>
-                     <a href="{{ question.quid }}" class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Check it out</a>
+                     <a href="/aws/practitioner/exam/dumps/question/answer-{{ question.quid }}.html" class="btn btn-primary btn-sm " style="background: linear-gradient(45deg, #6831e3, #f528cb);">Check it out</a>
                   </div>
                </div> 
                

@@ -1,0 +1,6 @@
+---
+layout: all-exams
+title: "Which of the following would qualify as a CloudTrail Insig"
+blurb: "CloudTrail Insights use AI and machine learning to discover anomalies in how your account is being used. Unusual resource provisioning, IAM actions or a l"
+quid: 44
+---

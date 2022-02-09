@@ -1,0 +1,7 @@
+---
+layout: all-exams
+title: "Data stored in the 'durable storage' class of Amazon S3 is"
+blurb: ""If you store 10,000 objects in S3, you may lose on every 10 million years or so." That is how reliable S3 storage is. 
+Note that reliability is differe"
+quid: 289
+---
