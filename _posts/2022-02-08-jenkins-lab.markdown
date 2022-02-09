@@ -18,6 +18,6 @@ roundbubble: "AWS Flashcards"
 headingtwo: "Check out our extensive collection of AWS Flashcards"
 flashcardtext: "There's a <em>hidden</em> click and drag section below for hints."
 ---
-<a href="/aws/practitioner/exam-questions-and-answers.html">all answers</a>
+
 
  

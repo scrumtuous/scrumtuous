@@ -46,7 +46,7 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
 <p>Or, I'd love to hear your feedback on my Scrumbutt article... but only if it's immediately actionable.</p>
 
 <p>Okay, I'll stop now.</p>
-
+<a href="/aws/practitioner/exam-questions-and-answers.html">all answers</a>
   </div>
 </div>
 
