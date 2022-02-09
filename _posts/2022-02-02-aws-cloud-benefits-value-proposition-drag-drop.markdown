@@ -28,7 +28,7 @@ keywords: AWS Cloud Value Proposition Objective Drag-n-Drop Domain 1
 		<li class="section-li"><i class="lni lni-checkmark"></i>Drag from the left to the right .</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>When completed, all of the option on the left should be used.</li>
 		<li class="section-li"><i class="lni lni-checkmark"></i>An option on the left can only be used once.</li>
-		<li class="section-li"><i class="lni lni-checkmark"></i>Once completed, pat yourself on the back!</li>	
+		<li class="section-li"><i class="lni lni-checkmark"></i>Once completed, pat yourself on the back<a href="/aws/practitioner/exam-questions-and-answers.html">!</a></li>	
 		</ol>	
 
 	</div>
