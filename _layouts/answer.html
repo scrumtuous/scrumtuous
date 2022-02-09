@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+	
+	
+	{% include head-common.html %} 
+	
+	
+	
+	
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>{{ page.title }}</title>
+
+	<!-- React Code -->	
+	
+<link href="/flashcards/static/css/main.86d29117.css" rel="stylesheet">
+<link rel="apple-touch-icon" href="/flashcards/logo192.png" />
+<link rel="manifest" href="/exam/manifest.json" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- Web Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="/assets/css/animate.css" />
+    <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+	
+	{% if page.canonical %}
+	<link rel="canonical" href="{{ page.canonical }}" />
+	{% else %}
+	<!-- This is the else for if canonical -->	   
+	{% endif %}
+	
+	<!-- canonical attempt: {{ page.title }} -->
+	{% if page.blurb %}
+	<meta name="description" content="{{ page.blurb }}"/>   
+	{% else %}
+	<meta name="description" content="Quickly learn to code for certification exams with these fun drag and drop examples."/>   
+	{% endif %}
+
+	{% if page.keywords %}
+	<link rel="keywords" href="{{ page.keywords }}" />
+	{% else %}
+	<meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>	   
+	{% endif %}
+	
+			   <style>
+         html { font-size: 12pt; }	
+         h1 { font-size: 1.50em; }
+         h2 { font-size: 1.25em; }
+         h3 { font-size: 1.1em; }
+         h4 { font-size: 1.05em; }
+         h5 { font-size: .83em; }
+         h6 { font-size: .75em; }
+         a, u {text-decoration: none; color:#0d47a1}  
+         a:hover {
+         background-color: #f9fbfd; color #4285F4;
+         }
+         .header, .footer {
+         background: white;
+         text-align: center;
+         }
+         .main {
+         background: white;
+         text-align: left;
+         }
+         .aside-1 {
+         background: white;
+         }
+         .aside-2 {
+         background: white;
+         }
+      </style>
+
+</head>
+
+<body>
+{% include navigation.html %} 
+
+
+
+
+
+<section class="our-achievement style2 section" >
+	<div class="container" >
+	
+<div class="row x" style="margin:0; padding:0">			
+	<div class="col-12 section-title style2 align-center gray-bg mt-5 mb-0 padding:0">
+	<span class="wow fadeInDown" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">
+	<h1 style="color:white">AWS Practitioner Questions & Answers</h1>
+	</span>
+	</div>
+</div>	
+	
+
+	
+<div class="row y" style="margin:0; padding:0">
+
+<div style="" class="main col col-12 col-sm-12 col-md-9 col-lg-8 order-1 order-sm-2 order-lg-1 mb-5 mt-1">
+{% for question in site.data.practitioner %}
+{% if question.quid  == page.quid %}
+  <div class="card mt-3">
+    <div class="card-header d-flex justify-content-between" id="questionNumber">
+      Question #{{question.quid}}
+    </div>
+    <div class="card-body">
+      <div class="card-body">
+        <h3 class="card-title" id="query"> 
+          {{question.query}}
+        </h3>
+        <div>
+          <input class="form-check-input  option-radio"/>
+          <label class="form-check-label">
+            {{question.options[0].text}}
+          </label>
+        </div>
+		
+        <div>
+          <input class="form-check-input  option-radio"/>
+          <label class="form-check-label">
+            {{question.options[1].text}}
+          </label>
+        </div>		
+		
+        <div>
+          <input class="form-check-input  option-radio" checked/>
+          <label class="form-check-label">
+            {{question.options[2].text}}
+          </label>
+        </div>		
+		
+        <div>
+          <input class="form-check-input  option-radio"/>
+          <label class="form-check-label">
+            {{question.options[3].text}}
+          </label>
+        </div>		
+		
+      </div>
+    </div>
+  </div>
+
+  
+    <div class="card mt-3">
+    <div class="card-header d-flex justify-content-between" id="questionNumber">
+      Answer
+    </div>
+    <div class="card-body">
+      <div class="card-body">
+        <h3 class="card-title" id="query">
+         
+        </h3>
+	 {{question.answer}}
+		
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+  {% endfor %}
+
+</div>
+			
+<div style="" class="main col col-12 col-sm-12 col-md-3 col-lg-4 order-2 order-sm-2 order-lg-2 mb-5 mt-1">
+
+<div class="card mt-3">
+        <div class="card-header d-flex justify-content-between">Study Hard</div>
+        <div class="card-body">
+
+			<img src="/assets/exam-is-coming.jpg" alt="AWS Study Guide" class="img-fluid mx-auto d-block img-thumbnail rounded ">
+
+         </div>
+      </div>
+	  
+	  <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between">No Cheat Policy</div>
+
+          <div class="card-body">
+			<img src="/assets/louder-uipath-exam-dump.jpg" alt="AWS Braindump Policy" class="img-fluid mx-auto d-block img-thumbnail rounded ">
+          </div>
+
+      </div>
+
+</div>	
+					
+</div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+	
+{% include footer2.html %} 
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top style2 btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/count-up.min.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/tiny-slider.js"></script>
+    <script src="/assets/js/glightbox.min.js"></script>
+    <script src="/assets/js/imagesloaded.min.js"></script>
+    <script src="/assets/js/isotope.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script type="text/javascript">
+        //========= glightbox
+        GLightbox({
+            'href': 'https://www.youtube.com/watch?v=r44RKWyfcFw&fbclid=IwAR21beSJORalzmzokxDRcGfkZA1AtRTE__l5N4r09HcGS5Y6vOluyouM9EM',
+            'type': 'video',
+            'source': 'youtube', //vimeo, youtube or local
+            'width': 900,
+            'autoplayVideos': true,
+        });
+
+        //======== Hero Slider
+        var slider = new tns({
+            container: '.hero-slider',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 0,
+            items: 1,
+            nav: false,
+            controls: true,
+            controlsText: [
+                '<i class="lni lni-chevron-left"></i>',
+                '<i class="lni lni-chevron-right"></i>'
+            ],
+            responsive: {
+                1200: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                0: {
+                    items: 1,
+                }
+
+            }
+        });
+        //======== Testimonial Slider
+        var slider = new tns({
+            container: '.testimonial-slider',
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            items: 1,
+            nav: true,
+            controls: false,
+            controlsText: [
+                '<i class="lni lni-arrow-left prev"></i>',
+                '<i class="lni lni-arrow-right next"></i>'
+            ],
+            responsive: {
+                1200: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                0: {
+                    items: 1,
+                }
+
+            }
+        });
+
+        //============== isotope masonry js with imagesloaded
+        imagesLoaded('#container', function () {
+            var elem = document.querySelector('.grid');
+            var iso = new Isotope(elem, {
+                // options
+                itemSelector: '.grid-item',
+                masonry: {
+                    // use outer width of grid-sizer for columnWidth
+                    columnWidth: '.grid-item'
+                }
+            });
+
+            let filterButtons = document.querySelectorAll('.portfolio-btn-wrapper button');
+            filterButtons.forEach(e =>
+                e.addEventListener('click', () => {
+
+                    let filterValue = event.target.getAttribute('data-filter');
+                    iso.arrange({
+                        filter: filterValue
+                    });
+                })
+            );
+        });
+    </script>
+
+<script defer="defer" src="/flashcards/static/js/main.9f45f52c.js"></script>
+
+
+</body>
+
+</html>
