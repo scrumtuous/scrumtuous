@@ -113,8 +113,7 @@ layout: null
 			
 					
 			
-{% for question in site.data.practitioner %}
-{% if question.quid  == 0 %}		
+	
 <div style="border: 1px solid #DEDEDE;" class="main col col-12 col-sm-6 col-md-4 col-lg-3  mb-3 mt-3 d-flex align-items-stretch d-flex flex-column">
 
                 
@@ -132,8 +131,7 @@ layout: null
 
 
 </div>
-{% endif %}
-{% endfor %}
+
 
             </div>
         </div>
