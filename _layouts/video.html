@@ -6,17 +6,14 @@
 	
 	{% include head-common.html %} 
 	
-	
-	
-	
-    <meta charset="utf-8" />
+
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>{{ page.title }}</title>
 
 	<!-- React Code -->	
 	
-<link href="/flashcards/static/css/main.86d29117.css" rel="stylesheet">
-<link rel="apple-touch-icon" href="/flashcards/logo192.png" />
+<!-- link href="/flashcards/static/css/main.86d29117.css" rel="stylesheet" -->
+
 <link rel="manifest" href="/exam/manifest.json" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,7 +30,7 @@
     <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
     <link rel="stylesheet" href="/assets/css/animate.css" />
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
+
     <link rel="stylesheet" href="/assets/css/main.css" />
 	
 	{% if page.canonical %}
@@ -93,7 +90,7 @@
 
 
     <!-- Start Intro Video Area -->
-    <section class="intro-video-area style4">
+    <section class="our-achievement style4">
         <div class="container">
             <div class="video-inner ">
 			
@@ -114,11 +111,11 @@
 						<span class="wow fadeInDown " data-wow-delay=".2s" style="padding:3; margin:5"></span>
 
 <h1>{{page.video-title}}</h1>
-
+<center>
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/{{page.embed-code}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{page.embed-code}}" frameborder="0"  ></iframe>
 </div>
-
+</center>
 <div style="background:#FEFEFE;  text-align: left;">
 
 {{content}}
@@ -145,17 +142,7 @@
 
 
 						
-<span class="wow fadeInDown mt-5" data-wow-delay=".2s" style="padding:3; margin:5"><h3>{{page.roundbubble}}</h3></span>
-<h2 class="wow fadeInUp mt-5" data-wow-delay=".4s" style="padding:0; margin:3">{{page.headingtwo}}</h2>
-<p class="wow fadeInUp"  style="padding:0; margin:1">{{page.flashcardtext}}</p>
-
-
-
-
-<div id="app" style="background-color: silver; color: #f1f1f1; font-size: 1.5REM; padding: 10px 10px 10px 10px;" 
-data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [{{page.cardnumbers}}] } }'></div> 
-
-<span class="wow fadeInDown mt-4" data-wow-delay=".2s">Click and drag for hints: <span class="" style=" color:white">{{page.hints}}</span></span>						
+					
 						
 						
 						
@@ -206,6 +193,12 @@ data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [{{page.cardnumbers}}
                         <span class="wow fadeInDown" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;"><h1 style="color:white">More Exams & Flashcards!</h1></span>
 
                     </div>
+					
+					
+
+					
+					
+					
 					{% include exams-timeline.html %} 
 
                      {% include flashcards-timeline.html %}
@@ -277,7 +270,7 @@ data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [{{page.cardnumbers}}
     <script src="/assets/js/imagesloaded.min.js"></script>
     <script src="/assets/js/isotope.min.js"></script>
     <script src="/assets/js/main.js"></script>
-    <script type="text/javascript">
+    
         //========= glightbox
         GLightbox({
             'href': 'https://www.youtube.com/watch?v=r44RKWyfcFw&fbclid=IwAR21beSJORalzmzokxDRcGfkZA1AtRTE__l5N4r09HcGS5Y6vOluyouM9EM',
@@ -368,7 +361,7 @@ data-name="AWS Flashcards" data-param='{ "fid" : { "$in" : [{{page.cardnumbers}}
         });
     </script>
 
-<script defer="defer" src="/flashcards/static/js/main.9f45f52c.js"></script>
+<!-- script defer="defer" src="/flashcards/static/js/main.9f45f52c.js"></script -->
 
 
 </body>

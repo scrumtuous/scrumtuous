@@ -32,6 +32,8 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
   <figcaption class="figure-caption">Notice how the properly coded solution looks.</figcaption>
 </figure>
 
+<p>Here's the URL for the Jenkins YouTube video: https://www.youtube.com/watch?v=ei7kv7QOMC8</p>
+
 
 
  
