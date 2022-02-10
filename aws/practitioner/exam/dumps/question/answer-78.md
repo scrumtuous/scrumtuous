@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "Which of the following are standard best-practices for han"
-blurb: "All of the options here are recommended best practices, with the exception of reducing the permissions associated with the root user account. It is no"
+blurb: "<p>All of the options here are recommended <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">best practices,</a> with the exce"
 quid: 78
 ---

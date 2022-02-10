@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "A cost allocation tag:"
-blurb: "An AWS Cost and Usage Report can get unwieldly quickly as an organization moves to the cloud. Cost allocation tags help you identify and categorize resour"
+blurb: "<p>An AWS Cost and Usage Report can get unwieldly quickly as an organization moves to the cloud. Cost allocation tags help you identify and categorize reso"
 quid: 256
 ---

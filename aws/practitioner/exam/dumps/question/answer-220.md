@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "A range of IP addresses in your VPC is known as a:"
-blurb: "A range of IP addresses dedicates to your Virtual Private Cloud (VPC) is called a subnet. You can learn more about Amazon VPCs in the docs."
+blurb: "<p>A range of IP addresses dedicates to your Virtual Private Cloud (VPC) is called a subnet.</p>
+<p>You can learn more about Amazon VPCs in the <a href="ht"
 quid: 220
 ---

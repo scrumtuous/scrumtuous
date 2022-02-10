@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "What is the main purpose for Multi-Region deployments for "
-blurb: "According to the official documentation for Amazon RDS , the main purpose of a Multi-Region Amazon RDS deployment is disaster recovery and local perform"
+blurb: "<p>According to the <a href="https://aws.amazon.com/rds/features/multi-az/">official documentation</a> for Amazon RDS , the main purpose of a Multi-Region"
 quid: 27
 ---

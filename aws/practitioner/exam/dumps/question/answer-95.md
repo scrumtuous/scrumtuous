@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "How are Spot Instances billed?"
-blurb: "According to the FAQ , customers pay the price per instance-hour set at the beginning of each instance-hour for the entire hour, billed to the nearest"
+blurb: "<p>According to the <a href="https://aws.amazon.com/ec2/faqs/#Spot_instances">FAQ</a>, <q>customers pay the price per instance-hour set at the beginning o"
 quid: 95
 ---

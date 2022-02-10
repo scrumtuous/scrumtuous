@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "Which of the following activities cloud AWS CloudTrail be "
-blurb: "This question was inspired directly by the AWS CloudTrail FAQ that answers the question Who should use AWS CloudTrail? AWS CloudTrail is not a runti"
+blurb: "<p>This question was inspired directly by the AWS CloudTrail <a href="https://aws.amazon.com/cloudtrail/faqs/">FAQ</a> that answers the question <q>Who sho"
 quid: 40
 ---

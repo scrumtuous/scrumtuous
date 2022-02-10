@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "Your S3 bucket names needs to be unique, so you decide to "
-blurb: "An S3 bucket name cannot use a Unix slash, DOS slash, or the @ sign. Here are more details on what can and cannot go into an S3 bucket name."
+blurb: "<p>An S3 bucket name cannot use a Unix slash, DOS slash, or the @ sign.</p>
+<p>Here are more <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide"
 quid: 270
 ---

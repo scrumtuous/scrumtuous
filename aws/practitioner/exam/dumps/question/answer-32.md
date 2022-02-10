@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "Which of the following statements are true about Amazon RD"
-blurb: "In most instances, Amazon says RDS is preferred over an Amazon EC2 instance configured with database software. Amazon RDS can be configured with both"
+blurb: "<p>In most instances, <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">Amazon says</a> RDS is preferred over an Amazon EC2 ins"
 quid: 32
 ---

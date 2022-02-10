@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "Which of the following is true about Amazon CloudFront?"
-blurb: "As per the docs, Amazon CloudFront can increase the data transfer rate by sending all requests through the AWS backbone. This is much faster than using"
+blurb: "<p>As per the <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html">docs,</a> Amazon CloudFront can increase the d"
 quid: 108
 ---

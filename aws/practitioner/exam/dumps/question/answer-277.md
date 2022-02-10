@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "To quickly share content in an S3 bucket for a predetermin"
-blurb: "According to the Amazon S3 docs, All objects by default are private. Only the object owner has permission to access these objects. However, the object"
+blurb: "<p>According to the Amazon S3 <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html">docs,</a> <q>All objects by defa"
 quid: 277
 ---

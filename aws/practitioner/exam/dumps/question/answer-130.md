@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "A physical location where data centers are clustered toget"
-blurb: "The question is the official definition of an AWS Region. Take a look at the AWS docs for more information on Regions, Zones and Edge Locations."
+blurb: "<p>The question is the official definition of an AWS Region.</p>
+<p>Take a look at the AWS <a href="https://aws.amazon.com/about-aws/global-infrastructure/"
 quid: 130
 ---

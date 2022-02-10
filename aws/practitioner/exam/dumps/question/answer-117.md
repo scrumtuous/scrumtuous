@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "The rotation of IAM access keys involves:"
-blurb: "Access key rotation is an highly recommended security measure. According to the docs , IAM access key rotation involves   The creation of a"
+blurb: "<p>Access key rotation is an highly recommended security measure.</p>
+<p>According to the <a href="https://aws.amazon.com/blogs/security/how-to-rotate-acce"
 quid: 117
 ---

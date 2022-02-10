@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "They primary benefit of AWS Auto Scaling is enhanced:"
-blurb: "The best answer to this question is Elasticity. Note that one of the objectives in the Cloud Practitioner exam demands that test-takers understand the r"
+blurb: "<p>The best answer to this question is Elasticity.</p>
+<p>Note that one of the objectives in the Cloud Practitioner exam demands that test-takers understan"
 quid: 126
 ---

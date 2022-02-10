@@ -1,6 +1,7 @@
 ---
 layout: answer
 title: "The recommended storage option when you run a database on "
-blurb: "For persistence beyond the life of the EC2 instance, you want to use Amazon EBS. Here's what Amazon says Amazon EBS provides durable, block-level stor"
+blurb: "<p>For persistence beyond the life of the EC2 instance, you want to use Amazon EBS.</p>
+<p>Here's what Amazon says <q>Amazon EBS provides durable, block-l"
 quid: 208
 ---

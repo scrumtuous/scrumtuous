@@ -1,6 +1,6 @@
 ---
 layout: answer
 title: "Edge locations store cached content for which AWS Service:"
-blurb: "The servers that host cached content are officially called Edge locations by Amazon."
+blurb: "<p>The servers that host cached content are<a href="https://wa.aws.amazon.com/wat.concept.edge-location.en.html">officially</a> called Edge locations by Am"
 quid: 102
 ---
