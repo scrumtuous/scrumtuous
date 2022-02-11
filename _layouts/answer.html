@@ -1,61 +1,45 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zxx">
-
-<head>
-	
-	
-	{% include head-common.html %} 
-	
-	
-	
-	
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>{{ page.title }}</title>
-
-	<!-- React Code -->	
-	
-<link href="/flashcards/static/css/main.86d29117.css" rel="stylesheet">
-<link rel="apple-touch-icon" href="/flashcards/logo192.png" />
-<link rel="manifest" href="/exam/manifest.json" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <!-- Place favicon.ico in the root directory -->
-
-    <!-- Web Font -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
-    <link rel="stylesheet" href="/assets/css/animate.css" />
-    <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
-	
-	{% if page.canonical %}
-	<link rel="canonical" href="{{ page.canonical }}" />
-	{% else %}
-	<!-- This is the else for if canonical -->	   
-	{% endif %}
-	
-	<!-- canonical attempt: {{ page.title }} -->
-	{% if page.blurb %}
-	<meta name="description" content="{{ page.blurb }}"/>   
-	{% else %}
-	<meta name="description" content="Quickly learn to code for certification exams with these fun drag and drop examples."/>   
-	{% endif %}
-
-	{% if page.keywords %}
-	<link rel="keywords" href="{{ page.keywords }}" />
-	{% else %}
-	<meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>	   
-	{% endif %}
-	
-			   <style>
+<html class="no-js" lang="en">
+   <head>
+      {% include head-common.html %} 
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta property="fb:app_id" content="287616246137792" />
+      <title>AWS Practice Exam</title>
+      <!-- React Code -->	
+      <link href="/exam/static/css/2.68a81a89.chunk.css" rel="stylesheet">
+      <link href="/exam/static/css/main.ee56af71.chunk.css" rel="stylesheet">
+      <link rel="apple-touch-icon" href="/exam/logo192.png" />
+      <link rel="manifest" href="/exam/manifest.json" />
+      <!-- End React Code -->		
+      {% if page.canonical %}
+      <link rel="canonical" href="{{ page.canonical }}" />
+      {% else %}
+      <!-- This is the else for if canonical -->	   
+      {% endif %}
+      <!-- canonical attempt: {{ page.title }} -->
+      {% if page.blurb %}
+      <meta name="description" content="{{ page.blurb }}"/>
+      {% else %}
+      <meta name="description" content="Certification Exam Questions from Scrumtuous."/>
+      {% endif %}
+      {% if page.keywords %}
+      <meta name="keywords" content="{{ page.keywords }}"/>
+      {% else %}
+      <meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>
+      {% endif %}
+      <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+      <!-- Place favicon.ico in the root directory -->
+      <!-- Web Font -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+      <!-- ========================= CSS here ========================= -->
+      <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css">
+      <link rel="stylesheet" href="/assets/css/animate.css">
+      <link rel="stylesheet" href="/assets/css/tiny-slider.css">
+      <link rel="stylesheet" href="/assets/css/glightbox.min.css">
+      <link rel="stylesheet" href="/assets/css/main.css">
+      <style>
          html { font-size: 12pt; }	
          h1 { font-size: 1.50em; }
          h2 { font-size: 1.25em; }
@@ -82,322 +66,75 @@
          background: white;
          }
       </style>
-
-</head>
-
-<body>
-{% include navigation.html %} 
-
-
-
-
-
-<section class="our-achievement style2 section" >
-	<div class="container" >
-	
-<div class="row x" style="margin:0; padding:0">			
-	<div class="col-12 section-title style2 align-center gray-bg mt-5 mb-0 padding:0">
-	<span class="wow fadeInDown" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">
-	<h1 style="color:white">AWS Practitioner Questions & Answers</h1>
-	</span>
-	</div>
-</div>	
-	
-
-	
-<div class="row y" style="margin:0; padding:0">
-
-<div style="" class="main col col-12 col-sm-12 col-md-9 col-lg-8 order-1 order-sm-2 order-lg-1 mb-5 mt-1">
-
-
-
-
-<!--googleoff: index-->
-{% for question in site.data.practitioner %}
-{% if question.quid  == page.quid %}
-<div id="accordion" class="mt-2">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h3 class="mb-0">
-
-           Question #{{question.quid}}
-
-      </h3>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-<div class="card-body">
-      <div class="card-body">
-        <h3 class="card-title" id="query"> 
-          {{question.query}}
-        </h3>
-	abc	
-		
-		
-		
-		
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[0].text}}
-          </label>
-        </div>
-		
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[1].text}}
-          </label>
-        </div>		
-		
-        <div>
-          <input class="form-check-input  option-radio" checked/>
-          <label class="form-check-label">
-            {{question.options[2].text}}
-          </label>
-        </div>		
-		
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[3].text}}
-          </label>
-        </div>		
-		
-      </div>
-    </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-          &nbsp;
-      </h5> 
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      <div class="card-body">
-	  Sample Data
-       </div>
-    </div>
-  </div>
-  
-</div>
-  {% endif %}
-  {% endfor %}
-  
-<!--googleon: index-->
-
-{% for question in site.data.practitioner %}
-{% if question.quid  == page.quid %}
-  <div class="card mt-3">
-    <div class="card-header d-flex justify-content-between" id="questionNumber">
-      Question #{{question.quid}}
-    </div>
-    <div class="card-body">
-      <div class="card-body">
-        <h3 class="card-title" id="query"> 
-          {{question.query}}
-        </h3>
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[0].text}}
-          </label>
-        </div>
-		
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[1].text}}
-          </label>
-        </div>		
-		
-        <div>
-          <input class="form-check-input  option-radio" checked/>
-          <label class="form-check-label">
-            {{question.options[2].text}}
-          </label>
-        </div>		
-		
-        <div>
-          <input class="form-check-input  option-radio"/>
-          <label class="form-check-label">
-            {{question.options[3].text}}
-          </label>
-        </div>		
-		
-      </div>
-    </div>
-  </div>
-
-  
-    <div class="card mt-3">
-    <div class="card-header d-flex justify-content-between" id="questionNumber">
-      Answer
-    </div>
-    <div class="card-body">
-      <div class="card-body">
-        <h3 class="card-title" id="query">
-         
-        </h3>
-	 {{question.answer}}
-		
-      </div>
-    </div>
-  </div>
-
-  {% endif %}
-  {% endfor %}
-
-</div>
-			
-<div style="" class="main col col-12 col-sm-12 col-md-3 col-lg-4 order-2 order-sm-2 order-lg-2 mb-5 mt-1">
-
-<div class="card mt-3">
-        <div class="card-header d-flex justify-content-between">Study Hard</div>
-        <div class="card-body">
-
-			<img src="/assets/exam-is-coming.jpg" alt="AWS Study Guide" class="img-fluid mx-auto d-block img-thumbnail rounded ">
-
+      <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+      <!-- partial -->
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+      <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'></script>
+      <script  src="/assets/js/drag-and-drop-script.js"></script>
+      <link rel="stylesheet" href="/assets/css/drag-and-drop-style.css">
+   </head>
+   <body>
+      {% include exam-navigation.html %} 
+      <section id="download" class="app-download style2 section-blue3">
+         <div class="container">
+            <div class="row ">
+               <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
+                  <div class="download-content">
+                     <h2 class="wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">&nbsp;
+                     </h2>
+                  </div>
+               </div>
+            </div>
          </div>
-      </div>
-	  
-	  <div class="card mt-3">
-        <div class="card-header d-flex justify-content-between">No Cheat Policy</div>
-
-          <div class="card-body">
-			<img src="/assets/louder-uipath-exam-dump.jpg" alt="AWS Braindump Policy" class="img-fluid mx-auto d-block img-thumbnail rounded ">
-          </div>
-
-      </div>
-
-</div>	
-					
-</div>
-
-</section>
-
-
-
-
-
-
-
-
-
-
-	
-{% include footer2.html %} 
-
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top style2 btn-hover">
-        <i class="lni lni-chevron-up"></i>
-    </a>
-
-    <!-- ========================= JS here ========================= -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/count-up.min.js"></script>
-    <script src="/assets/js/wow.min.js"></script>
-    <script src="/assets/js/tiny-slider.js"></script>
-    <script src="/assets/js/glightbox.min.js"></script>
-    <script src="/assets/js/imagesloaded.min.js"></script>
-    <script src="/assets/js/isotope.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script type="text/javascript">
-        //========= glightbox
-        GLightbox({
-            'href': 'https://www.youtube.com/watch?v=r44RKWyfcFw&fbclid=IwAR21beSJORalzmzokxDRcGfkZA1AtRTE__l5N4r09HcGS5Y6vOluyouM9EM',
-            'type': 'video',
-            'source': 'youtube', //vimeo, youtube or local
-            'width': 900,
-            'autoplayVideos': true,
-        });
-
-        //======== Hero Slider
-        var slider = new tns({
-            container: '.hero-slider',
-            slideBy: 'page',
-            autoplay: true,
-            autoplayButtonOutput: false,
-            mouseDrag: true,
-            gutter: 0,
-            items: 1,
-            nav: false,
-            controls: true,
-            controlsText: [
-                '<i class="lni lni-chevron-left"></i>',
-                '<i class="lni lni-chevron-right"></i>'
-            ],
-            responsive: {
-                1200: {
-                    items: 1,
-                },
-                992: {
-                    items: 1,
-                },
-                0: {
-                    items: 1,
-                }
-
-            }
-        });
-        //======== Testimonial Slider
-        var slider = new tns({
-            container: '.testimonial-slider',
-            slideBy: 'page',
-            autoplay: false,
-            mouseDrag: true,
-            gutter: 0,
-            items: 1,
-            nav: true,
-            controls: false,
-            controlsText: [
-                '<i class="lni lni-arrow-left prev"></i>',
-                '<i class="lni lni-arrow-right next"></i>'
-            ],
-            responsive: {
-                1200: {
-                    items: 1,
-                },
-                992: {
-                    items: 1,
-                },
-                0: {
-                    items: 1,
-                }
-
-            }
-        });
-
-        //============== isotope masonry js with imagesloaded
-        imagesLoaded('#container', function () {
-            var elem = document.querySelector('.grid');
-            var iso = new Isotope(elem, {
-                // options
-                itemSelector: '.grid-item',
-                masonry: {
-                    // use outer width of grid-sizer for columnWidth
-                    columnWidth: '.grid-item'
-                }
-            });
-
-            let filterButtons = document.querySelectorAll('.portfolio-btn-wrapper button');
-            filterButtons.forEach(e =>
-                e.addEventListener('click', () => {
-
-                    let filterValue = event.target.getAttribute('data-filter');
-                    iso.arrange({
-                        filter: filterValue
-                    });
-                })
-            );
-        });
-    </script>
-
-<script defer="defer" src="/flashcards/static/js/main.9f45f52c.js"></script>
-
-<script defer="defer" src="/exam/static/js/main.8b9df356.js"></script>
-
-</body>
-
+      </section>
+      <!-- Start App Screenshort Area -->
+      <section class="app-screenshorts style2 section-blue mt-3 mb-0">
+         <div class="container">
+            <div class="row">
+               <div style="" class="main col col-12 col-sm-12 col-md-9 col-lg-8 order-1 order-sm-2 order-lg-1 mb-5 mt-1">
+                  <div id="root" 
+                     data-page='answer' 
+                     data-name='answerpage' 
+                     data-param='{ "quid" : { "$in" : [{{page.quid}},12] } }'>
+                  </div>
+               </div>
+               <div style="" class="main col col-12 col-sm-12 col-md-3 col-lg-4 order-2 order-sm-2 order-lg-2 mb-5 mt-1">
+                  <div>
+                     <div class="App">
+                        <div class="container">
+                           <div class="card mt-3">
+                              <div class="card-header d-flex justify-content-between" >Study Hard</div>
+                              <div class="card-body">
+                                 <img src="/assets/exam-is-coming.jpg" alt="AWS Study Guide" class="img-fluid mx-auto d-block img-thumbnail rounded ">
+                              </div>
+                           </div>
+                           <div class="card mt-3">
+                              <div class="card-header d-flex justify-content-between" >No Cheat Policy</div>
+                              <div class="card-body">
+                                 <img src="/assets/louder-uipath-exam-dump.jpg" alt="AWS Braindump Policy" class="img-fluid mx-auto d-block img-thumbnail rounded ">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- End App Screenshort Area -->
+      {% include four-image-cards.html %}	
+      {% include exams-timeline.html %} 
+      {% include exam-footer.html %} 
+      <!-- ========================= JS here ========================= -->
+      <script src="/assets/js/bootstrap.min.js"></script>
+      <script src="/assets/js/count-up.min.js"></script>
+      <script src="/assets/js/wow.min.js"></script>
+      <script src="/assets/js/tiny-slider.js"></script>
+      <script src="/assets/js/glightbox.min.js"></script>
+      <script src="/assets/js/imagesloaded.min.js"></script>
+      <script src="/assets/js/isotope.min.js"></script>
+      <script src="/assets/js/main.js"></script>
+<script>!function(c){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],i=0,a=[];i<n.length;i++)t=n[i],f[t]&&a.push(f[t][0]),f[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(c[r]=o[r]);for(d&&d(e);a.length;)a.shift()();return p.push.apply(p,u||[]),l()}function l(){for(var e,r=0;r<p.length;r++){for(var t=p[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==f[u]&&(n=!1)}n&&(p.splice(r--,1),e=s(s.s=t[0]))}return e}var t={},f={1:0},p=[];function s(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return c[e].call(r.exports,r,r.exports,s),r.l=!0,r.exports}s.e=function(u){var e=[],t=f[u];if(0!==t)if(t)e.push(t[2]);else{var r=new Promise(function(e,r){t=f[u]=[e,r]});e.push(t[2]=r);var n,i=document.createElement("script");i.charset="utf-8",i.timeout=120,s.nc&&i.setAttribute("nonce",s.nc),i.src=s.p+"static/js/"+({}[u]||u)+"."+{3:"38e0e305"}[u]+".chunk.js",n=function(e){i.onerror=i.onload=null,clearTimeout(a);var r=f[u];if(0!==r){if(r){var t=e&&("load"===e.type?"missing":e.type),n=e&&e.target&&e.target.src,o=new Error("Loading chunk "+u+" failed.\n("+t+": "+n+")");o.type=t,o.request=n,r[1](o)}f[u]=void 0}};var a=setTimeout(function(){n({type:"timeout",target:i})},12e4);i.onerror=i.onload=n,document.head.appendChild(i)}return Promise.all(e)},s.m=c,s.c=t,s.d=function(e,r,t){s.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},s.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},s.t=function(r,e){if(1&e&&(r=s(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(s.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)s.d(t,n,function(e){return r[e]}.bind(null,n));return t},s.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return s.d(r,"a",r),r},s.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},s.p="/exam/",s.oe=function(e){throw console.error(e),e};var r=window.webpackJsonp=window.webpackJsonp||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var d=n;l()}([])</script><script src="/exam/static/js/2.f3428bd0.chunk.js"></script><script src="/exam/static/js/main.0032859d.chunk.js"></script>
+   </body>
 </html>

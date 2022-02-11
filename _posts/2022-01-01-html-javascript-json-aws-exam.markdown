@@ -6,6 +6,7 @@ date:   2022-01-01 10:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/html-javascript-rock-paper-scissors-roshambo-drag-drop.html
 keywords: JavaScript AWS Practitioner Exam HTML Code Roshambo Rock Paper Scissors Drag-n-Drop
+
 ---
 	
 			
