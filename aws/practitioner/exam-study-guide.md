@@ -49,8 +49,22 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                 <div class="card">
                   <div class="nav-lb-tab nav" role="tablist">
                     <div class="nav-item"><a href="#contents" role="tab" data-rr-ui-event-key="contents" id="react-aria2372986434-19-tab-contents" aria-controls="react-aria2372986434-19-tabpane-contents" aria-selected="true" class="mb-sm-3 mb-md-0 nav-link active">Course Outline</a></div>
+					
+					
+					<div class="nav-item"><a href="#description" role="tab" data-rr-ui-event-key="description" id="react-aria3760223178-22-tab-description" aria-controls="react-aria3760223178-22-tabpane-description" tabindex="-1" class="mb-sm-3 mb-md-0 nav-link">Lessons</a></div>
+					
+					<div class="nav-item"><a href="#description" role="tab" data-rr-ui-event-key="description" id="react-aria3760223178-22-tab-descriptionx" aria-controls="react-aria3760223178-22-tabpane-description" tabindex="-1" class="mb-sm-3 mb-md-0 nav-link">Videos</a></div>
+										
+					<div class="nav-item"><a href="#description" role="tab" data-rr-ui-event-key="description" id="react-aria3760223178-22-tab-description" aria-controls="react-aria3760223178-22-tabpane-descriptionxx" tabindex="-1" class="mb-sm-3 mb-md-0 nav-link">Flashcards</a></div>
+					
+					<div class="nav-item"><a href="#description" role="tab" data-rr-ui-event-key="description" id="react-aria3760223178-22-tab-description" aria-controls="react-aria3760223178-22-tabpane-descriptionxxx" tabindex="-1" class="mb-sm-3 mb-md-0 nav-link">Exams</a></div>
 
                   </div>
+				  
+				  
+				  
+				  
+				  
                   <div class="p-0 card-body">
                     <div class="tab-content">
 					
