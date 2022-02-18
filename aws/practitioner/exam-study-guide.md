@@ -8,7 +8,6 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 ---
 
 
-
 <div id="root">
       <div class="App">
 <link href="/assets/course/style.css" rel="stylesheet">
@@ -85,8 +84,11 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 		
 		
 		</a></li>
-		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Installing Development Software</span></div><div class="text-truncate"><span>3m 11s</span></div></a></li>
-		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Hello World Project from GitHub</span></div><div class="text-truncate"><span>2m 33s</span></div></a></li><li tabindex="-1" aria-disabled="true" class="px-0 py-1 border-0 list-group-item disabled"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-muted icon-sm rounded-circle me-2"><i class="fe fe-lock fs-4"></i> </span><span class="fs-5">Our Sample Website</span></div><div class="text-truncate"><span>2m 15s</span></div></a></li></ul>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Study</span></div><div class="text-truncate"><span>3m 11s</span></div></a></li>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Register with AWS</span></div><div class="text-truncate"><span>2m 33s</span></div></a></li><li tabindex="-1" aria-disabled="true" class="px-0 py-1 border-0 list-group-item disabled"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-muted icon-sm rounded-circle me-2"><i class="bi bi-dpad"></i> </span><span class="fs-5">How to set a budget</span></div><div class="text-truncate"><span>2m 15s</span></div></a></li>
+		
+		
+		</ul>
 		
 		
 		
@@ -103,7 +105,31 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
     </h1>
     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+
+	  <div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 80%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+		
+		<ul class="py-4 list-group">
+		<li class="px-0 py-1 border-0 list-group-item">
+		<a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+		<div class="text-truncate ">
+		<span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2">
+		<svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> 
+		</span><span class="fs-5">Introduction</span></div><div class="text-truncate"><span>1m 7s</span></div>
+		
+		
+		
+		</a></li>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Study</span></div><div class="text-truncate"><span>3m 11s</span></div></a></li>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Register with AWS</span></div><div class="text-truncate"><span>2m 33s</span></div></a></li><li tabindex="-1" aria-disabled="true" class="px-0 py-1 border-0 list-group-item disabled"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-muted icon-sm rounded-circle me-2"><i class="bi bi-dpad"></i> </span><span class="fs-5">How to set a budget</span></div><div class="text-truncate"><span>2m 15s</span></div></a></li>
+		
+		
+		</ul>
+	  
+	  
+	  
+	  
       </div>
     </div>
   </div>
@@ -115,7 +141,32 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
     </h1>
     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+
+	  
+	  
+	  <div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 35%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+		
+		<ul class="py-4 list-group">
+		<li class="px-0 py-1 border-0 list-group-item">
+		<a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+		<div class="text-truncate ">
+		<span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2">
+		<svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> 
+		</span><span class="fs-5">Introduction</span></div><div class="text-truncate"><span>1m 7s</span></div>
+		
+		
+		
+		</a></li>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Study</span></div><div class="text-truncate"><span>3m 11s</span></div></a></li>
+		<li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">How to Register with AWS</span></div><div class="text-truncate"><span>2m 33s</span></div></a></li><li tabindex="-1" aria-disabled="true" class="px-0 py-1 border-0 list-group-item disabled"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-muted icon-sm rounded-circle me-2"><i class="bi bi-dpad"></i> </span><span class="fs-5">How to set a budget</span></div><div class="text-truncate"><span>2m 15s</span></div></a></li>
+		
+		
+		</ul>
+		
+		
+		
       </div>
     </div>
   </div>
@@ -141,7 +192,9 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
               <div class="mt-lg-n22 col-lg-4 col-md-12 col-sm-12">
                 <div class="mb-3 mb-4 card">
                   <div class="p-1">
-                    <div class="d-flex justify-content-center position-relative rounded py-10 border-white border rounded-3 bg-cover" style="background: url(&quot;/assets/more-flashcards-400.png&quot;) center top / cover no-repeat;"><a class="popup-youtube icon-shape rounded-circle btn-play icon-xl text-decoration-none" href="https://youtu.be/Mn82dKTb_Qw"><i class="fe fe-play"></i></a></div>
+                    <div class="d-flex justify-content-center position-relative rounded py-10 border-white border rounded-3 bg-cover" style="background: url(&quot;/assets/more-flashcards-400.png&quot;) center top / cover no-repeat;"><a class="popup-youtube icon-shape rounded-circle btn-play icon-xl text-decoration-none" href="https://youtu.be/Mn82dKTb_Qw">
+					<i class="bi bi-play-circle-fill" width="48" height="48"></i>
+					</a></div>
                   </div>
                   <div class="card-body">
                     <div class="mb-3"><span class="text-dark fw-bold h2 me-2">Free AWS Course</span><del class="fs-4 text-muted">$3,750</del></div>
@@ -150,6 +203,68 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                 </div>
 				
 				
+                <div class="mb-4 card"  style="text-align: left;">
+                  <div class="card-header">
+                    <h4 class="mb-0">Your Course Completion Wheel</h4>
+                  </div>
+                  <div class="p-0 card-body">
+                    <div class="list-group list-group-flush">
+					
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>	
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/helpers.esm.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.esm.js"></script>	
+
+				
+<canvas id="donutChart" width="400" height="400"></canvas>
+					
+<script>
+const ctx2 = document.getElementById('donutChart');
+const myChart2 = new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+        labels: ['Lessons', 'Exams', 'Videos', 'To Do'],
+        datasets: [{
+            data: [15, 10, 20, 80],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)',
+                'rgba(225, 225, 225, 0.5)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(225, 225, 225, 1)'
+            ],
+			hoverOffset: 4,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+
+					
+
+                    </div>
+                  </div>
+                </div>				
+
+
+
+
+
+
+
+
 				
 				  <div class="mb-4 card"  style="text-align: left;">
                   <div class="card-header">
@@ -435,18 +550,66 @@ Pledge
 				
                 <div class="mb-4 card"  style="text-align: left;">
                   <div class="card-header">
-                    <h4 class="mb-0">What’s included</h4>
+                    <h4 class="mb-0">Scrumtuous Points Earned: 82,390</h4>
                   </div>
                   <div class="p-0 card-body">
                     <div class="list-group list-group-flush">
-                      <div class="list-group-item"><i class="fe fe-play-circle align-middle me-2 text-primary"></i>12 hours video</div>
-                      <div class="list-group-item"><i class="fe fe-award me-2 align-middle text-success"></i>Certificate</div>
-                      <div class="list-group-item"><i class="fe fe-calendar align-middle me-2 text-info"></i>12 Article</div>
-                      <div class="list-group-item"><i class="fe fe-video align-middle me-2 text-secondary"></i>Watch Offline</div>
-                      <div class="bg-transparent list-group-item"><i class="fe fe-clock align-middle me-2 text-warning"></i>Lifetime access</div>
+					
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>	
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/helpers.esm.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.esm.js"></script>	
+
+				
+					<canvas id="myChart" width="400" height="400"></canvas>
+					
+<script>
+const ctx = document.getElementById('myChart');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Lessons', 'Exams', 'Videos', 'Pages', 'Social'],
+        datasets: [{
+            label: 'Points Earned',
+            data: [12, 19, 14, 5, 17],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+
+					
+
                     </div>
                   </div>
                 </div>
+				
+				
+				
+
+				
+				
+				
+				
                 <div class="card"  style="text-align: left;">
                   <div class="card-body">
 				  
