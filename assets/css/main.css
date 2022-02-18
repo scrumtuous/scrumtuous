@@ -1922,7 +1922,7 @@ ol {
   color: #fff;
   -webkit-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;
-  padding: 45px 0;
+  padding: 10px 0;
   position: relative;
   text-transform: capitalize;
 }
