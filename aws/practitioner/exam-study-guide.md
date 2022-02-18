@@ -66,7 +66,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
         Getting Started
       </button>
     </h1>
-    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
       <div class="accordion-body">
         
 <div class="progress">
@@ -103,7 +103,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
         AWS Technology
       </button>
     </h1>
-    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parentx="#accordionExample">
       <div class="accordion-body">
 
 	  <div class="progress">
@@ -139,7 +139,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
         Monitoring and Accounting
       </button>
     </h1>
-    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+    <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parentx="#accordionExample">
       <div class="accordion-body">
 
 	  
