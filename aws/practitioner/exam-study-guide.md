@@ -9,7 +9,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
 
 <div id="root">
-      <div class="App">
+      <div class="App"> 
 <link href="/assets/course/style.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <div class="pt-lg-8 pb-lg-16 pt-8 pb-12 bg-primary" style="background: linear-gradient(45deg, #6831e3, #f528cb)">

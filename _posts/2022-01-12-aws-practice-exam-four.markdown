@@ -1,6 +1,6 @@
 ---
 layout: exam
-title:  "AWS Practitioner Mock Exam Four"
+title: "AWS Practitioner Mock Exam Four"
 blurb: "Here are some practice, AWS exam questions. Want to get AWS Practitioner certified? Start here.."
 date: 2022-01-12 08:17:00 -0500
 categories: aws exam
