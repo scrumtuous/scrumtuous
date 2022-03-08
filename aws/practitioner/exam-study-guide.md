@@ -79,7 +79,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                       <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
-                            The Basics
+                            Introduction to Cloud Computing
                           </button>
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
@@ -137,7 +137,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                         <h1 class="accordion-header" id="headingOne">
 						
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
-                            Getting Started
+                            Getting Started with AWS
                           </button>
 						  
                         </h1>
