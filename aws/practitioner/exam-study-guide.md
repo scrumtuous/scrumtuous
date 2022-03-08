@@ -413,7 +413,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 							  <li class="px-0 py-1 border-0 list-group-item">
                                 <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
 									
-									S3, AMC, CLIs, SDKs & IaaS
+									3 Different Ways to Configure S3
 									
 								</span></div><div class="text-truncate"><span>
 								  
@@ -422,31 +422,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 								  </span></div></a>
                               </li>
 							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
-									How Cost Allocation Tags Help
-									
-								</span></div><div class="text-truncate"><span>
-								  
-								  2m 51s
-								  
-								  </span></div></a>
-                              </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
-									How to Fix a Major Billing Problem
-									
-								</span></div><div class="text-truncate"><span>
-								  
-								  7m 14s
-								  
-								  </span></div></a>
-                              </li>							  
+							 							  
 							  						  
 
                             </ul>
@@ -459,6 +435,82 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 					  
 					  
 					  
+					<div class="accordion-item">
+                        <h1 class="accordion-header" id="headingOne">
+						
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
+                            AWS Global Infrastructure
+                          </button>
+						  
+                        </h1>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
+                          <div class="accordion-body">
+
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 10%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+
+                            <ul class="py-4 list-group">
+							
+							
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+									
+									What is an AWS Region?
+									
+								</span></div><div class="text-truncate"><span>
+								  
+								  3m 01s
+								  
+								  </span></div></a>
+                              </li>
+							  
+							  <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+									
+									Regions vs Availability Zones
+									
+								</span></div><div class="text-truncate"><span>
+								  
+								  4m 37s
+								  
+								  </span></div></a>
+                              </li>	
+
+
+							  <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+									
+									Edge Locations, CloudFront and the Global Accelerator
+									
+								</span></div><div class="text-truncate"><span>
+								  
+								  8m 12s
+								  
+								  </span></div></a>
+                              </li>
+							  
+							  
+							  <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+									
+									How to architect AWS for availability, low-latency and failover
+									
+								</span></div><div class="text-truncate"><span>
+								  
+								  5m 22s
+								  
+								  </span></div></a>
+                              </li>
+							  
+							 							  
+							  						  
+
+                            </ul>
+
+                          </div>
+                        </div>
+                      </div>								  
 					  
 					  
 					  
