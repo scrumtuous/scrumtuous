@@ -178,6 +178,14 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                                   <div class="text-truncate"><span>6m 09s</span></div>
                                 </a>
                               </li>
+							  
+							  
+                              <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-exam-cloud-economics-tco-licensing-costs-design.html">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-rocket"></i> </span><span class="fs-5">AWS Practitioner Review Exam 1</span></div>
+                                  <div class="text-truncate"><span>1m 14s</span></div>
+                                </a>
+                              </li>							  
+							  
 
                             </ul>
 
