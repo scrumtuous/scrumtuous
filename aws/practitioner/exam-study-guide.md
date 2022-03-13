@@ -255,7 +255,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                                 <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
 
-									Why you need a separate Admin account
+									Create your AWS administrative account
 									
 								</span></div>
                                   <div class="text-truncate"><span>
