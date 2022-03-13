@@ -110,20 +110,20 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">The Benefits of Cloud Computing</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>4m 25s</span></div>
                                 </a>
                               </li>
 							  
 							  
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-cloud-benefits-value-proposition-drag-drop.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-invention"></i> </span><span class="fs-5">Cloud Benefits Drop Game</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>1m 14s</span></div>
                                 </a>
                               </li>							  
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/flashcards-benefits-of-cloud-computing.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-fireworks"></i> </span><span class="fs-5">Cloud Benefits Flashcards</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>4m 43s</span></div>
                                 </a>
                               </li>
 							  
@@ -131,19 +131,19 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 							  
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-exam-cloud-concepts-benefits-business-value.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-rocket"></i> </span><span class="fs-5">AWS Cloud Benefits Exam</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>5m 44s</span></div>
                                 </a>
                               </li>							  
 
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Making the Economics of Cloud Computing Work</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>3m 08s</span></div>
                                 </a></li>
 								
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-cloud-economics-design-principles-drag-drop.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-invention"></i> </span><span class="fs-5">Cloud Economics Drop Game</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>4m 15s</span></div>
                                 </a>
                               </li>										
 								
@@ -151,19 +151,19 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 								
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-fireworks"></i> </span><span class="fs-5">Cloud Economics Flashcards</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>5m 36s</span></div>
                                 </a>
                               </li>
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/flashcards-aws-opex-vs-capex-cloud-economics.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-fireworks"></i> </span><span class="fs-5">CapEx vs OpEx Flashcards</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>2m 19s</span></div>
                                 </a>
                               </li>	
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-exam-cloud-economics-tco-licensing-costs-design.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-rocket"></i> </span><span class="fs-5">Cloud Economics Practice Exam</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>1m 14s</span></div>
                                 </a>
                               </li>								  
 
@@ -175,7 +175,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/flashcards-aws-cloud-economics-design-opex-capex-exam.html">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-fireworks"></i> </span><span class="fs-5">AWS Cloud Concepts Flashcards</span></div>
-                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                  <div class="text-truncate"><span>6m 09s</span></div>
                                 </a>
                               </li>
 
