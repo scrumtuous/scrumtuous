@@ -74,8 +74,8 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
 
                     <div class="accordion" id="accordionExample">
-					
-					
+
+
                       <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
@@ -107,15 +107,16 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Types of Cloud Computing Models</span></div>
                                   <div class="text-truncate"><span>3m 11s</span></div>
                                 </a></li>
-				    
+
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">The Benefits of Cloud Computing</span></div>
                                   <div class="text-truncate"><span>2m 33s</span></div>
-                                </a></li>				    
-				    
-				    
-				    
-				    
+                                </a>
+                              </li>
+
+
+
+
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Making the Economics of Cloud Computing Work</span></div>
                                   <div class="text-truncate"><span>2m 33s</span></div>
@@ -124,9 +125,9 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Hybrid Cloud Strategies</span></div>
                                   <div class="text-truncate"><span>4m 11s</span></div>
-                                </a></li>								
-								
-								
+                                </a></li>
+
+
 
                             </ul>
 
@@ -137,18 +138,18 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                           </div>
                         </div>
                       </div>
-					  
-					  
-					  
-					  
-					  
-					<div class="accordion-item">
+
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             Getting Started with AWS
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -158,115 +159,136 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Get Your AWS Account Up & Running
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 12s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Why you need a separate Admin account
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 8s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Users, Groups & AWS Policies
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 29s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Principle-of-Least-Privilege-Examples"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Principle-of-Least-Privilege-Examples">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Principle of Least Privilege Explained
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 29s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									AWS Root Account Best Practices
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 44s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Protection of root accounts Quiz
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 44s
 								  
-								  </span></div></a>
-                              </li>							  
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+								  </span></div>
+                                </a>
+                              </li>
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Tasks that require use of root accounts
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  1m 18s
 								  
-								  </span></div></a>
-                              </li>							  
+								  </span></div>
+                                </a>
+                              </li>
 
                             </ul>
 
                           </div>
                         </div>
                       </div>
-					  
-					  
-					  
-					  
-					  
-					  
-					<div class="accordion-item">
+
+
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             How to Protect Your AWS Wallet
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -276,100 +298,118 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Just How Expensive is AWS?
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Setting Budgets, Alerts & Alarms
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 57s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									How to Track and Predict Your Costs
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 49s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Cost Explorer vs AWS Cost and Usage Reports
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									How Cost Allocation Tags Help
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 51s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									How to Fix a Major Billing Problem
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  7m 14s
 								  
-								  </span></div></a>
-                              </li>							  
-							  						  
+								  </span></div>
+                                </a>
+                              </li>
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>					  
-					  
-					  
-					  
-					<div class="accordion-item">
+                      </div>
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             Amazon's Simple Storage Service (S3)
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -379,88 +419,103 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									The Nuts and Bolts of AWS Services
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Using AWS S3 like it's Dropbox
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 47s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									AWS S3 vs S3 Glacier vs S3 Snowball
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 49s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									3 Different Ways to Configure S3
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Access Key Best Practices
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 45s
 								  
-								  </span></div></a>
-                              </li>							 							  
-							  						  
+								  </span></div>
+                                </a>
+                              </li>
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>					  					  
-					  
-					  
-					  
-					  
-					  
-					<div class="accordion-item">
+                      </div>
+
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             AWS Global Infrastructure
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -470,77 +525,89 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									What is an AWS Region?
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 01s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Regions vs Availability Zones
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 37s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Edge Locations, CloudFront and the Global Accelerator
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  8m 12s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									How to architect AWS for availability, low-latency and failover
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 							  
-							  						  
+
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>								  
-					  
-					  
-					  
-					  
-					<div class="accordion-item">
+                      </div>
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             The AWS Data Types
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -550,115 +617,136 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									What is a CSV file?
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 02s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									The Basics of HTML
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 27s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									The Role of CSS & JavaScript
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									JSON as a Data Exchange Format
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  6m 12s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Data Pricing API
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  6m 12s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									YAML Configuration
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  9m 54s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Publish a Webpage to Amazon S3
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  						  
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>		
+                      </div>
 
 
-					  
-					  
-					  
-					  
-					  
-					<div class="accordion-item">
+
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             Amazon's Elastic Cloud Compute (EC2)
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -668,129 +756,153 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Provisioning an EC2 instance
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Connecting to your Instance (VPN, HTTP, DC)
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 22s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Installing software on an AMI
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 21s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									The EC2 Compute Families
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									EC2 vs ECS vs Lambda
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 42s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									How auto scaling and load balancers work
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  9m 54s
 								  
-								  </span></div></a>
-                              </li>	
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+								  </span></div>
+                                </a>
+                              </li>
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									On-Demand, Reserved and Spot Instances
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  6m 24s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									S3, Block, File and Storage Gateways
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  						  
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>		
-					  
+                      </div>
 
 
 
 
-	  
-					  
-					  
-					<div class="accordion-item">
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             AWS database services
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -800,105 +912,123 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Relational vs NoSQL Databases
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  7m 34s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Amazon RDS
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 21s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									DynamoDB
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Amazon Redshift
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 42s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Benefits of Managed Services
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  9m 54s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									S3, Block, File and Storage Gateways
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  						  
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>		
-					  
+                      </div>
 
-					  
-					  
-					  
-					  
-	  
-					  
-					  
-					<div class="accordion-item">
+
+
+
+
+
+
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             Secure Computing
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -908,116 +1038,137 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Your Own Private Network
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 56s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Encryption
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 21s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Security Groups, Network CSLs, AWS WAF
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							 
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Auditing, Monitoring and Reporting
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 33s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									CloudWatch vs CloudTrail vs AWS Config
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  8m 13s
 								  
-								  </span></div></a>
-                              </li>							  
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+								  </span></div>
+                                </a>
+                              </li>
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									AWS Trusted Advisor
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 42s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Where to get help
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  9m 54s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  
-							  						  
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>		
-					  
+                      </div>
 
-					  
-					<div class="accordion-item">
+
+
+                      <div class="accordion-item">
                         <h1 class="accordion-header" id="headingOne">
-						
+
                           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:silver">
                             AWS at Scale
                           </button>
-						  
+
                         </h1>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parentx="#accordionExample">
                           <div class="accordion-body">
@@ -1027,122 +1178,146 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                             </div>
 
                             <ul class="py-4 list-group">
-							
-							
+
+
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Shared Responsibility Model
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 56s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Consolidated Billing Across Organizations
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 21s
 								  
-								  </span></div></a>
-                              </li>	
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+								  </span></div>
+                                </a>
+                              </li>
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Cloud Architecture Design Principles
 
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  2m 21s
 								  
-								  </span></div></a>
-                              </li>								  
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Resources for Technology Support
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  4m 32s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							 
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Auditing, Monitoring and Reporting
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  5m 33s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									CloudWatch vs CloudTrail vs AWS Config
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  8m 13s
 								  
-								  </span></div></a>
-                              </li>							  
-							  
-							  
-							  <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+								  </span></div>
+                                </a>
+                              </li>
+
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									AWS Trusted Advisor
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  3m 42s
 								  
-								  </span></div></a>
+								  </span></div>
+                                </a>
                               </li>
-							  
-							 <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/"><div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
-									
+
+                              <li class="px-0 py-1 border-0 list-group-item">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
+
 									Where to get help
 									
-								</span></div><div class="text-truncate"><span>
-								  
+								</span></div>
+                                  <div class="text-truncate"><span>
+
 								  9m 54s
 								  
-								  </span></div></a>
-                              </li>	
+								  </span></div>
+                                </a>
+                              </li>
 
 
-							  
-							  						  
+
+
 
                             </ul>
 
                           </div>
                         </div>
-                      </div>		
-					  
+                      </div>
 
-					  
+
+
                     </div>
                   </div>
 
