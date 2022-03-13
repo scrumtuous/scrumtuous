@@ -283,7 +283,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
 
                               <li class="px-0 py-1 border-0 list-group-item">
-                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                <a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/AWS-root-account-best-practices">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">
 
 									AWS Root Account Best Practices
