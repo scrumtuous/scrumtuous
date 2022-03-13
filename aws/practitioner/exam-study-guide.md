@@ -130,7 +130,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 							  
 							  
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/aws/exam/2022/02/02/aws-exam-cloud-concepts-benefits-business-value.html">
-                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-rocket"></i> </span><span class="fs-5">Cloud Benefits Flashcards</span></div>
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"> <i class="lni lni-rocket"></i> </span><span class="fs-5">AWS Cloud Benefits Exam</span></div>
                                   <div class="text-truncate"><span>2m 33s</span></div>
                                 </a>
                               </li>							  
