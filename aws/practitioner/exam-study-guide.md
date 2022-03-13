@@ -95,7 +95,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                                   <div class="text-truncate ">
                                     <span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2">
 		<svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> 
-		</span><span class="fs-5">The importance of AWS Practitioner Certification</span>
+		</span><span class="fs-5">Is the AWS Practitioner Certification Worth It?</span>
                                   </div>
                                   <div class="text-truncate"><span>1m 27s</span></div>
 
@@ -104,16 +104,25 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
                                 </a>
                               </li>
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
-                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Top 10 Benefits of Cloud Computing</span></div>
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Types of Cloud Computing Models</span></div>
                                   <div class="text-truncate"><span>3m 11s</span></div>
                                 </a></li>
+				    
+                              <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">The Benefits of Cloud Computing</span></div>
+                                  <div class="text-truncate"><span>2m 33s</span></div>
+                                </a></li>				    
+				    
+				    
+				    
+				    
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
                                   <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Making the Economics of Cloud Computing Work</span></div>
                                   <div class="text-truncate"><span>2m 33s</span></div>
                                 </a></li>
 
                               <li class="px-0 py-1 border-0 list-group-item"><a class="d-flex justify-content-between align-items-center text-inherit text-decoration-none" href="/marketing/courses/course-single/">
-                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">The 3 Types of Cloud Deployments</span></div>
+                                  <div class="text-truncate "><span class="icon-shape bg-light text-primary icon-sm rounded-circle me-2"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.2rem; height: 1.2rem;"><path d="M8,5.14V19.14L19,12.14L8,5.14Z" style="fill: currentcolor;"></path></svg> </span><span class="fs-5">Hybrid Cloud Strategies</span></div>
                                   <div class="text-truncate"><span>4m 11s</span></div>
                                 </a></li>								
 								
