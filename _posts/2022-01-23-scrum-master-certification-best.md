@@ -27,7 +27,7 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
     <h5 class="card-title">Get Certified!</h5>
 
 
-Here's the video I'll be including in my next article to be published on TechTarget and <a href="href="https://www.theserverside.com">TheServerSide.</a>
+Here's the video I'll be including in my next article to be published on TechTarget and <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/best-Scrum-Master-certification-exams-professional">TheServerSide.</a>
 
 I'll link back to the article when it's posted.
   
