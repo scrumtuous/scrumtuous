@@ -1,3 +1,52 @@
+Main Header
+===========
+Optional Author Name <optional@author.email>
+Optional version, optional date
+:Author:    AlternativeWayToSetOptional Author Name
+:Email:     <AlternativeWayToSetOptional@author.email>
+:Date:      AlternativeWayToSetOptional date
+:Revision:  AlternativeWayToSetOptional version
+
+.Optional Title
+
+.Optional Title
+
+ Literal paragraph.
+ Must be indented.
+
+ .Optional Title
+NOTE: This is an example
+      single-paragraph note.
+
+
+TIP: Tip.
+
+
+[source,perl]
+die 'connect: '.$dbh->errstr;
+
+Author is {author}
+
+
+Author is {author}
+
+Version is {revision}
+Author is Alex Efros
+
+Version is 2.2.2
+
+:My name: Alex Efros
+My name is {myname}
+My name is Alex Efros
+
+Line
+with bad attribute {qwe} will be
+deleted
+Line deleted
+
+Escaped: \{qwe} and +++{qwe}+++
+Escaped: {qwe} and {qwe}
+
 What is the cloud?
 ------------------
 
