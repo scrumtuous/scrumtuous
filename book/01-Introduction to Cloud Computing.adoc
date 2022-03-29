@@ -120,17 +120,15 @@ It usually takes 4 hours to process one hour of video on her laptop, so a 3 hour
 
 Other times she has three separate video files that need to process. That means she sometimes has to get up in the middle of the night to start a second or third file to process in order to make her videos available to her fans the next day.
 
-To reduce the processing time and eliminate system crashes, DJ Scrumtuous has priced out a system with 64 gigs of memory and an i9-11900K processor for $6,099 plus tax. The up and coming DJ doesn't have that much money on hand, but has been offered financing with a 22% interest rate. Here monthly payments will be $270 for 3 years.
+To reduce the processing time and eliminate system crashes, DJ Scrumtuous has priced out a system with 64 gigs of memory and an i9-11900K processor for $6,099 plus tax. The up and coming DJ doesn't have that much money on hand, but has been offered financing with a 22% interest rate. Her monthly payments will be $270 for 3 years.
 
 Optionally, DJ Scrumtuous have found out that she can install her video editing software on a virtual Windows machine that runs on Amazon's Elastic Cloud Computing (EC2) service.
 
 The EC2 cloud service allows the video processing to run on extremely powerful servers that will compress an hour of video in about 45 minutes. Furthermore, if there are multiple videos to process, three separate virtual machines can be run in parallel, allowing all three files to be processed at the same time - something that wouldn't be possible on the on-premise machine she is thinking of purchasing.
 
-Each hour of processing time would cost about $3 on EC2.
+Each hour of video processed on Amazon EC2 instances would cost $2. DJ Scrumptuous expects to process about 150 hours of video a month, so her monthly cost would be $300.
 
 Which option do you think would be the best for DJ Scrumtuous, the $6,099 on-premise solution, or the solution that takes advantage of virtual machines and cloud computing?
-
-
 
 
 === A Perspective on Data Sizes
@@ -145,10 +143,159 @@ Here's a comparison of the different data size categorizations from a bit, right
 
 * A megabyte (MB) is 1000 kilobytes. A 1 minute mp3 is about a mega-byte in size.
 
-* 1000 megabytes, or about 17 hours of mp3 music, is a giga-byte (GB)
+* A gigabyte (GB) is 1000 megabytes, or about 17 hours of mp3 music.
 
-* 1000 gigabytes, or about 2 years of mp3 music, is a terra-byte (TB)
+* A terrabyte (TB) is 1000 gigabytes, or about 2 years of mp3 music, is a terra-byte (TB)
 
-* A 4K movie shot in the uncompressed format Hollywood studios use consumes 18.2GB per minute, or just over a single TB per hour.
+* A petabyte (PB) is 1000 terabytes. A 4K movie shot in the uncompressed format Hollywood studios use consumes 18.2GB per minute, or just over a single TB per hour. A single movie shoots about 250 hours of footage before editing, all of which can easily approach a petabyte in size.
 
-# 1000 terabytes is a petabyte.
+To personalize these numbers a bit, modern desktop computers sold at big box stores are usually equipped with one or two terrabytes of hard drive space and 8 to 16 gigabytes of memory.
+
+== Top Cloud Computing Companies
+
+We are all familiar with popular cloud-based apps and offerings such as Spotify, Zoom, Uber and WhatsApp. We commonly refer to these single-purpose, cloud-based apps as Software as a Service (SaaS) offerings, because they typically focus on delivering a single service or software offering.
+
+When we talk about cloud computing, we're not really concerned with SaaS. What we're really concerned with is companies that provide platforms where we can deploy application, or even just cloud based infrastructure.
+
+=== PaaS and IaaS
+
+Amazon is arguable the biggest and the best known provider of Platform as a Service (PaaS) and Infrastructure as a Service (IaaS) offerings, but they certainly aren't the only vendor in the market. The other big cloud computing vendors who offer a similar set of services to Amazon include:
+
+* The Google Cloud Platform (GCP) which has $20 billion in annual sales
+
+* Microsoft's Azure Platform which has about $70 billion in annual sales
+
+* China's Alibaba cloud which has just under $10 billion in annual sales
+
+* The IBM Cloud with its various Watson offerings
+
+* The Oracle Cloud
+
+All of these companies try to differentiate themselves on price, products and customer service, but the fact is, they all provide the same core set of services, many of which are completely interchangeable, at similar prices.
+
+One of the key differences between a cloud computing vendor and other companies that have cloud based offerings, is that the services provided by the cloud computing vendors are intended to be used by other companies to build their SaaS offerings.
+
+The various Amazon services are like jigsaw puzzle pieces other companies can use to build their own products. It should come as a surprise to nobody to find out that when Amazon Web Services go.
+
+There are many contenders in the world of cloud computing, but from here on in, our focus will be Amazon.
+
+= Cloud Computing Architectures
+
+Amazon’s goal for the AWS Practitioner exam is not simply to certify
+individuals who can prove their knowledge of cloud computing.
+
+Amazon’s goal for the Practitioner exam is to create an army of AWS
+advocates who will preach the virtues of cloud computing every time the
+opportunity arises.
+
+Amazon wants every compute operation to happen their cloud, and they
+want you, as an AWS Practitioner, to help them achieve that end.
+
+There are three types of cloud computing models:
+
+1. Full cloud
+2. Hybrid cloud
+3. On Premise (No cloud)
+
+Obviously, Amazon wants AWS practitioners to advocate for full cloud
+deployments.
+
+For those not willing to go whole-hog into the cloud, Amazon wants AWS
+practitioners to push for a combination of on premise operations and
+cloud computing technology. That’s known as a hybrid model.
+
+In an on-premise operation, the cloud is not used at all. Obviously
+that’s not a result Amazon is interested in. As far as an AWS
+Practitioner is concerned, there are only a few scenarios in which
+on-premise data center may be justified.
+
+=== Why stay on-prem?
+
+The fact is, not every organization is ready to move to the cloud.
+Pragmatically speaking, some might not even need to.
+
+Many organizations built giant server-farms and data centers long before
+AWS became a thing, and those on-premise data centers continue to
+fulfill the data-processing needs of those companies. If those data
+centers are already paid for and operate at peak efficiency, the
+disruption associated with shifting all of their operations to the cloud
+won’t be worth it.
+
+There are other reasons why organizations like to maintain their own
+data processing centers. Here are the most common reasons why
+organizations choose to process data on-prem, rather than in the cloud:
+
+* Super low-latency requirements
+
+* Data transfer excessive
+
+* Data sovereignty rules and regulations
+
+* Network isolation requirements
+
+* FUD
+
+
+=== Low Latency Computing
+
+For applications that need ultra-fast response times in the single
+millisecond mark, you need to be ‘close to the metal.’ That means
+eliminating the layers of abstraction that comes along with virtual
+machines, Docker containers and software that uses hypervisors that
+abstract away the CPU from the software.
+
+Voice networks, high-frequency stock trading and some video game
+providers will often run applications with extremely low latency
+requirements.
+
+=== Excessive Data Transfers
+
+Most cloud providers charge a premium to move data in and out of their
+data-centers. If your application is architected in such a way where
+hundreds of Gigs of data need to be moved back and forth between the
+cloud and your clients, a cloud based solution, the economics of the
+cloud might not make sense.
+
+=== Data sovereignty Rules and Regulations
+
+Some countries have rules about where data can be processed.
+
+In Quebec, privacy laws state that personally identifiable data can not
+be exported outside the province’s borders. Processing, storing or even
+moving data into a AWS service running in Europe or Africa would be a
+clear violation of the law.
+
+Similarly, there are often tax requirements or industry regulations that
+forbid certain pieces of data and computations to be performed outside
+the physical walls of an organization. In these situations, an
+on-premise solution must be used.
+
+Note: Amazon recently put an availability zone in Canada. It’s located
+in Montreal so it can be used by Quebec based clients without violating
+privacy laws.
+
+=== Network Isolation Requirements
+
+Some applications simply can’t be connected to an external network in
+any way, shape or form.
+
+The computers that run Iran’s nuclear programs followed this rule. The
+system was so important that they would not take any risks with it, so
+no network connections were allowed.
+
+The Israeles still managed to get a USB drive in there to screw up all
+the centrifuges, but the point remains the same. Sometimes there are
+applications that simply cannot be connected to an external network,
+ever.
+
+=== FUD
+
+Sometimes an organization is simply so steeped in fear, uncertainty and
+doubt (FUD), that they refuse to move to the cloud, even if the capacity
+for cost savings and improved reliability are clear.
+
+Sometimes clients require extra convincing when it comes to making the
+move from their on premise data center to a cloud computing solution
+like AWS. That’s why the AWS Practitioner exam wants every successful
+candidate to be able to preach the benefits of cloud computing to any
+decision maker who has doubts about the technology.
