@@ -243,7 +243,7 @@ want you, as an AWS Practitioner, to help them achieve that end.
 There are three types of cloud computing models:
 
 1. Full cloud
-2. Hybrid cloud
+2. Hybrid cloud (Some cloud, some on premise servers)
 3. On Premise (No cloud)
 
 Obviously, Amazon wants AWS practitioners to advocate for full cloud
