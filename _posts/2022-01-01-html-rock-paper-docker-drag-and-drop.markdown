@@ -242,26 +242,4 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 
             </div>
 
-<pre>
-git clone https://github.com/scrumtuous/numberguesser.git
-cd numberguesser
-docker build -t tomcatuous .
-docker run --name monolith -p 8085:8080 -d tomcatuous
-http://localhost:8085/numberguesser/playthegame
 
-
-
-version: '3.7'
-services:
-  ng:
-    image: nginxuous
-    ports:
-      - 8082:8080
-  tc:
-    image: tomcatuous
-    ports:
-      - 82:80
-
-
-
-</pre>
