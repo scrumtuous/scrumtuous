@@ -116,6 +116,28 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 <li class="option" data-target="51"><span class="option-data"> docker stop engine1 </span></li>
 <li class="option" data-target="43"><span class="option-data"> docker run --name engine2 -p 88:80 -d nginx</span></li>
 
+	
+<li><hr/></li>
+<li class="option" data-target="xx"><span class="option-data"> Try This After the Drag and Drop </span></li>
+<li class="option" data-target="xx"><span class="option-data"> git clone https://github.com/scrumtuous/numberguesser.git </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> cd numberguesser </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> docker build -t tomcatuous . </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> docker run --name monolith -p 8085:8080 -d tomcatuous </span></li>	
+<li class="option" data-target="xx"><span class="option-data"> http://localhost:8085/numberguesser/playthegame </span></li>	
+<li><hr/></li>	
+<li class="option" data-target="xx"><span class="option-data"> docker-compose.yml </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> YAML files are indented with two spaces </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> version: '3.7' </span></li>	
+<li class="option" data-target="xx"><span class="option-data"> services: </span></li>		
+<li class="option" data-target="xx"><span class="option-data">   ng: </span></li>	
+<li class="option" data-target="xx"><span class="option-data">     image: nginxuous </span></li>		
+<li class="option" data-target="xx"><span class="option-data">     ports: </span></li>		
+<li class="option" data-target="xx"><span class="option-data">       - 8082:8080 </span></li>		
+<li class="option" data-target="xx"><span class="option-data">   tc: </span></li>		
+<li class="option" data-target="xx"><span class="option-data">     image: tomcatuous </span></li>	
+<li class="option" data-target="xx"><span class="option-data">     ports: </span></li>		
+<li class="option" data-target="xx"><span class="option-data">       - 82:80 </span></li>		
+<li class="option" data-target="xx"><span class="option-data"> run it with: docker-compose up </span></li>		
 </ul>
 </div>		 
 		 
