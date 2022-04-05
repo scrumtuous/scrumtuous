@@ -108,7 +108,7 @@ keywords: Docker DockerHub Push nginx Rock Paper Scissors Drag-n-Drop
 <li class="option" data-target="49"><span class="option-data"> docker tag nginxuous scrumtuous/nginxrps:v1 </span></li>
 <li class="option" data-target="42"><span class="option-data"> docker run --name engine1 -p 80:80 -d nginx</span></li>
 <li class="option" data-target="45"><span class="option-data"> FROM nginx
-COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
+<br/>COPY roshambo.html  /usr/share/nginx/html</span></li>
 <li class="option" data-target="48"><span class="option-data"> docker run --name rps02 -p 99:80 -d nginxuous </span></li>
 <li class="option" data-target="44"><span class="option-data"> http://localhost:88</span></li>
 <li class="option" data-target="47"><span class="option-data"> docker run --name rps01 -p 66:80 -d nginxuous </span></li>
@@ -211,3 +211,27 @@ COPY roshambo.html <br/> /usr/share/nginx/html</span></li>
 
 
             </div>
+
+<pre>
+git clone https://github.com/scrumtuous/numberguesser.git
+cd numberguesser
+docker build -t tomcatuous .
+docker run --name monolith -p 8085:8080 -d tomcatuous
+http://localhost:8085/numberguesser/playthegame
+
+
+
+version: '3.7'
+services:
+  ng:
+    image: nginxuous
+    ports:
+      - 8082:8080
+  tc:
+    image: tomcatuous
+    ports:
+      - 82:80
+
+
+
+</pre>
