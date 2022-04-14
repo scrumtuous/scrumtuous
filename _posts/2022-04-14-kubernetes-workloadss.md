@@ -8,7 +8,7 @@ canonical: http://www.scrumtuous.com/aws/exam/2022/04/14/kubernetes-workloadss.h
 keywords: Lab on Kubernetes Workloads
 video-title: "Kubernetes Workloads"
 video-blurb: "Lab on Kubernetes Workloads"
-embed-code: ZkXh9aLkxv0
+embed-code: fCmaLxRVbhM
 ---
 
 
