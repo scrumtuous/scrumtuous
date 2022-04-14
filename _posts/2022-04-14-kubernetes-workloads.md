@@ -10,11 +10,6 @@ video-title: "Kubernetes Workloads"
 video-blurb: "Lab on Kubernetes Workloads"
 embed-code: ZkXh9aLkxv0
 
-cardnumbers: "11,12,13,14,15,16,17,18,19,20"
-hints: "OpEx, CapEx, On Prem, Benefits of Automation, Managed Service, Design for Failure, Monolithic architectures, Parallel Computing, RDS, ECS, EKS, DynamoDB"
-roundbubble: "AWS Flashcards"
-headingtwo: "Check out our extensive collection of AWS Flashcards"
-flashcardtext: "There's a <em>hidden</em> click and drag section below for hints."
 ---
 
 
@@ -32,7 +27,7 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
 
 <pre>
 
-docker login -u {your-docker-id} -p {your-access-token}
+docker login -u your-docker-id -p your-access-token
 
 sudo -i
 
