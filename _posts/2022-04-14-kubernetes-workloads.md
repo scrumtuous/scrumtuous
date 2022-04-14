@@ -1,15 +1,14 @@
 ---
 layout: video
-title:  "Dangers of ScrumButt"
-blurb: "What is Scrumbutt and why is Scrumbutt and Agile anti-pattern? We'll explain all the problems with Scrumbutt here quickly."
+title:  "Workloads"
+blurb: "Workloads lab."
 date:   2022-01-01 014:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/04/14/kubernetes-workloads.html
 keywords: Lab on Kubernetes Workloads
 video-title: "Kubernetes Workloads"
 video-blurb: "Lab on Kubernetes Workloads"
-embed-code: ZkXh9aLkxv0
-
+embed-code: fCmaLxRVbhM
 ---
 
 
