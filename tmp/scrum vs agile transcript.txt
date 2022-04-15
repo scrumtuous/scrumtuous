@@ -1,0 +1,46 @@
+The key difference between Agile and Scrum is that Agile is a philosophy about how software should be developed, while Scrum is a methodology.
+
+Anything that's Agile must follow the four foundational values and the 12 fundamental principles that are explicitly stated in the Agile Manifesto. 
+
+Many people have differing opinions on what Agile is, but if your definition of Agile isn't in line with the Manifesto, then it's not Agile.
+
+On the other hand, what constitutes Scrum is defined in the Scrum Guide. Again, many people have different opinions on what constitutes Scrum, but it what you're doing isn't consistent with the Scrum Guide, then what you're doing isn't Scrum.
+
+Some think Agile is a methodology, but doing so is a stretch.
+
+The Agile Manifesto is less than 500 words long and simply makes value statements such as:
+
+We value:
+
+Individuals and interactions over processes and tools
+Working software over comprehensive documentation
+Customer collaboration over contract negotiation
+Responding to change over following a plan
+
+Other than asserting that continuous delivery is its highest priority, the Agile manifesto doesn't provide any insights on how to implement its ideas. It simply describes the mindset of an Agile practitioner.
+
+In contrast to Agile, Scrum is a methodology.
+
+The Scrum Guide describes how to effectively develop software. And while the Agile Manifesto is less than 500 words, the Scrum Guide has almost 5000. Still, it's only 14 pages long. I behoove every software developer to read it.
+
+The Scrum Guide defines the roles that should exist on any Scrum team, including the Product Owner, Software Developers and of course, the Scrum Master.
+
+The Scrum Guide also defines activities teams should perform while developing software, including daily sprint planning, daily standups, retrospectives and reviews at the end of a sprint.
+
+As you can see, Agile is all about how you should think about software development, while Scrum is a proven methodology for teams to follow.
+
+It should be noted that Scrum an Agile complimentary ideas. You don't have to choose between one or the other. In fact, it's hard not to do them together.
+
+Because the scrum pillars of transparency, inspection and adaptation are all in line with Agile values such as quicking responding to change and customer collaboration, people often refer to Scrum as an Agile methodology.
+
+The greatest level of success comes to teams who embrace the practices outlined in the Scrum Guide while at the same time embracing an Agile philosophy.
+
+You can do Scrum and be virtuously Agile at the same time. In fact, I'm my Scrumtuous opinion, that's the best way to develop modern software.
+
+
+It should be noted that The Scrum Guide is not an instruction manual. It's simply 
+
+
+
+
+
