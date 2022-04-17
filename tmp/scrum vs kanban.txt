@@ -1,0 +1,66 @@
+
+
+
+
+Scrum and Kanban are the two most popular Agile methodologies in use today. 
+
+And because they are Agile, they both believe in responding to change rathing than following a plan.
+
+They both believe in working software over comprehensive documentation.
+
+And they both believe the continuous delivery of working software is the highest priority for their development teams.
+
+But there is one really big difference between Kanban and Scrum, and it all revolves around how iterative development is done.
+
+In Scrum, you plan sprints.
+
+The Product Owner, Scrum Master and Agile developers look at the backlog of features to be developed, and figure out how many can be completed in a two or three week sprint.
+
+Then the sprint begins, features get developed, and once the two or three weeks sprint is done, the progress is reviewed, and a retrospective is performed.
+
+Planning, sprints, reviews and retrospectives are all key elements of the scrum methodology.
+
+Now here's the big difference between Kanban and Scrum. Kanban doesn't do sprints. Which means there is no sprint planning and there are no sprint reviews and retrospectives. That's a huge difference.
+
+Instead, Kanban developers look at the product backlog and pick a feature to work on.
+
+That feature then moves from the backlog's to-do list into the list of work in progress, which is often abbreviated WiP and called 'whip'. 
+
+Limiting the amount of work in progress at any moment in time is a top priority of Kanban practitioners.
+
+When a feature is done, it is moved to the Done list and the developer then picks another feature to work on.
+
+This is why Kanban is often referred to as a 'continuous development' and a 'just-in-time' development methodology. 
+
+Feature development is not boxed into time-limted sprint. Feature development is continuous and onging. And the most critical features are developed first, providing what's needed 'just-in-time' for the client.
+
+To capture the work being done, the work that's been completed and the work that needs to be done, Kanban uses something called a Kanban board. It makes the process very visual. 
+
+It works so well, most scrum teams use some form of a Kanban board as well.
+
+So that's the big difference between Scrum and Kanban. Scrum is a sprint based Agile methodology while Kanban advocates continuous development.
+
+There are other, more subtle differences as well. To learn more, check out the article I wrote about Scrum versus Kanban over on The Server Side.
+
+Thanks for watching. And don't forget. Be Scrumtuous!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Scrum and Kan
