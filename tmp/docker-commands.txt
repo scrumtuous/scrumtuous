@@ -77,4 +77,20 @@ docker run --name myengine2 -p 91:80 -d build-nginx:v1
 docker-compose up -d
 
 
+******* Dockerfile ************
 
+FROM nginx
+COPY goodbye.html /usr/share/nginx/html
+
+******** docker-compose.yml *************
+
+version: "3.9"
+services:
+  nginx-web:
+    image: "nginx:latest"
+    ports:
+      - "66:80"
+  apache-web:
+    image: "httpd:latest"
+    ports:
+      - "99:80"
