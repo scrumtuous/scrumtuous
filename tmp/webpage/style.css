@@ -1,0 +1,10 @@
+body {padding:50; font-family:sans-serif;}
+button {background: linear-gradient(45deg, #6831e3, #f528cb);}
+h3 {color:navy}
+.display {
+background: silver;
+color:white;
+text-align: center;
+margin-top: 10px;
+font-size: 1.5em;
+}

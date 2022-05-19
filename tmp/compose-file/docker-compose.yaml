@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  my-nginx-service:
+    container_name: my-website
+    image: my-nginx-image:latest
+    cpus: 1.5
+    mem_limit: 2048m
+    ports:
+      - "8080:80"

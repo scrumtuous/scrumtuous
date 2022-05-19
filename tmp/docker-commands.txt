@@ -69,7 +69,6 @@ docker stop myengine1
 
 docker logout
 
-
 docker build -t build-nginx:v1 .
 
 docker run --name myengine2 -p 91:80 -d build-nginx:v1

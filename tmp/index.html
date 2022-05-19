@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rock Paper Roshambo</title>
+    <style>
+      body {
+        color: navy;
+        margin: 25px;
+      }
+      p {
+        font-family: verdana;
+      }
+      .feedback {
+        color: red;
+        margin: 50px;
+      }
+      .highlighted {
+        border: 2px red solid
+      }
+    </style>
+  </head>
+
+  <body class="highlighted">
+    <p>Which one will it be?</p>
+    <a href="#" onclick="playRoshambo('rock')"> rock </a> &nbsp;
+    <a href="#" onclick="playRoshambo('paper')"> paper </a> &nbsp;
+    <a href="#" onclick="playRoshambo('scissors')"> scissors </a> &nbsp;
+    <div id="results" class="feedback"></div>
+    <script>
+      playRoshambo = function(clientGesture) {
+        if (clientGesture == 'rock') {
+          result = "tie"
+        } // end rock if
+        if (clientGesture == 'paper') {
+          result = "win"
+        } // end paper if
+        if (clientGesture == 'scissors') {
+          result = "lose"
+        } // end scissors if
+        document.getElementById('results').innerHTML = result;
+      } // end method
+    </script>
+  </body>
+</html>

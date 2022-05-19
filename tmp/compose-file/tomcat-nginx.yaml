@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  nginx-service:
+    container_name: my-website
+    image: nginx-image:latest
+    cpus: 1.5
+    mem_limit: 2048m
+    ports:
+      - "80:80"
+ tomcat-service:
+    container_name: my-web-app
+    image: tomcat:latest
+    cpus: 2.5
+    mem_limit: 4096m
+    ports:
+      - "8080:80"
