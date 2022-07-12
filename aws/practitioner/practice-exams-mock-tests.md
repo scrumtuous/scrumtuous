@@ -27,9 +27,7 @@ keywords: AWS Flashcards, practitioner, certification, exam
       </div>
    </div>
 </section>
-
 {% include four-image-cards.html %}
-
 <section class="our-achievement style2 section">
    <div class="container">
       <div class="row">
