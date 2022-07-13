@@ -26,9 +26,7 @@ keywords: AWS Flashcards, practitioner, certification, exam
          {% include exams-timeline.html %}
       </div>
    </div>
-</section>
-{% include four-image-cards.html %}
-<!-- new fix added -->
+</section><!-- all on one line maybe -->{% include four-image-cards.html %}<!-- new fix added -->
 <section class="our-achievement style2 section">
    <div class="container">
       <div class="row">
