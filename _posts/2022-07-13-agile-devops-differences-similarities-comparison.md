@@ -2,7 +2,7 @@
 layout: video
 title:  "Difference between DevOps and Agile"
 blurb: "Trying to choose between Agile or Devops. Here is a simple Devops versus Agile comparison showing the differences."
-date:   2022-01-23 014:17:00 -0500
+date:   2022-07-13 014:17:00 -0500
 categories: agile devops
 canonical: http://www.scrumtuous.com/aws/exam/2022/07/13/agile-devops-differences-similarities-comparison.html
 keywords: Agile Devops Kanban Scrum Programming Development ScrumBan ScrumBut
