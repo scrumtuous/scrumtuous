@@ -13,6 +13,11 @@
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>http://www.scrumtuous.com/agile/devops/2022/01/23/agile-devops-differences-similarities-comparison.html</loc>
+  <lastmod>2022-07-13T15:15:30+00:00</lastmod>
+  <priority>0.95</priority>
+</url>
+<url>
   <loc>http://www.scrumtuous.com/index.html</loc>
   <lastmod>2022-07-13T15:15:25+00:00</lastmod>
   <priority>0.80</priority>
@@ -177,11 +182,7 @@
   <lastmod>2022-07-13T15:15:30+00:00</lastmod>
   <priority>0.64</priority>
 </url>
-<url>
-  <loc>http://www.scrumtuous.com/agile/devops/2022/01/23/agile-devops-differences-similarities-comparison.html</loc>
-  <lastmod>2022-07-13T15:15:30+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
+
 <url>
   <loc>http://www.scrumtuous.com/aws/exam/2022/01/23/scrum-master-certification-best.html</loc>
   <lastmod>2022-07-13T15:15:30+00:00</lastmod>
