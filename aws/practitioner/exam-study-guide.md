@@ -20,7 +20,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
 
             <div style="text-align: left;">
-              <h1 class="text-white display-4 fw-semi-bold mt-15">AWS Practitioner Study Guide</h1>
+              <h2 class="text-white display-4 fw-semi-bold mt-15">AWS Practitioner Study Guide</h2>
               <p class="text-white mb-6 lead">Learn the fundamentals of Amazon Web Services and pass the AWS Practitioner Certification Exam.</p>
               <div class="d-flex align-items-center">
 
