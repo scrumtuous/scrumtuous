@@ -59,6 +59,6 @@ keywords: AWS Flashcards, practitioner, certification, exam
             </div>
          </div>
       </div>
-   </div>
+
    </div>
 </section>
