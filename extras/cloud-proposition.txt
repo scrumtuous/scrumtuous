@@ -1,0 +1,72 @@
+<li class="option" data-target="1"><span class="option-data"> Free from the danger of an online attack </span></li>
+<li class="option" data-target="2"><span class="option-data"> The ability to depend on infrastructure to work </span></li>
+<li class="option" data-target="3"><span class="option-data"> Protection against AZ, network, subsytem or storage failures </span></li>
+<li class="option" data-target="4"><span class="option-data"> Ability to move quickly, adopt new technology and start services easily </span></li>
+<li class="option" data-target="5"><span class="option-data"> Being charged for only what you use </span></li>
+<li class="option" data-target="6"><span class="option-data"> The ability to both increase and decrease capacity automatically </span></li>
+<li class="option" data-target="7"><span class="option-data"> Ability to increase capacity in a linear and predictable fashion </span></li>
+<li class="option" data-target="8"><span class="option-data"> Advantages and efficiences that occur when a business grows in size </span></li>
+<li class="option" data-target="9"><span class="option-data"> Delivery of IT solutions worldwide </span></li>
+<li class="option" data-target="10"><span class="option-data"> Never spending too much on servers and infrastructure </span></li>
+<li class="option" data-target="11"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="12"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="13"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="14"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="15"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="16"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="17"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="18"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="19"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="20"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="21"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="22"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="23"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="24"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="25"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="26"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="27"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="28"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="29"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="30"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="31"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="32"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="33"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="34"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="35"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="36"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="37"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="38"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="39"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="40"><span class="option-data"> xxx </span></li>
+
+
+
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="11">  </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="12"> Benefits of automation </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="13"> Reduce compliance scope </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="14"> Managed services </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="15"> Monoliths </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="16"> Microservices </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="17"> Think Parallel </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="18"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="19"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="20"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="21"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="22"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="25"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="26"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="27"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="28"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="29"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="30"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="31"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="33"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="34"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="35"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="36"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="37"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="38"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="39"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="40"> xxx </span></li>

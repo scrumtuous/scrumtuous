@@ -1,0 +1,20 @@
+Occasionally the need arises to change the email address associated with the root AWS account.
+
+Doing so isn't as obvious as one might think.
+
+You  first need to log in with the root account. The root email addresses is currently root@scrumtuous.com.
+
+And once you're logged in, click on the IAM dashboard. 
+
+Click the link for 'my security credentials' and you'll be able to configure a number of resources, including access keys, multi-factor authentication and X509 certificates. 
+
+
+You'll also notice there's a link that allows you to change the email address. Click here and change the email. 
+
+I'm going to change the email address to be admin@scrumshoeus.com.
+
+Provide the root password and save your changes. And the new email account has been added
+
+Log out and you'll be able to log back in with the new root email address. 
+
+And that's how you update the root email address on your AWS account.

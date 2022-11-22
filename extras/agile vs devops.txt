@@ -1,0 +1,140 @@
+Agile vs DevOps
+
+The key difference between Agile versus DevOps is that Agile is a philosophy about how software should be developed, while DevOps describes how to use a modern software and tools to automate the continuously deployment of code.
+
+If a software developer is Agile, they behave in a manner that is consistent with the values and principles defined in the Agile manifesto.
+
+Written and signed by softare development leaders in 2001, the Agile Manifesto defines the twelve principles and four fundamental values and that Agile practitioners must embrace, including:
+
+- Being agile means embracing the philosophy that it's better to respond to change than to following a plan, and valuing working software over comprehensive documentation. 
+-
+-
+-
+
+
+The Agile Manifest is less than 500 words in length.
+
+Other than insisting that the continuous delivery of software to the client is Agile's highest priority, the manifesto does not provide any concise guidance or recommend any specific processes to follow to achieve the implementation of its goals. It is purely a philisophical exercise.
+
+In contrast to Agile, which is entirely defined by the manifesto, there is defining document for DevOps, and there is no universtally accepted DevOps definition.
+
+The birth of the DevOps movement is often traced back to the xxx by xxxx.
+
+In this presentation, the two speakers describe how confidence in their software testing tools had created so much trust between development and operations teams that they had implemented a process that would automatically deploy code into production up to x times a day.
+
+Many things have changed in the software development industry since 2009, but the cornerstones of DevOps continue to be:
+
+Trust and collaboration between Development and Operations teams
+A heavy reliance on comprehensive software testing routines
+The integration of modern tools to simplify development and operations tasks
+The automation of deployment into production without any human intervention or checkpoints
+
+Most definitions of DevOps include the term 'culture.'
+
+Culture can be succinctly defined as a group of likeminded people who create repetable processes through the use of the best tools at their disposal.
+
+Culture is really all about three things:
+
+People
+Processes
+and tools
+
+DevOps Tools and Processes
+
+In the world of DevOps, popular tools the practitioners use include:
+
+Jenkins
+Git
+Docker
+GitHub Actions
+Kubernetes
+Static code analysis
+Terraform
+The public cloud
+
+The process that emerges from the use of these is the continuous integration and deployment of code (CI/CD).
+
+DevOps People
+
+
+What is unique about people who do DevOps? What is the prerequisite for a Digital Transformation to be a success?
+
+This is precicely where Agile and DevOps intersect. To make DevOps work, all DevOps practitioners must embrace an Agile mindset. 
+
+DevOps practitioners believe in:
+
+- The automation and the importance of work not done
+- The importance of working with self-organized teams of motivated individuals
+- The continuous delivery of software to the client as their highest priority
+
+Every single one of these points maps directly back to one of the twelve principles outlined in the Agile Manifesto. 
+
+DevOps people must be Agile.
+
+
+And not only to Agile and DevOps practitioners share a common mindset, but their goals are aligned as well.
+
+The ultimate goal of a DevOps transition is to fully automate the deployment of working code into production. This represents full DevOps enlightenment.
+
+The Agile manifesto states in no uncertain terms that its highest priority is the continuous delivery of software to the client.
+
+Both Agile and DevOps share the belief that the best way to build software, ensure transparency and promote sustainable development is to get working software into the hands your clients.
+
+Agile and DevOps have the exact same goal. 
+
+It is for dev and ops teams to use modern tools and invent processes that get software into the hands of your clients as soon as it's humanly possible.
+
+Agile vs DevOps similarities and differences
+
+So summarize, here are the most common differences and similarities between DevOps and Agile:
+
+1. Agile is defined by the Agile Manifesto, while there is no universally accepted definition of DevOps
+2. DevOps defines a work culture, while Agile is a software development philosophy
+3. Agile's highest priority is continuous delivery, while for DevOps it's continuous deployment
+4. DevOps insists on the automation of all manual tasks, while Agile values 'the amount of work not done'
+5. DevOps practioners embrace an Agile mindset, while Agile demands participants be self-organized and motivated
+
+Agile and DevOps are not conflicting ideals. In fact, the opposite is true.
+
+Together, people with Agile mindsets who embrace a DevOps culture share a common goal, which is the continuous delivery and deployment of valuable software to the client.
+
+
+
+
+
+
+
+
+the Agile Manifesto is As you can see, Agile is a philosophy about how software can be developed.
+
+In contrast, DevOps is more than just a philosophy. DevOps describes how modern tools like Docker, Jenkins, Kubernetes and Git can be used by both developer and operations people to collaboratively and continuously develop and deploy software.
+
+There is no single, widely agreed upon definition of DevOps. But most attempts to define the term include the 'culture', and what is culture? It's simply a combination of like minded people, the tools those people use, and the processes that come out of that usage. 
+
+Now here's where it gets interesting.
+
+How are people who embrace DevOps culture like minded? They embrace an Agile mindset. 
+
+They believe in customer collaboration over contract negotiation. 
+
+They believe working software is the primary mesure of of progress.
+
+They believe that simplicity, the art of maximizing the amount of work not done, is essentail.
+
+All of which are ideas pulled right out of the Agile Manifesto.
+
+And another essential part of culture is the tools people use and the processes that come out of that use.
+
+DevOps pipelines that pull from GitHub, run on Jenkins, build microservices, deploy into Docker containers and push into the cloud are implementing a process known as the continuous delivery and deployment of software. 
+
+And interestingly enough, the manifesto states that an Agile practitioners highest priority is the continuous delivery of software. So one of the outputs of a DevOps based digital transformation is the most higly prized artifact of the Agile philosophy.
+
+As you can see, DevOps and Agile are not conflicting concepts. Instead, they are complimentary.
+
+Agile is a progressive philosophy about software development that embraces change, continuous delivery and collaboration.
+
+And DevOps is all about people using modern tools to implement collaborative processes that bring development and operations teams together.
+
+To do DevOps right, all participants must embrace an Agile mindset. 
+
+It is only when this happen that DevOps based digital transformations are a success.

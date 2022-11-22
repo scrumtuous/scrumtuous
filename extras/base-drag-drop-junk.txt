@@ -1,0 +1,57 @@
+<li class="option" data-target="1"><span class="option-data"> Access keys  </span></li>
+<li class="option" data-target="2"><span class="option-data"> Multi-factor authentication (MFA) </span></li>
+<li class="option" data-target="3"><span class="option-data">  Role </span></li>
+<li class="option" data-target="4"><span class="option-data">  Policy</span></li>
+<li class="option" data-target="5"><span class="option-data"> root </span></li>
+<li class="option" data-target="6"><span class="option-data"> AWS WAF </span></li>
+<li class="option" data-target="7"><span class="option-data"> AWS Marketplace </span></li>
+<li class="option" data-target="8"><span class="option-data"> https://aws.amazon.com/whitepapers/ </span></li>
+<li class="option" data-target="9"><span class="option-data"> AWS Trusted Advisor </span></li>
+<li class="option" data-target="10"><span class="option-data"> AWS Knowledge Center </span></li>
+<li class="option" data-target="11"><span class="option-data"> AWS Documentation </span></li>
+<li class="option" data-target="12"><span class="option-data"> Firewall for EC2 instances that only grant allow permissions </span></li>
+<li class="option" data-target="13"><span class="option-data"> Firewall for subnets with allow and deny rules </span></li>
+<li class="option" data-target="14"><span class="option-data"> xxx </span></li>
+<li class="option" data-target="15"><span class="option-data"> xxx </span></li>
+
+
+
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="1"> An cryptographic alternative to password authentication </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="2">  Something you have and something you know</span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="3">  Like an IAM user but used for services or 3rd parties</span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="4">  Permission set that can be attached to users, groups or roles</span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="5">  The name of the Uber-account </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Web firewall </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="7"> Place to go for 3rd party security products </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="8"> URL hosting AWS Whitepapers and Technical Guides </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="9"> This tool can do security checks along with best practice recommendations </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="10"> Contains answers to the most frequently asked AWS customer questions </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="11"> Contains tutorials, developer guides, user guides and API references </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="12"> Security group </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="13"> Network ACL (NACL) </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="14"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="15"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="16"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="17"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="18"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="19"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="20"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="21"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="22"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="25"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="26"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="27"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="28"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="29"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="30"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="31"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="33"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="34"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="35"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="36"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="37"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="38"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="39"> xxx </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="40"> xxx </span></li>

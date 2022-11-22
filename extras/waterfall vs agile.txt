@@ -1,0 +1,49 @@
+Waterfile and Agile are two competing software development models in the IT industry, and the two of them couldn't be more different.
+
+Waterfall is by far the oldest of the two software development approaches, with roots in infrastructure, engineering and construction dating all the way back to the 1950s.
+
+In contrast, the Agile Manifesto, which describes the Agile values and principles, was signed and published in 2001, largely in response to the waterfall based software development practices that were popular at the time.
+
+The Agile software model is flexible, iterative and responsive to change. 
+
+In contrast to Agile, waterfall has a very rigid structure. Waterfall breaks a software project up into distinct phase:
+
+- Requirements Gathering
+- Analysis and Design
+- Development
+- Testing
+- Deployment
+- Maintenance
+
+With waterfall, each phase must be completed in its entirety before the next stage begins. Essentially, one phase flows into the other like a waterfall. Furthermore, once a phase begins, changes cannot be made to prior phases. Again, like a waterfall, the flow moves in one direction and one direction only. Once the development phase begins, changes can't be made to the requirements.
+
+Unlike Waterfall, Agile methods encourage change. One of the four founding Agile values is to 'encourage change rather than following a plan.' One of their 14 key principles is to 'welcome chaanging requriements, even late in development.'
+
+Agile practitioners know that in the world of software development, things never go according to plan.
+
+New technologies or even social trends can make requirements and designs outdated mere before development on them even begins. 
+
+And wireframes and visual renderings don't always translate when you see the actual website in the browser, or the app running on the phone in your hand.
+
+That's why Agile practitioners are continuously delivering software to the end user, encouraging feedback and responding to change. It's the Scrumtuous way to do modern software development.
+
+Waterfall works well in engineering and construction. For example, if you've poured the foundation for a small two bedroom home, you don't your client to decide they'd prefer a six bedroom mansion. But for software development, such rigidity to change isn't helpful.
+
+So which methodology should you choose?
+
+There are zealots on both sides of the Agile vs Waterfall debate, but in practice, most software projects do a little bit of both. (hybrid approach)
+
+Banks, insurance companies and governments all like to do a lot of up-front requirements gathering and analysis. The like to thoroughly scope their projects, do budget analysis and get sign-off from various stakeholders. That's very waterfall in nature.
+
+Then, when development begins, they use an Agile method like Scrum or Kanban and do development iteratively. Changes to the plan happen as software gets continuously delivered to the customer. This is the essence of Agility.
+
+The industry trend for the last 20 years has been to move away from Waterfall and embrace an Agile approach. And that is certainly the development strategy I recommend.
+
+But at the same time, I won't judge you too harshly if you incorporate a little waterfall into your Agile mix. Most organizations do.
+
+
+
+
+
+
+

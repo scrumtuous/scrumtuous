@@ -5,7 +5,7 @@ blurb: "Here are some morepractice exam questions for the AWS Practitioner Cert.
 date:   2022-02-10 08:17:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/12/aws-practice-exam-five.html
-keywords: AWS Mock Exam Practice Amazon Practitioner
+keywords: AWS Mock Exam Practice Amazon Practitioner Cert
 questionnumbers: "154, 117, 37, 72, 199, 57, 19, 191, 44, 9, 147, 34, 10, 124, 132, 78"
 pagename: "exam"
 examname: "examfive"
