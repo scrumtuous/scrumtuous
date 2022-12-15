@@ -144,7 +144,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> The DockerHub website </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2a"> You're super! </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="3"> Log into DockerHub with credentials </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="50"> Got any grapes?  </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="50"> 3 id numbers  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="4"> Move to the Works directory </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="5"> Do a directory listing  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="6"> Learn more about the Docker command  </span></li>
@@ -164,7 +164,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="20"> Remove a Docker image  </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="21"> Open a Dockerfile in an editor </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="22">  Build a custom image  </span></li>
-<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> Watch out for the Log4J2 virus! </span></li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="23"> Bash the inside of the container </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="24"> Not Jain cuisine </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="25"> Run a JAR inside a container </span></li>
 <li><hr/></li>
