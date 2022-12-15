@@ -40,9 +40,9 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <h2 class="mt-2 mb-3" >A Docker YouTube Downloader?</h2>
 <p class="mb-3 bt-4">Have you ever wanted to download a YouTube video? Why not do it with Docker?</p>
 <p class="mb-3 bt-4">In the assignment below, there's a command that will download this YouTube video of mine. Just change the URL, and you can download any YouTube video you like! (Copyright laws to be respected, obviously.)</p>
-<p class="mb-3 bt-4">Also, my YouTube channel is just starting out. Please help me get to my goal of 100 subscribers if you can. </p>
+<p class="mb-3 bt-4">Also, my YouTube channel is just starting out. Please subscribe. And follow me, <a href="https://twitter.com/scrumtuous">@Scrumtuous, on Twitter</a> too!. </p>
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZkXh9aLkxv0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe width="560" height="315" src="[https://www.youtube.com/embed/ZkXh9aLkxv0](https://youtu.be/sy60gWhZWsQ)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 </div>
 	</div>
 
