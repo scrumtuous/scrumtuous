@@ -1,28 +1,31 @@
 Who is the Scrum Product Owner?
 
 
-The Scrum Guide dictates that all practicing teams have people in the following three roles: developer, Scrum Master and Product owner.
+The Scrum Guide describes three roles, or 'accountabilities": the developer, the Scrum Master and the Product owner.
 
-We all know who developers are. They're all full time employees the people who write code.
+We all know who developers are. They're the workers who build the product.
 
-And we all know that the Scrum Master is a person hired to acts as a master-servant to the scrum team.
+And we all know the Scrum Master is the person who coaches and guides the Scrum Team.
 
-But what about the Product Owner? Who is the Product Owner in Scrum?
+But what about the Product Owner? Who should be the Product Owner on a Scrum Team?
 
 Many organizations find one of the following to fill the role of Product Owner:
 
-1. The Project Manager
+1. A Project Manager
 2. The head of product development
-3. The lead business analyst
-4. The software development team lead
+3. A lead business analyst
+4. A team lead
 5. A senior UI designer
 
-Of course, all of these approaches are wrong.
+But do the skills these people have map properly to the skills of the Product Owner?
 
-The the Scrum Product Owner role isn't a side hustle for a project manager or team lead to dabble in.
+I recently got a chance to chat with David West, the CEO of Scrum.org, and I asked him who should be the Product Owner on a Scrum team, and here's what he had to say:
+...
 
-The Scrum Product Owner is a full time role in itself.
 
+The Product Owner is a key member of the Scrum Team, with responsibilities that are critical to the success of your product. 
+
+Make sure you pick the right person for the job.
 
 
 
