@@ -1,5 +1,5 @@
 ---
-layout: answer
+layout: drag-and-drop
 title:  "Your company plans to migrate a multipetabyte data set to th GCP Exam "
 blurb: "Google Cloud Architect Exam Question"
 date:   2023-02-12 10:21:00 -0500
