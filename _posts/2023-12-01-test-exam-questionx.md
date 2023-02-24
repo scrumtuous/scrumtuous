@@ -7,6 +7,11 @@ categories: google cloud architect exam
 keywords: Google, Cloud, Architect, Exam
 correct: ADE
 ---
+A simple paragraph with an ID attribute.
+{: #para-one}
+
+> A blockquote with a title
+{: .pull-quote }
 
 <div class=" updated-query query">What are three practices that the operations manager should keep in mind when migrating a J2EE application to the cloud?
 </div>
