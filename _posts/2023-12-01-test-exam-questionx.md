@@ -14,9 +14,9 @@ A simple paragraph with an ID attribute.
 {: .pull-quote }
 
 
-<span class="test1">
+<span class="test1" markdown="1">
   
-In a span.
+In a span..
 A simple paragraph with an ID attribute.
 {: #para-one}
 
