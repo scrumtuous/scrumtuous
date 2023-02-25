@@ -16,7 +16,7 @@ A simple paragraph with an ID attribute.
 
 <span style="display:block" class="note">It **works!**</span>
   
-In a span..
+Not a span..
 A simple paragraph with an ID attribute.
 {: #para-one}
 
