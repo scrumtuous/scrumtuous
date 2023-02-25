@@ -15,10 +15,22 @@ A simple paragraph with an ID attribute.
 
 
 <span style="display:block" class="note">It **works!**</span>
+
+<span style="display:block" class="note">
   
-Not a span...
+  Does it **works!**
+
+</span>
+
+<span style="display:block" class="note">
+  
+  Does it **works!** 2
 A simple paragraph with an ID attribute.
 {: #para-one}
+
+</span>
+  
+
 
 > A blockquote with a title
 {: .pull-quote }
