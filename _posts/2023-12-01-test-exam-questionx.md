@@ -10,7 +10,7 @@ correct: ADE
 A simple paragraph with an ID attribute.
 {: #para-one}
 
-> A blockquote with a title
+> A blockquote with a title.
 {: .pull-quote }
 
 
