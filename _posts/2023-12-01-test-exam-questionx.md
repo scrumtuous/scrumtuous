@@ -15,12 +15,14 @@ A simple paragraph with an ID attribute.
 
 
 <span class="test1">
+  
 In a span.
 A simple paragraph with an ID attribute.
 {: #para-one}
 
 > A blockquote with a title
 {: .pull-quote }
+
 </span>
 
 <div class=" updated-query query">What are three practices that the operations manager should keep in mind when migrating a J2EE application to the cloud?
