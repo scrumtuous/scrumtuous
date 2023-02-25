@@ -14,7 +14,7 @@ A simple paragraph with an ID attribute.
 {: .pull-quote }
 
 
-<span class="test1" markdown="1">
+<span style="display:block" class="note">It **works!**</span>
   
 In a span..
 A simple paragraph with an ID attribute.
@@ -23,7 +23,7 @@ A simple paragraph with an ID attribute.
 > A blockquote with a title
 {: .pull-quote }
 
-</span>
+<div class="tip" markdown="1">Have **fun!**</div>
 
 <div class=" updated-query query">What are three practices that the operations manager should keep in mind when migrating a J2EE application to the cloud?
 </div>
