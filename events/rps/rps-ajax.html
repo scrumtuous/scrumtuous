@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<title>Rock Paper Roshambo in JavaScript </title>
+	</head>
+	<body>
+		<p>Which one will it be?</p>
+		<a href="#" onclick="playRoshambo('rock')">rock</a>
+		<a href="#" onclick="playRoshambo('paper')">paper</a>
+		<a href="#" onclick="playRoshambo('scissors')">scissors</a>
+		<br/>
+		<div id="results"></div>
+
+
+<script>
+
+updateScore = function(result){
+	console.log(result);
+	let url = "http://localhost:8080/score/increase" + result;
+	if (result=="loss"){
+		url = "http://localhost:8080/score/increaselosses";
+	}
+	console.log(url);
+	
+	let ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+	  console.log(this.responseText);
+	  let score = JSON.parse(this.responseText);
+	  }
+	};
+	
+	ajaxRequest.open("GET", url, true);
+	ajaxRequest.send();
+
+}
+
+playRoshambo = function(clientGesture){
+
+	if (clientGesture=='paper') { 
+	  result = "lose";
+	  let url = "http://localhost:8080/score/increasewins";
+	  let ajaxRequest = new XMLHttpRequest();
+
+
+	  ajaxRequest.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+  	    console.log(this.responseText);
+	    let score = JSON.parse(this.responseText);
+	    }
+	  };
+	  ajaxRequest.open("GET", url, true);
+	  ajaxRequest.send();
+	} // end if
+
+	if (clientGesture=='scissors') {
+	  result = "loss";
+	  let url = "http://localhost:8080/score/increaselosses";
+	  let ajaxRequest = new XMLHttpRequest();
+
+
+	  ajaxRequest.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+	    console.log(this.responseText);
+	    let score = JSON.parse(this.responseText);
+	    }
+	  };
+	  ajaxRequest.open("GET", url, true);
+	  ajaxRequest.send();
+	} // end if
+
+	if (clientGesture=='rock') {
+	  result = "tie";
+	  let url = "http://localhost:8080/score/increaseties";
+	  let ajaxRequest = new XMLHttpRequest();
+
+
+	  ajaxRequest.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+	    console.log(this.responseText);
+	    let score = JSON.parse(this.responseText);
+	    }
+	  };
+	  ajaxRequest.open("GET", url, true);
+	  ajaxRequest.send();
+	} // end if
+
+	document.getElementById('results').innerHTML = result;
+
+} // end method
+</script>
+
+
+	</body>
+</html>

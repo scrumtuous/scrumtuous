@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Rock Paper JSON</title>
+</head>
+<body>
+	Here is the running score:
+	<br /> Wins:
+	<span id="wins"></span>
+	<br /> Losses:
+	<span id="losses"></span>
+	<br /> Ties:
+	<span id="ties"></span>
+	<br />
+	<script>
+	    // @CrossOrigin CORS support on REST API required for this
+		let url = "http://localhost:8080/score"
+		let ajaxRequest = new XMLHttpRequest();
+		ajaxRequest.open("GET", url, true);
+		ajaxRequest.send();
+		ajaxRequest.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+				let score = JSON.parse(this.responseText);
+				document.getElementById("wins").innerHTML = score.wins;
+				document.getElementById("losses").innerHTML = score.losses;
+				document.getElementById("ties").innerHTML = score.ties;
+			}
+		}; // end onreadystatechange
+	</script>
+</body>
+</html>
