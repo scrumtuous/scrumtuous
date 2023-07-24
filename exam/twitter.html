@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Embedded Tweet</title>
+  <script src="https://platform.twitter.com/widgets.js"></script>
+</head>
+<body>
+  <div id="tweet-container"></div>
+
+  <script>
+    // Function to get the value of a query parameter from the URL
+    function getQueryParam(parameter) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(parameter);
+    }
+
+    // Get the Twitter ID from the query parameter
+    const tweetId = getQueryParam('twitterId');
+console.log("Doing Stuff");
+    if (tweetId) {
+      // Create a new Twitter widget with the provided tweet ID
+      const tweetContainer = document.getElementById('tweet-container');
+      const tweet = document.createElement('div');
+      tweet.setAttribute('data-tweet-id', tweetId);
+      tweetContainer.appendChild(tweet);
+
+      // Load the Twitter widget to embed the tweet
+	  console.log("About to load");
+      twttr.widgets.load();
+	  console.log("Loaded!");
+    }
+  </script>
+</body>
+</html>
