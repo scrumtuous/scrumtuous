@@ -4,6 +4,7 @@ title:  "Be Scrumtuous!"
 blurb: "Check out my first few chapters!."
 date:   2022-01-01 014:17:00 -0500
 categories: aws exam
+canonical: https://www.scrumtuous.com/aws/exam/2022/01/01/scrumtuous.html
 keywords: AWS Cloud Amazon S3 AWS Bucket Delete Folder Files Java JavaScript Python
 video-title: "Delete an Amazon S3 Bucket"
 video-blurb: "New Article Posted on TheServerSide"
