@@ -19,7 +19,7 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
 
 
   
-<object width="400" height="500" type="application/pdf" data="/assets/scrumtuous.pdf">
+<object width="800" height="1000" type="application/pdf" data="/assets/scrumtuous.pdf">
     <p>Insert your error message here, if the PDF cannot be displayed.</p>
 </object>
 
