@@ -17,7 +17,7 @@ flashcardtext: "There's a <em>hidden</em> click and drag section below for hints
 
 
   
-<object width="850" height="1100" type="application/pdf" data="/assets/pdf/_first-three.pdf">
+<object width="850" height="1100" type="application/pdf" data="/scrum/_first-three.pdf">
     <p>Insert your error message here, if the PDF cannot be displayed.</p>
 </object>
 
