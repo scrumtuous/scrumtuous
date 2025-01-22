@@ -9,7 +9,7 @@ certification: "AWS Solution Architect Associate Exam"
 1
 {: .ordinal}
 
---
+
  A company gathers data on temperature, humidity, and atmospheric pressure from various cities spanning multiple continents. Each site generates an average of 500 GB of data daily and is equipped with a high-speed Internet connection. The company aims to consolidate this data from all global locations into a single Amazon S3 bucket as swiftly as possible, while keeping operational complexity to a minimum. What solution would effectively fulfill these criteria?
 {: .query}
 
