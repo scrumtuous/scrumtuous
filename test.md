@@ -14,7 +14,7 @@ certification: "This is the certification field."
 {: .query}
 
 
-{: .alist}
+<div class="options">
 - [ ] A. Improves the program structure because the error handling code is separated from the normal program function
 {: .option}
 - [ ] B. Provides a set of standard exceptions that covers all the possible errors
@@ -25,6 +25,7 @@ certification: "This is the certification field."
 {: .option}
 - [x] E. Allows the creation of new exceptions that are tailored to the particular program being created.
 {: .option}
+</div>
 
 ACD
 {: .answer}
@@ -32,8 +33,33 @@ ACD
 {: .chatGptExplanation}
 This is the chatGptExplanation. 
 
-
 AWSSAA 
 {: .certificationKey}
+
+<div class="original-options">
+- [ ] A. Improves the program structure because the error handling code is separated from the normal program function
+{: .originaloption}
+- [ ] B. Provides a set of standard exceptions that covers all the possible errors
+{: .originaloption}
+- [ ] C. Improves the program structure because the programmer can choose where to handle exceptions
+{: .originaloption}
+- [ ] D. Improves the program structure because exceptions must be handled in the method in which they occurred
+{: .originaloption}
+- [x] E. Allows the creation of new exceptions that are tailored to the particular program being created.
+{: .originaloption}
+</div>
+
+<div class="comments">
+* Improves the program structure because the error handling code is separated from the normal program function
+{: .comment}
+* Provides a set of standard exceptions that covers all the possible errors
+{: .comment}
+* Improves the program structure because the programmer can choose where to handle exceptions
+{: .comment}
+* Improves the program structure because exceptions must be handled in the method in which they occurred
+{: .comment}
+* Allows the creation of new exceptions that are tailored to the particular program being created.
+{: .comment}
+</div>
 
 
