@@ -14,7 +14,6 @@ certification: "This is the certification field."
 {: .query}
 
 
-<div class="options">
 - [ ] A. Improves the program structure because the error handling code is separated from the normal program function
 {: .option}
 - [ ] B. Provides a set of standard exceptions that covers all the possible errors
@@ -25,7 +24,7 @@ certification: "This is the certification field."
 {: .option}
 - [x] E. Allows the creation of new exceptions that are tailored to the particular program being created.
 {: .option}
-</div>
+
 
 ACD
 {: .answer}
@@ -36,7 +35,7 @@ This is the chatGptExplanation.
 AWSSAA 
 {: .certificationKey}
 
-<div class="original-options">
+
 - [ ] A. Improves the program structure because the error handling code is separated from the normal program function
 {: .originaloption}
 - [ ] B. Provides a set of standard exceptions that covers all the possible errors
@@ -47,9 +46,9 @@ AWSSAA
 {: .originaloption}
 - [x] E. Allows the creation of new exceptions that are tailored to the particular program being created.
 {: .originaloption}
-</div>
 
-<div class="comments">
+
+
 * Improves the program structure because the error handling code is separated from the normal program function
 {: .comment}
 * Provides a set of standard exceptions that covers all the possible errors
@@ -60,6 +59,6 @@ AWSSAA
 {: .comment}
 * Allows the creation of new exceptions that are tailored to the particular program being created.
 {: .comment}
-</div>
+
 
 
