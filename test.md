@@ -35,6 +35,7 @@ This is the chatGptExplanation.
 AWSSAA 
 {: .certificationKey}
 
+### Original Questions
 
 - [ ] A. Improves the program structure because the error handling code is separated from the normal program function
 {: .originaloption}
@@ -47,6 +48,8 @@ AWSSAA
 - [x] E. Allows the creation of new exceptions that are tailored to the particular program being created.
 {: .originaloption}
 
+
+### Comments
 
 
 * Improves the program structure because the error handling code is separated from the normal program function
