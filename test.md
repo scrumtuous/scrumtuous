@@ -1,5 +1,5 @@
 ---
-layout: gcp-architect-exam-question
+layout: drag-and-drop
 title: "AWS Data Collection For Global Sites Question"
 meta: "AWS Exam Question: A company collects data for temperature, humidity, and atmospheric pressure across continents with 500 GB daily. What’s the answer? AWS S3, high-speed Internet."
 slug: "q-42-temperature-humidity-pressure-s3"
