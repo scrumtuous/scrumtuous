@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WindSafe.ai</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- LineIcons CSS -->
+  <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" id="brand-animate" href="#">WindSafe.ai</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#hero">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#notifications"><i class="lni lni-envelope"></i> Notifications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#alerts">
+            <i class="lni lni-warning text-danger"></i> Alerts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/" target="_blank"><i class="lni lni-twitter"></i> Updates </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://youtube.com/" target="_blank"><i class="lni lni-youtube"></i> Warnings</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- Main Content Placeholder -->
+  <div id="page-loader" class="page-loader d-flex align-items-center justify-content-center">
+    <div class="loader-spinner"></div>
+  </div>
+  <main class="container-fluid p-0" style="margin-top: 90px;">
+    <section id="hero" class="section-hero d-flex align-items-center justify-content-center">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 text-lg-start text-center mb-4 mb-lg-0">
+        <div class="mb-2">
+          <span class="hero-lead">Smarter Safety. Safer Turbines.</span>
+        </div>
+        <h1 class="hero-title mb-2">Introducing WindSafe.ai<br/>Protecting Crews<br>Coordinating Landowners</h1>
+        <div class="mb-3">
+          <span class="hero-sub">The first platform built to prevent chemical exposure during turbine maintenance.</span>
+        </div>
+        <div class="hero-social d-flex justify-content-lg-start justify-content-center gap-3 mt-4">
+          <a href="https://twitter.com/" target="_blank" class="hero-icon icon-style-1" aria-label="Twitter"><i class="lni lni-twitter"></i></a>
+          <a href="https://youtube.com/" target="_blank" class="hero-icon icon-style-2" aria-label="YouTube"><i class="lni lni-youtube"></i></a>
+          <a href="https://github.com/" target="_blank" class="hero-icon icon-style-1" aria-label="GitHub"><i class="lni lni-github-original"></i></a>
+          <a href="https://amazon.com/" target="_blank" class="hero-icon icon-style-2" aria-label="Amazon"><i class="lni lni-amazon"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/images/heros/hero00.png" class="d-block w-100 hero-img" alt="Hero 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/images/heros/hero01.png" class="d-block w-100 hero-img" alt="Hero 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/images/heros/hero02.png" class="d-block w-100 hero-img" alt="Hero 3">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/images/heros/hero03.png" class="d-block w-100 hero-img" alt="Hero 4">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="alerts" class="section-white py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold"><i class="lni lni-warning text-danger me-2"></i>Active Spray Alerts</h2>
+      <p class="text-muted">Stay ahead of scheduled agricultural spraying near wind turbine sites. These alerts help prevent hazardous technician exposure.</p>
+    </div>
+    <div class="row justify-content-center align-items-center g-4 alerts-row">
+      <div class="col-12 col-md-4 d-flex justify-content-center">
+        <img src="assets/images/testimonials/amazon-testimonial01.png" alt="Spray Alert 1" class="testimonial-img testimonial-flyin-1 img-fluid rounded shadow">
+      </div>
+      <div class="col-12 col-md-4 d-flex justify-content-center">
+        <img src="assets/images/testimonials/amazon-testimonial02.png" alt="Spray Alert 2" class="testimonial-img testimonial-flyin-2 img-fluid rounded shadow">
+      </div>
+      <div class="col-12 col-md-4 d-flex justify-content-center">
+        <img src="assets/images/testimonials/amazon-testimonial03.png" alt="Spray Alert 3" class="testimonial-img testimonial-flyin-3 img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section-snow py-5">
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-6 d-flex justify-content-center mb-4 mb-lg-0">
+        <img src="assets/images/scrum-guide-cover.png" alt="WindSafe Platform Map" class="about-img img-fluid rounded shadow">
+      </div>
+      <div class="col-lg-6">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100 text-center">
+          <div class="about-title-gradient mb-3 px-4 py-2">
+            <span class="about-title">A Smarter Way to Coordinate</span>
+          </div>
+          <div class="mb-3">
+            <span class="fw-bold text-dark">WindSafe.ai bridges the gap between turbine crews and landowners:</span>
+          </div>
+          <ul class="about-list text-start mx-auto mb-4">
+            <li>Instant SMS and email alerts to landowners when crews are on-site</li>
+            <li>Two-way communication: farmers submit spraying schedules easily</li>
+            <li>Interactive map interface—no apps or logins needed</li>
+            <li>Fully integrated with tools like Smartsheet for effortless adoption</li>
+            <li>Digital logs for legal protection and compliance documentation</li>
+            <li>Built to scale from small wind sites to global energy operators</li>
+            <li>Backed by real-world operational experience in wind and ag-tech</li>
+          </ul>
+          <div class="mt-3">
+            <a href="#alerts" class="about-cta-link fw-bold">SEE ALERTS IN ACTION</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats" class="section-gradient py-5">
+  <div class="container">
+    <div class="row justify-content-center align-items-center text-center g-4">
+      <div class="col-6 col-md-3">
+        <div class="stats-item d-flex flex-column align-items-center">
+          <div class="stats-icon mb-2"><span class="icon-bg"><i class="lni lni-map-marker"></i></span></div>
+          <div class="stats-number" data-target="900">900</div>
+          <div class="stats-label">Turbines Mapped</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stats-item d-flex flex-column align-items-center">
+          <div class="stats-icon mb-2"><span class="icon-bg"><i class="lni lni-alarm"></i></span></div>
+          <div class="stats-number" data-target="137">137</div>
+          <div class="stats-label">Spray Alerts Issued</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stats-item d-flex flex-column align-items-center">
+          <div class="stats-icon mb-2"><span class="icon-bg"><i class="lni lni-users"></i></span></div>
+          <div class="stats-number" data-target="482">482</div>
+          <div class="stats-label">Landowners Connected</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stats-item d-flex flex-column align-items-center">
+          <div class="stats-icon mb-2"><span class="icon-bg"><i class="lni lni-shield"></i></span></div>
+          <div class="stats-number" data-target="521">521</div>
+          <div class="stats-label">Incidents Prevented</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="video" class="section-snow py-5">
+  <div class="container">
+    <div class="d-flex flex-column align-items-center mb-4">
+      <div class="video-title-gradient mb-3 px-4 py-2">
+        <span class="video-title">See WindSafe.ai in Action</span>
+      </div>
+    </div>
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-6 mb-4 mb-lg-0 d-flex justify-content-center">
+        <div class="ratio ratio-16x9 w-100" style="max-width: 480px;">
+          <iframe src="https://www.youtube.com/embed/5vj6GwVhQT0" title="WindSafe.ai Platform Demo" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100 text-center text-lg-start">
+          <div class="fw-bold mb-3">Explore how WindSafe.ai reduces risk, simplifies coordination, and improves safety across wind farms.</div>
+          <ul class="video-list text-start mx-auto mb-4">
+            <li>Automated alerts for landowners and turbine technicians</li>
+            <li>Visual mapping powered by Mapsly</li>
+            <li>Smartsheet integration for minimal operator effort</li>
+            <li>Instant digital records for legal protection</li>
+            <li>Scalable design for national and global deployment</li>
+          </ul>
+          <div class="mt-3 text-center">
+            <a href="#alerts" class="video-cta-link fw-bold">VIEW CURRENT ALERTS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="benefits" class="section-white py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="mb-1 small text-muted">Why WindSafe.ai Matters</div>
+      <div class="pricing-title-gradient mb-2 d-inline-block px-4 py-2">
+        <span class="pricing-title">Safety. Simplicity. Impact.</span>
+      </div>
+      <div class="fw-bold mt-2" style="font-size:1.1rem;">A smarter future for wind energy begins with safety today.</div>
+    </div>
+    <div class="row justify-content-center g-4">
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="pricing-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <div class="pricing-price mb-2 text-success fw-bold">Real-Time Alerts</div>
+          <div class="pricing-format mb-2">Prevent Fatal Exposure</div>
+          <hr class="w-100 my-2">
+          <ul class="pricing-benefits list-unstyled mb-3">
+            <li>SMS and email alerts notify landowners instantly</li>
+            <li>Technicians avoid high-risk chemical zones</li>
+          </ul>
+          <img src="assets/images/scrum-guide-cover.png" alt="Notification Safety" class="pricing-img mb-3">
+          <hr class="w-100 my-2">
+          <a href="#alerts" class="pricing-btn">See Alerts</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="pricing-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <div class="pricing-price mb-2 text-success fw-bold">Visual Mapping</div>
+          <div class="pricing-format mb-2">Clarity Without an App</div>
+          <hr class="w-100 my-2">
+          <ul class="pricing-benefits list-unstyled mb-3">
+            <li>Interactive map links—no downloads or logins</li>
+            <li>Easy for landowners, clear for tech crews</li>
+          </ul>
+          <img src="assets/images/scrum-guide-cover.png" alt="Mapping Safety" class="pricing-img mb-3">
+          <hr class="w-100 my-2">
+          <a href="#about" class="pricing-btn">Explore Features</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="pricing-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <div class="pricing-price mb-2 text-success fw-bold">Legal Shield</div>
+          <div class="pricing-format mb-2">Compliance & Defense</div>
+          <hr class="w-100 my-2">
+          <ul class="pricing-benefits list-unstyled mb-3">
+            <li>Digital communication trail protects your crews</li>
+            <li>Support for audits, insurance, and litigation</li>
+          </ul>
+          <img src="assets/images/scrum-guide-cover.png" alt="Legal Safety" class="pricing-img mb-3">
+          <hr class="w-100 my-2">
+          <a href="#video" class="pricing-btn">Watch Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="team" class="section-snow py-5">
+  <div class="container">
+    <div class="d-flex flex-column align-items-center mb-5">
+      <div class="authors-title-gradient mb-3 px-4 py-2">
+        <span class="authors-title">Meet the WindSafe.ai Team</span>
+      </div>
+    </div>
+    <div class="row justify-content-center g-4">
+      <div class="col-12 col-sm-6 col-lg-3 d-flex">
+        <div class="author-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <img src="assets/images/authors/darcy-declute-author.png" alt="Darcy DeClute" class="author-img rounded-circle mb-3">
+          <div class="fw-bold">Darcy DeClute</div>
+          <div class="text-muted mb-2">Co-Founder & Safety Strategist</div>
+          <hr class="w-100 my-2">
+          <div class="author-role-desc mb-3">Oversees safety coordination logic and brings deep field experience in energy sector protocols and risk reduction.</div>
+          <div class="author-social d-flex justify-content-center gap-2 mt-auto">
+            <a href="#" class="hero-icon icon-style-2" aria-label="LinkedIn"><i class="lni lni-linkedin-original"></i></a>
+            <a href="#" class="hero-icon icon-style-2" aria-label="Twitter"><i class="lni lni-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3 d-flex">
+        <div class="author-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <img src="assets/images/authors/amanda-punsammy-associate-editor.png" alt="Amanda Punsammy" class="author-img rounded-circle mb-3">
+          <div class="fw-bold">Amanda Punsammy</div>
+          <div class="text-muted mb-2">Operations & Compliance Lead</div>
+          <hr class="w-100 my-2">
+          <div class="author-role-desc mb-3">Ensures all workflows align with legal, environmental, and occupational regulations for safety-critical infrastructure.</div>
+          <div class="author-social d-flex justify-content-center gap-2 mt-auto">
+            <a href="#" class="hero-icon icon-style-2" aria-label="LinkedIn"><i class="lni lni-linkedin-original"></i></a>
+            <a href="#" class="hero-icon icon-style-2" aria-label="Twitter"><i class="lni lni-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3 d-flex">
+        <div class="author-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <img src="assets/images/authors/prachi-shah-technical-edtior.png" alt="Prachi Shah" class="author-img rounded-circle mb-3">
+          <div class="fw-bold">Prachi Shah</div>
+          <div class="text-muted mb-2">GIS & Mapping Lead</div>
+          <hr class="w-100 my-2">
+          <div class="author-role-desc mb-3">Responsible for the real-time visual coordination map that powers all landowner and technician awareness features.</div>
+          <div class="author-social d-flex justify-content-center gap-2 mt-auto">
+            <a href="#" class="hero-icon icon-style-2" aria-label="LinkedIn"><i class="lni lni-linkedin-original"></i></a>
+            <a href="#" class="hero-icon icon-style-2" aria-label="Twitter"><i class="lni lni-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3 d-flex">
+        <div class="author-card flex-fill d-flex flex-column align-items-center text-center p-4">
+          <img src="assets/images/authors/Walker-Boh-editor.jfif" alt="Walker Boh" class="author-img rounded-circle mb-3">
+          <div class="fw-bold">Walker Boh</div>
+          <div class="text-muted mb-2">Full-Stack Developer</div>
+          <hr class="w-100 my-2">
+          <div class="author-role-desc mb-3">Built the WindSafe.ai MVP and integrations with Smartsheet, Mapsly, and alert delivery systems. Obsessed with uptime.</div>
+          <div class="author-social d-flex justify-content-center gap-2 mt-auto">
+            <a href="#" class="hero-icon icon-style-2" aria-label="LinkedIn"><i class="lni lni-linkedin-original"></i></a>
+            <a href="#" class="hero-icon icon-style-2" aria-label="Twitter"><i class="lni lni-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </main>
+  <footer class="section-gradient text-center py-4">
+    <div class="container">
+      <small class="text-white">&copy; 2025 WindSafe.ai All rights reserved.</small>
+    </div>
+  </footer>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="assets/js/scripts.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</body>
+</html> 
