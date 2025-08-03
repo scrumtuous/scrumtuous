@@ -1,0 +1,160 @@
+<!-- scripts -->
+<script src="https://cdn.jsdelivr.net/npm/oidc-client@1.10.1/dist/oidc-client.min.js"></script>
+<script>
+const settings = {
+  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ",
+  client_id: "s6qs08b48fg6u10gg5hlurfvc",
+  redirect_uri: "https://certificationexams.guru/index.html",
+  response_type: "code",
+  scope: "email openid phone profile",
+  post_logout_redirect_uri: "https://certificationexams.guru/index.html"
+};
+
+const userManager = new Oidc.UserManager(settings);
+const myUserManager = userManager;
+let currentUser = null;
+
+function updateUI(user) {
+  console.log("Calling updateUI with user:", user);
+  window.currentUser = user;
+
+  const navRegisterBtn = document.getElementById("nav-register");
+  const loginStatus = document.getElementById("login-status");
+  const signedOut = document.getElementById("signed-out");
+  const signedIn = document.getElementById("signed-in");
+  const userInfo = document.getElementById("user-info");
+
+  if (user) {
+    const profile = user.profile || {};
+    const name = profile.username || profile.email || profile.name || "User";
+    console.log("Authenticated user:", name);
+
+    if (loginStatus) {
+      loginStatus.innerText = "You are logged in!";
+    }
+
+    if (signedOut) {
+      signedOut.classList.add("hidden");
+    }
+
+    if (signedIn) {
+      signedIn.classList.remove("hidden");
+    }
+
+    if (userInfo) {
+      userInfo.innerText = JSON.stringify(profile, null, 2);
+    }
+
+    if (navRegisterBtn) {
+      navRegisterBtn.innerHTML = `&nbsp;&nbsp;Welcome ${name}!&nbsp;&nbsp;`;
+    }
+  } else {
+    console.warn("No user is logged in.");
+
+    if (loginStatus) {
+      loginStatus.innerText = "You are not logged in.";
+    }
+
+    if (navRegisterBtn) {
+      navRegisterBtn.innerHTML = `&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;`;
+    }
+  }
+}
+
+// Try redirect callback first
+userManager.signinRedirectCallback().then(function(user) {
+  console.log("Signin redirect complete:", user);
+  if (user) {
+    window.currentUser = user;
+    updateUI(user);
+  } else {
+    console.warn("Signin redirect returned null user. Skipping updateUI.");
+	console.warn("Setting window.currentUser to null.");
+	window.currentUser = null;
+  }
+}).catch(function(err) {
+  console.warn("signinRedirectCallback failed, trying getUser:", err);
+  userManager.getUser().then(function(user) {
+    console.log("getUser returned:", user);
+    if (user) {
+	  window.currentUser = user;
+      updateUI(user);
+	  
+    } else {
+      console.warn("getUser returned null user. Skipping updateUI.");
+	  console.warn("Setting window.currentUser to null.");
+	  window.currentUser = null;
+    }
+  }).catch(function(innerErr) {
+    console.error("getUser failed:", innerErr);
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM fully loaded and parsed");
+
+  const navRegisterBtn = document.getElementById("nav-register");
+  if (navRegisterBtn) {
+    console.log("Adding click listener to #nav-register");
+    navRegisterBtn.addEventListener("click", function () {
+      myUserManager.signinRedirect();
+    });
+  } else {
+    console.warn("#nav-register not found.");
+  }
+
+  const signInAgainBtn = document.getElementById("signInAgain") || document.getElementById("sign-in-again");
+  if (signInAgainBtn) {
+    console.log("Adding click listener to #signInAgain or #sign-in-again");
+    signInAgainBtn.addEventListener("click", function () {
+      myUserManager.signinRedirect();
+    });
+  } else {
+    console.warn("#signInAgain / #sign-in-again not found.");
+  }
+
+  const signInBtn = document.getElementById("signIn");
+  if (signInBtn) {
+    console.log("Adding click listener to #signIn");
+    signInBtn.addEventListener("click", function () {
+      userManager.signinRedirect();
+    });
+  } else {
+    console.warn("#signIn button not found.");
+  }
+
+  const logoutBtn = document.getElementById("logout");
+  if (logoutBtn) {
+    console.log("Adding click listener to #logout");
+    logoutBtn.addEventListener("click", function () {
+      console.log("Initiating logout...");
+      userManager.signoutRedirect({
+		post_logout_redirect_uri: "https://certificationexams.guru/index.html"
+      }).catch(err => {
+        console.error("Logout failed:", err);
+      });
+    });
+  } else {
+    console.warn("#logout button not found.");
+  }
+});
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R61E5VK5GF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R61E5VK5GF');
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179472407-1"></script>
+<script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+   
+   gtag('config', 'UA-179472407-1');
+</script>
+ 

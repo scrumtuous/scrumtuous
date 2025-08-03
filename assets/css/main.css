@@ -1447,7 +1447,6 @@ ol {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url(../images/hero/saas-overlay.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
@@ -2299,7 +2298,6 @@ ol {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url("../images/hero/saas-overlay.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
@@ -2330,7 +2328,6 @@ ol {
   content: '';
   display: block;
   width: 100%;
-  background: url("../images/hero/startup-overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
@@ -2406,7 +2403,6 @@ ol {
   content: '';
   display: block;
   width: 100%;
-  background: url("../images/hero/agency-overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
@@ -3146,7 +3142,6 @@ ol {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url("../images/hero/saas-overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
@@ -3278,7 +3273,6 @@ ol {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url("../images/cta/overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
@@ -3381,7 +3375,6 @@ ol {
   top: -10px;
   height: 110%;
   width: 110%;
-  background-image: url("../images/video/video-overlay.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -4267,7 +4260,6 @@ ol {
   top: -10px;
   height: 110%;
   width: 110%;
-  background-image: url("../images/video/agency-overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -4308,7 +4300,6 @@ ol {
   top: -10px;
   height: 110%;
   width: 110%;
-  background-image: url("../images/video/video-overlay.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -4784,7 +4775,7 @@ ol {
 }
 
 .footer.style3::before {
-  background-image: url("../images/cta/overlay.png");
+
 }
 
 .footer.style4 {
@@ -4792,7 +4783,7 @@ ol {
 }
 
 .footer.style4::before {
-  background-image: url("../images/cta/overlay.png");
+
 }
 
 .footer::before {
@@ -4802,7 +4793,7 @@ ol {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url("../images/hero/saas-overlay.png");
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
@@ -4991,7 +4982,7 @@ ol {
     padding: 60px 0px;
   }
   p {
-    font-size: 13px;
+    font-size: 16px;
   }
   .universal-demo {
     padding: 30px 0 60px 0 !important;
@@ -5558,7 +5549,7 @@ ol {
     padding-right: 0;
   }
   p {
-    font-size: 13px;
+    font-size: 16px;
   }
   .section-title p {
     font-size: 13px;

@@ -1,26 +1,30 @@
-<!-- Global site tag (gtag.js) - Google Analytics -->
+<title>{{ page.title }}</title>
 
+{% if page.canonical %}
+<link rel="canonical" href="{{ page.canonical }}" />
+{% else %} 
+{% endif %}
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R61E5VK5GF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+{% if page.blurb %}
+<meta name="description" content="{{ page.blurb }}"/>   
+{% else %}
+<meta name="description" content="Quickly learn how to master the AWS Certification Exam Objectives and get AWS Certified."/>   
+{% endif %}
 
-  gtag('config', 'G-R61E5VK5GF');
-</script>
+{% if page.keywords %}
+<link rel="keywords" href="{{ page.keywords }}" />
+{% else %}
+<meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>	   
+{% endif %}  
 
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179472407-1"></script>
-<script>
-   window.dataLayer = window.dataLayer || [];
-   function gtag(){dataLayer.push(arguments);}
-   gtag('js', new Date());
-   
-   gtag('config', 'UA-179472407-1');
-</script>
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta property="fb:app_id" content="287616246137792" />  
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/> 
 <meta name="robots" content="index, follow" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+
+
