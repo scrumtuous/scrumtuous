@@ -1,0 +1,160 @@
+<script type="module">
+  import { UserManager, WebStorageStateStore } from "https://cdn.jsdelivr.net/npm/oidc-client-ts@2.4.0/+esm";
+
+  // --------- Constants (align with your app) ----------
+  const MP_AUTH_NS   = "mp_";
+  const LOGOUT_FLAG  = "__mpLogoutInitiated";
+  const HANDLED_FLAG = "__mpSignoutHandled";
+
+  const authority  = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ";
+  const client_id  = "s6qs08b48fg6u10gg5hlurfvc";
+  const cognitoDomain = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
+
+  // Use *this* page as the post-logout landing to finish callbacks & cleanup
+  const post_logout_redirect_uri = location.origin + location.pathname;
+  const redirect_uri = post_logout_redirect_uri; // not used for logout, but keep consistent
+
+  const store = new WebStorageStateStore({ store: window.localStorage, prefix: MP_AUTH_NS });
+  const mgr = new UserManager({
+    authority,
+    client_id,
+    redirect_uri,
+    response_type: "code",
+    scope: "openid email phone profile",
+    post_logout_redirect_uri,
+    stateStore: store,
+    userStore:  store,
+    automaticSilentRenew: false,
+    revokeTokensOnSignout: true,
+  });
+
+  // --------- Minimal DOM helpers / UI sync ----------
+  const $ = (id) => document.getElementById(id);
+  const setText = (id, text) => { const el = $(id); if (el) el.replaceChildren(document.createTextNode(text)); };
+  const setHTML = (id, html) => { const el = $(id); if (el) el.innerHTML = html; };
+  const show = (id) => { const el = $(id); if (el) el.classList.remove("hidden","d-none"); };
+  const hide = (id) => { const el = $(id); if (el) el.classList.add("hidden","d-none"); };
+
+  function broadcastSignedOut() {
+    window.currentUser = null;
+    window.dispatchEvent(new CustomEvent("auth:changed", { detail: { isAuthenticated: false } }));
+    // Try to flip any common UI elements immediately
+    setText("login-status", "You are not logged in.");
+    setHTML("nav-register", `&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;`);
+    show("signed-out"); hide("signed-in");
+    setText("mp-name", "Lurker McLurkerface");
+    setText("mp-registered-status", "Unregistered?");
+    setHTML("mp-ranking", `<span class="text-warning">Not logged in?</span>`);
+    setText("mp-logged-in", "false");
+    setText("mp-profile-loaded", "false");
+    setText("mp-last-login", "unknown");
+    show("mp-signIn"); hide("mp-signOut");
+  }
+
+  // --------- Storage / cookie / cache cleanup ----------
+  // Step A: pre-logout purge (preserve OIDC keys so callback can complete)
+  function preLogoutPurge(prefix = MP_AUTH_NS) {
+    const preservePrefixes = [`${prefix}oidc.`]; // keep until after callback
+    const toDelete = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!preservePrefixes.some(p => key.startsWith(p))) toDelete.push(key);
+    }
+    toDelete.forEach(k => localStorage.removeItem(k));
+    // App session data is safe to clear now
+    sessionStorage.clear();
+  }
+
+  // Step B: post-logout purge (remove *everything*, including OIDC)
+  function postLogoutPurge(prefix = MP_AUTH_NS) {
+    // Remove our namespaced keys
+    const toDelete = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(prefix)) toDelete.push(key);
+    }
+    toDelete.forEach(k => localStorage.removeItem(k));
+    sessionStorage.clear();
+
+    // Best-effort cookie cleanup (only non-HttpOnly, current domain/path)
+    try {
+      const cookies = document.cookie ? document.cookie.split(";") : [];
+      for (const raw of cookies) {
+        const name = raw.split("=")[0]?.trim();
+        if (!name) continue;
+        // Expire for common paths
+        document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+        document.cookie = `${name}=; Max-Age=0; path=/; domain=.certificationexams.guru; SameSite=Lax`;
+      }
+    } catch {}
+
+    // Clear Cache Storage (if used by the app)
+    if ("caches" in window) {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(()=>{});
+    }
+  }
+
+  // --------- Sign-out flow ----------
+  async function finishSignoutCallbackIfAny() {
+    if (window[HANDLED_FLAG]) return;
+    try {
+      // Not all IdPs add params; oidc-client-ts uses stored state. This may no-op; that's fine.
+      await mgr.signoutRedirectCallback();
+    } catch (e) {
+      // Safe to ignore; we still hard-purge below.
+    } finally {
+      window[HANDLED_FLAG] = true;
+    }
+  }
+
+  async function doHostedUILogoutFallback() {
+    const url = `${cognitoDomain}/logout?client_id=${encodeURIComponent(client_id)}&logout_uri=${encodeURIComponent(post_logout_redirect_uri)}`;
+    window.location.assign(url);
+  }
+
+  async function startLogoutIfNeeded() {
+    // If we’re back from Cognito, there’s nothing to start
+    if (sessionStorage.getItem(LOGOUT_FLAG) === "done") return;
+
+    // Mark that we’re initiating a front-channel sign-out
+    sessionStorage.setItem(LOGOUT_FLAG, "started");
+
+    // Kick off OIDC sign-out (preferred path)
+    try {
+      await mgr.signoutRedirect({ post_logout_redirect_uri });
+      // Browser will navigate away; code below won’t run now.
+    } catch {
+      // Fallback to Hosted UI logout endpoint
+      doHostedUILogoutFallback();
+    }
+  }
+
+  // --------- Orchestration on this page ----------
+  // 1) Pre-logout purge (keep OIDC keys so callback can complete after redirect)
+  preLogoutPurge();
+  broadcastSignedOut(); // immediately flip UI and notify listeners
+
+  // 2) If we *just returned* from Cognito, finish callback & hard purge
+  if (sessionStorage.getItem(LOGOUT_FLAG) === "started") {
+    await finishSignoutCallbackIfAny();
+    // We’re back; mark done and hard-purge everything, including OIDC keys
+    sessionStorage.setItem(LOGOUT_FLAG, "done");
+    postLogoutPurge();
+    try { await mgr.removeUser(); } catch {}
+    try { await mgr.clearStaleState(); } catch {}
+    broadcastSignedOut();
+    // Optional: send user to a neutral page
+    // window.location.replace("/");
+  } else {
+    // 3) Otherwise, initiate sign-out now
+    await startLogoutIfNeeded();
+    // If signout failed synchronously, ensure we still look logged out
+    broadcastSignedOut();
+  }
+
+  // --------- Optional: add a manual “Sign in again” button on this page ----------
+  document.addEventListener("DOMContentLoaded", () => {
+    const relog = document.getElementById("signIn") || document.getElementById("mp-signIn");
+    relog?.addEventListener("click", () => window.location.assign("/"));
+  });
+</script>

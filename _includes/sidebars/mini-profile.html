@@ -1,0 +1,51 @@
+
+<div class="card mb-4" style="text-align: left;">
+  <div class="card-body">
+    <div class="d-flex align-items-center">
+      <div class="position-relative">
+        <!-- Circular avatar -->
+        <img id="mp-profile-pic" src="/assets/unknown-user.png" alt="unknown exam taker" class="rounded-circle avatar-xl">
+      </div>
+
+      <div class="ms-4">
+        <h4 id="mp-name" class="mb-1">Lurker McLurkerface</h4>
+        <p id="mp-registered-status" class="mb-1 fs-6">Unregistered?</p>
+        <span id="mp-ranking" class="fs-6 mb-1">
+          <span class="text-warning mb-1">Not logged in?</span>
+          <span class="mdi mdi-star text-warning me-2"></span><br />Please log in or register
+        </span>
+      </div>
+    </div>
+
+    <div class="border-top mt-3 border-bottom mb-3 g-0 row" style="text-align: center;">
+      <div class="col">
+        <div class="pe-1 ps-2 py-3">
+          <span>Remembered</span>
+          <h5 id="mp-profile-loaded" class="mb-0">false</h5>
+        </div>
+      </div>
+      <div class="border-start col">
+        <div class="pe-1 ps-3 py-3">
+          <span>Logged In</span>
+          <h5 id="mp-logged-in" class="mb-0">false</h5>
+        </div>
+      </div>
+      <div class="border-start col">
+        <div class="pe-1 ps-3 py-3">
+          <span>Last Login</span>
+          <h5 id="mp-last-login" class="mb-0">unknown</h5>
+        </div>
+      </div>
+    </div>
+
+    <p id="mp-login-message">
+      Registration unlocks hundreds of exam questions and enables advanced features.
+    </p>
+
+    <!-- Auth buttons -->
+    <div id="mp-auth-buttons">
+	<div class="d-grid"><button id="mp-signIn" class="btn btn-outline-primary btn-sm">Sign In / Register</button></div>
+      <button id="mp-signOut" class="btn btn-outline-danger btn-sm d-none">Log Out</button>
+    </div>
+  </div>
+</div>

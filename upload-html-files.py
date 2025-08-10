@@ -4,7 +4,9 @@ from mimetypes import guess_type
 
 # ----------- Configuration -------------
 BUCKET_NAME = 'certificationexams.guru'
-NO_CACHE_EXTENSIONS = ('.html', '.js')
+LOCAL_DIRECTORY = r'F:\_repos\scrumtuous\scrumtuous\_site'
+S3_PREFIX = ''  # Set to a subfolder path if you want, e.g., 'dev-site/'
+NO_CACHE_EXTENSIONS = ('.html', '.js', '.css')
 
 # ----------- S3 Client -----------------
 s3_client = boto3.client('s3')
@@ -25,17 +27,19 @@ def upload_file(file_path, s3_key):
     if extra_args:
         print(f'  Headers: {extra_args}')
 
-def upload_script_directory():
-    # Get the actual directory where this script resides
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    print(f"Uploading .html and .js files from: {script_dir}")
-
-    for file in os.listdir(script_dir):
-        full_path = os.path.join(script_dir, file)
-        if os.path.isfile(full_path) and file.lower().endswith(NO_CACHE_EXTENSIONS):
-            upload_file(full_path, file)
+def upload_directory(local_dir, s3_prefix=''):
+    for root, dirs, files in os.walk(local_dir):
+        for file in files:
+            # Only upload .html files
+            if not file.lower().endswith('.html'):
+                continue
+            full_path = os.path.join(root, file)
+            relative_path = os.path.relpath(full_path, local_dir)
+            s3_key = os.path.join(s3_prefix, relative_path).replace('\\', '/')
+            upload_file(full_path, s3_key)
 
 # ---------- Run Upload -----------------
 if __name__ == '__main__':
-    upload_script_directory()
+    print(f"Uploading HTML files from {LOCAL_DIRECTORY} to s3://{BUCKET_NAME}/")
+    upload_directory(LOCAL_DIRECTORY, S3_PREFIX)
     print("✅ Upload complete.")

@@ -1,0 +1,69 @@
+hero:
+  title: "500+ [[EXAM_NAME]] Exam Questions"
+  lead_line1: "Escalating exams proven to prepare you at an accellerating pace."
+  lead_line2: "Expertly curated questions and answers to optimize your study time."
+  guarantee: "Pass the Boss exam for a 100% AWS exam pass guarantee!"
+
+cards:
+  - id: 1
+    header: "10 Question Exam"
+    blurb: "10 questions to get you familiar with the exam."
+    button: "Start Exam 1"
+    path: "exam1.html"
+    ribbon_include: "graphics/ribbons/pledge-ribbon.html"
+
+  - id: 2
+    header: "25 Question Exam"
+    blurb: "Another quick quiz to get you motivated."
+    button: "Start Exam 2"
+    path: "exam2.html"
+    ribbon_include: "graphics/ribbons/cadet-ribbon.html"
+
+  - id: 3
+    header: "35 Question Exam"
+    blurb: "You'll be familiar with the exam by now."
+    button: "Start Exam 3"
+    path: "exam3.html"
+    ribbon_include: "graphics/ribbons/sentinel-ribbon.html"
+
+  - id: 4
+    header: "55 Question Exam"
+    blurb: "Build your test-taking endurance."
+    button: "Start Exam 4"
+    path: "exam4.html"
+    ribbon_include: "graphics/ribbons/ensign-ribbon.html"
+
+  - id: 5
+    header: "65 Question Exam"
+    blurb: "You have made it into the gold rankings!"
+    button: "Start Exam 5"
+    path: "exam5.html"
+    ribbon_include: "graphics/ribbons/lieutenant-ribbon.html"
+
+  - id: 6
+    header: "75 Question Exam"
+    blurb: "More than a full-length practice exam."
+    button: "Start Exam 6"
+    path: "exam6.html"
+    ribbon_include: "graphics/ribbons/commander-ribbon.html"
+
+  - id: 7
+    header: "85 Question Exam"
+    blurb: "Another full-length AWS [[EXAM_SLUG]] exam."
+    button: "Start Exam 7"
+    path: "exam7.html"
+    ribbon_include: "graphics/ribbons/captain-ribbon.html"
+
+  - id: 8
+    header: "95 Question Exam"
+    blurb: "A true test of your skills."
+    button: "Start Exam 8"
+    path: "exam8.html"
+    ribbon_include: "graphics/ribbons/admiral-ribbon.html"
+
+  - id: 9
+    header: "105 Question Boss Exam"
+    blurb: "Defeat the Boss? It's a 100% pass guarantee! Good luck!"
+    button: "Start Exam 9"
+    path: "exam9.html"
+    ribbon_include: "graphics/ribbons/boss-ribbon.html"

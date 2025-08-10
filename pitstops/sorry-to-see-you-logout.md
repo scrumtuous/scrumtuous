@@ -1,7 +1,7 @@
 ---
-layout: default
-title: "Free AWS Certification Exam Test Questions and Answers"
-blurb: "This AWS Practitioner Exam Certification Study Guide will provide yo in-depth knowlege on exam objectives and help you pass the exam."
+layout: auth-redirect
+title: "Thank you for logging in."
+blurb: "You have logged into the website successfully."
 keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, AWS Exam
 ---
 <div id="root"> 
@@ -11,9 +11,9 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
         <div class="row align-items-center">
           <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
             <div style="text-align: left;">
-              <h2 class="text-white display-4 fw-semi-bold mt-15">Your Fastest Path to Certification</h2>
-              <p class="text-white mb-6 lead">The industry's most accurate and up-to-date practice exams.<br/>Thousands of free sample exam questions.</p>
-              <h3>Try our advanced exam simulator today.</h3>
+              <h2 class="text-white display-4 fw-semi-bold mt-15">We have logged you out.</h2>
+              <p class="text-white mb-6 lead">Sorry to see you go. Come back again real soon!</p>
+              <h3>And don't forget to follow us on Twitter and YouTube!</h3>
 {% include graphics/success-stories-stars.html %} 
             </div>
           </div>
@@ -132,9 +132,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
           </div>
           <div class="mt-lg-n22 col-lg-4 col-md-12 col-sm-12">
 		     {% include sidebars/mini-profile.html %}
-			 {% include sidebars/mckenzie.html %}
-			 {% include sidebars/buy-me-a-coffee.html %}
-               {% include sidebars/scrumtuous.html %}
+               {% include sidebars/star-trek-ranking.html %}
                  {% include sidebars/instructor-mckenzie.html %}
           </div>
 
@@ -143,3 +141,40 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
     </div> <!-- /.pb-10 -->
 </div> <!-- /.App -->
 </div> <!-- /#root -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Logout process starting...");
+
+  // ---- Clear browser storage ----
+  try {
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log("Local storage and session storage cleared.");
+  } catch (e) {
+    console.warn("Could not clear storage:", e);
+  }
+
+  // ---- Clear relevant cookies (best effort; client JS can only clear same-site cookies) ----
+  document.cookie.split(";").forEach(function (cookie) {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  });
+  console.log("Cookies cleared (where possible).");
+
+  // ---- Cognito logout ----
+  // Replace with your Cognito domain, client ID, and post-logout redirect URI
+  const cognitoDomain = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
+  const clientId = "s6qs08b48fg6u10gg5hlurfvc";
+  const postLogoutRedirect = "https://certificationexams.guru/pitstops/sorry-to-see-you-logout.html";
+
+  const logoutUrl =
+    `${cognitoDomain}/logout?` +
+    `client_id=${encodeURIComponent(clientId)}` +
+    `&logout_uri=${encodeURIComponent(postLogoutRedirect)}`;
+
+  console.log("Redirecting to Cognito logout URL...");
+  window.location.href = "https://certificationexams.guru/index.html";
+});
+</script>

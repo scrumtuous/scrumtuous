@@ -36,7 +36,14 @@
                     <div class="row">
 
 <!-- exam script -->
-<script defer="defer" src="/static/js/main.4465386d.js"></script>					
+<script>
+  window.addEventListener("load", function () {
+    var script = document.createElement("script");
+    script.src = "/static/js/main.07ab1b58.js";
+    script.defer = true;
+    document.body.appendChild(script);
+  });
+</script>				
 <link href="/static/css/main.1b36e23d.css" rel="stylesheet">
 
 {{content}}
@@ -59,108 +66,6 @@
 {% include footer.html %} 
 {% include scripts.html %}
 
-<script>
 
-
-  document.addEventListener("DOMContentLoaded", function () {
-
-    function typeWriterEffect(element, fullText, speed = 2, callback) {
-      
-      if (!element || !fullText) {
-        return;
-      }
-      element.innerHTML = "";
-      let index = 0;
-
-      function type() {
-        if (index < fullText.length) {
-          element.innerHTML += fullText.charAt(index);
-          index++;
-          setTimeout(type, speed);
-        } else {
-          if (callback) callback();
-        }
-      }
-
-      type();
-    }
-
-
-    function getCurrentContent() {
-      const queryEl = document.getElementById("query");
-      const optionLabels = [];
-      const optionTexts = [];
-
-      let i = 0;
-      while (true) {
-        const label = document.getElementById(`labelOption${i}`);
-        if (!label) break;
-        optionLabels.push(label);
-        optionTexts.push(label.textContent);
-        i++;
-      }
-
-      return {
-        queryEl,
-        queryText: queryEl ? queryEl.textContent : "",
-        optionLabels,
-        optionTexts
-      };
-    }
-
-    function startTypewriterAnimation() {
-      const { queryEl, queryText, optionLabels, optionTexts } = getCurrentContent();
-
-      if (!queryEl || !queryText.trim()) {
-        console.warn("Missing question element or empty question text.");
-        return;
-      }
-      queryEl.textContent = "";
-      optionLabels.forEach(label => {
-        label.textContent = "";
-        label.style.backgroundColor = "";
-      });
-
-      typeWriterEffect(queryEl, queryText, 2, function () {
-        function typeOptionsSequentially(index) {
-          if (index >= optionLabels.length) {
-            return;
-          }
-          typeWriterEffect(optionLabels[index], optionTexts[index], 2, function () {
-            typeOptionsSequentially(index + 1);
-          });
-        }
-        typeOptionsSequentially(0);
-      });
-    }
-
-    function waitForInitialContent() {
-      console.trace("Entered waitForInitialContent — should this be needed?");
-      const { queryText, optionTexts } = getCurrentContent();
-
-      if (!queryText.trim() || optionTexts.some(text => !text.trim())) {
-        console.log("Content not ready yet. Retrying...");
-        return setTimeout(waitForInitialContent, 100);
-      }
-
-      console.log("Initial content ready. Starting animation.");
-      startTypewriterAnimation();
-    }
-
-    waitForInitialContent();
-
-    const triggerLink = document.getElementById("trigger");
-    if (triggerLink) {
-      console.log("Found #trigger link. Adding click listener.");
-      triggerLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        console.log("Trigger clicked. Restarting animation.");
-        startTypewriterAnimation();
-      });
-    } else {
-      console.warn("No #trigger element found.");
-    }
-
-</script>
 
 </body></html>

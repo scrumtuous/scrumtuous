@@ -1,17 +1,17 @@
 ---
-layout: default
-title: "Free AWS Certification Exam Test Questions and Answers"
-blurb: "This AWS Practitioner Exam Certification Study Guide will provide yo in-depth knowlege on exam objectives and help you pass the exam."
+layout: auth-redirect
+title: "Thank you for your purchase!"
+blurb: "Thank you for your purchase. It's the key to your success."
 keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, AWS Exam
 ---
-<div id="root"> 
+<div id="root">
   <div class="App">
     <div class="pt-lg-4 pb-lg-16 pt-8 pb-12 bg-primary" style="background: linear-gradient(45deg, #6831e3, #f528cb)">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
             <div style="text-align: left;">
-              <h2 class="text-white display-4 fw-semi-bold mt-15">Your Fastest Path to Certification</h2>
+              <h2 class="text-white display-4 fw-semi-bold mt-15">Thank you for your purchase.</h2>
               <p class="text-white mb-6 lead">The industry's most accurate and up-to-date practice exams.<br/>Thousands of free sample exam questions.</p>
               <h3>Try our advanced exam simulator today.</h3>
 {% include graphics/success-stories-stars.html %} 
@@ -132,9 +132,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
           </div>
           <div class="mt-lg-n22 col-lg-4 col-md-12 col-sm-12">
 		     {% include sidebars/mini-profile.html %}
-			 {% include sidebars/mckenzie.html %}
-			 {% include sidebars/buy-me-a-coffee.html %}
-               {% include sidebars/scrumtuous.html %}
+               {% include sidebars/star-trek-ranking.html %}
                  {% include sidebars/instructor-mckenzie.html %}
           </div>
 

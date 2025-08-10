@@ -1,0 +1,266 @@
+<script type="module">
+  import { UserManager, WebStorageStateStore } from "https://cdn.jsdelivr.net/npm/oidc-client-ts@2.4.0/+esm";
+
+  // ===== Debug logging =====
+  var DEBUG = true;
+  var TAG = "[pitstop-auth]";
+  function log()  { if (DEBUG) console.log.apply(console, [TAG].concat(Array.prototype.slice.call(arguments))); }
+  function warn() { if (DEBUG) console.warn.apply(console, [TAG].concat(Array.prototype.slice.call(arguments))); }
+  function err()  { if (DEBUG) console.error.apply(console, [TAG].concat(Array.prototype.slice.call(arguments))); }
+  function time(label)   { if (DEBUG) console.time(TAG + " " + label); }
+  function timeEnd(label){ if (DEBUG) console.timeEnd(TAG + " " + label); }
+
+  function redact(v) {
+    if (!v) return v;
+    if (typeof v === "string") {
+      if (v.length > 16) return v.slice(0, 6) + "…" + v.slice(-4);
+      return v;
+    }
+    if (typeof v === "object") {
+      var clone = JSON.parse(JSON.stringify(v));
+      if (clone.id_token) clone.id_token = redact(clone.id_token);
+      if (clone.access_token) clone.access_token = redact(clone.access_token);
+      if (clone.refresh_token) clone.refresh_token = redact(clone.refresh_token);
+      if (clone.profile && clone.profile.email) clone.profile.email = redact(clone.profile.email);
+      if (clone.profile && clone.profile.username) clone.profile.username = redact(clone.profile.username);
+      return clone;
+    }
+    return v;
+  }
+
+  // ===== Constants =====
+  var MP_AUTH_NS = "mp_";
+  var HANDLED_FLAG = "__mpAuthRedirectHandled";
+
+  var authority   = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ";
+  var client_id   = "s6qs08b48fg6u10gg5hlurfvc";
+  var post_logout_redirect_uri = "https://certificationexams.guru/pitstops/sorry-to-see-you-logout.html";
+  var cognitoDomain = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
+  var redirect_uri = location.origin + location.pathname;
+  log("Boot", { redirect_uri: redirect_uri, location: location.href });
+
+  // ===== Storage helpers =====
+  function listKeys(prefixFilter) {
+    var keys = [];
+    for (var i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+    return prefixFilter ? keys.filter(function(k){ return k.startsWith(prefixFilter); }) : keys;
+  }
+
+  function purgeLocalStoragePreservingOIDC(prefix) {
+    if (!prefix) prefix = MP_AUTH_NS;
+    var before = listKeys();
+    var preservePrefixes = [prefix + "oidc."];
+    var toDelete = [];
+    for (var i = 0; i < before.length; i++) {
+      var key = before[i];
+      var keep = false;
+      for (var j = 0; j < preservePrefixes.length; j++) {
+        if (key.startsWith(preservePrefixes[j])) { keep = true; break; }
+      }
+      if (!keep) toDelete.push(key);
+    }
+    log("Purge (pre-callback): keeping", preservePrefixes, "removing", toDelete);
+    for (var k = 0; k < toDelete.length; k++) localStorage.removeItem(toDelete[k]);
+    log("Storage keys before:", before);
+    log("Storage keys after :", listKeys());
+  }
+
+  // ===== OIDC manager =====
+  var store = new WebStorageStateStore({ store: window.localStorage, prefix: MP_AUTH_NS });
+  var mgr = new UserManager({
+    authority: authority,
+    client_id: client_id,
+    redirect_uri: redirect_uri,
+    response_type: "code",
+    scope: "openid email phone profile",
+    post_logout_redirect_uri: post_logout_redirect_uri,
+    stateStore: store,
+    userStore:  store,
+    automaticSilentRenew: true,
+    revokeTokensOnSignout: true
+  });
+
+  if (mgr.events) {
+    if (mgr.events.addUserLoaded) mgr.events.addUserLoaded(function(u){ log("Event: addUserLoaded", redact(u)); });
+    if (mgr.events.addUserUnloaded) mgr.events.addUserUnloaded(function(){ log("Event: addUserUnloaded"); });
+    if (mgr.events.addUserSignedOut) mgr.events.addUserSignedOut(function(){ log("Event: addUserSignedOut"); });
+    if (mgr.events.addAccessTokenExpired) mgr.events.addAccessTokenExpired(function(){ warn("Event: accessTokenExpired"); });
+    if (mgr.events.addSilentRenewError) mgr.events.addSilentRenewError(function(e){ err("Event: silentRenewError", e); });
+  }
+
+  // ===== DOM helpers =====
+  function $(id) { return document.getElementById(id); }
+  function setText(id, text) { var el = $(id); if (el) el.replaceChildren(document.createTextNode(text)); }
+  function setHTML(id, html) { var el = $(id); if (el) el.innerHTML = html; }
+  function show(id) { var el = $(id); if (el) el.classList.remove("hidden","d-none"); }
+  function hide(id) { var el = $(id); if (el) el.classList.add("hidden","d-none"); }
+
+  function swapProfileMedia(loggedIn, profile) {
+    if (!profile) profile = {};
+    var currentImg = document.getElementById("mp-profile-pic");
+    var container = currentImg && currentImg.parentElement ? currentImg.parentElement : document.querySelector(".position-relative");
+    if (!container) { log("swapProfileMedia: no container, skipping"); return; }
+    var existing = container.querySelector("img, video");
+    if (existing) existing.remove();
+    if (loggedIn) {
+      var vid = document.createElement("video");
+      vid.src = "/assets/registered-user.mp4";
+      vid.className = "rounded-circle avatar-xl";
+      vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+      if (profile.picture) vid.poster = profile.picture;
+      container.appendChild(vid);
+      log("swapProfileMedia: video appended");
+    } else {
+      var img = document.createElement("img");
+      img.id = "mp-profile-pic";
+      img.src = "/assets/unknown-user.png";
+      img.alt = "unknown exam taker";
+      img.className = "rounded-circle avatar-xl";
+      container.appendChild(img);
+      log("swapProfileMedia: image appended");
+    }
+  }
+
+  // ===== Broadcast & UI sync =====
+  function notifyAuthChanged(user) {
+    var isAuthenticated = !!(user && !user.expired);
+    window.currentUser = user || null;
+    window.dispatchEvent(new CustomEvent("auth:changed", { detail: { isAuthenticated: isAuthenticated } }));
+    log("notifyAuthChanged:", { isAuthenticated: isAuthenticated, profile: redact(user ? user.profile : null) });
+  }
+
+  function updateUI(user) {
+    var authed = !!(user && !user.expired);
+    log("updateUI: state", { authed: authed, profile: redact(user ? user.profile : null) });
+    notifyAuthChanged(user);
+    var profile = user && user.profile ? user.profile : {};
+    var name = profile.username || profile.email || profile.name || "User";
+    if (authed) {
+      setText("login-status", "You are logged in!");
+      hide("signed-out"); show("signed-in");
+      var ui = $("user-info"); if (ui) ui.textContent = JSON.stringify(profile, null, 2);
+      setHTML("nav-register", "&nbsp;&nbsp;Welcome " + name + "!&nbsp;&nbsp;");
+      setText("mp-name", profile.name || profile.email || "User");
+      setText("mp-registered-status", "Registered User");
+      setHTML("mp-ranking", "<span class=\"text-success\">Logged In</span>");
+      setText("mp-logged-in", "true");
+      setText("mp-profile-loaded", "true");
+      setText("mp-last-login", new Date().toLocaleString());
+      swapProfileMedia(true, profile);
+      hide("mp-signIn"); show("mp-signOut");
+    } else {
+      setText("login-status", "You are not logged in.");
+      setHTML("nav-register", "&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;");
+      show("signed-out"); hide("signed-in");
+      setText("mp-name", "Lurker McLurkerface");
+      setText("mp-registered-status", "Unregistered?");
+      setHTML("mp-ranking", "<span class=\"text-warning\">Not logged in?</span><br />Please log in or register");
+      setText("mp-logged-in", "false");
+      setText("mp-profile-loaded", "false");
+      setText("mp-last-login", "unknown");
+      swapProfileMedia(false);
+      show("mp-signIn"); hide("mp-signOut");
+    }
+  }
+
+  // ===== Callback handler =====
+  async function handleCallbackIfPresent() {
+    var hasCode  = /[?&]code=/.test(location.search);
+    var hasState = /[?&]state=/.test(location.search);
+    log("handleCallbackIfPresent: query", { hasCode: hasCode, hasState: hasState, search: location.search });
+    if (!hasCode || !hasState) return null;
+    if (window[HANDLED_FLAG]) { log("handleCallbackIfPresent: already handled"); return null; }
+    try {
+      time("signinRedirectCallback");
+      var user = await mgr.signinRedirectCallback();
+      timeEnd("signinRedirectCallback");
+      history.replaceState({}, document.title, location.pathname);
+      window[HANDLED_FLAG] = true;
+      log("Callback complete, user stored", redact(user));
+      return user;
+    } catch (e) {
+      var msg = (e && e.message) ? e.message : String(e);
+      warn("signinRedirectCallback error:", msg);
+      if (!/No matching state/i.test(msg)) err("Non-benign callback error:", e);
+      return null;
+    }
+  }
+
+  // ===== Run sequence =====
+  try {
+    time("pitstop-sequence");
+    purgeLocalStoragePreservingOIDC();
+    var maybeUserFromCallback = await handleCallbackIfPresent();
+    var user = null;
+    try {
+      time("mgr.getUser");
+      user = await mgr.getUser();
+      timeEnd("mgr.getUser");
+      log("getUser:", redact(user));
+    } catch (e) {
+      err("getUser failed:", e);
+    }
+    if (maybeUserFromCallback && (!user || maybeUserFromCallback.profile && maybeUserFromCallback.profile.sub !== user.profile.sub)) {
+      log("Using user from callback (fresher/newer)");
+      user = maybeUserFromCallback;
+    }
+    updateUI(user || null);
+    try {
+      time("clearStaleState");
+      await mgr.clearStaleState();
+      timeEnd("clearStaleState");
+      log("clearStaleState: done");
+    } catch (e) {
+      warn("clearStaleState failed:", e);
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      log("DOMContentLoaded: wiring buttons");
+      function signOut() {
+        log("SignOut clicked: initiating");
+        mgr.signoutRedirect({ post_logout_redirect_uri: post_logout_redirect_uri }).then(function(){
+          log("signoutRedirect dispatched");
+        }).catch(function(e){
+          warn("signoutRedirect failed, falling back", e);
+          var url = cognitoDomain + "/logout?client_id=" + encodeURIComponent(client_id) + "&logout_uri=" + encodeURIComponent(post_logout_redirect_uri);
+          log("Hosted UI logout fallback:", url);
+          window.location.assign(url);
+        });
+      }
+      $("nav-register") && $("nav-register").addEventListener("click", function(){ log("nav-register -> signinRedirect"); mgr.signinRedirect(); });
+      $("signInAgain") && $("signInAgain").addEventListener("click", function(){ log("signInAgain -> signinRedirect"); mgr.signinRedirect(); });
+      $("sign-in-again") && $("sign-in-again").addEventListener("click", function(){ log("sign-in-again -> signinRedirect"); mgr.signinRedirect(); });
+      $("signIn") && $("signIn").addEventListener("click", function(){ log("signIn -> signinRedirect"); mgr.signinRedirect(); });
+      $("logout") && $("logout").addEventListener("click", signOut);
+      $("mp-signIn") && $("mp-signIn").addEventListener("click", function(){ log("mp-signIn -> signinRedirect"); mgr.signinRedirect(); });
+      $("mp-signOut") && $("mp-signOut").addEventListener("click", signOut);
+      $("logout1") && $("logout1").addEventListener("click", signOut);
+      $("logout2") && $("logout2").addEventListener("click", function(){
+        var url = cognitoDomain + "/logout?client_id=" + encodeURIComponent(client_id) + "&logout_uri=" + encodeURIComponent(post_logout_redirect_uri);
+        log("logout2 fallback ->", url);
+        window.location.assign(url);
+      });
+    });
+
+    window.addEventListener("storage", function(e){
+      if (!e.key) return;
+      if (e.key.startsWith(MP_AUTH_NS)) {
+        log("storage event:", { key: e.key, newValue: redact(e.newValue), oldValue: redact(e.oldValue) });
+        mgr.getUser().then(function(u){
+          updateUI(u || null);
+        }).catch(function(ex){
+          warn("getUser after storage failed", ex);
+        });
+      }
+    });
+
+    window.userManager = mgr;
+    window.getIdToken = function(){ return user && user.id_token ? redact(user.id_token) : null; };
+    window.getAccessToken = function(){ return user && user.access_token ? redact(user.access_token) : null; };
+
+  } catch (e) {
+    err("Fatal pitstop init error:", e);
+  } finally {
+    timeEnd("pitstop-sequence");
+  }
+</script>

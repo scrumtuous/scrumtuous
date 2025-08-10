@@ -1,92 +1,3 @@
----
-layout: default
-title: "AWS Solution Architect Associate Exam Questions and Answers"
-blurb: "Here are some tough AWS Solution Architect Associate Quiz Questions and Answers."
-keywords: AWS Solution Architect Guide, AWS Solution Architect Certification, Amazon Solution Architect, AWS Associate Solution Architect Exam
-subfolder: architect
-formal-exam-name: Architect
-product-id: prod_Smt6NcuqQnfMjF
-exam-name: aws-architect
----
-{% assign xp = site.data.exam_page %}
-{% assign hero_title = xp.hero.title | replace: '[[EXAM_NAME]]', page.formal-exam-name %}
-
-<div id="root">
-  <div class="App">
-
-    <div class="pt-lg-4 pb-lg-16 pt-8 pb-12 bg-primary" style="background: linear-gradient(45deg, #6831e3, #f528cb)">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
-            <div style="text-align: left;">
-              <h2 class="text-white display-4 fw-semi-bold mt-8">{{ hero_title }}</h2>
-              <p class="text-white mb-6 lead">
-                {{ xp.hero.lead_line1 }}<br/>
-                {{ xp.hero.lead_line2 }}
-              </p>
-              <h3>{{ xp.hero.guarantee }}</h3>
-              {% include graphics/success-stories-stars.html %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="pb-10">
-      <div class="container">
-        <div class="row">
-          <!-- Left Column -->
-          <div class="mt-n8 mb-4 mb-lg-0 col-lg-8 col-md-12 col-sm-12">
-            <div class="card" style="background-color: #f0f0f0;">
-              <div class="card-body p-0">
-                <div class="tab-content">
-                  <div class="tab-pane active pb-4 pt-3 px-4">
-                    <div class="row">
-
-                      {% for card in xp.cards %}
-                      {% assign blurb = card.blurb | replace: '[[EXAM_SLUG]]', page.subfolder %}
-                      <div class="col-6 col-sm-4 col-md-4 col-lg-4 col-xl-4 mb-2 d-flex align-items-stretch{% if card.id == 9 %} col-12{% endif %}">
-                        <div class="card h-100 d-flex flex-column">
-                          <div class="card-header">{{ card.header }}</div>
-
-                          {% include {{ card.ribbon_include }} %}
-
-                          <div class="card-body d-flex flex-column flex-grow-1">
-                            <p class="card-text">{{ blurb }}</p>
-                            <p class="text-center mt-auto">
-                              <a
-                                {% if card.id == 9 %}id="purchase-link"{% endif %}
-                                href="/aws/{{ page.subfolder }}/{{ card.path }}"
-                                class="btn btn-outline-primary btn-sm">
-                                {{ card.button }}
-                              </a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      {% endfor %}
-
-                    </div> <!-- /.row -->
-                  </div> <!-- /.tab-pane -->
-                </div> <!-- /.tab-content -->
-              </div> <!-- /.card-body -->
-            </div> <!-- /.card -->
-          </div> <!-- /.left column -->
-
-          <!-- Right Column -->
-          <div class="mt-lg-n22 col-lg-4 col-md-12 col-sm-12">
-             {% include sidebars/buy-me-a-coffee.html %}
-			 {% include sidebars/mini-profile.html %}
-			 {% include sidebars/mckenzie.html %} 
-             {% include sidebars/scrumtuous.html %}
-          </div>
-
-        </div> <!-- /.row -->
-      </div> <!-- /.container -->
-    </div> <!-- /.pb-10 -->
-</div> <!-- /.App -->
-</div> <!-- /#root -->
-
 <script>
 window.addEventListener("DOMContentLoaded", function () {
   var DEBUG = true;
@@ -128,10 +39,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const user = window.currentUser;
     if (!user || !user.profile) {
-      // stop polling after 10s to avoid noise
-      if (Date.now() - startedAt > 10000) {
+      // stop polling after 5s to avoid noise
+      if (Date.now() - startedAt > 5000) {
         clearInterval(interval);
-        dbg("[purchase] gave up waiting for profile after 10s.");
+        dbg("[purchase] gave up waiting for profile after 5s.");
       } else {
         dbg("[purchase] waiting for profile...");
       }

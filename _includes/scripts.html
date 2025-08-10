@@ -1,160 +1,220 @@
-<!-- scripts -->
-<script src="https://cdn.jsdelivr.net/npm/oidc-client@1.10.1/dist/oidc-client.min.js"></script>
-<script>
-const settings = {
-  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ",
-  client_id: "s6qs08b48fg6u10gg5hlurfvc",
-  redirect_uri: "https://certificationexams.guru/index.html",
-  response_type: "code",
-  scope: "email openid phone profile",
-  post_logout_redirect_uri: "https://certificationexams.guru/index.html"
-};
+<script type="module">
+  import { UserManager, WebStorageStateStore } from "https://cdn.jsdelivr.net/npm/oidc-client-ts@2.4.0/+esm";
 
-const userManager = new Oidc.UserManager(settings);
-const myUserManager = userManager;
-let currentUser = null;
+  // ---- Constants / guards ----
+  const MP_AUTH_NS = "mp_";
+  const MP_HANDLED_FLAG = "__mpAuthRedirectHandled";
 
-function updateUI(user) {
-  console.log("Calling updateUI with user:", user);
-  window.currentUser = user;
+  // ---- Config ----
+  const authority   = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ";
+  const clientId    = "s6qs08b48fg6u10gg5hlurfvc";
+  const redirectUri = "https://certificationexams.guru/pitstops/thank-you-for-logging-in.html";
+  const postLogoutRedirectUri = "https://certificationexams.guru/pitstops/sorry-to-see-you-logout.html";
+  const cognitoDomain = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
 
-  const navRegisterBtn = document.getElementById("nav-register");
-  const loginStatus = document.getElementById("login-status");
-  const signedOut = document.getElementById("signed-out");
-  const signedIn = document.getElementById("signed-in");
-  const userInfo = document.getElementById("user-info");
+  const store = new WebStorageStateStore({ store: window.localStorage, prefix: MP_AUTH_NS });
 
-  if (user) {
-    const profile = user.profile || {};
+  const mgr = new UserManager({
+    authority,
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: "code",
+    scope: "openid email phone profile",
+    post_logout_redirect_uri: postLogoutRedirectUri,
+    stateStore: store,
+    userStore:  store,
+    automaticSilentRenew: true,
+    revokeTokensOnSignout: true,
+  });
+
+  // Back-compat aliases
+  window.userManager = mgr;
+  window.myUserManager = mgr;
+
+  // ---- DOM helpers ----
+  const $ = (id) => document.getElementById(id);
+  const setText = (id, text) => { const el = $(id); if (el) el.replaceChildren(document.createTextNode(text)); };
+  const setHTML = (id, html) => { const el = $(id); if (el) el.innerHTML = html; };
+  const show    = (id) => { const el = $(id); if (el) el.classList.remove("hidden","d-none"); };
+  const hide    = (id) => { const el = $(id); if (el) el.classList.add("hidden","d-none"); };
+
+  // ---- Media swap helper (image <-> video) ----
+  function swapProfileMedia(loggedIn, profile = {}) {
+    const currentImg = document.getElementById("mp-profile-pic");
+    const container = currentImg?.parentElement || document.querySelector(".position-relative");
+    if (!container) return;
+
+    const existing = container.querySelector("img, video");
+    if (existing) existing.remove();
+
+    if (loggedIn) {
+      const vid = document.createElement("video");
+      vid.src = "/assets/registered-user.mp4";
+      vid.className = "rounded-circle avatar-xl";
+      vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+      if (profile.picture) vid.poster = profile.picture;
+      container.appendChild(vid);
+    } else {
+      const img = document.createElement("img");
+      img.id = "mp-profile-pic";
+      img.src = "/assets/unknown-user.png";
+      img.alt = "unknown exam taker";
+      img.className = "rounded-circle avatar-xl";
+      container.appendChild(img);
+    }
+  }
+
+  // ---- Global auth surface for React/app code ----
+  window.currentUser = null; // initialize
+
+  const listeners = new Set();
+  function notifyAuthChanged(user) {
+    window.currentUser = user || null; // back-compat for existing React code
+    const detail = { isAuthenticated: !!(user && !user.expired) };
+    window.dispatchEvent(new CustomEvent("auth:changed", { detail })); // React can listen
+    for (const fn of listeners) { try { fn(user); } catch {} }
+  }
+  window.onAuthChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
+
+  window.getIdToken     = () => window.currentUser?.id_token || null;
+  window.getAccessToken = () => window.currentUser?.access_token || null;
+
+  // Helper: fetch with Authorization header if token present
+  window.apiFetch = async function apiFetch(input, init = {}) {
+    const token = window.getAccessToken() || window.getIdToken();
+    const headers = new Headers(init.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return fetch(input, { ...init, headers, credentials: init.credentials || "same-origin" });
+  };
+
+  // Promise your app can await to know auth is initialized (resolves with user or null)
+  let _resolveAuthReady;
+  window.authReady = new Promise((res) => { _resolveAuthReady = res; });
+
+  // ---- UI updater (legacy + modern) ----
+  function updateUI(user) {
+    notifyAuthChanged(user);
+
+    const profile = user?.profile || {};
     const name = profile.username || profile.email || profile.name || "User";
-    console.log("Authenticated user:", name);
 
-    if (loginStatus) {
-      loginStatus.innerText = "You are logged in!";
+    // Legacy targets
+    if (user && !user.expired) {
+      setText("login-status", "You are logged in!");
+      hide("signed-out");
+      show("signed-in");
+      const ui = $("user-info"); if (ui) ui.textContent = JSON.stringify(profile, null, 2);
+      setHTML("nav-register", `&nbsp;&nbsp;Welcome ${name}!&nbsp;&nbsp;`);
+    } else {
+      setText("login-status", "You are not logged in.");
+      setHTML("nav-register", `&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;`);
+      show("signed-out");
+      hide("signed-in");
     }
 
-    if (signedOut) {
-      signedOut.classList.add("hidden");
+    // Modern targets
+    if (user && !user.expired) {
+      setText("mp-name", profile.name || profile.email || "User");
+      setText("mp-registered-status", "Registered User");
+      setHTML("mp-ranking", `<span class="text-success">Logged In</span>`);
+      setText("mp-logged-in", "true");
+      setText("mp-profile-loaded", "true");
+      setText("mp-last-login", new Date().toLocaleString());
+      swapProfileMedia(true, profile);
+      hide("mp-signIn");
+      show("mp-signOut");
+    } else {
+      setText("mp-name", "Lurker McLurkerface");
+      setText("mp-registered-status", "Unregistered?");
+      setHTML("mp-ranking", `<span class="text-warning">Not logged in?</span><br />Please log in or register`);
+      setText("mp-logged-in", "false");
+      setText("mp-profile-loaded", "false");
+      setText("mp-last-login", "unknown");
+      swapProfileMedia(false);
+      show("mp-signIn");
+      hide("mp-signOut");
     }
+  }
 
-    if (signedIn) {
-      signedIn.classList.remove("hidden");
-    }
+  // ---- Idempotent callback handler ----
+  async function handleCallbackIfNeeded() {
+    const hasCode  = /[?&]code=/.test(location.search);
+    const hasState = /[?&]state=/.test(location.search);
+    if (!hasCode || !hasState) return;
 
-    if (userInfo) {
-      userInfo.innerText = JSON.stringify(profile, null, 2);
+    if (window[MP_HANDLED_FLAG]) return;
+    try {
+      const user = await mgr.signinRedirectCallback();
+      history.replaceState({}, document.title, location.pathname);
+      window[MP_HANDLED_FLAG] = true;
+      updateUI(user);
+    } catch (e) {
+      const msg = (e && e.message) ? e.message : String(e);
+      if (!/No matching state/i.test(msg)) {
+        // console.warn("signinRedirectCallback error:", e);
+      }
+      // Don't mutate URL here; another script may handle it.
     }
+  }
+  
+  function buildHostedLogoutUrl() {
+  return `${cognitoDomain}/logout` +
+         `?client_id=${encodeURIComponent(clientId)}` +
+         `&logout_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
+}
 
-    if (navRegisterBtn) {
-      navRegisterBtn.innerHTML = `&nbsp;&nbsp;Welcome ${name}!&nbsp;&nbsp;`;
-    }
-  } else {
-    console.warn("No user is logged in.");
-
-    if (loginStatus) {
-      loginStatus.innerText = "You are not logged in.";
-    }
-
-    if (navRegisterBtn) {
-      navRegisterBtn.innerHTML = `&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;`;
-    }
+async function signOut() {
+  console.log("[auth] Sign Out requested");
+  try {
+    // Preferred path: let oidc-client-ts initiate sign-out
+    await mgr.signoutRedirect({ post_logout_redirect_uri: postLogoutRedirectUri });
+    // Browser will navigate away; no more code runs here.
+  } catch (e) {
+    console.warn("[auth] signoutRedirect failed, using Hosted UI fallback:", e);
+    window.location.assign(buildHostedLogoutUrl());
   }
 }
 
-// Try redirect callback first
-userManager.signinRedirectCallback().then(function(user) {
-  console.log("Signin redirect complete:", user);
-  if (user) {
-    window.currentUser = user;
-    updateUI(user);
-  } else {
-    console.warn("Signin redirect returned null user. Skipping updateUI.");
-	console.warn("Setting window.currentUser to null.");
-	window.currentUser = null;
-  }
-}).catch(function(err) {
-  console.warn("signinRedirectCallback failed, trying getUser:", err);
-  userManager.getUser().then(function(user) {
-    console.log("getUser returned:", user);
-    if (user) {
-	  window.currentUser = user;
-      updateUI(user);
-	  
-    } else {
-      console.warn("getUser returned null user. Skipping updateUI.");
-	  console.warn("Setting window.currentUser to null.");
-	  window.currentUser = null;
-    }
-  }).catch(function(innerErr) {
-    console.error("getUser failed:", innerErr);
+async function signOut2() {
+  console.log("[auth] Sign Out (Hosted UI fallback)");
+  window.location.assign(buildHostedLogoutUrl());
+}
+
+
+  // ---- Init ----
+  await handleCallbackIfNeeded();
+
+  let initialUser = null;
+  try { initialUser = await mgr.getUser(); } catch {}
+  updateUI(initialUser || null);
+  if (_resolveAuthReady) _resolveAuthReady(window.currentUser);
+
+  try { await mgr.clearStaleState(); } catch {}
+
+  // ---- Keep UI and globals in sync ----
+  mgr.events.addUserLoaded?.((user) => updateUI(user));
+  mgr.events.addUserUnloaded?.(() => updateUI(null));
+  mgr.events.addUserSignedOut?.(() => updateUI(null));
+
+  // ---- Buttons ----
+  document.addEventListener("DOMContentLoaded", () => {
+    $("nav-register")?.addEventListener("click", () => mgr.signinRedirect());
+    $("signInAgain")?.addEventListener("click", () => mgr.signinRedirect());
+    $("sign-in-again")?.addEventListener("click", () => mgr.signinRedirect());
+    $("signIn")?.addEventListener("click", () => mgr.signinRedirect());
+    $("logout")?.addEventListener("click", () => signOut());
+    $("mp-signIn")?.addEventListener("click", () => mgr.signinRedirect());
+    $("mp-signOut")?.addEventListener("click", () => signOut());
+	$("logout1")?.addEventListener("click", () => signOut());
+	$("logout2")?.addEventListener("click", () => signOut2());
   });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded and parsed");
-
-  const navRegisterBtn = document.getElementById("nav-register");
-  if (navRegisterBtn) {
-    console.log("Adding click listener to #nav-register");
-    navRegisterBtn.addEventListener("click", function () {
-      myUserManager.signinRedirect();
-    });
-  } else {
-    console.warn("#nav-register not found.");
-  }
-
-  const signInAgainBtn = document.getElementById("signInAgain") || document.getElementById("sign-in-again");
-  if (signInAgainBtn) {
-    console.log("Adding click listener to #signInAgain or #sign-in-again");
-    signInAgainBtn.addEventListener("click", function () {
-      myUserManager.signinRedirect();
-    });
-  } else {
-    console.warn("#signInAgain / #sign-in-again not found.");
-  }
-
-  const signInBtn = document.getElementById("signIn");
-  if (signInBtn) {
-    console.log("Adding click listener to #signIn");
-    signInBtn.addEventListener("click", function () {
-      userManager.signinRedirect();
-    });
-  } else {
-    console.warn("#signIn button not found.");
-  }
-
-  const logoutBtn = document.getElementById("logout");
-  if (logoutBtn) {
-    console.log("Adding click listener to #logout");
-    logoutBtn.addEventListener("click", function () {
-      console.log("Initiating logout...");
-      userManager.signoutRedirect({
-		post_logout_redirect_uri: "https://certificationexams.guru/index.html"
-      }).catch(err => {
-        console.error("Logout failed:", err);
-      });
-    });
-  } else {
-    console.warn("#logout button not found.");
-  }
-});
+  // ---- Multi-tab / multi-script sync ----
+  window.addEventListener("storage", async (e) => {
+    if (!e.key) return;
+    if (e.key.startsWith(MP_AUTH_NS)) {
+      const u = await mgr.getUser().catch(() => null);
+      updateUI(u || null);
+    }
+  });
 </script>
-<script src="/assets/js/bootstrap.min.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R61E5VK5GF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-R61E5VK5GF');
-</script>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179472407-1"></script>
-<script>
-   window.dataLayer = window.dataLayer || [];
-   function gtag(){dataLayer.push(arguments);}
-   gtag('js', new Date());
-   
-   gtag('config', 'UA-179472407-1');
-</script>
- 
