@@ -1,0 +1,109 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // === SPEED CONTROL ===
+    // Change this value to control the speed of the typing animation.
+    // A lower number makes the text appear faster; higher is slower.
+    // 15ms is fast but still readable.
+    const TYPE_SPEED_MS = 8;
+
+    function typeWriterEffect(element, fullText, speed = TYPE_SPEED_MS, callback) {
+      element.innerHTML = "";
+      let index = 0;
+      function type() {
+        if (index < fullText.length) {
+          element.innerHTML += fullText.charAt(index);
+          index++;
+          setTimeout(type, speed);
+        } else if (callback) {
+          callback();
+        }
+      }
+      type();
+    }
+
+    function getCurrentContent() {
+      const queryEl = document.getElementById("query");
+      const optionLabels = [];
+      const optionTexts = [];
+
+      let i = 0;
+      while (true) {
+        const label = document.getElementById(`labelOption${i}`);
+        if (!label) break;
+        optionLabels.push(label);
+        optionTexts.push(label.textContent);
+        i++;
+      }
+
+      return {
+        queryEl,
+        queryText: queryEl ? queryEl.textContent : "",
+        optionLabels,
+        optionTexts
+      };
+    }
+
+    function startTypewriterAnimation() {
+      const { queryEl, queryText, optionLabels, optionTexts } = getCurrentContent();
+      if (!queryEl || !queryText.trim()) return;
+
+      // Clear content and styling before re-typing
+      queryEl.textContent = "";
+      optionLabels.forEach(label => {
+        label.textContent = "";
+        label.style.backgroundColor = "";
+      });
+
+      // Type question first
+      typeWriterEffect(queryEl, queryText, TYPE_SPEED_MS, function () {
+        // Then type each option one after another
+        function typeOptionsSequentially(index) {
+          if (index >= optionLabels.length) return;
+          typeWriterEffect(optionLabels[index], optionTexts[index], TYPE_SPEED_MS, function () {
+            typeOptionsSequentially(index + 1);
+          });
+        }
+        typeOptionsSequentially(0);
+      });
+    }
+
+    function waitForInitialContent() {
+      const { queryText, optionTexts } = getCurrentContent();
+      if (!queryText.trim() || optionTexts.some(text => !text.trim())) {
+        return setTimeout(waitForInitialContent, 100);
+      }
+      startTypewriterAnimation();
+    }
+
+    waitForInitialContent();
+
+    // Trigger button to restart animation with latest content
+    const triggerLink = document.getElementById("trigger");
+    if (triggerLink) {
+      triggerLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        startTypewriterAnimation();
+      });
+    }
+
+    // Cheat button logic
+    const cheatBtn = document.getElementById("cheat");
+    if (cheatBtn) {
+      cheatBtn.addEventListener("click", function () {
+        let i = 0;
+        while (true) {
+          const input = document.getElementById(`option${i}`);
+          const label = document.getElementById(`labelOption${i}`);
+          if (!input || !label) break;
+
+          if (input.dataset.correct === "true") {
+            const answerText = label.textContent || "";
+            typeWriterEffect(label, answerText, TYPE_SPEED_MS);
+            label.style.backgroundColor = "#d4edda";
+          }
+          i++;
+        }
+      });
+    }
+  });
+</script>

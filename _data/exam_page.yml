@@ -62,7 +62,7 @@ cards:
     ribbon_include: "graphics/ribbons/admiral-ribbon.html"
 
   - id: 9
-    header: "105 Question Boss Exam"
+    header: "100 Question Exam"
     blurb: "Defeat the Boss? It's a 100% pass guarantee! Good luck!"
     button: "Start Exam 9"
     path: "exam9.html"

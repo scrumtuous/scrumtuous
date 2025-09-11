@@ -4,7 +4,7 @@ from mimetypes import guess_type
 
 # ----------- Configuration -------------
 BUCKET_NAME = 'certificationexams.guru'
-LOCAL_DIRECTORY = r'F:\_repos\scrumtuous\scrumtuous\_site'
+LOCAL_DIRECTORY = r'C:\_repos\scrumtuous\scrumtuous\_site'
 S3_PREFIX = ''  # Set to a subfolder path if you want, e.g., 'dev-site/'
 NO_CACHE_EXTENSIONS = ('.html', '.js', '.css')
 

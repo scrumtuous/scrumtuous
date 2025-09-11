@@ -1,44 +1,95 @@
+<!-- Bootstrap JS (includes Popper, needed for navbar toggle) -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZWG2DJE2ST"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZWG2DJE2ST');
+</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+        crossorigin="anonymous"></script>
+
 <script type="module">
   import { UserManager, WebStorageStateStore } from "https://cdn.jsdelivr.net/npm/oidc-client-ts@2.4.0/+esm";
 
-  // ---- Constants / guards ----
-  const MP_AUTH_NS = "mp_";
-  const MP_HANDLED_FLAG = "__mpAuthRedirectHandled";
+  // ---------- Config (single source of truth) ----------
+  const AUTHORITY  = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ";
+  const COGNITO_DOMAIN = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
+  const CLIENT_ID  = "s6qs08b48fg6u10gg5hlurfvc";
+  const REDIRECT   = "https://certificationexams.guru/pitstops/thank-you-for-logging-in.html";
+  const POST_LOGOUT_REDIRECT = "https://certificationexams.guru/pitstops/sorry-to-see-you-logout.html";
+  const SCOPE = "openid email phone profile";
+  const STORE_PREFIX = "mp_";
+  const CALLBACK_GUARD = "__mpAuthRedirectHandled";
 
-  // ---- Config ----
-  const authority   = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2Vm1F3RdZ";
-  const clientId    = "s6qs08b48fg6u10gg5hlurfvc";
-  const redirectUri = "https://certificationexams.guru/pitstops/thank-you-for-logging-in.html";
-  const postLogoutRedirectUri = "https://certificationexams.guru/pitstops/sorry-to-see-you-logout.html";
-  const cognitoDomain = "https://us-east-12vm1f3rdz.auth.us-east-1.amazoncognito.com";
+  // ---------- Small utils ----------
+  const $id = (id) => document.getElementById(id);
+  const onReady = (fn) =>
+    (document.readyState === "loading")
+      ? document.addEventListener("DOMContentLoaded", fn, { once: true })
+      : fn();
 
-  const store = new WebStorageStateStore({ store: window.localStorage, prefix: MP_AUTH_NS });
+  const setText = (id, text) => { const el = $id(id); if (el) el.textContent = text; };
+  const setHTML = (id, html) => { const el = $id(id); if (el) el.innerHTML = html; };
+  const show    = (id) => { const el = $id(id); if (el) el.classList.remove("hidden","d-none"); };
+  const hide    = (id) => { const el = $id(id); if (el) el.classList.add("hidden","d-none"); };
 
+  const buildHostedLoginUrl = () =>
+    `${COGNITO_DOMAIN}/oauth2/authorize` +
+    `?client_id=${encodeURIComponent(CLIENT_ID)}` +
+    `&response_type=code` +
+    `&redirect_uri=${encodeURIComponent(REDIRECT)}` +
+    `&scope=${encodeURIComponent(SCOPE)}`;
+
+  const buildHostedLogoutUrl = () =>
+    `${COGNITO_DOMAIN}/logout` +
+    `?client_id=${encodeURIComponent(CLIENT_ID)}` +
+    `&logout_uri=${encodeURIComponent(POST_LOGOUT_REDIRECT)}`;
+
+  // ---------- OIDC manager (one instance) ----------
+  const store = new WebStorageStateStore({ store: window.localStorage, prefix: STORE_PREFIX });
   const mgr = new UserManager({
-    authority,
-    client_id: clientId,
-    redirect_uri: redirectUri,
+    authority: AUTHORITY,
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT,
     response_type: "code",
-    scope: "openid email phone profile",
-    post_logout_redirect_uri: postLogoutRedirectUri,
+    scope: SCOPE,
+    post_logout_redirect_uri: POST_LOGOUT_REDIRECT,
     stateStore: store,
     userStore:  store,
     automaticSilentRenew: true,
     revokeTokensOnSignout: true,
   });
 
-  // Back-compat aliases
+  // Back-compat / global helpers
   window.userManager = mgr;
   window.myUserManager = mgr;
 
-  // ---- DOM helpers ----
-  const $ = (id) => document.getElementById(id);
-  const setText = (id, text) => { const el = $(id); if (el) el.replaceChildren(document.createTextNode(text)); };
-  const setHTML = (id, html) => { const el = $(id); if (el) el.innerHTML = html; };
-  const show    = (id) => { const el = $(id); if (el) el.classList.remove("hidden","d-none"); };
-  const hide    = (id) => { const el = $(id); if (el) el.classList.add("hidden","d-none"); };
+  window.currentUser = null;
+  const listeners = new Set();
+  window.onAuthChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
+  window.getIdToken     = () => window.currentUser?.id_token || null;
+  window.getAccessToken = () => window.currentUser?.access_token || null;
 
-  // ---- Media swap helper (image <-> video) ----
+  window.apiFetch = async (input, init = {}) => {
+    const token = window.getAccessToken() || window.getIdToken();
+    const headers = new Headers(init.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return fetch(input, { ...init, headers, credentials: init.credentials || "same-origin" });
+  };
+
+  let resolveAuthReady;
+  window.authReady = new Promise((res) => (resolveAuthReady = res));
+
+  // ---------- UI bits ----------
   function swapProfileMedia(loggedIn, profile = {}) {
     const currentImg = document.getElementById("mp-profile-pic");
     const container = currentImg?.parentElement || document.querySelector(".position-relative");
@@ -57,59 +108,35 @@
     } else {
       const img = document.createElement("img");
       img.id = "mp-profile-pic";
-      img.src = "/assets/unknown-user.png";
+      img.src = "/assets/unknown-user.jpg";
       img.alt = "unknown exam taker";
       img.className = "rounded-circle avatar-xl";
       container.appendChild(img);
     }
   }
 
-  // ---- Global auth surface for React/app code ----
-  window.currentUser = null; // initialize
-
-  const listeners = new Set();
   function notifyAuthChanged(user) {
-    window.currentUser = user || null; // back-compat for existing React code
+    window.currentUser = user || null;
     const detail = { isAuthenticated: !!(user && !user.expired) };
-    window.dispatchEvent(new CustomEvent("auth:changed", { detail })); // React can listen
+    window.dispatchEvent(new CustomEvent("auth:changed", { detail }));
     for (const fn of listeners) { try { fn(user); } catch {} }
   }
-  window.onAuthChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 
-  window.getIdToken     = () => window.currentUser?.id_token || null;
-  window.getAccessToken = () => window.currentUser?.access_token || null;
-
-  // Helper: fetch with Authorization header if token present
-  window.apiFetch = async function apiFetch(input, init = {}) {
-    const token = window.getAccessToken() || window.getIdToken();
-    const headers = new Headers(init.headers || {});
-    if (token) headers.set("Authorization", `Bearer ${token}`);
-    return fetch(input, { ...init, headers, credentials: init.credentials || "same-origin" });
-  };
-
-  // Promise your app can await to know auth is initialized (resolves with user or null)
-  let _resolveAuthReady;
-  window.authReady = new Promise((res) => { _resolveAuthReady = res; });
-
-  // ---- UI updater (legacy + modern) ----
   function updateUI(user) {
     notifyAuthChanged(user);
-
     const profile = user?.profile || {};
     const name = profile.username || profile.email || profile.name || "User";
 
     // Legacy targets
     if (user && !user.expired) {
       setText("login-status", "You are logged in!");
-      hide("signed-out");
-      show("signed-in");
-      const ui = $("user-info"); if (ui) ui.textContent = JSON.stringify(profile, null, 2);
+      hide("signed-out"); show("signed-in");
+      const ui = $id("user-info"); if (ui) ui.textContent = JSON.stringify(profile, null, 2);
       setHTML("nav-register", `&nbsp;&nbsp;Welcome ${name}!&nbsp;&nbsp;`);
     } else {
       setText("login-status", "You are not logged in.");
       setHTML("nav-register", `&nbsp;&nbsp;Register | Sign-In&nbsp;&nbsp;`);
-      show("signed-out");
-      hide("signed-in");
+      show("signed-out"); hide("signed-in");
     }
 
     // Modern targets
@@ -121,8 +148,7 @@
       setText("mp-profile-loaded", "true");
       setText("mp-last-login", new Date().toLocaleString());
       swapProfileMedia(true, profile);
-      hide("mp-signIn");
-      show("mp-signOut");
+      hide("mp-signIn"); show("mp-signOut");
     } else {
       setText("mp-name", "Lurker McLurkerface");
       setText("mp-registered-status", "Unregistered?");
@@ -131,88 +157,120 @@
       setText("mp-profile-loaded", "false");
       setText("mp-last-login", "unknown");
       swapProfileMedia(false);
-      show("mp-signIn");
-      hide("mp-signOut");
+      show("mp-signIn"); hide("mp-signOut");
     }
   }
 
-  // ---- Idempotent callback handler ----
+  // ---------- Callback handling (idempotent) ----------
   async function handleCallbackIfNeeded() {
     const hasCode  = /[?&]code=/.test(location.search);
     const hasState = /[?&]state=/.test(location.search);
     if (!hasCode || !hasState) return;
 
-    if (window[MP_HANDLED_FLAG]) return;
+    if (window[CALLBACK_GUARD]) return;
     try {
       const user = await mgr.signinRedirectCallback();
       history.replaceState({}, document.title, location.pathname);
-      window[MP_HANDLED_FLAG] = true;
+      window[CALLBACK_GUARD] = true;
       updateUI(user);
     } catch (e) {
-      const msg = (e && e.message) ? e.message : String(e);
-      if (!/No matching state/i.test(msg)) {
-        // console.warn("signinRedirectCallback error:", e);
-      }
-      // Don't mutate URL here; another script may handle it.
+      // ignore "No matching state" races; let other pages handle if needed
     }
   }
-  
-  function buildHostedLogoutUrl() {
-  return `${cognitoDomain}/logout` +
-         `?client_id=${encodeURIComponent(clientId)}` +
-         `&logout_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
-}
 
-async function signOut() {
-  console.log("[auth] Sign Out requested");
-  try {
-    // Preferred path: let oidc-client-ts initiate sign-out
-    await mgr.signoutRedirect({ post_logout_redirect_uri: postLogoutRedirectUri });
-    // Browser will navigate away; no more code runs here.
-  } catch (e) {
-    console.warn("[auth] signoutRedirect failed, using Hosted UI fallback:", e);
-    window.location.assign(buildHostedLogoutUrl());
+  // ---------- Sign-in / Sign-out ----------
+  async function signIn() { await mgr.signinRedirect(); }
+
+  async function signOut() {
+    try {
+      await mgr.signoutRedirect({ post_logout_redirect_uri: POST_LOGOUT_REDIRECT });
+    } catch {
+      window.location.assign(buildHostedLogoutUrl());
+    }
   }
-}
+  window.signOut = signOut; // in case other code calls it
 
-async function signOut2() {
-  console.log("[auth] Sign Out (Hosted UI fallback)");
-  window.location.assign(buildHostedLogoutUrl());
-}
+  // ---------- Element wiring (nav-register, footer-signin, logout button) ----------
+  function wireLoginAnchor(el) {
+    if (!el) return;
+    el.setAttribute("href", buildHostedLoginUrl());
+    el.setAttribute("role", "button");
+    // Only add .nav-link to the navbar item
+    if (el.id === "nav-register") el.classList.add("nav-link");
 
+    const go = (ev) => {
+      if (typeof mgr.signinRedirect === "function") {
+        ev.preventDefault();
+        signIn();
+      }
+    };
+    el.addEventListener("click", go, { passive: false });
+    el.addEventListener("touchend", go, { passive: false });
+  }
 
-  // ---- Init ----
+  function ensureLogoutBtnAttrs() {
+    const btn = $id("mp-signOut");
+    if (!btn) return;
+    if (!btn.getAttribute("type")) btn.setAttribute("type", "button");
+    btn.style.pointerEvents = "auto";
+  }
+
+  // Delegate so it survives re-renders/toggles
+  function delegatedLogoutHandler(e) {
+    let t = e.target;
+    while (t && t !== document) {
+      if (t.id === "mp-signOut") {
+        e.preventDefault();
+        signOut();
+        return;
+      }
+      t = t.parentNode;
+    }
+  }
+
+  // ---------- Init ----------
   await handleCallbackIfNeeded();
 
   let initialUser = null;
   try { initialUser = await mgr.getUser(); } catch {}
   updateUI(initialUser || null);
-  if (_resolveAuthReady) _resolveAuthReady(window.currentUser);
-
+  resolveAuthReady?.(window.currentUser);
   try { await mgr.clearStaleState(); } catch {}
 
-  // ---- Keep UI and globals in sync ----
+  // Keep UI in sync with OIDC events
   mgr.events.addUserLoaded?.((user) => updateUI(user));
   mgr.events.addUserUnloaded?.(() => updateUI(null));
   mgr.events.addUserSignedOut?.(() => updateUI(null));
 
-  // ---- Buttons ----
-  document.addEventListener("DOMContentLoaded", () => {
-    $("nav-register")?.addEventListener("click", () => mgr.signinRedirect());
-    $("signInAgain")?.addEventListener("click", () => mgr.signinRedirect());
-    $("sign-in-again")?.addEventListener("click", () => mgr.signinRedirect());
-    $("signIn")?.addEventListener("click", () => mgr.signinRedirect());
-    $("logout")?.addEventListener("click", () => signOut());
-    $("mp-signIn")?.addEventListener("click", () => mgr.signinRedirect());
-    $("mp-signOut")?.addEventListener("click", () => signOut());
-	$("logout1")?.addEventListener("click", () => signOut());
-	$("logout2")?.addEventListener("click", () => signOut2());
+  onReady(() => {
+    // Login anchors
+    wireLoginAnchor($id("nav-register"));
+    wireLoginAnchor($id("footer-signin"));
+    $id("signInAgain")?.addEventListener("click", () => signIn());
+    $id("sign-in-again")?.addEventListener("click", () => signIn());
+    $id("signIn")?.addEventListener("click", () => signIn());
+    $id("mp-signIn")?.addEventListener("click", () => signIn());
+
+    // Logout buttons
+    ensureLogoutBtnAttrs();
+    $id("logout")?.addEventListener("click", () => signOut());
+    $id("logout1")?.addEventListener("click", () => signOut());
+    $id("logout2")?.addEventListener("click", () => window.location.assign(buildHostedLogoutUrl()));
+
+    document.addEventListener("click", delegatedLogoutHandler, { passive: false });
+    document.addEventListener("touchend", delegatedLogoutHandler, { passive: false });
+
+    // If SPA/DOM mutations swap elements, keep attrs sane
+    if (window.MutationObserver) {
+      new MutationObserver(() => ensureLogoutBtnAttrs())
+        .observe(document.body, { childList: true, subtree: true, attributes: true });
+    }
   });
 
-  // ---- Multi-tab / multi-script sync ----
+  // Multi-tab sync
   window.addEventListener("storage", async (e) => {
     if (!e.key) return;
-    if (e.key.startsWith(MP_AUTH_NS)) {
+    if (e.key.startsWith(STORE_PREFIX)) {
       const u = await mgr.getUser().catch(() => null);
       updateUI(u || null);
     }

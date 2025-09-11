@@ -1,17 +1,17 @@
 ---
 layout: default
-title: "Free AWS Certification Exam Test Questions and Answers"
+title: "More Free AWS Certification Exam Test Questions and Answers"
 blurb: "This AWS Practitioner Exam Certification Study Guide will provide yo in-depth knowlege on exam objectives and help you pass the exam."
 keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, AWS Exam
 ---
 <div id="root"> 
   <div class="App">
-    <div class="pt-lg-4 pb-lg-16 pt-8 pb-12 bg-primary" style="background: linear-gradient(45deg, #6831e3, #f528cb)">
+    <div class="pt-lg-4 pb-lg-16  bg-primary" style="background: linear-gradient(45deg, #6831e3, #f528cb)">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
             <div style="text-align: left;">
-              <h2 class="text-white display-4 fw-semi-bold mt-15">Your Fastest Path to Certification</h2>
+              <h2 class="text-white display-4 fw-semi-bold mt-6">Your Fastest Path to Certification</h2>
               <p class="text-white mb-6 lead">The industry's most accurate and up-to-date practice exams.<br/>Thousands of free sample exam questions.</p>
               <h3>Try our advanced exam simulator today.</h3>
 {% include graphics/success-stories-stars.html %} 
@@ -33,7 +33,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
   <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2 d-flex align-items-stretch">
     <div class="card">
-      <div class="card-header">Cloud Practitioner Exam</div>
+      <div class="card-header">Cloud Practitioner </div>
       <picture style="opacity: 0.80; filter: hue-rotate(10deg) saturate(85%);">
         <source srcset="/assets/passed.png" media="(min-width: 1200px)">
         <source srcset="/assets/passed.png" media="(min-width: 992px)">
@@ -97,7 +97,7 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
 
   <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2 d-flex align-items-stretch">
     <div class="card">
-      <div class="card-header">AWS Certified Developer</div>
+      <div class="card-header">AWS Developer Cert</div>
       <img src="/assets/passed.png" class="card-img-top" alt="AWS tutorials" style="opacity: 0.95; filter: hue-rotate(20deg) saturate(110%);">
       <div class="card-body d-flex flex-column">
         <p class="card-text">Expert exam questions and answers to help you prepare.</p>
@@ -116,6 +116,34 @@ keywords: AWS Practitioner Study Guide, AWS Certification, Amazon Practitioner, 
         <p class="card-text">The most coveted AWS certification exam there is.</p>
         <p class="text-center mt-auto">
           <a href="/aws/devops/index.html" class="btn btn-outline-primary btn-sm">Get Started</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2 d-flex align-items-stretch">
+    <div class="card">
+      <div class="card-header">Scrum Master</div>
+      <img src="/assets/passed.png" class="card-img-top" alt="AWS cert prep" style="opacity: 1.10; filter: hue-rotate(10deg) saturate(120%);">
+      <div class="card-body d-flex flex-column">
+        <p class="card-text">Get Scrum Master Certified.</p>
+        <p class="text-center mt-auto">
+          <a href="/scrum/scrum-master/index.html" class="btn btn-outline-primary btn-sm">Get Started</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-2 d-flex align-items-stretch">
+    <div class="card">
+      <div class="card-header">Scrum PSPO</div>
+      <img src="/assets/passed.png" class="card-img-top" alt="AWS cert prep" style="opacity: 1.10; filter: hue-rotate(10deg) saturate(120%);">
+      <div class="card-body d-flex flex-column">
+        <p class="card-text">Get Scrum Product Owner Certified.</p>
+        <p class="text-center mt-auto">
+          <a href="/scrum/product-owner/index.html" class="btn btn-outline-primary btn-sm">Get Started</a>
         </p>
       </div>
     </div>
