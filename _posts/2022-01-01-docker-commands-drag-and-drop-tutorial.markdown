@@ -53,6 +53,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 
 
 <h3>WARNING: The dragging and dropping function doesn't work well on mobile.</h3>
+<h3>Also, you *might* need to * chmod -R a+rwX . * </h3>
     <div class="row mt-3 mb-3">
 	
 
