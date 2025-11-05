@@ -65,6 +65,7 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 <li class="title title-scrambled">Scrambled</li>
 
 <li class="option" data-target="1"><span class="option-data"> docker run -v $PWD:/workdir:rw  mikenye/youtube-dl https://www.youtube.com/watch?v=MtN1YnoL46Q </span></li>
+<li class="option" data-target="1a"><span class="option-data"> chmod -R a+rwX . </span></li>
 <li class="option" data-target="3"><span class="option-data"> docker login -u {your-docker-id} -p {your-access-token} </span></li>
 <li class="option" data-target="4"><span class="option-data"> cd /home/wasadmin/Works
  </span></li>
@@ -139,7 +140,9 @@ keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
 
 <ul class="options w-100 p-3">
 <li class="title title-sorted">Sorted</li>
+<li class="sink"><span class="target w-100 ui-droppable" data-accept="1a"> Update Permissions </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="1"> Download my YouTube video </span></li>
+
 
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2"> The DockerHub website </span></li>
 <li class="sink"><span class="target w-100 ui-droppable" data-accept="2a"> You're super! </span></li>
