@@ -28,7 +28,7 @@ twitter_username: scrumtuous
 github_username:  scrumtuous
 
 # Build settings
-plugins:
+#plugins:
 
 # Exclude from processing.
 # The following items will not be processed, by default.
