@@ -1,0 +1,86 @@
+/*======================================
+    Why Choose CSS
+========================================*/
+
+.why-choose {
+    background-color: $white;
+    position: relative;
+    padding-top: 50px;
+
+    &::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 0;
+        height: 1px;
+        width: 100%;
+        background: linear-gradient(45deg, transparent, #eee, transparent);
+    }
+
+    .single-choose {
+        padding: 35px;
+        border: 1px dashed #888;
+        text-align: center;
+        margin-top: 30px;
+        transition: all 0.4s ease-in-out;
+
+        &:hover {
+            box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
+
+            .icon {
+                &::before {
+                    border-radius: 50px 0px 50px 50px;
+                }
+            }
+
+            h3 {
+                color: $theme-color-style3;
+            }
+        }
+
+
+        .icon {
+            height: 70px;
+            width: 70px;
+            line-height: 70px;
+            text-align: center;
+            font-size: 30px;
+            color: $white;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+
+            &::before {
+                top: 0;
+                left: 0;
+                bottom: 0px;
+                z-index: -1;
+                content: '';
+                width: 100%;
+                position: absolute;
+                background: $theme-gradient-style3;
+                border-radius: 50px 50px 50px 0;
+                transform: rotate(-45deg);
+                z-index: -1;
+                transition: all 0.4s ease-in-out;
+            }
+
+
+        }
+
+        h3 {
+            color: $black;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 40px 0 15px 0;
+            text-transform: capitalize;
+            transition: all 0.4s ease-in-out;
+        }
+
+        p {
+            line-height: 27px;
+            font-size: 13px;
+        }
+
+    }
+}

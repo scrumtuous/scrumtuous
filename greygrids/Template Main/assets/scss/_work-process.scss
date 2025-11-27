@@ -1,0 +1,77 @@
+/*======================================
+	Work Process CSS
+========================================*/
+
+.work-process {
+    background-color: $gray;
+
+    &.style4 {
+        .single-process {
+            .main-icon {
+                i {
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-image: $theme-gradient-style4 !important;
+                }
+            }
+
+            span {
+                background: $theme-gradient-style4 !important;
+            }
+        }
+    }
+
+    .single-process {
+        text-align: center;
+        margin-top: 30px;
+        padding: 0px 20px;
+
+        .icon {
+            height: 120px;
+            width: 120px;
+            text-align: center;
+            line-height: 120px;
+            background: #ffffff;
+            box-shadow: 0px 16px 32px 0px rgba(135, 135, 135, 0.1);
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+            font-size: 30px;
+            position: relative;
+
+            .main-icon {
+                i {
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    -webkit-background-clip: text;
+                    background-image: $theme-gradient-style2;
+                }
+            }
+
+
+            span {
+                font-size: 14px;
+                height: 35px;
+                width: 35px;
+                line-height: 35px;
+                background: $theme-gradient-style2;
+                border-radius: 50%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                color: $white !important;
+                font-size: 15px;
+                font-weight: 500;
+            }
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-top: 30px;
+        }
+
+        p {
+            margin-top: 20px;
+        }
+    }
+}

@@ -1,0 +1,61 @@
+/*======================================
+    Servicess CSS
+========================================*/
+.services {
+    background-color: $white;
+
+    .single-service {
+        position: relative;
+        padding: 40px;
+        border: 1px solid #eee;
+        border-radius: 0;
+        box-shadow: 0px 0px 20px #0000000f;
+        transition: all 0.4s ease-in-out;
+        margin-top: 30px;
+
+        &::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 0%;
+            background: $theme-gradient-style4;
+            transition: all 0.4s ease-in-out;
+        }
+
+        &:hover::before {
+            width: 100%;
+        }
+
+        &:hover {
+            box-shadow: 0px 0px 30px #0000001f;
+        }
+
+        .icon {
+            i {
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                -webkit-background-clip: text;
+                background-image: $theme-gradient-style4;
+                font-size: 30px;
+                position: absolute;
+                left: 40px;
+                top: 40px;
+            }
+        }
+
+        .text {
+            padding-left: 60px;
+
+            h2 {
+                font-size: 18px;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            p {}
+        }
+    }
+}

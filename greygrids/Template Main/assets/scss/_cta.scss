@@ -1,0 +1,56 @@
+/*======================================
+    Call To Action CSS
+========================================*/
+.call-action {
+    background: $theme-gradient-style3;
+    z-index: 2;
+
+    &.style4 {
+        background: $theme-gradient-style4;
+    }
+
+    &:before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-image: url("../images/cta/overlay.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: top;
+        z-index: -1;
+    }
+
+    .inner-content {
+        text-align: center;
+        padding: 0px 70px;
+
+        h2 {
+            font-size: 35px;
+            font-weight: 700;
+            line-height: 52px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        p {
+            color: $white;
+        }
+
+        .button {
+            margin-top: 45px;
+            display: block;
+
+            .btn {
+                background: $white;
+                color: $black;
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+    }
+}

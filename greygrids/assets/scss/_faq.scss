@@ -1,0 +1,94 @@
+/*======================================
+    Faq CSS
+========================================*/
+.faq {
+
+    .section-title {
+        padding: 0;
+    }
+
+    .faq-image {
+        text-align: center;
+    }
+
+    &.style2 {
+        .accordion-button:not(.collapsed) {
+            background: $theme-gradient-style2;
+            color: $white;
+        }
+    }
+
+    &.style3 {
+        .accordion-button:not(.collapsed) {
+            background: $theme-gradient-style3;
+            color: $white;
+        }
+    }
+
+    &.style4 {
+        .accordion-button:not(.collapsed) {
+            background: $theme-gradient-style4;
+            color: $white;
+        }
+    }
+}
+
+.accordion-item .accordion-button {
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    border: none;
+    border: 1px solid #eee;
+
+    span {
+        float: left;
+    }
+
+    i {
+        float: right;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+}
+
+.accordion-button:not(.collapsed) {
+    color: #fff;
+    background: $theme-gradient;
+    border: none;
+    border-radius: 5px 5px 0 0;
+
+    i {
+        transform: rotate(180deg);
+    }
+}
+
+.accordion-button::after {
+    display: none;
+}
+
+.accordion-collapse {
+    border: none;
+}
+
+.accordion-body {
+    border: 1px solid #eee;
+    border-radius: 0 0 5px 5px;
+    padding: 30px 20px;
+
+    p {
+        margin: 0;
+        margin-bottom: 20px;
+        font-size: 14px;
+
+        &:last-child {
+            margin: 0;
+        }
+    }
+}
+
+.accordion-item {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,88 @@
+/*======================================
+    Our Achievement CSS
+========================================*/
+
+.our-achievement {
+    background: $theme-gradient;
+    position: relative;
+    padding-top: 70px;
+    padding: 90px 0 120px 0;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: -10px;
+        height: 110%;
+        width: 110%;
+        background-image: url('../images/video/video-overlay.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: -1;
+    }
+
+    &.style2 {
+        background: $theme-gradient-style2;
+
+        .single-achievement {
+            i {
+                color: $theme-color-style2;
+            }
+        }
+    }
+
+    &.style3 {
+        background: $theme-gradient-style3;
+
+        .single-achievement {
+            i {
+                color: $theme-color-style3;
+            }
+        }
+    }
+
+    &.style4 {
+        background: $theme-gradient-style4;
+
+        .single-achievement {
+            i {
+                color: $theme-color-style4;
+            }
+        }
+    }
+
+    .single-achievement {
+        margin-top: 30px;
+        text-align: center;
+        padding: 0px 50px;
+
+        i {
+            font-size: 32px;
+            margin-bottom: 30px;
+            height: 65px;
+            width: 65px;
+            line-height: 65px;
+            text-align: center;
+            display: inline-block;
+            background: $white;
+            color: $theme-color;
+            border-radius: 10px;
+        }
+
+        h3 {
+            font-size: 30px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            color: $white;
+        }
+
+        p {
+            font-size: 15px;
+            color: $white;
+            font-weight: 600;
+        }
+    }
+}

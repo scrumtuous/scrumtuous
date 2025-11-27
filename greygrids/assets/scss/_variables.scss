@@ -1,0 +1,47 @@
+/*======================================
+    Variables
+========================================*/
+// Font Family
+$font:'Poppins',
+sans-serif;
+
+
+// Colors ---------------
+$white: #fff;
+$black: #081828;
+$gray: #F4F7FA;
+
+
+// Theme Color
+$theme-color: #6831e3;
+$theme-color-style2: #018bff;
+$theme-color-style3: #4567f4;
+$theme-color-style4: #45a247;
+
+// Theme Gradient
+$theme-gradient: linear-gradient(45deg, #6831e3, #f528cb);
+$theme-gradient-style2: linear-gradient(45deg, #018bff, #243ec4);
+$theme-gradient-style3: linear-gradient(45deg, #4567f4, #3CD3AD);
+$theme-gradient-style4: linear-gradient(45deg, #DCE35B, #45B649);
+
+$border-color: #F4EEFB;
+
+//Body Color
+$body-color: #888;
+
+
+// Heading Color
+$heading-color: #161C2D;
+
+//Border Radius
+$borderRadius:10px;
+
+
+
+// Responsive Variables
+$desktop: 'only screen and (min-width: 1400px)';
+$laptop: 'only screen and (min-width: 1200px) and (max-width: 1399px)';
+$lg : 'only screen and (min-width: 992px) and (max-width: 1199px)';
+$md:'only screen and (min-width: 768px) and (max-width: 991px)';
+$xs:'(max-width: 767px)';
+$sm: 'only screen and (min-width: 480px) and (max-width: 767px)';

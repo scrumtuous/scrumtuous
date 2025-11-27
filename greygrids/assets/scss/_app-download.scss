@@ -1,0 +1,129 @@
+/*======================================
+    App Download CSS
+========================================*/
+.app-download {
+    &.style2 {
+        background: $theme-gradient-style2;
+        z-index: 2;
+
+        &::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-image: url('../images/hero/saas-overlay.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top;
+            z-index: -1;
+        }
+
+        .download-content {
+            text-align: center;
+
+            h2 {
+                font-size: 35px;
+                font-weight: 700;
+                line-height: 52px;
+                margin-bottom: 30px;
+                color: $white;
+            }
+
+            p {
+                color: $white;
+            }
+
+            .button {
+                margin-top: 40px;
+                display: block;
+
+                .btn {
+                    margin-right: 20px;
+                    background: $white;
+                    color: $theme-color-style2;
+
+                    &:hover {
+                        color: $white;
+                    }
+
+                    &.primary {
+                        background: transparent;
+                        color: $white;
+                        border: 2px solid $white;
+                        padding: 13px 30px;
+
+                        &::before {
+                            background: $white;
+                        }
+
+                        &:hover {
+                            color: $theme-color-style2;
+                        }
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .app-download.style3 .download-content {
+        text-align: center;
+    }
+
+    .single-download {
+        padding: 40px 35px;
+        border: 1px dashed $theme-color;
+        border-radius: 10px;
+        transition: all 0.4s ease-in-out;
+        text-align: center;
+        margin-top: 30px;
+
+        &:hover {
+            box-shadow: 0px 0px 30px #00000017;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        p {}
+
+        .button {
+            margin-top: 30px;
+
+            .btn {
+                text-align: left;
+                padding-left: 75px;
+                background: $theme-gradient;
+
+                span {
+                    display: block;
+                    margin-bottom: 0;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+
+                i {
+                    position: absolute;
+                    left: 30px;
+                    top: 50%;
+                    font-size: 30px;
+                    height: 30px;
+                    width: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                    display: block;
+                    margin-top: -15px;
+                }
+            }
+        }
+    }
+}

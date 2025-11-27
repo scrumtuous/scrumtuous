@@ -1,0 +1,363 @@
+/*======================================
+    Hero Area CSS
+========================================*/
+.hero-area {
+    position: relative;
+    background: $theme-gradient;
+
+    &.style2 {
+        position: relative;
+        background: $theme-gradient-style2;
+
+        .hero-image {
+            display: inline-block;
+
+            img {
+                float: none;
+                margin: 0;
+                width: 100%;
+            }
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-image: url('../images/hero/saas-overlay.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+
+        &::after {
+            display: none;
+        }
+    }
+
+    &.style3 {
+        position: relative;
+        background: $theme-gradient-style3;
+        z-index: 2;
+
+        img {
+            width: 100%;
+        }
+
+        .custom-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        &::before {
+            content: '';
+            display: block;
+            width: 100%;
+            background: url('../images/hero/startup-overlay.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            height: 100%;
+        }
+
+        &::after {
+            display: none;
+        }
+
+        .hero-text h1 {
+            font-size: 38px;
+            line-height: 48px;
+        }
+
+        .hero-image {
+            margin-top: 160px;
+        }
+    }
+
+    &.style4 {
+        position: relative;
+        background: $theme-gradient-style4;
+        z-index: 2;
+
+        .hero-inner {
+            padding-bottom: 130px;
+        }
+
+        .tns-controls button {
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 2;
+            color: #fff;
+            font-size: 13px;
+            background: transparent;
+            border: none;
+            padding: 2px 5px;
+            border-radius: 4px;
+            -webkit-transition: all .3s ease-out 0s;
+            transition: all .3s ease-out 0s;
+            position: absolute;
+            z-index: 99;
+            top: 50%;
+            margin-top: -30px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+
+            &:hover {
+                background: $white;
+                color: $black;
+                border-color: transparent;
+            }
+
+            &:first-child {
+                left: 10px;
+            }
+
+            &:last-child {
+                right: 10px;
+            }
+        }
+
+        img {
+            width: 100%;
+        }
+
+        &::before {
+            content: '';
+            display: block;
+            width: 100%;
+            background: url('../images/hero/agency-overlay.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            height: 100%;
+        }
+
+        &::after {
+            display: none;
+        }
+
+        .hero-text h1 {
+            font-size: 38px;
+            line-height: 48px;
+        }
+
+        .hero-image {
+            margin-top: 160px;
+        }
+    }
+
+    &::after {
+        content: '';
+        display: block;
+        height: 100px;
+        width: 100%;
+        background: url('../images/hero/brush.svg') bottom no-repeat;
+        background-size: auto;
+        background-size: cover;
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        z-index: 7;
+    }
+
+    .hero-bottom-shape {
+        height: 250px;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+    .hero-inner {
+        height: auto;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        z-index: 3;
+        padding-bottom: 180px;
+
+        &.style2 {
+            padding-bottom: 0;
+            text-align: center;
+            height: 930px;
+
+            .hero-text {
+                margin-top: 200px;
+            }
+
+            .hero-image {
+                text-align: center;
+                display: inline-block;
+                margin-top: 90px;
+            }
+        }
+    }
+
+    .hero-text {
+        float: none;
+        margin-top: 275px;
+
+        h5 {
+            color: $white;
+            font-size: 14px;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 45px;
+            line-height: 60px;
+            letter-spacing: -1px;
+            color: $white;
+        }
+
+        p {
+            font-size: 14px;
+            color: $white;
+        }
+
+        .button {
+            margin-top: 30px;
+
+            .btn {
+                background: $white;
+                color: $black;
+                margin-right: 10px;
+
+                &:last-child {
+                    margin: 0;
+                }
+
+                i {
+                    font-size: 20px;
+                    display: inline-block;
+                    margin-right: 8px;
+                    position: relative;
+                    top: 2px;
+                    transition: all 0.4s ease-in-out;
+                }
+
+                &:hover {
+                    color: $white;
+                }
+
+                &.primary {
+                    border: 2px solid $white;
+                    background: transparent;
+                    color: $white;
+                    padding: 13px 30px;
+
+                    &::before {
+                        background: $white;
+                    }
+
+                    &:hover {
+                        color: $black;
+                    }
+                }
+            }
+        }
+    }
+
+    .hero-image {
+        margin-top: 150px;
+        position: relative;
+
+        img {
+            float: right;
+            margin-right: 50px;
+        }
+
+        .waves-block .waves {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            border-radius: 100%;
+            -webkit-animation: waves 3s ease-in-out infinite;
+            animation: waves 3s ease-in-out infinite;
+            right: 0;
+            top: 80px;
+            z-index: -1;
+        }
+
+        .waves-block .wave-1 {
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+        }
+
+        .waves-block .wave-2 {
+            -webkit-animation-delay: 1s;
+            animation-delay: 1s;
+        }
+
+        .waves-block .wave-3 {
+            -webkit-animation-delay: 2s;
+            animation-delay: 2s;
+        }
+
+
+        /* Video Animations */
+
+        @-webkit-keyframes waves {
+            0% {
+                -webkit-transform: scale(0.2, 0.2);
+                transform: scale(0.2, 0.2);
+                opacity: 0;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            }
+
+            50% {
+                opacity: 0.9;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+            }
+
+            100% {
+                -webkit-transform: scale(0.9, 0.9);
+                transform: scale(0.9, 0.9);
+                opacity: 0;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            }
+        }
+
+        @keyframes waves {
+            0% {
+                -webkit-transform: scale(0.2, 0.2);
+                transform: scale(0.2, 0.2);
+                opacity: 0;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            }
+
+            50% {
+                opacity: 0.9;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+            }
+
+            100% {
+                -webkit-transform: scale(0.9, 0.9);
+                transform: scale(0.9, 0.9);
+                opacity: 0;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            }
+        }
+    }
+
+
+}
