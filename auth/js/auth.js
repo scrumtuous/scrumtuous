@@ -81,6 +81,26 @@ const Auth = (() => {
         return Date.now() >= payload.exp * 1000 - 30000;
     }
 
+    function publishPageAuthState(notify = true) {
+        const idToken = sessionStorage.getItem('auth_id_token');
+        const refreshToken = sessionStorage.getItem('auth_refresh_token');
+        const pageUser = user ? {
+            id_token: idToken,
+            access_token: accessToken || sessionStorage.getItem('auth_access_token'),
+            refresh_token: refreshToken,
+            profile: idToken ? parseJwt(idToken) : { ...user }
+        } : null;
+
+        if (typeof window !== 'undefined') {
+            window.currentUser = pageUser;
+            if (notify && typeof window.dispatchEvent === 'function' && typeof window.Event === 'function') {
+                window.dispatchEvent(new window.Event('auth:changed'));
+            }
+        }
+
+        return pageUser;
+    }
+
     function setSession(result, clearLocal = false) {
         const payload = parseJwt(result.IdToken);
         user = {
@@ -103,6 +123,7 @@ const Auth = (() => {
                 // ignore environments without localStorage
             }
         }
+        publishPageAuthState();
     }
 
     function clearSession() {
@@ -110,6 +131,7 @@ const Auth = (() => {
             .forEach(key => sessionStorage.removeItem(key));
         user = null;
         accessToken = null;
+        publishPageAuthState();
     }
 
     function savePending(data) {
@@ -438,15 +460,21 @@ const Auth = (() => {
         } catch (e) {
             // ignore environments without localStorage
         }
+        publishPageAuthState();
     }
 
     // --- public interface ----------------------------------------------------
+
+    const ready = restoreSession().then(() => publishPageAuthState(false));
+    if (typeof window !== 'undefined') {
+        window.authReady = ready;
+    }
 
     return {
         // Resolves once any restored session has been validated (and
         // silently refreshed if it had expired). Await this before checking
         // isAuthenticated()/getUser() on page load.
-        ready: restoreSession(),
+        ready,
 
         isAuthenticated() {
             return user !== null;
@@ -488,3 +516,7 @@ const Auth = (() => {
         ...(AUTH_CONFIG.mode === 'mock' ? { mockIn } : {})
     };
 })();
+
+if (typeof window !== 'undefined') {
+    window.Auth = Auth;
+}

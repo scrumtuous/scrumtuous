@@ -9,7 +9,16 @@ const AUTH_JS_SOURCE = fs.readFileSync(path.join(__dirname, 'auth.js'), 'utf8');
 function loadAuth(initialStorage = {}, responseForAction = () => ({ ok: true, data: {} })) {
     const store = { ...initialStorage };
     const requests = [];
+    const authEvents = [];
     let localStorageClears = 0;
+    const pageWindow = {
+        Event: class {
+            constructor(type) {
+                this.type = type;
+            }
+        },
+        dispatchEvent: event => { authEvents.push(event.type); }
+    };
     const sandbox = {
         AUTH_CONFIG: {
             region: 'us-east-1',
@@ -30,6 +39,7 @@ function loadAuth(initialStorage = {}, responseForAction = () => ({ ok: true, da
         localStorage: {
             clear: () => { localStorageClears += 1; }
         },
+        window: pageWindow,
         fetch: async (url, options) => {
             const action = options.headers['X-Amz-Target'].split('.').pop();
             const request = { action, url, body: JSON.parse(options.body) };
@@ -47,7 +57,14 @@ function loadAuth(initialStorage = {}, responseForAction = () => ({ ok: true, da
     vm.createContext(sandbox);
     vm.runInContext(AUTH_JS_SOURCE, sandbox, { filename: 'auth.js' });
     const Auth = vm.runInContext('Auth', sandbox);
-    return { Auth, requests, store, localStorageClears: () => localStorageClears };
+    return {
+        Auth,
+        requests,
+        store,
+        pageWindow,
+        authEvents,
+        localStorageClears: () => localStorageClears
+    };
 }
 
 function jwt(payload) {
@@ -176,7 +193,7 @@ test('sign-in completes the OTP challenge with Cognito canonical username', asyn
         email_verified: true,
         exp: Math.floor(Date.now() / 1000) + 3600
     });
-    const { Auth, requests, store, localStorageClears } = loadAuth({}, action => {
+    const { Auth, requests, store, pageWindow, authEvents, localStorageClears } = loadAuth({}, action => {
         if (action === 'InitiateAuth') {
             return {
                 ok: true,
@@ -212,6 +229,39 @@ test('sign-in completes the OTP challenge with Cognito canonical username', asyn
     assert.equal(requests[0].body.AuthParameters.USERNAME, 'dev@example.com');
     assert.equal(requests[1].body.ChallengeResponses.USERNAME, 'internal-user-123');
     assert.equal(Auth.getUser().email, 'dev@example.com');
+    assert.equal(pageWindow.Auth, Auth);
+    assert.equal(pageWindow.currentUser.id_token, idToken);
+    assert.equal(pageWindow.currentUser.access_token, 'access-token');
+    assert.equal(pageWindow.currentUser.profile.email, 'dev@example.com');
+    assert.equal(authEvents.includes('auth:changed'), true);
     assert.equal(store.auth_pending, undefined);
     assert.equal(localStorageClears(), 1);
+});
+
+test('authReady publishes a restored session for the exam application', async () => {
+    const idToken = jwt({
+        sub: 'restored-user-123',
+        email: 'restored@example.com',
+        email_verified: true,
+        exp: Math.floor(Date.now() / 1000) + 3600
+    });
+    const seeded = {
+        auth_user: JSON.stringify({
+            userId: 'restored-user-123',
+            email: 'restored@example.com',
+            emailVerified: true
+        }),
+        auth_id_token: idToken,
+        auth_access_token: 'restored-access-token',
+        auth_refresh_token: 'restored-refresh-token'
+    };
+    const { Auth, pageWindow } = loadAuth(seeded);
+
+    const readyUser = await pageWindow.authReady;
+
+    assert.equal(pageWindow.authReady, Auth.ready);
+    assert.equal(readyUser.id_token, idToken);
+    assert.equal(readyUser.access_token, 'restored-access-token');
+    assert.equal(pageWindow.currentUser, readyUser);
+    assert.equal(pageWindow.currentUser.profile.sub, 'restored-user-123');
 });
