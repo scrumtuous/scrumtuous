@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // Applied before CSS loads to avoid a flash of the wrong theme/accent.
+        // Defaults to dark mode + the gold accent on a first visit.
+        (function () {
+            var theme = localStorage.getItem('theme') || 'dark';
+            var accent = localStorage.getItem('accent') || 'orange';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-accent', accent);
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Login</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/lineicons/fonts/lineicons-free.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+</head>
+<body>
+
+    <!-- NAV (future: _includes/nav.html) -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <div class="d-flex align-items-center gap-2">
+                <a href="index.html">
+                    <img class="nav-brand-avatar" src="assets/images/me-gold-ring.webp" alt="Cameron W McKenzie" width="40" height="40" loading="lazy">
+                </a>
+                <a href="https://discord.gg/2mVdGHPTa3" class="text-decoration-none d-none d-md-inline-flex align-items-center gap-1">
+                    <span class="text-muted-light small">Join us on Discord!</span>
+                    <svg class="discord-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.9419 5.55541C17.6473 4.94967 16.263 4.50945 14.8158 4.25879C14.638 4.58013 14.4304 5.01234 14.2872 5.35616C12.7488 5.1248 11.2244 5.1248 9.71431 5.35616C9.57116 5.01234 9.35878 4.58013 9.17947 4.25879C7.73069 4.50945 6.34478 4.95129 5.05016 5.5586C2.43887 9.5046 1.73099 13.3526 2.08493 17.1459C3.81688 18.4393 5.49534 19.225 7.14547 19.7391C7.55291 19.1784 7.91628 18.5823 8.22931 17.9541C7.63313 17.7276 7.06209 17.448 6.52256 17.1235C6.66569 17.0174 6.80572 16.9066 6.94097 16.7925C10.2318 18.3317 13.8074 18.3317 17.0589 16.7925C17.1958 16.9066 17.3358 17.0174 17.4774 17.1235C16.9362 17.4496 16.3637 17.7292 15.7675 17.9557C16.0805 18.5823 16.4423 19.18 16.8513 19.7407C18.503 19.2266 20.1831 18.4409 21.915 17.1459C22.3303 12.7485 21.2056 8.93585 18.9419 5.55541ZM8.67766 14.8131C7.68978 14.8131 6.87963 13.8908 6.87963 12.7678C6.87963 11.6447 7.67247 10.7209 8.67766 10.7209C9.68284 10.7209 10.493 11.6431 10.4757 12.7678C10.4772 13.8908 9.68284 14.8131 8.67766 14.8131ZM15.3223 14.8131C14.3344 14.8131 13.5243 13.8908 13.5243 12.7678C13.5243 11.6447 14.3171 10.7209 15.3223 10.7209C16.3275 10.7209 17.1376 11.6431 17.1203 12.7678C17.1203 13.8908 16.3275 14.8131 15.3223 14.8131Z" fill="currentColor"></path>
+                    </svg>
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.youtube.com/@cameronmcnz?sub_confirmation=1" target="_blank" rel="noopener">YouTube</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://x.com/cameronmcnz" target="_blank" rel="noopener">Twitter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/cameronwmckenzie/" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="theme-dots d-flex align-items-center" role="group" aria-label="Accent color">
+                        <button class="theme-dot" type="button" data-accent="purple" aria-label="Purple accent" aria-pressed="false"></button>
+                        <button class="theme-dot" type="button" data-accent="blue" aria-label="Blue accent" aria-pressed="false"></button>
+                        <button class="theme-dot" type="button" data-accent="green" aria-label="Green accent" aria-pressed="false"></button>
+                        <button class="theme-dot" type="button" data-accent="orange" aria-label="Orange accent" aria-pressed="false"></button>
+                        <button class="theme-dot" type="button" data-accent="rose" aria-label="Rose accent" aria-pressed="false"></button>
+                        <button class="theme-dot" type="button" data-accent="pink" aria-label="Pink accent" aria-pressed="false"></button>
+                    </div>
+                    <button class="btn btn-sm btn-outline-plain theme-toggle" type="button" data-theme-toggle
+                            aria-pressed="false" aria-label="Switch to dark mode">
+                        <i class="lni lni-moon-half-right-5"></i>
+                    </button>
+                    <div id="nav-auth-controls" class="d-flex align-items-center gap-2"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="auth/js/auth-config.js"></script>
+    <script src="auth/js/auth.js"></script>
+    <script src="auth/js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Site theme: CSS variables, light/dark modes, accent colors.
+   Adapted from certificationexams.pro; trimmed to what this site uses.
+   Intended to survive a future move into a Jekyll include (_sass/theme.scss).
+   ========================================================================== */
+
+/* ---------- CSS Variables & Themes ---------- */
+:root {
+  /* Accent palette choices */
+  --accent-purple: #761dfd;
+  --accent-blue: #155bd5;
+  --accent-green: #1c9d44;
+  --accent-orange: #cf8508;
+  --accent-orange-hover: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-pink: #e729ce;
+
+  /* Active accent + its hover shade (overridden by [data-accent] below / JS) */
+  --accent: var(--accent-orange);
+  --accent-hover: var(--accent-orange-hover);
+
+  /* Light theme tokens */
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --panel: #f8fafc;
+  --border: #e5e7eb;
+  --contrast: #0b1020;
+  --contrast-text: #eef2ff;
+}
+html[data-theme="dark"] {
+  --bg: #0b1020;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --panel: #070a17;
+  --border: #1f2a44;
+  --contrast: #070a17;
+  --contrast-text: #e2e8f0;
+}
+
+/* Accent selection - toggled via html[data-accent] by theme.js.
+   Orange has a fixed, hand-picked hover shade (the old default gold);
+   every other accent just darkens itself on hover. */
+html[data-accent="purple"] { --accent: var(--accent-purple); --accent-hover: color-mix(in oklab, var(--accent-purple), black 12%); }
+html[data-accent="blue"]   { --accent: var(--accent-blue);   --accent-hover: color-mix(in oklab, var(--accent-blue), black 12%); }
+html[data-accent="green"]  { --accent: var(--accent-green);  --accent-hover: color-mix(in oklab, var(--accent-green), black 12%); }
+html[data-accent="orange"] { --accent: var(--accent-orange); --accent-hover: var(--accent-orange-hover); }
+html[data-accent="rose"]   { --accent: var(--accent-rose);   --accent-hover: color-mix(in oklab, var(--accent-rose), black 12%); }
+html[data-accent="pink"]   { --accent: var(--accent-pink);   --accent-hover: color-mix(in oklab, var(--accent-pink), black 12%); }
+
+/* ---------- Global ---------- */
+html, body { background: var(--bg); color: var(--text); }
+body { transition: background-color .2s ease, color .2s ease; }
+a { color: var(--accent); }
+a:hover { color: var(--text); }
+.text-accent { color: var(--accent) !important; }
+.text-muted-light { color: var(--muted); }
+html[data-theme="dark"] .text-muted-light { color: color-mix(in oklab, var(--text) 90%, var(--muted)); }
+.border-accent-subtle { border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--border)); }
+.fw-extrabold { font-weight: 800; }
+.bg-body { background: var(--bg) !important; }
+
+.btn-accent {
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-bg: var(--accent-hover);
+  --bs-btn-hover-border-color: var(--accent-hover);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+}
+.btn-outline-accent {
+  --bs-btn-color: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-bg: var(--accent-hover);
+  --bs-btn-hover-border-color: var(--accent-hover);
+  --bs-btn-hover-color: #fff;
+}
+/* Plain outline button - follows text color, not the accent (nav auth buttons) */
+.btn-outline-plain {
+  --bs-btn-color: var(--text);
+  --bs-btn-border-color: var(--text);
+  --bs-btn-hover-bg: var(--text);
+  --bs-btn-hover-border-color: var(--text);
+  --bs-btn-hover-color: var(--bg);
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.navbar .nav-link { color: var(--text); }
+.navbar .nav-link.active { color: var(--accent); }
+.navbar .navbar-toggler { border-color: var(--border); }
+.navbar .navbar-nav { text-align: center; }
+
+.nav-brand-avatar { border-radius: 999px; }
+.navbar .discord-icon { color: var(--accent); display: inline-block; }
+
+/* Theme accent dots */
+.theme-dots { gap: .35rem; }
+.theme-dot {
+  width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--border);
+  padding: 0; outline: none; cursor: pointer;
+}
+.theme-dot[data-accent="purple"] { background: var(--accent-purple); }
+.theme-dot[data-accent="blue"]   { background: var(--accent-blue); }
+.theme-dot[data-accent="green"]  { background: var(--accent-green); }
+.theme-dot[data-accent="orange"] { background: var(--accent-orange); }
+.theme-dot[data-accent="rose"]   { background: var(--accent-rose); }
+.theme-dot[data-accent="pink"]   { background: var(--accent-pink); }
+.theme-dot[aria-pressed="true"] {
+  border-color: var(--text);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+
+/* Light/dark toggle button */
+.theme-toggle {
+  width: 32px; height: 32px; padding: 0; display: grid; place-content: center;
+  border-radius: 999px; line-height: 1;
+}
+.theme-toggle i { font-size: 16px; }
+
+/* ---------- Sections ---------- */
+/* Alternating backgrounds make the theme tokens obvious as you scroll. */
+section { position: relative; padding: 3rem 0; }
+section::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .95;
+  pointer-events: none;
+}
+.section-bg { background: var(--bg); color: var(--text); }
+.section-panel { background: var(--panel); color: var(--text); }
+.section-contrast { background: var(--contrast); color: var(--contrast-text); }
+.section-contrast h2 { color: #fff; }
+.section-contrast a { color: var(--accent); }
+
+/* ---------- Footer ---------- */
+footer {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}

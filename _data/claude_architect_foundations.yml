@@ -1,0 +1,105 @@
+exam_name: claude-architect-foundations
+collection_title: Claude Architect Foundations Practice Exams
+collection_description: Choose from six focused 60-question sets covering the full 360-question collection.
+base_path: /claude/architect-foundations
+badge_image: /claude/architect-foundations/credly-logo.png
+
+public_blur_at: 3
+protected_blur_at: 60
+blur_at_num: 60
+
+exams:
+  braindump:
+    slug: braindump
+    breadcrumb: Braindump
+    title: Claude Architect Foundations Braindump Practice Exam | Scrumtuous
+    description: Practice 60 Claude Certified Architect Foundations braindump-style questions. This original study set is not a braindump and does not contain real exam questions.
+    heading: Claude Architect Foundations Braindump Practice Exam
+    intro: Work through 60 original practice questions aligned with the Claude Certified Architect Foundations exam objectives.
+    disclaimer: Despite the cheeky name, this is not a braindump. You can't cheat your way to certification. These questions were inspired by published exam objectives and personal experience, and were not taken from or based directly on the real exam.
+    question_start: 1
+    question_end: 60
+  examdump:
+    slug: examdump
+    breadcrumb: Exam Dump
+    title: Claude Architect Foundations Exam Dump Practice Questions | Scrumtuous
+    description: Practice 60 Claude Certified Architect Foundations exam dump-style questions. This original study set is not an exam dump and does not contain real exam questions.
+    heading: Claude Architect Foundations Exam Dump Practice Questions
+    intro: Test your readiness with 60 original exam dump-style practice questions covering Claude architecture foundations.
+    disclaimer: Despite the click-baity 'Exam Dump' name, this is not an exam dump or braindump. Cheating is for losers. These questions were inspired by published exam objectives and personal experience, and were not taken from or based directly on the real exam.
+    question_start: 61
+    question_end: 120
+  mock-exam:
+    slug: mock-exam
+    breadcrumb: Mock Exam
+    title: Claude Architect Foundations Mock Exam | 60 Practice Questions | Scrumtuous
+    description: Take a 60-question Claude Certified Architect Foundations mock exam designed to test architecture knowledge, judgment, and exam readiness.
+    heading: Claude Architect Foundations Mock Exam
+    intro: Simulate exam-day decision making with 60 challenging Claude Architect Foundations mock exam questions.
+    question_start: 121
+    question_end: 180
+  practice-exam:
+    slug: practice-exam
+    breadcrumb: Practice Exam
+    title: Claude Architect Foundations Practice Exam | 60 Questions | Scrumtuous
+    description: Prepare with a 60-question Claude Certified Architect Foundations practice exam covering architecture concepts and applied AI solution design.
+    heading: Claude Architect Foundations Practice Exam
+    intro: Build confidence with 60 Claude Architect Foundations practice exam questions focused on applied architecture skills.
+    question_start: 181
+    question_end: 240
+  real-questions:
+    slug: real-questions
+    breadcrumb: Realistic Questions
+    title: Realistic Claude Architect Foundations Exam Questions | Scrumtuous
+    description: Practice 60 realistic Claude Certified Architect Foundations exam questions designed to reflect the difficulty and judgment expected of AI architects.
+    heading: Realistic Claude Architect Foundations Exam Questions
+    intro: Challenge yourself with 60 realistic practice questions calibrated to Claude Architect Foundations exam difficulty.
+    question_start: 241
+    question_end: 300
+  sample-questions:
+    slug: sample-questions
+    breadcrumb: Sample Questions
+    title: Claude Architect Foundations Sample Questions | Free Practice Exam
+    description: Explore 60 Claude Certified Architect Foundations sample questions for free practice across architecture, safety, tooling, and solution design.
+    heading: Claude Architect Foundations Sample Questions
+    intro: Explore 60 sample questions covering the knowledge and judgment expected of a Claude AI architect.
+    question_start: 301
+    question_end: 360
+
+cards:
+  - key: practice-exam
+    slug: practice-exam
+    type: Practice Exam
+    title: Claude Certification Practice Exam
+    difficulty: 6/7
+  - key: braindump
+    slug: braindump
+    type: Braindump
+    title: "'Feels like a Claude Braindump' Exam"
+    difficulty: Starship Lieutenant
+  - key: real-questions
+    slug: real-questions
+    type: Real Questions
+    title: Real Claude Architect Exam Difficulty
+    difficulty: Knight of the Round Table
+  - key: examdump
+    slug: examdump
+    type: Exam Dump
+    title: "'Not a Claude Architect Examdump'"
+    difficulty: Champion of Gondor
+  - key: mock-exam
+    slug: mock-exam
+    type: Mock Exam
+    title: Mock CCAR-F Architect Exam
+    difficulty: Sith Lord
+  - key: sample-questions
+    slug: sample-questions
+    type: Sample Questions
+    title: Sample Claude Cert Questions
+    difficulty: Final Boss meets Chuck Norris
+
+video:
+  url: https://youtu.be/9aBPxO6Wl6c?si=vR0-i1lPOeYCrMc6
+  thumbnail: https://i.ytimg.com/vi/9aBPxO6Wl6c/hqdefault.jpg
+  title: "AI Architect Lesson 1: How to Delete Python"
+  description: Join my Youtube channel and learn the best strategies on how to build AI Agents and Generative AI solutions. Start with learning how to uninstall Python, which I teach you how to do quickly and painlessly in this introduction video. Come learn AI with me!

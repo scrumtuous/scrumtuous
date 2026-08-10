@@ -1,0 +1,1451 @@
+$lineicons-free-solid-font: "lineicons-free-solid";
+
+@font-face {
+    font-family: $lineicons-free-solid-font;
+    src: url("./lineicons-free-solid.woff2?e24e24455c81e7446cc3ea86d52b67e6") format("woff2"),
+url("./lineicons-free-solid.woff?e24e24455c81e7446cc3ea86d52b67e6") format("woff"),
+url("./lineicons-free-solid.ttf?e24e24455c81e7446cc3ea86d52b67e6") format("truetype");
+}
+
+.lni:before {
+    font-family: lineicons-free-solid !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$lineicons-free-solid-map: (
+    "aeroplane-1": "\e000",
+    "agenda": "\e001",
+    "alarm-1": "\e002",
+    "align-text-center": "\e003",
+    "align-text-left": "\e004",
+    "align-text-right": "\e005",
+    "ambulance-1": "\e006",
+    "anchor": "\e007",
+    "angle-double-down": "\e008",
+    "angle-double-left": "\e009",
+    "angle-double-right": "\e00a",
+    "angle-double-up": "\e00b",
+    "arrow-all-direction": "\e00c",
+    "arrow-angular-top-left": "\e00d",
+    "arrow-angular-top-right": "\e00e",
+    "arrow-both-direction-horizontal-1": "\e00f",
+    "arrow-both-direction-vertical-1": "\e010",
+    "arrow-downward": "\e011",
+    "arrow-left": "\e012",
+    "arrow-left-circle": "\e013",
+    "arrow-right": "\e014",
+    "arrow-right-circle": "\e015",
+    "arrow-upward": "\e016",
+    "badge-decagram-percent": "\e017",
+    "balloons": "\e018",
+    "ban-2": "\e019",
+    "bar-chart-4": "\e01a",
+    "bar-chart-dollar": "\e01b",
+    "basket-shopping-3": "\e01c",
+    "beat": "\e01d",
+    "bell-1": "\e01e",
+    "bike": "\e01f",
+    "bluetooth": "\e020",
+    "board-writing-3": "\e021",
+    "bold": "\e022",
+    "bolt-2": "\e023",
+    "bolt-3": "\e024",
+    "book-1": "\e025",
+    "bookmark-1": "\e026",
+    "bookmark-circle": "\e027",
+    "books-2": "\e028",
+    "box-archive-1": "\e029",
+    "box-closed": "\e02a",
+    "box-gift-1": "\e02b",
+    "bricks": "\e02c",
+    "bridge-3": "\e02d",
+    "briefcase-1": "\e02e",
+    "briefcase-2": "\e02f",
+    "briefcase-plus-1": "\e030",
+    "brush-1-rotated": "\e031",
+    "brush-2": "\e032",
+    "bug-1": "\e033",
+    "buildings-1": "\e034",
+    "bulb-2": "\e035",
+    "bulb-4": "\e036",
+    "burger-1": "\e037",
+    "burger-drink": "\e038",
+    "bus-1": "\e039",
+    "busket-ball": "\e03a",
+    "cake-1": "\e03b",
+    "calculator-1": "\e03c",
+    "calculator-2": "\e03d",
+    "calendar-days": "\e03e",
+    "camera-1": "\e03f",
+    "camera-movie-1": "\e040",
+    "candy-cane-2": "\e041",
+    "candy-round-1": "\e042",
+    "capsule-1": "\e043",
+    "car-2": "\e044",
+    "car-4": "\e045",
+    "car-6": "\e046",
+    "caravan-1": "\e047",
+    "cart-1": "\e048",
+    "cart-2": "\e049",
+    "certificate-badge-1": "\e04a",
+    "chat-bubble-2": "\e04b",
+    "check": "\e04c",
+    "check-circle-1": "\e04d",
+    "check-square-2": "\e04e",
+    "chevron-down": "\e04f",
+    "chevron-down-circle": "\e050",
+    "chevron-left": "\e051",
+    "chevron-left-circle": "\e052",
+    "chevron-up": "\e053",
+    "chevron-up-circle": "\e054",
+    "clipboard": "\e055",
+    "cloud-2": "\e056",
+    "cloud-bolt-1": "\e057",
+    "cloud-bolt-2": "\e058",
+    "cloud-check-circle": "\e059",
+    "cloud-download": "\e05a",
+    "cloud-iot-2": "\e05b",
+    "cloud-rain": "\e05c",
+    "cloud-refresh-clockwise": "\e05d",
+    "cloud-sun": "\e05e",
+    "cloud-upload": "\e05f",
+    "code-1": "\e060",
+    "code-s": "\e061",
+    "coffee-cup-2": "\e062",
+    "colour-palette-3": "\e063",
+    "comment-1": "\e064",
+    "comment-1-share": "\e065",
+    "comment-1-text": "\e066",
+    "compass-drafting-2": "\e067",
+    "crane-4": "\e068",
+    "credit-card-multiple": "\e069",
+    "crop-2": "\e06a",
+    "crown-3": "\e06b",
+    "dashboard-square-1": "\e06c",
+    "database-2": "\e06d",
+    "diamonds-1": "\e06e",
+    "diamonds-2": "\e06f",
+    "direction-ltr": "\e070",
+    "direction-rtl": "\e071",
+    "dollar": "\e072",
+    "dollar-circle": "\e073",
+    "double-quotes-end-1": "\e074",
+    "download-1": "\e075",
+    "download-circle-1": "\e076",
+    "dumbbell-1": "\e077",
+    "emoji-expressionless": "\e078",
+    "emoji-expressionless-flat-eyes": "\e079",
+    "emoji-grin": "\e07a",
+    "emoji-sad": "\e07b",
+    "emoji-smile": "\e07c",
+    "emoji-smile-side": "\e07d",
+    "emoji-smile-sunglass": "\e07e",
+    "emoji-smile-tongue": "\e07f",
+    "enter": "\e080",
+    "enter-down": "\e081",
+    "envelope-1": "\e082",
+    "eraser-1": "\e083",
+    "euro": "\e084",
+    "exit": "\e085",
+    "exit-up": "\e086",
+    "expand-arrow-1": "\e087",
+    "expand-square-4": "\e088",
+    "eye": "\e089",
+    "file-format-zip": "\e08a",
+    "file-multiple": "\e08b",
+    "file-pencil": "\e08c",
+    "file-plus-circle": "\e08d",
+    "file-question": "\e08e",
+    "file-xmark": "\e08f",
+    "firework-rocket-4": "\e090",
+    "flag-1": "\e091",
+    "flag-2": "\e092",
+    "floppy-disk-1": "\e093",
+    "flower-2": "\e094",
+    "folder-1": "\e095",
+    "funnel-1": "\e096",
+    "gallery": "\e097",
+    "game-pad-modern-1": "\e098",
+    "gauge-1": "\e099",
+    "gear-1": "\e09a",
+    "gears-3": "\e09b",
+    "glass-juice-1": "\e09c",
+    "globe-1": "\e09d",
+    "globe-stand": "\e09e",
+    "graduation-cap-1": "\e09f",
+    "hammer-1": "\e0a0",
+    "hammer-2": "\e0a1",
+    "hand-mic": "\e0a2",
+    "hand-shake": "\e0a3",
+    "hand-stop": "\e0a4",
+    "hand-taking-dollar": "\e0a5",
+    "hand-taking-leaf-1": "\e0a6",
+    "hand-taking-user": "\e0a7",
+    "hat-chef-3": "\e0a8",
+    "headphone-1": "\e0a9",
+    "heart": "\e0aa",
+    "helicopter-2": "\e0ab",
+    "helmet-safety-1": "\e0ac",
+    "hierarchy-1": "\e0ad",
+    "highlighter-1": "\e0ae",
+    "highlighter-2": "\e0af",
+    "home-2": "\e0b0",
+    "hospital-2": "\e0b1",
+    "hourglass": "\e0b2",
+    "indent": "\e0b3",
+    "injection-1": "\e0b4",
+    "island-2": "\e0b5",
+    "key-1": "\e0b6",
+    "keyboard": "\e0b7",
+    "knife-fork-1": "\e0b8",
+    "label-dollar-2": "\e0b9",
+    "laptop-2": "\e0ba",
+    "laptop-phone": "\e0bb",
+    "layers-1": "\e0bc",
+    "layout-26": "\e0bd",
+    "layout-9": "\e0be",
+    "leaf-1": "\e0bf",
+    "leaf-6": "\e0c0",
+    "life-guard-tube-1": "\e0c1",
+    "line-dashed": "\e0c2",
+    "line-dotted": "\e0c3",
+    "line-height": "\e0c4",
+    "link-2-angular-right": "\e0c5",
+    "location-arrow-right": "\e0c6",
+    "locked-1": "\e0c7",
+    "locked-2": "\e0c8",
+    "magnet": "\e0c9",
+    "map-marker-1": "\e0ca",
+    "map-marker-5": "\e0cb",
+    "map-pin-5": "\e0cc",
+    "megaphone-1": "\e0cd",
+    "menu-cheesburger": "\e0ce",
+    "menu-hamburger-1": "\e0cf",
+    "menu-meatballs-1": "\e0d0",
+    "menu-meatballs-2": "\e0d1",
+    "message-2": "\e0d2",
+    "message-2-question": "\e0d3",
+    "message-3-text": "\e0d4",
+    "microphone-1": "\e0d5",
+    "microscope": "\e0d6",
+    "minus": "\e0d7",
+    "minus-circle": "\e0d8",
+    "monitor": "\e0d9",
+    "monitor-code": "\e0da",
+    "monitor-mac": "\e0db",
+    "moon-half-right-5": "\e0dc",
+    "mountains-2": "\e0dd",
+    "mouse-2": "\e0de",
+    "mushroom-1": "\e0df",
+    "mushroom-5": "\e0e0",
+    "music": "\e0e1",
+    "next-step-2": "\e0e2",
+    "notebook-1": "\e0e3",
+    "outdent": "\e0e4",
+    "page-break-1": "\e0e5",
+    "pagination": "\e0e6",
+    "paint-bucket": "\e0e7",
+    "paint-roller-1": "\e0e8",
+    "paperclip-1": "\e0e9",
+    "party-flags": "\e0ea",
+    "party-spray": "\e0eb",
+    "pause": "\e0ec",
+    "pen-to-square": "\e0ed",
+    "pencil-1": "\e0ee",
+    "phone": "\e0ef",
+    "photos": "\e0f0",
+    "pie-chart-2": "\e0f1",
+    "pilcrow": "\e0f2",
+    "pizza-2": "\e0f3",
+    "placeholder-dollar": "\e0f4",
+    "play": "\e0f5",
+    "plug-1": "\e0f6",
+    "plus": "\e0f7",
+    "pound": "\e0f8",
+    "power-button": "\e0f9",
+    "previous-step-2": "\e0fa",
+    "printer": "\e0fb",
+    "question-mark": "\e0fc",
+    "question-mark-circle": "\e0fd",
+    "refresh-circle-1-clockwise": "\e0fe",
+    "refresh-dollar-1": "\e0ff",
+    "refresh-user-1": "\e100",
+    "road-1": "\e101",
+    "rocket-5": "\e102",
+    "route-1": "\e103",
+    "rss-right": "\e104",
+    "ruler-1": "\e105",
+    "ruler-pen": "\e106",
+    "rupee": "\e107",
+    "school-bench-1": "\e108",
+    "school-bench-2": "\e109",
+    "scissors-1-vertical": "\e10a",
+    "scoter": "\e10b",
+    "scroll-down-2": "\e10c",
+    "search-1": "\e10d",
+    "search-2": "\e10e",
+    "search-minus": "\e10f",
+    "search-plus": "\e110",
+    "search-text": "\e111",
+    "select-cursor-1": "\e112",
+    "seo-monitor": "\e113",
+    "service-bell-1": "\e114",
+    "share-1": "\e115",
+    "share-1-circle": "\e116",
+    "share-2": "\e117",
+    "shield-2": "\e118",
+    "shield-2-check": "\e119",
+    "shield-dollar": "\e11a",
+    "shift-left": "\e11b",
+    "shift-right": "\e11c",
+    "ship-1": "\e11d",
+    "shirt-1": "\e11e",
+    "shovel": "\e11f",
+    "shuffle": "\e120",
+    "sign-post-left": "\e121",
+    "signs-post-2": "\e122",
+    "slice-2": "\e123",
+    "sliders-horizontal-square-2": "\e124",
+    "sort-alphabetical": "\e125",
+    "sort-high-to-low": "\e126",
+    "spellcheck": "\e127",
+    "spinner-2-sacle": "\e128",
+    "spinner-3": "\e129",
+    "sports": "\e12a",
+    "stamp": "\e12b",
+    "star-fat": "\e12c",
+    "star-fat-half-2": "\e12d",
+    "star-sharp-disabled": "\e12e",
+    "stethoscope-1": "\e12f",
+    "stopwatch": "\e130",
+    "storage-hdd-2": "\e131",
+    "strikethrough-1": "\e132",
+    "sun-1": "\e133",
+    "surfboard-2": "\e134",
+    "tab": "\e135",
+    "target-user": "\e136",
+    "telephone-1": "\e137",
+    "telephone-3": "\e138",
+    "text-format": "\e139",
+    "text-format-remove": "\e13a",
+    "text-paragraph": "\e13b",
+    "thumbs-down-3": "\e13c",
+    "thumbs-up-3": "\e13d",
+    "ticket-1": "\e13e",
+    "tickets-3": "\e13f",
+    "tower-broadcast-1": "\e140",
+    "train-1": "\e141",
+    "train-3": "\e142",
+    "trash-3": "\e143",
+    "tree-2": "\e144",
+    "trees-3": "\e145",
+    "trend-down-1": "\e146",
+    "trend-up-1": "\e147",
+    "trophy-1": "\e148",
+    "trowel-1": "\e149",
+    "truck-delivery-1": "\e14a",
+    "underline": "\e14b",
+    "unlink-2-angular-eft": "\e14c",
+    "unlocked-2": "\e14d",
+    "upload-1": "\e14e",
+    "upload-circle-1": "\e14f",
+    "user-4": "\e150",
+    "user-multiple-4": "\e151",
+    "vector-nodes-6": "\e152",
+    "vector-nodes-7": "\e153",
+    "volume-1": "\e154",
+    "volume-high": "\e155",
+    "volume-low": "\e156",
+    "volume-mute": "\e157",
+    "volume-off": "\e158",
+    "wallet-1": "\e159",
+    "watch-beat-1": "\e15a",
+    "water-drop-1": "\e15b",
+    "weight-machine-1": "\e15c",
+    "wheelbarrow-empty": "\e15d",
+    "wheelchair-1": "\e15e",
+    "www": "\e15f",
+    "www-cursor": "\e160",
+    "xmark": "\e161",
+    "xmark-circle": "\e162",
+    "yen": "\e163",
+    "zero-size": "\e164",
+);
+
+.lni.lnis-aeroplane-1:before {
+    content: map-get($lineicons-free-solid-map, "aeroplane-1");
+}
+.lni.lnis-agenda:before {
+    content: map-get($lineicons-free-solid-map, "agenda");
+}
+.lni.lnis-alarm-1:before {
+    content: map-get($lineicons-free-solid-map, "alarm-1");
+}
+.lni.lnis-align-text-center:before {
+    content: map-get($lineicons-free-solid-map, "align-text-center");
+}
+.lni.lnis-align-text-left:before {
+    content: map-get($lineicons-free-solid-map, "align-text-left");
+}
+.lni.lnis-align-text-right:before {
+    content: map-get($lineicons-free-solid-map, "align-text-right");
+}
+.lni.lnis-ambulance-1:before {
+    content: map-get($lineicons-free-solid-map, "ambulance-1");
+}
+.lni.lnis-anchor:before {
+    content: map-get($lineicons-free-solid-map, "anchor");
+}
+.lni.lnis-angle-double-down:before {
+    content: map-get($lineicons-free-solid-map, "angle-double-down");
+}
+.lni.lnis-angle-double-left:before {
+    content: map-get($lineicons-free-solid-map, "angle-double-left");
+}
+.lni.lnis-angle-double-right:before {
+    content: map-get($lineicons-free-solid-map, "angle-double-right");
+}
+.lni.lnis-angle-double-up:before {
+    content: map-get($lineicons-free-solid-map, "angle-double-up");
+}
+.lni.lnis-arrow-all-direction:before {
+    content: map-get($lineicons-free-solid-map, "arrow-all-direction");
+}
+.lni.lnis-arrow-angular-top-left:before {
+    content: map-get($lineicons-free-solid-map, "arrow-angular-top-left");
+}
+.lni.lnis-arrow-angular-top-right:before {
+    content: map-get($lineicons-free-solid-map, "arrow-angular-top-right");
+}
+.lni.lnis-arrow-both-direction-horizontal-1:before {
+    content: map-get($lineicons-free-solid-map, "arrow-both-direction-horizontal-1");
+}
+.lni.lnis-arrow-both-direction-vertical-1:before {
+    content: map-get($lineicons-free-solid-map, "arrow-both-direction-vertical-1");
+}
+.lni.lnis-arrow-downward:before {
+    content: map-get($lineicons-free-solid-map, "arrow-downward");
+}
+.lni.lnis-arrow-left:before {
+    content: map-get($lineicons-free-solid-map, "arrow-left");
+}
+.lni.lnis-arrow-left-circle:before {
+    content: map-get($lineicons-free-solid-map, "arrow-left-circle");
+}
+.lni.lnis-arrow-right:before {
+    content: map-get($lineicons-free-solid-map, "arrow-right");
+}
+.lni.lnis-arrow-right-circle:before {
+    content: map-get($lineicons-free-solid-map, "arrow-right-circle");
+}
+.lni.lnis-arrow-upward:before {
+    content: map-get($lineicons-free-solid-map, "arrow-upward");
+}
+.lni.lnis-badge-decagram-percent:before {
+    content: map-get($lineicons-free-solid-map, "badge-decagram-percent");
+}
+.lni.lnis-balloons:before {
+    content: map-get($lineicons-free-solid-map, "balloons");
+}
+.lni.lnis-ban-2:before {
+    content: map-get($lineicons-free-solid-map, "ban-2");
+}
+.lni.lnis-bar-chart-4:before {
+    content: map-get($lineicons-free-solid-map, "bar-chart-4");
+}
+.lni.lnis-bar-chart-dollar:before {
+    content: map-get($lineicons-free-solid-map, "bar-chart-dollar");
+}
+.lni.lnis-basket-shopping-3:before {
+    content: map-get($lineicons-free-solid-map, "basket-shopping-3");
+}
+.lni.lnis-beat:before {
+    content: map-get($lineicons-free-solid-map, "beat");
+}
+.lni.lnis-bell-1:before {
+    content: map-get($lineicons-free-solid-map, "bell-1");
+}
+.lni.lnis-bike:before {
+    content: map-get($lineicons-free-solid-map, "bike");
+}
+.lni.lnis-bluetooth:before {
+    content: map-get($lineicons-free-solid-map, "bluetooth");
+}
+.lni.lnis-board-writing-3:before {
+    content: map-get($lineicons-free-solid-map, "board-writing-3");
+}
+.lni.lnis-bold:before {
+    content: map-get($lineicons-free-solid-map, "bold");
+}
+.lni.lnis-bolt-2:before {
+    content: map-get($lineicons-free-solid-map, "bolt-2");
+}
+.lni.lnis-bolt-3:before {
+    content: map-get($lineicons-free-solid-map, "bolt-3");
+}
+.lni.lnis-book-1:before {
+    content: map-get($lineicons-free-solid-map, "book-1");
+}
+.lni.lnis-bookmark-1:before {
+    content: map-get($lineicons-free-solid-map, "bookmark-1");
+}
+.lni.lnis-bookmark-circle:before {
+    content: map-get($lineicons-free-solid-map, "bookmark-circle");
+}
+.lni.lnis-books-2:before {
+    content: map-get($lineicons-free-solid-map, "books-2");
+}
+.lni.lnis-box-archive-1:before {
+    content: map-get($lineicons-free-solid-map, "box-archive-1");
+}
+.lni.lnis-box-closed:before {
+    content: map-get($lineicons-free-solid-map, "box-closed");
+}
+.lni.lnis-box-gift-1:before {
+    content: map-get($lineicons-free-solid-map, "box-gift-1");
+}
+.lni.lnis-bricks:before {
+    content: map-get($lineicons-free-solid-map, "bricks");
+}
+.lni.lnis-bridge-3:before {
+    content: map-get($lineicons-free-solid-map, "bridge-3");
+}
+.lni.lnis-briefcase-1:before {
+    content: map-get($lineicons-free-solid-map, "briefcase-1");
+}
+.lni.lnis-briefcase-2:before {
+    content: map-get($lineicons-free-solid-map, "briefcase-2");
+}
+.lni.lnis-briefcase-plus-1:before {
+    content: map-get($lineicons-free-solid-map, "briefcase-plus-1");
+}
+.lni.lnis-brush-1-rotated:before {
+    content: map-get($lineicons-free-solid-map, "brush-1-rotated");
+}
+.lni.lnis-brush-2:before {
+    content: map-get($lineicons-free-solid-map, "brush-2");
+}
+.lni.lnis-bug-1:before {
+    content: map-get($lineicons-free-solid-map, "bug-1");
+}
+.lni.lnis-buildings-1:before {
+    content: map-get($lineicons-free-solid-map, "buildings-1");
+}
+.lni.lnis-bulb-2:before {
+    content: map-get($lineicons-free-solid-map, "bulb-2");
+}
+.lni.lnis-bulb-4:before {
+    content: map-get($lineicons-free-solid-map, "bulb-4");
+}
+.lni.lnis-burger-1:before {
+    content: map-get($lineicons-free-solid-map, "burger-1");
+}
+.lni.lnis-burger-drink:before {
+    content: map-get($lineicons-free-solid-map, "burger-drink");
+}
+.lni.lnis-bus-1:before {
+    content: map-get($lineicons-free-solid-map, "bus-1");
+}
+.lni.lnis-busket-ball:before {
+    content: map-get($lineicons-free-solid-map, "busket-ball");
+}
+.lni.lnis-cake-1:before {
+    content: map-get($lineicons-free-solid-map, "cake-1");
+}
+.lni.lnis-calculator-1:before {
+    content: map-get($lineicons-free-solid-map, "calculator-1");
+}
+.lni.lnis-calculator-2:before {
+    content: map-get($lineicons-free-solid-map, "calculator-2");
+}
+.lni.lnis-calendar-days:before {
+    content: map-get($lineicons-free-solid-map, "calendar-days");
+}
+.lni.lnis-camera-1:before {
+    content: map-get($lineicons-free-solid-map, "camera-1");
+}
+.lni.lnis-camera-movie-1:before {
+    content: map-get($lineicons-free-solid-map, "camera-movie-1");
+}
+.lni.lnis-candy-cane-2:before {
+    content: map-get($lineicons-free-solid-map, "candy-cane-2");
+}
+.lni.lnis-candy-round-1:before {
+    content: map-get($lineicons-free-solid-map, "candy-round-1");
+}
+.lni.lnis-capsule-1:before {
+    content: map-get($lineicons-free-solid-map, "capsule-1");
+}
+.lni.lnis-car-2:before {
+    content: map-get($lineicons-free-solid-map, "car-2");
+}
+.lni.lnis-car-4:before {
+    content: map-get($lineicons-free-solid-map, "car-4");
+}
+.lni.lnis-car-6:before {
+    content: map-get($lineicons-free-solid-map, "car-6");
+}
+.lni.lnis-caravan-1:before {
+    content: map-get($lineicons-free-solid-map, "caravan-1");
+}
+.lni.lnis-cart-1:before {
+    content: map-get($lineicons-free-solid-map, "cart-1");
+}
+.lni.lnis-cart-2:before {
+    content: map-get($lineicons-free-solid-map, "cart-2");
+}
+.lni.lnis-certificate-badge-1:before {
+    content: map-get($lineicons-free-solid-map, "certificate-badge-1");
+}
+.lni.lnis-chat-bubble-2:before {
+    content: map-get($lineicons-free-solid-map, "chat-bubble-2");
+}
+.lni.lnis-check:before {
+    content: map-get($lineicons-free-solid-map, "check");
+}
+.lni.lnis-check-circle-1:before {
+    content: map-get($lineicons-free-solid-map, "check-circle-1");
+}
+.lni.lnis-check-square-2:before {
+    content: map-get($lineicons-free-solid-map, "check-square-2");
+}
+.lni.lnis-chevron-down:before {
+    content: map-get($lineicons-free-solid-map, "chevron-down");
+}
+.lni.lnis-chevron-down-circle:before {
+    content: map-get($lineicons-free-solid-map, "chevron-down-circle");
+}
+.lni.lnis-chevron-left:before {
+    content: map-get($lineicons-free-solid-map, "chevron-left");
+}
+.lni.lnis-chevron-left-circle:before {
+    content: map-get($lineicons-free-solid-map, "chevron-left-circle");
+}
+.lni.lnis-chevron-up:before {
+    content: map-get($lineicons-free-solid-map, "chevron-up");
+}
+.lni.lnis-chevron-up-circle:before {
+    content: map-get($lineicons-free-solid-map, "chevron-up-circle");
+}
+.lni.lnis-clipboard:before {
+    content: map-get($lineicons-free-solid-map, "clipboard");
+}
+.lni.lnis-cloud-2:before {
+    content: map-get($lineicons-free-solid-map, "cloud-2");
+}
+.lni.lnis-cloud-bolt-1:before {
+    content: map-get($lineicons-free-solid-map, "cloud-bolt-1");
+}
+.lni.lnis-cloud-bolt-2:before {
+    content: map-get($lineicons-free-solid-map, "cloud-bolt-2");
+}
+.lni.lnis-cloud-check-circle:before {
+    content: map-get($lineicons-free-solid-map, "cloud-check-circle");
+}
+.lni.lnis-cloud-download:before {
+    content: map-get($lineicons-free-solid-map, "cloud-download");
+}
+.lni.lnis-cloud-iot-2:before {
+    content: map-get($lineicons-free-solid-map, "cloud-iot-2");
+}
+.lni.lnis-cloud-rain:before {
+    content: map-get($lineicons-free-solid-map, "cloud-rain");
+}
+.lni.lnis-cloud-refresh-clockwise:before {
+    content: map-get($lineicons-free-solid-map, "cloud-refresh-clockwise");
+}
+.lni.lnis-cloud-sun:before {
+    content: map-get($lineicons-free-solid-map, "cloud-sun");
+}
+.lni.lnis-cloud-upload:before {
+    content: map-get($lineicons-free-solid-map, "cloud-upload");
+}
+.lni.lnis-code-1:before {
+    content: map-get($lineicons-free-solid-map, "code-1");
+}
+.lni.lnis-code-s:before {
+    content: map-get($lineicons-free-solid-map, "code-s");
+}
+.lni.lnis-coffee-cup-2:before {
+    content: map-get($lineicons-free-solid-map, "coffee-cup-2");
+}
+.lni.lnis-colour-palette-3:before {
+    content: map-get($lineicons-free-solid-map, "colour-palette-3");
+}
+.lni.lnis-comment-1:before {
+    content: map-get($lineicons-free-solid-map, "comment-1");
+}
+.lni.lnis-comment-1-share:before {
+    content: map-get($lineicons-free-solid-map, "comment-1-share");
+}
+.lni.lnis-comment-1-text:before {
+    content: map-get($lineicons-free-solid-map, "comment-1-text");
+}
+.lni.lnis-compass-drafting-2:before {
+    content: map-get($lineicons-free-solid-map, "compass-drafting-2");
+}
+.lni.lnis-crane-4:before {
+    content: map-get($lineicons-free-solid-map, "crane-4");
+}
+.lni.lnis-credit-card-multiple:before {
+    content: map-get($lineicons-free-solid-map, "credit-card-multiple");
+}
+.lni.lnis-crop-2:before {
+    content: map-get($lineicons-free-solid-map, "crop-2");
+}
+.lni.lnis-crown-3:before {
+    content: map-get($lineicons-free-solid-map, "crown-3");
+}
+.lni.lnis-dashboard-square-1:before {
+    content: map-get($lineicons-free-solid-map, "dashboard-square-1");
+}
+.lni.lnis-database-2:before {
+    content: map-get($lineicons-free-solid-map, "database-2");
+}
+.lni.lnis-diamonds-1:before {
+    content: map-get($lineicons-free-solid-map, "diamonds-1");
+}
+.lni.lnis-diamonds-2:before {
+    content: map-get($lineicons-free-solid-map, "diamonds-2");
+}
+.lni.lnis-direction-ltr:before {
+    content: map-get($lineicons-free-solid-map, "direction-ltr");
+}
+.lni.lnis-direction-rtl:before {
+    content: map-get($lineicons-free-solid-map, "direction-rtl");
+}
+.lni.lnis-dollar:before {
+    content: map-get($lineicons-free-solid-map, "dollar");
+}
+.lni.lnis-dollar-circle:before {
+    content: map-get($lineicons-free-solid-map, "dollar-circle");
+}
+.lni.lnis-double-quotes-end-1:before {
+    content: map-get($lineicons-free-solid-map, "double-quotes-end-1");
+}
+.lni.lnis-download-1:before {
+    content: map-get($lineicons-free-solid-map, "download-1");
+}
+.lni.lnis-download-circle-1:before {
+    content: map-get($lineicons-free-solid-map, "download-circle-1");
+}
+.lni.lnis-dumbbell-1:before {
+    content: map-get($lineicons-free-solid-map, "dumbbell-1");
+}
+.lni.lnis-emoji-expressionless:before {
+    content: map-get($lineicons-free-solid-map, "emoji-expressionless");
+}
+.lni.lnis-emoji-expressionless-flat-eyes:before {
+    content: map-get($lineicons-free-solid-map, "emoji-expressionless-flat-eyes");
+}
+.lni.lnis-emoji-grin:before {
+    content: map-get($lineicons-free-solid-map, "emoji-grin");
+}
+.lni.lnis-emoji-sad:before {
+    content: map-get($lineicons-free-solid-map, "emoji-sad");
+}
+.lni.lnis-emoji-smile:before {
+    content: map-get($lineicons-free-solid-map, "emoji-smile");
+}
+.lni.lnis-emoji-smile-side:before {
+    content: map-get($lineicons-free-solid-map, "emoji-smile-side");
+}
+.lni.lnis-emoji-smile-sunglass:before {
+    content: map-get($lineicons-free-solid-map, "emoji-smile-sunglass");
+}
+.lni.lnis-emoji-smile-tongue:before {
+    content: map-get($lineicons-free-solid-map, "emoji-smile-tongue");
+}
+.lni.lnis-enter:before {
+    content: map-get($lineicons-free-solid-map, "enter");
+}
+.lni.lnis-enter-down:before {
+    content: map-get($lineicons-free-solid-map, "enter-down");
+}
+.lni.lnis-envelope-1:before {
+    content: map-get($lineicons-free-solid-map, "envelope-1");
+}
+.lni.lnis-eraser-1:before {
+    content: map-get($lineicons-free-solid-map, "eraser-1");
+}
+.lni.lnis-euro:before {
+    content: map-get($lineicons-free-solid-map, "euro");
+}
+.lni.lnis-exit:before {
+    content: map-get($lineicons-free-solid-map, "exit");
+}
+.lni.lnis-exit-up:before {
+    content: map-get($lineicons-free-solid-map, "exit-up");
+}
+.lni.lnis-expand-arrow-1:before {
+    content: map-get($lineicons-free-solid-map, "expand-arrow-1");
+}
+.lni.lnis-expand-square-4:before {
+    content: map-get($lineicons-free-solid-map, "expand-square-4");
+}
+.lni.lnis-eye:before {
+    content: map-get($lineicons-free-solid-map, "eye");
+}
+.lni.lnis-file-format-zip:before {
+    content: map-get($lineicons-free-solid-map, "file-format-zip");
+}
+.lni.lnis-file-multiple:before {
+    content: map-get($lineicons-free-solid-map, "file-multiple");
+}
+.lni.lnis-file-pencil:before {
+    content: map-get($lineicons-free-solid-map, "file-pencil");
+}
+.lni.lnis-file-plus-circle:before {
+    content: map-get($lineicons-free-solid-map, "file-plus-circle");
+}
+.lni.lnis-file-question:before {
+    content: map-get($lineicons-free-solid-map, "file-question");
+}
+.lni.lnis-file-xmark:before {
+    content: map-get($lineicons-free-solid-map, "file-xmark");
+}
+.lni.lnis-firework-rocket-4:before {
+    content: map-get($lineicons-free-solid-map, "firework-rocket-4");
+}
+.lni.lnis-flag-1:before {
+    content: map-get($lineicons-free-solid-map, "flag-1");
+}
+.lni.lnis-flag-2:before {
+    content: map-get($lineicons-free-solid-map, "flag-2");
+}
+.lni.lnis-floppy-disk-1:before {
+    content: map-get($lineicons-free-solid-map, "floppy-disk-1");
+}
+.lni.lnis-flower-2:before {
+    content: map-get($lineicons-free-solid-map, "flower-2");
+}
+.lni.lnis-folder-1:before {
+    content: map-get($lineicons-free-solid-map, "folder-1");
+}
+.lni.lnis-funnel-1:before {
+    content: map-get($lineicons-free-solid-map, "funnel-1");
+}
+.lni.lnis-gallery:before {
+    content: map-get($lineicons-free-solid-map, "gallery");
+}
+.lni.lnis-game-pad-modern-1:before {
+    content: map-get($lineicons-free-solid-map, "game-pad-modern-1");
+}
+.lni.lnis-gauge-1:before {
+    content: map-get($lineicons-free-solid-map, "gauge-1");
+}
+.lni.lnis-gear-1:before {
+    content: map-get($lineicons-free-solid-map, "gear-1");
+}
+.lni.lnis-gears-3:before {
+    content: map-get($lineicons-free-solid-map, "gears-3");
+}
+.lni.lnis-glass-juice-1:before {
+    content: map-get($lineicons-free-solid-map, "glass-juice-1");
+}
+.lni.lnis-globe-1:before {
+    content: map-get($lineicons-free-solid-map, "globe-1");
+}
+.lni.lnis-globe-stand:before {
+    content: map-get($lineicons-free-solid-map, "globe-stand");
+}
+.lni.lnis-graduation-cap-1:before {
+    content: map-get($lineicons-free-solid-map, "graduation-cap-1");
+}
+.lni.lnis-hammer-1:before {
+    content: map-get($lineicons-free-solid-map, "hammer-1");
+}
+.lni.lnis-hammer-2:before {
+    content: map-get($lineicons-free-solid-map, "hammer-2");
+}
+.lni.lnis-hand-mic:before {
+    content: map-get($lineicons-free-solid-map, "hand-mic");
+}
+.lni.lnis-hand-shake:before {
+    content: map-get($lineicons-free-solid-map, "hand-shake");
+}
+.lni.lnis-hand-stop:before {
+    content: map-get($lineicons-free-solid-map, "hand-stop");
+}
+.lni.lnis-hand-taking-dollar:before {
+    content: map-get($lineicons-free-solid-map, "hand-taking-dollar");
+}
+.lni.lnis-hand-taking-leaf-1:before {
+    content: map-get($lineicons-free-solid-map, "hand-taking-leaf-1");
+}
+.lni.lnis-hand-taking-user:before {
+    content: map-get($lineicons-free-solid-map, "hand-taking-user");
+}
+.lni.lnis-hat-chef-3:before {
+    content: map-get($lineicons-free-solid-map, "hat-chef-3");
+}
+.lni.lnis-headphone-1:before {
+    content: map-get($lineicons-free-solid-map, "headphone-1");
+}
+.lni.lnis-heart:before {
+    content: map-get($lineicons-free-solid-map, "heart");
+}
+.lni.lnis-helicopter-2:before {
+    content: map-get($lineicons-free-solid-map, "helicopter-2");
+}
+.lni.lnis-helmet-safety-1:before {
+    content: map-get($lineicons-free-solid-map, "helmet-safety-1");
+}
+.lni.lnis-hierarchy-1:before {
+    content: map-get($lineicons-free-solid-map, "hierarchy-1");
+}
+.lni.lnis-highlighter-1:before {
+    content: map-get($lineicons-free-solid-map, "highlighter-1");
+}
+.lni.lnis-highlighter-2:before {
+    content: map-get($lineicons-free-solid-map, "highlighter-2");
+}
+.lni.lnis-home-2:before {
+    content: map-get($lineicons-free-solid-map, "home-2");
+}
+.lni.lnis-hospital-2:before {
+    content: map-get($lineicons-free-solid-map, "hospital-2");
+}
+.lni.lnis-hourglass:before {
+    content: map-get($lineicons-free-solid-map, "hourglass");
+}
+.lni.lnis-indent:before {
+    content: map-get($lineicons-free-solid-map, "indent");
+}
+.lni.lnis-injection-1:before {
+    content: map-get($lineicons-free-solid-map, "injection-1");
+}
+.lni.lnis-island-2:before {
+    content: map-get($lineicons-free-solid-map, "island-2");
+}
+.lni.lnis-key-1:before {
+    content: map-get($lineicons-free-solid-map, "key-1");
+}
+.lni.lnis-keyboard:before {
+    content: map-get($lineicons-free-solid-map, "keyboard");
+}
+.lni.lnis-knife-fork-1:before {
+    content: map-get($lineicons-free-solid-map, "knife-fork-1");
+}
+.lni.lnis-label-dollar-2:before {
+    content: map-get($lineicons-free-solid-map, "label-dollar-2");
+}
+.lni.lnis-laptop-2:before {
+    content: map-get($lineicons-free-solid-map, "laptop-2");
+}
+.lni.lnis-laptop-phone:before {
+    content: map-get($lineicons-free-solid-map, "laptop-phone");
+}
+.lni.lnis-layers-1:before {
+    content: map-get($lineicons-free-solid-map, "layers-1");
+}
+.lni.lnis-layout-26:before {
+    content: map-get($lineicons-free-solid-map, "layout-26");
+}
+.lni.lnis-layout-9:before {
+    content: map-get($lineicons-free-solid-map, "layout-9");
+}
+.lni.lnis-leaf-1:before {
+    content: map-get($lineicons-free-solid-map, "leaf-1");
+}
+.lni.lnis-leaf-6:before {
+    content: map-get($lineicons-free-solid-map, "leaf-6");
+}
+.lni.lnis-life-guard-tube-1:before {
+    content: map-get($lineicons-free-solid-map, "life-guard-tube-1");
+}
+.lni.lnis-line-dashed:before {
+    content: map-get($lineicons-free-solid-map, "line-dashed");
+}
+.lni.lnis-line-dotted:before {
+    content: map-get($lineicons-free-solid-map, "line-dotted");
+}
+.lni.lnis-line-height:before {
+    content: map-get($lineicons-free-solid-map, "line-height");
+}
+.lni.lnis-link-2-angular-right:before {
+    content: map-get($lineicons-free-solid-map, "link-2-angular-right");
+}
+.lni.lnis-location-arrow-right:before {
+    content: map-get($lineicons-free-solid-map, "location-arrow-right");
+}
+.lni.lnis-locked-1:before {
+    content: map-get($lineicons-free-solid-map, "locked-1");
+}
+.lni.lnis-locked-2:before {
+    content: map-get($lineicons-free-solid-map, "locked-2");
+}
+.lni.lnis-magnet:before {
+    content: map-get($lineicons-free-solid-map, "magnet");
+}
+.lni.lnis-map-marker-1:before {
+    content: map-get($lineicons-free-solid-map, "map-marker-1");
+}
+.lni.lnis-map-marker-5:before {
+    content: map-get($lineicons-free-solid-map, "map-marker-5");
+}
+.lni.lnis-map-pin-5:before {
+    content: map-get($lineicons-free-solid-map, "map-pin-5");
+}
+.lni.lnis-megaphone-1:before {
+    content: map-get($lineicons-free-solid-map, "megaphone-1");
+}
+.lni.lnis-menu-cheesburger:before {
+    content: map-get($lineicons-free-solid-map, "menu-cheesburger");
+}
+.lni.lnis-menu-hamburger-1:before {
+    content: map-get($lineicons-free-solid-map, "menu-hamburger-1");
+}
+.lni.lnis-menu-meatballs-1:before {
+    content: map-get($lineicons-free-solid-map, "menu-meatballs-1");
+}
+.lni.lnis-menu-meatballs-2:before {
+    content: map-get($lineicons-free-solid-map, "menu-meatballs-2");
+}
+.lni.lnis-message-2:before {
+    content: map-get($lineicons-free-solid-map, "message-2");
+}
+.lni.lnis-message-2-question:before {
+    content: map-get($lineicons-free-solid-map, "message-2-question");
+}
+.lni.lnis-message-3-text:before {
+    content: map-get($lineicons-free-solid-map, "message-3-text");
+}
+.lni.lnis-microphone-1:before {
+    content: map-get($lineicons-free-solid-map, "microphone-1");
+}
+.lni.lnis-microscope:before {
+    content: map-get($lineicons-free-solid-map, "microscope");
+}
+.lni.lnis-minus:before {
+    content: map-get($lineicons-free-solid-map, "minus");
+}
+.lni.lnis-minus-circle:before {
+    content: map-get($lineicons-free-solid-map, "minus-circle");
+}
+.lni.lnis-monitor:before {
+    content: map-get($lineicons-free-solid-map, "monitor");
+}
+.lni.lnis-monitor-code:before {
+    content: map-get($lineicons-free-solid-map, "monitor-code");
+}
+.lni.lnis-monitor-mac:before {
+    content: map-get($lineicons-free-solid-map, "monitor-mac");
+}
+.lni.lnis-moon-half-right-5:before {
+    content: map-get($lineicons-free-solid-map, "moon-half-right-5");
+}
+.lni.lnis-mountains-2:before {
+    content: map-get($lineicons-free-solid-map, "mountains-2");
+}
+.lni.lnis-mouse-2:before {
+    content: map-get($lineicons-free-solid-map, "mouse-2");
+}
+.lni.lnis-mushroom-1:before {
+    content: map-get($lineicons-free-solid-map, "mushroom-1");
+}
+.lni.lnis-mushroom-5:before {
+    content: map-get($lineicons-free-solid-map, "mushroom-5");
+}
+.lni.lnis-music:before {
+    content: map-get($lineicons-free-solid-map, "music");
+}
+.lni.lnis-next-step-2:before {
+    content: map-get($lineicons-free-solid-map, "next-step-2");
+}
+.lni.lnis-notebook-1:before {
+    content: map-get($lineicons-free-solid-map, "notebook-1");
+}
+.lni.lnis-outdent:before {
+    content: map-get($lineicons-free-solid-map, "outdent");
+}
+.lni.lnis-page-break-1:before {
+    content: map-get($lineicons-free-solid-map, "page-break-1");
+}
+.lni.lnis-pagination:before {
+    content: map-get($lineicons-free-solid-map, "pagination");
+}
+.lni.lnis-paint-bucket:before {
+    content: map-get($lineicons-free-solid-map, "paint-bucket");
+}
+.lni.lnis-paint-roller-1:before {
+    content: map-get($lineicons-free-solid-map, "paint-roller-1");
+}
+.lni.lnis-paperclip-1:before {
+    content: map-get($lineicons-free-solid-map, "paperclip-1");
+}
+.lni.lnis-party-flags:before {
+    content: map-get($lineicons-free-solid-map, "party-flags");
+}
+.lni.lnis-party-spray:before {
+    content: map-get($lineicons-free-solid-map, "party-spray");
+}
+.lni.lnis-pause:before {
+    content: map-get($lineicons-free-solid-map, "pause");
+}
+.lni.lnis-pen-to-square:before {
+    content: map-get($lineicons-free-solid-map, "pen-to-square");
+}
+.lni.lnis-pencil-1:before {
+    content: map-get($lineicons-free-solid-map, "pencil-1");
+}
+.lni.lnis-phone:before {
+    content: map-get($lineicons-free-solid-map, "phone");
+}
+.lni.lnis-photos:before {
+    content: map-get($lineicons-free-solid-map, "photos");
+}
+.lni.lnis-pie-chart-2:before {
+    content: map-get($lineicons-free-solid-map, "pie-chart-2");
+}
+.lni.lnis-pilcrow:before {
+    content: map-get($lineicons-free-solid-map, "pilcrow");
+}
+.lni.lnis-pizza-2:before {
+    content: map-get($lineicons-free-solid-map, "pizza-2");
+}
+.lni.lnis-placeholder-dollar:before {
+    content: map-get($lineicons-free-solid-map, "placeholder-dollar");
+}
+.lni.lnis-play:before {
+    content: map-get($lineicons-free-solid-map, "play");
+}
+.lni.lnis-plug-1:before {
+    content: map-get($lineicons-free-solid-map, "plug-1");
+}
+.lni.lnis-plus:before {
+    content: map-get($lineicons-free-solid-map, "plus");
+}
+.lni.lnis-pound:before {
+    content: map-get($lineicons-free-solid-map, "pound");
+}
+.lni.lnis-power-button:before {
+    content: map-get($lineicons-free-solid-map, "power-button");
+}
+.lni.lnis-previous-step-2:before {
+    content: map-get($lineicons-free-solid-map, "previous-step-2");
+}
+.lni.lnis-printer:before {
+    content: map-get($lineicons-free-solid-map, "printer");
+}
+.lni.lnis-question-mark:before {
+    content: map-get($lineicons-free-solid-map, "question-mark");
+}
+.lni.lnis-question-mark-circle:before {
+    content: map-get($lineicons-free-solid-map, "question-mark-circle");
+}
+.lni.lnis-refresh-circle-1-clockwise:before {
+    content: map-get($lineicons-free-solid-map, "refresh-circle-1-clockwise");
+}
+.lni.lnis-refresh-dollar-1:before {
+    content: map-get($lineicons-free-solid-map, "refresh-dollar-1");
+}
+.lni.lnis-refresh-user-1:before {
+    content: map-get($lineicons-free-solid-map, "refresh-user-1");
+}
+.lni.lnis-road-1:before {
+    content: map-get($lineicons-free-solid-map, "road-1");
+}
+.lni.lnis-rocket-5:before {
+    content: map-get($lineicons-free-solid-map, "rocket-5");
+}
+.lni.lnis-route-1:before {
+    content: map-get($lineicons-free-solid-map, "route-1");
+}
+.lni.lnis-rss-right:before {
+    content: map-get($lineicons-free-solid-map, "rss-right");
+}
+.lni.lnis-ruler-1:before {
+    content: map-get($lineicons-free-solid-map, "ruler-1");
+}
+.lni.lnis-ruler-pen:before {
+    content: map-get($lineicons-free-solid-map, "ruler-pen");
+}
+.lni.lnis-rupee:before {
+    content: map-get($lineicons-free-solid-map, "rupee");
+}
+.lni.lnis-school-bench-1:before {
+    content: map-get($lineicons-free-solid-map, "school-bench-1");
+}
+.lni.lnis-school-bench-2:before {
+    content: map-get($lineicons-free-solid-map, "school-bench-2");
+}
+.lni.lnis-scissors-1-vertical:before {
+    content: map-get($lineicons-free-solid-map, "scissors-1-vertical");
+}
+.lni.lnis-scoter:before {
+    content: map-get($lineicons-free-solid-map, "scoter");
+}
+.lni.lnis-scroll-down-2:before {
+    content: map-get($lineicons-free-solid-map, "scroll-down-2");
+}
+.lni.lnis-search-1:before {
+    content: map-get($lineicons-free-solid-map, "search-1");
+}
+.lni.lnis-search-2:before {
+    content: map-get($lineicons-free-solid-map, "search-2");
+}
+.lni.lnis-search-minus:before {
+    content: map-get($lineicons-free-solid-map, "search-minus");
+}
+.lni.lnis-search-plus:before {
+    content: map-get($lineicons-free-solid-map, "search-plus");
+}
+.lni.lnis-search-text:before {
+    content: map-get($lineicons-free-solid-map, "search-text");
+}
+.lni.lnis-select-cursor-1:before {
+    content: map-get($lineicons-free-solid-map, "select-cursor-1");
+}
+.lni.lnis-seo-monitor:before {
+    content: map-get($lineicons-free-solid-map, "seo-monitor");
+}
+.lni.lnis-service-bell-1:before {
+    content: map-get($lineicons-free-solid-map, "service-bell-1");
+}
+.lni.lnis-share-1:before {
+    content: map-get($lineicons-free-solid-map, "share-1");
+}
+.lni.lnis-share-1-circle:before {
+    content: map-get($lineicons-free-solid-map, "share-1-circle");
+}
+.lni.lnis-share-2:before {
+    content: map-get($lineicons-free-solid-map, "share-2");
+}
+.lni.lnis-shield-2:before {
+    content: map-get($lineicons-free-solid-map, "shield-2");
+}
+.lni.lnis-shield-2-check:before {
+    content: map-get($lineicons-free-solid-map, "shield-2-check");
+}
+.lni.lnis-shield-dollar:before {
+    content: map-get($lineicons-free-solid-map, "shield-dollar");
+}
+.lni.lnis-shift-left:before {
+    content: map-get($lineicons-free-solid-map, "shift-left");
+}
+.lni.lnis-shift-right:before {
+    content: map-get($lineicons-free-solid-map, "shift-right");
+}
+.lni.lnis-ship-1:before {
+    content: map-get($lineicons-free-solid-map, "ship-1");
+}
+.lni.lnis-shirt-1:before {
+    content: map-get($lineicons-free-solid-map, "shirt-1");
+}
+.lni.lnis-shovel:before {
+    content: map-get($lineicons-free-solid-map, "shovel");
+}
+.lni.lnis-shuffle:before {
+    content: map-get($lineicons-free-solid-map, "shuffle");
+}
+.lni.lnis-sign-post-left:before {
+    content: map-get($lineicons-free-solid-map, "sign-post-left");
+}
+.lni.lnis-signs-post-2:before {
+    content: map-get($lineicons-free-solid-map, "signs-post-2");
+}
+.lni.lnis-slice-2:before {
+    content: map-get($lineicons-free-solid-map, "slice-2");
+}
+.lni.lnis-sliders-horizontal-square-2:before {
+    content: map-get($lineicons-free-solid-map, "sliders-horizontal-square-2");
+}
+.lni.lnis-sort-alphabetical:before {
+    content: map-get($lineicons-free-solid-map, "sort-alphabetical");
+}
+.lni.lnis-sort-high-to-low:before {
+    content: map-get($lineicons-free-solid-map, "sort-high-to-low");
+}
+.lni.lnis-spellcheck:before {
+    content: map-get($lineicons-free-solid-map, "spellcheck");
+}
+.lni.lnis-spinner-2-sacle:before {
+    content: map-get($lineicons-free-solid-map, "spinner-2-sacle");
+}
+.lni.lnis-spinner-3:before {
+    content: map-get($lineicons-free-solid-map, "spinner-3");
+}
+.lni.lnis-sports:before {
+    content: map-get($lineicons-free-solid-map, "sports");
+}
+.lni.lnis-stamp:before {
+    content: map-get($lineicons-free-solid-map, "stamp");
+}
+.lni.lnis-star-fat:before {
+    content: map-get($lineicons-free-solid-map, "star-fat");
+}
+.lni.lnis-star-fat-half-2:before {
+    content: map-get($lineicons-free-solid-map, "star-fat-half-2");
+}
+.lni.lnis-star-sharp-disabled:before {
+    content: map-get($lineicons-free-solid-map, "star-sharp-disabled");
+}
+.lni.lnis-stethoscope-1:before {
+    content: map-get($lineicons-free-solid-map, "stethoscope-1");
+}
+.lni.lnis-stopwatch:before {
+    content: map-get($lineicons-free-solid-map, "stopwatch");
+}
+.lni.lnis-storage-hdd-2:before {
+    content: map-get($lineicons-free-solid-map, "storage-hdd-2");
+}
+.lni.lnis-strikethrough-1:before {
+    content: map-get($lineicons-free-solid-map, "strikethrough-1");
+}
+.lni.lnis-sun-1:before {
+    content: map-get($lineicons-free-solid-map, "sun-1");
+}
+.lni.lnis-surfboard-2:before {
+    content: map-get($lineicons-free-solid-map, "surfboard-2");
+}
+.lni.lnis-tab:before {
+    content: map-get($lineicons-free-solid-map, "tab");
+}
+.lni.lnis-target-user:before {
+    content: map-get($lineicons-free-solid-map, "target-user");
+}
+.lni.lnis-telephone-1:before {
+    content: map-get($lineicons-free-solid-map, "telephone-1");
+}
+.lni.lnis-telephone-3:before {
+    content: map-get($lineicons-free-solid-map, "telephone-3");
+}
+.lni.lnis-text-format:before {
+    content: map-get($lineicons-free-solid-map, "text-format");
+}
+.lni.lnis-text-format-remove:before {
+    content: map-get($lineicons-free-solid-map, "text-format-remove");
+}
+.lni.lnis-text-paragraph:before {
+    content: map-get($lineicons-free-solid-map, "text-paragraph");
+}
+.lni.lnis-thumbs-down-3:before {
+    content: map-get($lineicons-free-solid-map, "thumbs-down-3");
+}
+.lni.lnis-thumbs-up-3:before {
+    content: map-get($lineicons-free-solid-map, "thumbs-up-3");
+}
+.lni.lnis-ticket-1:before {
+    content: map-get($lineicons-free-solid-map, "ticket-1");
+}
+.lni.lnis-tickets-3:before {
+    content: map-get($lineicons-free-solid-map, "tickets-3");
+}
+.lni.lnis-tower-broadcast-1:before {
+    content: map-get($lineicons-free-solid-map, "tower-broadcast-1");
+}
+.lni.lnis-train-1:before {
+    content: map-get($lineicons-free-solid-map, "train-1");
+}
+.lni.lnis-train-3:before {
+    content: map-get($lineicons-free-solid-map, "train-3");
+}
+.lni.lnis-trash-3:before {
+    content: map-get($lineicons-free-solid-map, "trash-3");
+}
+.lni.lnis-tree-2:before {
+    content: map-get($lineicons-free-solid-map, "tree-2");
+}
+.lni.lnis-trees-3:before {
+    content: map-get($lineicons-free-solid-map, "trees-3");
+}
+.lni.lnis-trend-down-1:before {
+    content: map-get($lineicons-free-solid-map, "trend-down-1");
+}
+.lni.lnis-trend-up-1:before {
+    content: map-get($lineicons-free-solid-map, "trend-up-1");
+}
+.lni.lnis-trophy-1:before {
+    content: map-get($lineicons-free-solid-map, "trophy-1");
+}
+.lni.lnis-trowel-1:before {
+    content: map-get($lineicons-free-solid-map, "trowel-1");
+}
+.lni.lnis-truck-delivery-1:before {
+    content: map-get($lineicons-free-solid-map, "truck-delivery-1");
+}
+.lni.lnis-underline:before {
+    content: map-get($lineicons-free-solid-map, "underline");
+}
+.lni.lnis-unlink-2-angular-eft:before {
+    content: map-get($lineicons-free-solid-map, "unlink-2-angular-eft");
+}
+.lni.lnis-unlocked-2:before {
+    content: map-get($lineicons-free-solid-map, "unlocked-2");
+}
+.lni.lnis-upload-1:before {
+    content: map-get($lineicons-free-solid-map, "upload-1");
+}
+.lni.lnis-upload-circle-1:before {
+    content: map-get($lineicons-free-solid-map, "upload-circle-1");
+}
+.lni.lnis-user-4:before {
+    content: map-get($lineicons-free-solid-map, "user-4");
+}
+.lni.lnis-user-multiple-4:before {
+    content: map-get($lineicons-free-solid-map, "user-multiple-4");
+}
+.lni.lnis-vector-nodes-6:before {
+    content: map-get($lineicons-free-solid-map, "vector-nodes-6");
+}
+.lni.lnis-vector-nodes-7:before {
+    content: map-get($lineicons-free-solid-map, "vector-nodes-7");
+}
+.lni.lnis-volume-1:before {
+    content: map-get($lineicons-free-solid-map, "volume-1");
+}
+.lni.lnis-volume-high:before {
+    content: map-get($lineicons-free-solid-map, "volume-high");
+}
+.lni.lnis-volume-low:before {
+    content: map-get($lineicons-free-solid-map, "volume-low");
+}
+.lni.lnis-volume-mute:before {
+    content: map-get($lineicons-free-solid-map, "volume-mute");
+}
+.lni.lnis-volume-off:before {
+    content: map-get($lineicons-free-solid-map, "volume-off");
+}
+.lni.lnis-wallet-1:before {
+    content: map-get($lineicons-free-solid-map, "wallet-1");
+}
+.lni.lnis-watch-beat-1:before {
+    content: map-get($lineicons-free-solid-map, "watch-beat-1");
+}
+.lni.lnis-water-drop-1:before {
+    content: map-get($lineicons-free-solid-map, "water-drop-1");
+}
+.lni.lnis-weight-machine-1:before {
+    content: map-get($lineicons-free-solid-map, "weight-machine-1");
+}
+.lni.lnis-wheelbarrow-empty:before {
+    content: map-get($lineicons-free-solid-map, "wheelbarrow-empty");
+}
+.lni.lnis-wheelchair-1:before {
+    content: map-get($lineicons-free-solid-map, "wheelchair-1");
+}
+.lni.lnis-www:before {
+    content: map-get($lineicons-free-solid-map, "www");
+}
+.lni.lnis-www-cursor:before {
+    content: map-get($lineicons-free-solid-map, "www-cursor");
+}
+.lni.lnis-xmark:before {
+    content: map-get($lineicons-free-solid-map, "xmark");
+}
+.lni.lnis-xmark-circle:before {
+    content: map-get($lineicons-free-solid-map, "xmark-circle");
+}
+.lni.lnis-yen:before {
+    content: map-get($lineicons-free-solid-map, "yen");
+}
+.lni.lnis-zero-size:before {
+    content: map-get($lineicons-free-solid-map, "zero-size");
+}

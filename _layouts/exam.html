@@ -1,196 +1,203 @@
+{% assign catalog = site.data[page.catalog] %}
+{% if catalog == nil %}
+  {% assign catalog = site.data.claude_architect_foundations %}
+{% endif %}
+{% assign exam = catalog.exams[page.exam_key] %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-<head>
-	
-	
-	{% include head-common.html %} 
-	
-	
-	
-	
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta property="fb:app_id" content="287616246137792" />   
-    <title>AWS Practice Exam</title>
-	
-<!-- React Code -->	
-<link href="/exam/static/css/2.68a81a89.chunk.css" rel="stylesheet"><link href="/exam/static/css/main.ee56af71.chunk.css" rel="stylesheet">
-	
-	
-<link rel="apple-touch-icon" href="/exam/logo192.png" />
-<link rel="manifest" href="/exam/manifest.json" />
-	
-<!-- End React Code -->		
-	{% if page.canonical %}
-	<link rel="canonical" href="{{ page.canonical }}" />
-	{% else %}
-	<!-- This is the else for if canonical -->	   
-	{% endif %}
-	
-	<!-- canonical attempt: {{ page.title }} -->
-	{% if page.blurb %}
-	<meta name="description" content="{{ page.blurb }}"/>   
-	{% else %}
-	<meta name="description" content="Certification Exam Questions from Scrumtuous."/>   
-	{% endif %}
-
-	{% if page.keywords %}
-	<meta name="keywords" content="{{ page.keywords }}"/>	  
-	{% else %}
-	<meta name="keywords" content="AWS Certification Exam DevOps Scrum Agile Java DevSecOps Git Jenkins GitHub Scrumtuous Darcy DeClute"/>	   
-	{% endif %}
-	
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
+    <title>{{ exam.title }}</title>
+    <meta name="description" content="{{ exam.description }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ exam.title }}">
+    <meta property="og:description" content="{{ exam.description }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
-    <!-- Place favicon.ico in the root directory -->
-
-    <!-- Web Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
-
-    <!-- ========================= CSS here ========================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.1b36e23d.css">
     <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css">
-    <link rel="stylesheet" href="/assets/css/animate.css">
-    <link rel="stylesheet" href="/assets/css/tiny-slider.css">
-    <link rel="stylesheet" href="/assets/css/glightbox.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
-	
-		   <style>
-         html { font-size: 12pt; }	
-         h1 { font-size: 1.50em; }
-         h2 { font-size: 1.25em; }
-         h3 { font-size: 1.1em; }
-         h4 { font-size: 1.05em; }
-         h5 { font-size: .83em; }
-         h6 { font-size: .75em; }
-         a, u {text-decoration: none; color:#0d47a1}  
-         a:hover {
-         background-color: #f9fbfd; color #4285F4;
-         }
-         .header, .footer {
-         background: white;
-         text-align: center;
-         }
-         .main {
-         background: white;
-         text-align: left;
-         }
-         .aside-1 {
-         background: white;
-         }
-         .aside-2 {
-         background: white;
-         }
-      </style>
-	  
-	    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
-
-  
-	<!-- partial -->
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-	<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'></script>
-
-
-	<script  src="/assets/js/drag-and-drop-script.js"></script>
-	<link rel="stylesheet" href="/assets/css/drag-and-drop-style.css">
-
-	</head>
-
-<body style="padding:0">
-
-{% include exam-navigation.html %} 
-<section id="download" class="app-download style2 section-blue3">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="/assets/css/exam-page.css">
+    <link rel="stylesheet" href="/assets/css/book-promo.css">
+  </head>
+  <body class="exam-page">
+    <header class="header exam-site-header">
+      <div class="navbar-area">
         <div class="container">
-            <div class="row ">
-                <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
-                    <div class="download-content">
-                        <h2 class="wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">&nbsp;
-                        </h2>
+          <div class="row align-items-center">
+            <div class="col-lg-12">
+              <nav class="navbar navbar-expand-lg" aria-label="Primary navigation">
+                <a class="navbar-brand logo" href="/index.html">
+                  <img class="primary-logo" src="/assets/scrumtuous-logo-575x70.gif" alt="Scrumtuous">
+                  <img class="alt-logo" src="/assets/scrumtuous-logo-575x70.gif" alt="">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="toggler-icon"></span>
+                  <span class="toggler-icon"></span>
+                  <span class="toggler-icon"></span>
+                </button>
 
-                    </div>
+                <div class="collapse navbar-collapse justify-content-center sub-menu-bar" id="navbarSupportedContent">
+                  <ul id="nav" class="navbar-nav">
+                    <li class="nav-item"><a class="active" href="/claude/architect-foundations/braindump/" aria-current="page">Claude Architect</a></li>
+                    <li class="nav-item"><a href="/aws/ai-practitioner/braindump/">AI Practitioner</a></li>
+                    <li class="nav-item"><a href="/gcp/generative-ai-leader/braindump/">Gen AI Leader</a></li>
+                    <li class="nav-item"><a href="/others/github/copilot-gh-300/braindump/">GitHub Copilot</a></li>
+                    <li class="nav-item"><a href="https://twitter.com/scrumtuous">Twitter</a></li>
+                  </ul>
+                  <div class="d-flex align-items-center nav-right ms-lg-3">
+                    <div id="nav-auth-controls" class="d-flex align-items-center"></div>
+                  </div>
                 </div>
+              </nav>
             </div>
+          </div>
         </div>
-    </section>	
-
-    <!-- Start App Screenshort Area -->
-    <section class="app-screenshorts style2 section-blue mt-3 mb-0">
-	<div class="container">
-            <div class="row">
-			
-			
-			
-<div style="" class="main col col-12 col-sm-12 col-md-9 col-lg-8 order-1 order-sm-2 order-lg-1 mb-5 mt-1">
-
-<div id="root" data-page='{page.name}' data-name='{page.examname}'
-data-param='{ "quid" : { "$in" : [{{page.questionnumbers}}] } }'></div>
-
-
-</div>
-
-<div style="" class="main col col-12 col-sm-12 col-md-3 col-lg-4 order-2 order-sm-2 order-lg-2 mb-5 mt-1">
-
-<div>
-  <div class="App">
-    <div class="container">
-      
-      <div class="card mt-3">
-        <div class="card-header d-flex justify-content-between" >Study Hard</div>
-        <div class="card-body">
-
-			<img src="/assets/exam-is-coming.jpg" alt="AWS Study Guide" class="img-fluid mx-auto d-block img-thumbnail rounded ">
-
-         </div>
       </div>
-	  
-	  <div class="card mt-3">
-        <div class="card-header d-flex justify-content-between" >No Cheat Policy</div>
+    </header>
 
-          <div class="card-body">
-			<img src="/assets/louder-uipath-exam-dump.jpg" alt="AWS Braindump Policy" class="img-fluid mx-auto d-block img-thumbnail rounded ">
+    <main class="exam-main">
+      <section class="exam-intro" aria-labelledby="exam-page-title">
+        <div class="exam-content">
+          <nav class="exam-breadcrumb" aria-label="Breadcrumb">
+            <a href="/index.html">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>{{ catalog.collection_title }}</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{ exam.breadcrumb }}</span>
+          </nav>
+          <h1 id="exam-page-title">{{ exam.heading }}</h1>
+          <p>{{ exam.intro }}</p>
+          {% if exam.disclaimer %}
+          <p class="exam-disclaimer"><strong>Educational-use note:</strong> {{ exam.disclaimer }}</p>
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="exam-app-section" aria-label="Practice exam">
+        <div class="exam-content">
+          <div class="exam-app-shell">
+            <div id="root"
+                 data-name="{{ catalog.exam_name }}~{% for question_id in (exam.question_start..exam.question_end) %}{{ question_id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+                 data-public-blur-at="{{ exam.public_blur_at | default: catalog.public_blur_at | default: 10 }}"
+                 data-protected-blur-at="{{ exam.protected_blur_at | default: catalog.protected_blur_at | default: 33 }}"
+                 blurAtNum="{{ exam.blur_at_num | default: catalog.blur_at_num | default: 10 }}">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="related-exams" aria-labelledby="related-exams-title">
+        <div class="exam-content">
+          <div class="related-exams-heading">
+            <span class="eyebrow">Keep practicing</span>
+            <h2 id="related-exams-title">{{ catalog.collection_title }}</h2>
+            <p>{{ catalog.collection_description }}</p>
           </div>
 
-      </div>
-      
+          <div class="related-exam-grid">
+            {% for card in catalog.cards %}
+            <a class="related-exam-card" href="{{ catalog.base_path }}/{{ card.slug }}/"{% if card.key == page.exam_key %} aria-current="page"{% endif %}>
+              <img src="{{ catalog.badge_image }}" alt="" loading="lazy">
+              <div>
+                <span class="exam-card-type">{{ card.type }}</span>
+                <h3>{{ card.title }}</h3>
+                <p>60 Question Exam</p>
+                <p class="exam-card-difficulty">Difficulty: {{ card.difficulty }}</p>
+                {% if card.key == page.exam_key %}<span class="current-exam-label">Current exam</span>{% endif %}
+              </div>
+            </a>
+            {% endfor %}
+          </div>
 
-      
-    </div>
-  </div>
-</div>
+          <aside class="learning-video" aria-labelledby="learning-video-title">
+            <a class="learning-video-media" href="{{ catalog.video.url }}" target="_blank" rel="noopener noreferrer" aria-label="Watch Build Smarter with AI and Scrum on YouTube">
+              <img src="{{ catalog.video.thumbnail }}" alt="Video preview for Build Smarter with AI and Scrum" loading="lazy">
+              <span class="learning-video-play" aria-hidden="true"><i class="lni lni-play"></i></span>
+            </a>
 
-
-</div>
-
-
-
+            <div class="learning-video-copy">
+              <span class="learning-video-eyebrow">Watch. Learn. Build.</span>
+              <h2 id="learning-video-title">{{ catalog.video.title }}</h2>
+              <p>{{ catalog.video.description }}</p>
+              <a class="learning-video-link" href="{{ catalog.video.url }}" target="_blank" rel="noopener noreferrer">
+                <i class="lni lni-youtube" aria-hidden="true"></i>
+                Watch on YouTube
+              </a>
             </div>
+          </aside>
         </div>
-		</div>
-    </section>
-    <!-- End App Screenshort Area -->
-{% include four-image-cards.html %}	
-{% include exams-timeline.html %} 
+      </section>
 
-	
-	
-	
-{% include exam-footer.html %} 
+      {% include book-promo.html %}
+    </main>
 
-    <!-- ========================= JS here ========================= -->
+    <footer class="footer">
+      <div class="footer-middle">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="f-about single-footer">
+                <h3>Scrumtuous</h3>
+                <p>Friendly practice for cloud, AI, Agile, and DevOps certifications.</p>
+                <div class="footer-social">
+                  <ul aria-label="Social links">
+                    <li><a href="https://twitter.com/scrumtuous" aria-label="Scrumtuous on Twitter"><i class="lni lni-twitter-original" aria-hidden="true"></i></a></li>
+                    <li><a href="https://github.com/scrumtuous" aria-label="Scrumtuous on GitHub"><i class="lni lni-github-original" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/scrumtuous" aria-label="Scrumtuous on LinkedIn"><i class="lni lni-linkedin-original" aria-hidden="true"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-footer f-link">
+                <h3>Certification Practice</h3>
+                <ul>
+                  <li><a href="/claude/architect-foundations/braindump/">Claude Architect</a></li>
+                  <li><a href="/aws/ai-practitioner/braindump/">AWS AI Practitioner</a></li>
+                  <li><a href="/gcp/generative-ai-leader/braindump/">Google Gen AI Leader</a></li>
+                  <li><a href="/others/github/copilot-gh-300/braindump/">GitHub Copilot</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-footer f-link">
+                <h3>Explore Scrumtuous</h3>
+                <ul>
+                  <li><a href="/index.html#coaching">Agile Coaching</a></li>
+                  <li><a href="/index.html#scrum">Scrum Mentorship</a></li>
+                  <li><a href="/index.html#videos">Technical Training</a></li>
+                  <li><a href="/index.html#faq">Frequently Asked Questions</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="inner">
+            <p>Practice with purpose. Be Scrumtuous.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
     <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/count-up.min.js"></script>
-    <script src="/assets/js/wow.min.js"></script>
-    <script src="/assets/js/tiny-slider.js"></script>
-    <script src="/assets/js/glightbox.min.js"></script>
-    <script src="/assets/js/imagesloaded.min.js"></script>
-    <script src="/assets/js/isotope.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-   
-
-	
-<script>!function(c){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],i=0,a=[];i<n.length;i++)t=n[i],f[t]&&a.push(f[t][0]),f[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(c[r]=o[r]);for(d&&d(e);a.length;)a.shift()();return p.push.apply(p,u||[]),l()}function l(){for(var e,r=0;r<p.length;r++){for(var t=p[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==f[u]&&(n=!1)}n&&(p.splice(r--,1),e=s(s.s=t[0]))}return e}var t={},f={1:0},p=[];function s(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return c[e].call(r.exports,r,r.exports,s),r.l=!0,r.exports}s.e=function(u){var e=[],t=f[u];if(0!==t)if(t)e.push(t[2]);else{var r=new Promise(function(e,r){t=f[u]=[e,r]});e.push(t[2]=r);var n,i=document.createElement("script");i.charset="utf-8",i.timeout=120,s.nc&&i.setAttribute("nonce",s.nc),i.src=s.p+"static/js/"+({}[u]||u)+"."+{3:"38e0e305"}[u]+".chunk.js",n=function(e){i.onerror=i.onload=null,clearTimeout(a);var r=f[u];if(0!==r){if(r){var t=e&&("load"===e.type?"missing":e.type),n=e&&e.target&&e.target.src,o=new Error("Loading chunk "+u+" failed.\n("+t+": "+n+")");o.type=t,o.request=n,r[1](o)}f[u]=void 0}};var a=setTimeout(function(){n({type:"timeout",target:i})},12e4);i.onerror=i.onload=n,document.head.appendChild(i)}return Promise.all(e)},s.m=c,s.c=t,s.d=function(e,r,t){s.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},s.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},s.t=function(r,e){if(1&e&&(r=s(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(s.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)s.d(t,n,function(e){return r[e]}.bind(null,n));return t},s.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return s.d(r,"a",r),r},s.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},s.p="/exam/",s.oe=function(e){throw console.error(e),e};var r=window.webpackJsonp=window.webpackJsonp||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var d=n;l()}([])</script><script src="/exam/static/js/2.f3428bd0.chunk.js"></script><script src="/exam/static/js/main.51aeb264.chunk.js"></script>
-
-
-</body></html>
+    <script src="/auth/js/auth-config.js"></script>
+    <script src="/auth/js/auth.js"></script>
+    <script src="/auth/js/home.js"></script>
+    <script src="/assets/js/exam-page.js"></script>
+  </body>
+</html>

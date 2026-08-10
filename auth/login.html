@@ -1,0 +1,211 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrumtuous — Sign In</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/LineIcons.2.0.css">
+    <link rel="stylesheet" href="../assets/css/animate.css">
+    <link rel="stylesheet" href="../assets/css/tiny-slider.css">
+    <link rel="stylesheet" href="../assets/css/glightbox.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="stylesheet" href="../assets/css/book-promo.css">
+</head>
+<body class="auth-screen">
+    <div class="preloader" style="opacity: 0; display: none;" aria-hidden="true"></div>
+
+    <header class="header">
+        <div class="navbar-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand logo" href="../index.html">
+                                <img class="primary-logo" src="../assets/scrumtuous-logo-575x70.gif" alt="Scrumtuous Logo">
+                                <img class="alt-logo" src="../assets/scrumtuous-logo-575x70.gif" alt="Alternate Scrumtuous Logo">
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse justify-content-center sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav">
+                                    <li class="nav-item"><a href="/claude/architect-foundations/braindump/">Claude Architect</a></li>
+                                    <li class="nav-item"><a href="/aws/ai-practitioner/braindump/">AI Practitioner</a></li>
+                                    <li class="nav-item"><a href="/gcp/generative-ai-leader/braindump/">Gen AI Leader</a></li>
+                                    <li class="nav-item"><a href="/others/github/copilot-gh-300/braindump/">GitHub Copilot</a></li>
+                                    <li class="nav-item"><a href="https://www.youtube.com/channel/UCAg98wtgZm1nEVTXGx3XShw">YouTube</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="d-flex align-items-center nav-right ms-3">
+                                <div id="nav-auth-controls" class="d-flex align-items-center"></div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="auth-experience" aria-labelledby="signin-title">
+        <div class="auth-experience-inner">
+            <div class="auth-video-panel">
+                <div class="auth-video-copy">
+                    <span class="auth-eyebrow">Watch. Learn. Build.</span>
+                    <h1>Build smarter with AI and Scrum</h1>
+                    <p>Catch a practical lesson from the Scrumtuous channel, then get back to your certification practice.</p>
+                </div>
+                <div class="auth-video-frame">
+                    <iframe src="https://www.youtube-nocookie.com/embed/9aBPxO6Wl6c" title="AI Architect Lesson 1: How to Delete Python" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <a class="auth-video-link" href="https://youtu.be/9aBPxO6Wl6c?si=vR0-i1lPOeYCrMc6" target="_blank" rel="noopener noreferrer">
+                    <i class="lni lni-youtube" aria-hidden="true"></i>
+                    More from Scrumtuous on YouTube
+                </a>
+            </div>
+
+            <main class="auth-card auth-form-panel">
+                <div class="auth-form-heading">
+                    <span class="auth-eyebrow">Welcome back</span>
+                    <h2 id="signin-title">Sign in to Scrumtuous</h2>
+                    <p>Enter your registered email and we will send you a short verification code.</p>
+                </div>
+
+                <div data-auth-status class="alert" role="status" aria-live="polite" hidden></div>
+
+                <div data-signin-email-step>
+                    <form data-signin-email-form novalidate>
+                        <label class="form-label" for="signin-email">Email address</label>
+                        <input class="form-control" id="signin-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="you@example.com" data-signin-email required autofocus>
+
+                        <button class="btn auth-submit" type="submit" data-signin-submit>
+                            Send Sign-In Code
+                            <i class="lni lni-arrow-right" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-mock" type="button" data-mock-in hidden>Mock-In</button>
+                    </form>
+                </div>
+
+                <div data-signin-code-step hidden>
+                    <p class="auth-code-intro">Enter the verification code sent to <strong data-signin-destination></strong>.</p>
+
+                    <form data-signin-code-form novalidate>
+                        <label class="form-label" for="signin-code">Verification code</label>
+                        <input class="form-control ceg-auth-code" id="signin-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" minlength="6" maxlength="8" data-signin-code required>
+
+                        <button class="btn auth-submit" type="submit">Verify and Continue</button>
+                    </form>
+
+                    <div class="auth-links">
+                        <button class="link-btn" type="button" data-signin-change>Change email</button>
+                        <button class="link-btn" type="button" data-signin-resend>Resend code</button>
+                    </div>
+                </div>
+
+                <p class="auth-help">Don't have an account? <a href="register.html" data-auth-register-link>Register</a></p>
+
+                <noscript>
+                    <div class="alert alert-error">JavaScript is required for passwordless sign-in.</div>
+                </noscript>
+            </main>
+        </div>
+    </section>
+
+    {% include book-promo.html %}
+
+    <footer class="footer">
+        <div class="footer-middle">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="f-about single-footer">
+                            <p>Follow me on Social Media.</p>
+                            <div class="footer-social">
+                                <ul>
+                                    <li><a href="https://twitter.com/scrumtuous"><i class="lni lni-twitter-original"></i></a></li>
+                                    <li><a href="https://github.com/scrumtuous"><i class="lni lni-github-original"></i></a></li>
+                                    <li><a href="https://www.facebook.com/scrumtuous"><i class="lni lni-facebook-original"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/in/scrumtuous"><i class="lni lni-linkedin-original"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-12">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="single-footer sm-custom-border f-link">
+                                    <h3>About Us</h3>
+                                    <ul>
+                                        <li><a href="#">Home</a></li>
+                                        <li><a href="#clients">Clients</a></li>
+                                        <li><a href="#scrum">Scrum</a></li>
+                                        <li><a href="#coaching">Agile</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="single-footer sm-custom-border f-link">
+                                    <h3>Specialties</h3>
+                                    <ul>
+                                        <li><a href="#faq">Project Management</a></li>
+                                        <li><a href="#videos">Cloud Computing</a></li>
+                                        <li><a href="#coaching">DevOps Stacks</a></li>
+                                        <li><a href="#faq">Technical Consulting</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="single-footer md-custom-border sm-custom-border f-link">
+                                    <h3>Services</h3>
+                                    <ul>
+                                        <li><a href="#coaching">Agile Coaching</a></li>
+                                        <li><a href="#scrum">Scrum Mentorship</a></li>
+                                        <li><a href="#videos">AWS Training</a></li>
+                                        <li><a href="#faq">SAFe Consulting</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="single-footer md-custom-border sm-custom-border f-contact">
+                                    <h3>Contact Info</h3>
+                                    <ul>
+                                        <li><i class="lni lni-map-marker"></i> 438 King Street West, Toronto, ON, Canada</li>
+                                        <li><i class="lni lni-envelope"></i>darcydeclute@gmail.com</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top btn-hover" aria-label="Back to top">
+        <i class="lni lni-chevron-up" aria-hidden="true"></i>
+    </a>
+
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="../assets/js/count-up.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/tiny-slider.js"></script>
+    <script src="../assets/js/glightbox.min.js"></script>
+    <script src="../assets/js/imagesloaded.min.js"></script>
+    <script src="../assets/js/isotope.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script src="js/auth-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/auth-forms.js"></script>
+</body>
+</html>

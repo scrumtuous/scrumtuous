@@ -1,7 +1,0 @@
-version: '3.8'
-services:
-  apache-httpd-service:
-    container_name: httpd-server
-    image: httpd:latest
-    ports:
-      - 88:80
