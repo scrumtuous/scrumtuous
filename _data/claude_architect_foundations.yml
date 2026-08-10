@@ -5,8 +5,8 @@ base_path: /claude/architect-foundations
 badge_image: /claude/architect-foundations/credly-logo.png
 
 public_blur_at: 3
-protected_blur_at: 60
-blur_at_num: 60
+protected_blur_at: 88
+blur_at_num: 88
 
 exams:
   braindump:
