@@ -88,9 +88,9 @@
           <div class="exam-app-shell">
             <div id="root"
                  data-name="{{ catalog.exam_name }}~{% for question_id in (exam.question_start..exam.question_end) %}{{ question_id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
-                 data-public-blur-at="{{ exam.public_blur_at | default: catalog.public_blur_at | default: 10 }}"
+                 data-public-blur-at="{{ exam.public_blur_at | default: catalog.public_blur_at | default: 60 }}"
                  data-protected-blur-at="{{ exam.protected_blur_at | default: catalog.protected_blur_at | default: 33 }}"
-                 blurAtNum="{{ exam.blur_at_num | default: catalog.blur_at_num | default: 10 }}">
+                 blurAtNum="{{ exam.blur_at_num | default: catalog.blur_at_num | default: 60 }}">
             </div>
           </div>
         </div>
