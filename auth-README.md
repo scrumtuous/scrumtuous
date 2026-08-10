@@ -172,6 +172,14 @@ All rejected Promises throw an error with a small, stable `.code` — never raw 
 - Expired sessions are silently refreshed using the refresh token when possible
 - No sensitive data logged to console
 
+For page scripts that need an authenticated bearer token, `auth.js` also publishes an OIDC-compatible view of the current session:
+
+- `window.currentUser.id_token` and `window.currentUser.access_token`
+- `window.authReady`, which resolves to that current-user object after session restoration
+- `auth:changed`, dispatched after sign-in and sign-out
+
+The page globals mirror the session; `sessionStorage` remains the source of truth.
+
 ## Security
 
 - No Hosted UI redirect, no OAuth authorization code, no PKCE needed — email-code verification is Cognito's proof of identity for both registration and sign-in.
