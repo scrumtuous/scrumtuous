@@ -113,7 +113,7 @@ Returns the bearer token for calling your own APIs.
 Async. Revokes tokens server-side (`GlobalSignOut`, best-effort) and clears the local session.
 
 ### `Auth.register.start(email)`
-Async. Creates the user (using the email address as the Cognito username — the pool must have `email` in `UsernameAttributes`) and emails a verification code. Resolves to `{ destination }` (the masked email address the code was sent to). Throws on `EMAIL_IN_USE`, `INVALID_INPUT`, `TOO_MANY_ATTEMPTS`, `NETWORK_ERROR`.
+Async. Creates the user with a generated opaque Cognito username, stores the email as the user's email attribute/sign-in alias, and emails a verification code. Resolves to `{ destination, username, email }`. Throws on `EMAIL_IN_USE`, `INVALID_INPUT`, `TOO_MANY_ATTEMPTS`, `NETWORK_ERROR`.
 
 ### `Auth.register.confirm(code)`
 Async. Verifies the code. If the pool allows it, this also signs the user in immediately (`{ authenticated: true }`); otherwise it transparently starts a normal sign-in (sending one more code) and resolves `{ authenticated: false }` so the caller can prompt for that second code using the same UI.
@@ -175,7 +175,7 @@ All rejected Promises throw an error with a small, stable `.code` — never raw 
 ## Security
 
 - No Hosted UI redirect, no OAuth authorization code, no PKCE needed — email-code verification is Cognito's proof of identity for both registration and sign-in.
-- No client secrets, no passwords collected or shown to the user (a random, policy-compliant password is generated once at sign-up purely to satisfy the SignUp API, then discarded — sign-in is always by email code).
+- No client secrets and no passwords are collected, generated, or shown; the pool's passwordless `SignUp` and `USER_AUTH` / `EMAIL_OTP` flows are used directly.
 - Registration always generates an opaque Cognito username; email is used only as a sign-in alias, matching Cognito's internal identity model.
 - HTTPS required.
 
@@ -183,15 +183,15 @@ All rejected Promises throw an error with a small, stable `.code` — never raw 
 
 1. Copy `auth/js/auth-config.js`, `auth/js/auth.js`, and `auth/js/auth-forms.js` to your app.
 2. Copy `auth/register.html` and `auth/login.html` (or adapt their markup/attributes into your own templates).
-3. Update `auth/js/auth-config.js` with your region and app client ID. Make sure `mode` is `'cognito'` (or unset) in production.
+3. Update `auth/js/auth-config.js` with your region, user pool ID, and app client ID. Make sure `mode` is `'cognito'` (or unset) in production.
 4. Serve over HTTPS.
 
 ## Testing
 
-`auth/js/auth-mock.test.js` covers the mock authentication path (`Auth.mockIn`, session restore, logout) using Node's built-in test runner — no dependencies, no build step:
+The auth tests cover mock authentication, generated-username registration, confirmation-session exchange, and returning-user email OTP sign-in using Node's built-in test runner. There are no test dependencies or build step:
 
 ```
-node --test auth/js/auth-mock.test.js
+node --test auth/js/auth-mock.test.js auth/js/auth-registration.test.js
 ```
 
 ## Cache Invalidation

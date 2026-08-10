@@ -9,9 +9,10 @@ const Auth = (() => {
     let accessToken = null;
 
     class AuthError extends Error {
-        constructor(code, message) {
+        constructor(code, message, awsType = '') {
             super(message || code);
             this.code = code;
+            this.awsType = awsType;
         }
     }
 
@@ -20,6 +21,7 @@ const Auth = (() => {
     function mapAwsError(awsType) {
         switch (awsType) {
             case 'UsernameExistsException': return 'EMAIL_IN_USE';
+            case 'AliasExistsException': return 'EMAIL_IN_USE';
             case 'CodeMismatchException': return 'INVALID_CODE';
             case 'ExpiredCodeException': return 'CODE_EXPIRED';
             case 'LimitExceededException':
@@ -52,7 +54,7 @@ const Auth = (() => {
 
         if (!response.ok) {
             const awsType = (data.__type || '').split('#').pop();
-            throw new AuthError(mapAwsError(awsType), data.message);
+            throw new AuthError(mapAwsError(awsType), data.message, awsType);
         }
 
         return data;
@@ -185,32 +187,88 @@ const Auth = (() => {
         return normalized;
     }
 
-    async function registerStart(email, clientMetadata = {}) {
-        const metadata = normalizeClientMetadata(clientMetadata);
-        const request = {
-            ClientId: AUTH_CONFIG.clientId,
-            Username: email,
-            UserAttributes: [
-                { Name: 'email', Value: email }
-            ]
-        };
+    function normalizeEmail(value) {
+        return typeof value === 'string' ? value.trim().toLowerCase() : '';
+    }
 
-        if (Object.keys(metadata).length) {
-            request.ClientMetadata = metadata;
+    function assertEmail(email) {
+        if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            throw new AuthError('INVALID_INPUT', 'Enter a valid email address.');
+        }
+    }
+
+    function generateInternalUsername() {
+        let randomValue = '';
+        const cryptoApi = typeof crypto !== 'undefined' ? crypto : null;
+
+        if (cryptoApi && typeof cryptoApi.randomUUID === 'function') {
+            randomValue = cryptoApi.randomUUID().replace(/-/g, '');
+        } else if (cryptoApi && typeof cryptoApi.getRandomValues === 'function') {
+            const bytes = new Uint8Array(16);
+            cryptoApi.getRandomValues(bytes);
+            randomValue = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('');
+        } else {
+            randomValue = `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
         }
 
-        const data = await cognito('SignUp', request);
+        return `${AUTH_CONFIG.usernamePrefix || ''}${randomValue}`;
+    }
 
-        savePending({
-            kind: 'register',
-            username: email,
-            email,
-            session: data.Session || null,
-            clientMetadata: metadata
-        });
+    function deriveGivenName(email) {
+        const localPart = email.split('@')[0] || '';
+        const candidate = localPart.split(/[._+\-]+/).find(part => /[a-z]/i.test(part)) || '';
+        const cleaned = candidate.replace(/[^a-z0-9'-]/gi, '').slice(0, 64);
 
-        const destination = (data.CodeDeliveryDetails && data.CodeDeliveryDetails.Destination) || email;
-        return { destination };
+        if (!cleaned) return AUTH_CONFIG.givenNameFallback || 'Student';
+        return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+    }
+
+    async function registerStart(rawEmail, clientMetadata = {}) {
+        const email = normalizeEmail(rawEmail);
+        assertEmail(email);
+        const metadata = normalizeClientMetadata(clientMetadata);
+        let lastCollisionError = null;
+
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+            const username = generateInternalUsername();
+            const givenName = deriveGivenName(email);
+            const request = {
+                ClientId: AUTH_CONFIG.clientId,
+                Username: username,
+                UserAttributes: [
+                    { Name: 'email', Value: email },
+                    { Name: 'given_name', Value: givenName }
+                ]
+            };
+
+            if (Object.keys(metadata).length) {
+                request.ClientMetadata = metadata;
+            }
+
+            try {
+                const data = await cognito('SignUp', request);
+
+                savePending({
+                    kind: 'register',
+                    username,
+                    email,
+                    givenName,
+                    session: data.Session || null,
+                    clientMetadata: metadata
+                });
+
+                const destination = (data.CodeDeliveryDetails && data.CodeDeliveryDetails.Destination) || email;
+                return { destination, username, email };
+            } catch (e) {
+                if (e.awsType === 'UsernameExistsException') {
+                    lastCollisionError = e;
+                    continue;
+                }
+                throw e;
+            }
+        }
+
+        throw lastCollisionError || new AuthError('UNKNOWN', 'Unable to generate a unique username.');
     }
 
     async function registerConfirm(code) {
@@ -221,6 +279,7 @@ const Auth = (() => {
             ClientId: AUTH_CONFIG.clientId,
             Username: pending.username,
             ConfirmationCode: code,
+            ForceAliasCreation: false,
             Session: pending.session || undefined
         };
 
@@ -236,28 +295,27 @@ const Auth = (() => {
         // second code. If that isn't honored, fall back to a normal sign-in,
         // which will send one more code.
         if (data.Session) {
-            try {
-                const authData = await cognito('InitiateAuth', {
-                    AuthFlow: 'USER_AUTH',
-                    ClientId: AUTH_CONFIG.clientId,
-                    AuthParameters: { USERNAME: pending.username },
-                    Session: data.Session
-                });
-                if (authData.AuthenticationResult) {
-                    // This path is reached as part of an explicit registration
-                    // confirmation that yields tokens; clear localStorage now.
-                    setSession(authData.AuthenticationResult, true);
-                    clearPending();
-                    return { authenticated: true };
-                }
-            } catch (e) {
-                // fall through to standalone sign-in below
+            const authData = await cognito('InitiateAuth', {
+                AuthFlow: 'USER_AUTH',
+                ClientId: AUTH_CONFIG.clientId,
+                AuthParameters: {
+                    USERNAME: pending.email,
+                    PREFERRED_CHALLENGE: 'EMAIL_OTP'
+                },
+                Session: data.Session
+            });
+            if (authData.AuthenticationResult) {
+                // This path is reached as part of an explicit registration
+                // confirmation that yields tokens; clear localStorage now.
+                setSession(authData.AuthenticationResult, true);
+                clearPending();
+                return { authenticated: true };
             }
         }
 
         clearPending();
-        await signInStart(pending.email);
-        return { authenticated: false };
+        const signIn = await signInStart(pending.email);
+        return { authenticated: signIn.authenticated === true };
     }
 
     async function registerResend() {
@@ -275,7 +333,9 @@ const Auth = (() => {
 
     // --- sign-in -----------------------------------------------------------
 
-    async function signInStart(email) {
+    async function signInStart(rawEmail) {
+        const email = normalizeEmail(rawEmail);
+        assertEmail(email);
         let data = await cognito('InitiateAuth', {
             AuthFlow: 'USER_AUTH',
             ClientId: AUTH_CONFIG.clientId,
@@ -284,7 +344,14 @@ const Auth = (() => {
 
         // Defensive: some pool configurations respond with SELECT_CHALLENGE
         // first even when a preferred challenge is supplied up front.
-        if (data.ChallengeName === 'SELECT_CHALLENGE') {
+        if (data.AuthenticationResult) {
+            setSession(data.AuthenticationResult, true);
+            clearPending();
+            return { authenticated: true, destination: email };
+        }
+
+        if (data.ChallengeName === 'SELECT_CHALLENGE' ||
+            (!data.ChallengeName && Array.isArray(data.AvailableChallenges) && data.AvailableChallenges.includes('EMAIL_OTP'))) {
             data = await cognito('RespondToAuthChallenge', {
                 ClientId: AUTH_CONFIG.clientId,
                 ChallengeName: 'SELECT_CHALLENGE',
@@ -293,14 +360,25 @@ const Auth = (() => {
             });
         }
 
+        if (data.AuthenticationResult) {
+            setSession(data.AuthenticationResult, true);
+            clearPending();
+            return { authenticated: true, destination: email };
+        }
+
         if (data.ChallengeName !== 'EMAIL_OTP') {
             throw new AuthError('SIGNIN_FAILED', 'Email code sign-in is not available for this account.');
         }
 
-        savePending({ kind: 'signin', email, session: data.Session });
-
         const params = data.ChallengeParameters || {};
-        return { destination: params.CODE_DELIVERY_DESTINATION || email };
+        savePending({
+            kind: 'signin',
+            email,
+            challengeUsername: params.USERNAME || email,
+            session: data.Session
+        });
+
+        return { authenticated: false, destination: params.CODE_DELIVERY_DESTINATION || email };
     }
 
     async function signInConfirm(code) {
@@ -310,7 +388,10 @@ const Auth = (() => {
         const data = await cognito('RespondToAuthChallenge', {
             ClientId: AUTH_CONFIG.clientId,
             ChallengeName: 'EMAIL_OTP',
-            ChallengeResponses: { USERNAME: pending.email, EMAIL_OTP_CODE: code },
+            ChallengeResponses: {
+                USERNAME: pending.challengeUsername || pending.email,
+                EMAIL_OTP_CODE: code
+            },
             Session: pending.session
         });
 

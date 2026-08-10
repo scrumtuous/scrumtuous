@@ -316,8 +316,18 @@ body.auth-screen {
 }
 
 .auth-form-panel .auth-submit:disabled {
-  cursor: wait;
+  cursor: not-allowed;
   opacity: 0.65;
+}
+
+.auth-form-panel .auth-submit[aria-busy="true"]:disabled {
+  cursor: wait;
+}
+
+.auth-form-panel .form-control:disabled {
+  color: #98a2b3;
+  background: #f2f4f7;
+  cursor: not-allowed;
 }
 
 .auth-form-panel .btn-mock {

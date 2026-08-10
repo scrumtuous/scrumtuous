@@ -163,6 +163,11 @@
         const emailForm = document.querySelector(`[data-${kind}-email-form]`);
         if (!emailForm) return;
 
+        const emailInput = emailForm.querySelector(`[data-${kind}-email]`);
+        const submitButton = emailForm.querySelector('button[type="submit"]');
+        const consent = kind === 'register'
+            ? emailForm.querySelector('[data-register-consent]')
+            : null;
         const emailStep = document.querySelector(`[data-${kind}-email-step]`);
         const codeStep = document.querySelector(`[data-${kind}-code-step]`);
         const codeForm = document.querySelector(`[data-${kind}-code-form]`);
@@ -194,13 +199,35 @@
 
         function setBusy(form, busy) {
             const button = form.querySelector('button[type="submit"]');
-            if (button) button.disabled = busy;
+            if (button) {
+                button.disabled = busy || (form === emailForm && consent && !consent.checked);
+                button.setAttribute('aria-busy', busy ? 'true' : 'false');
+            }
+        }
+
+        function syncRegistrationConsent() {
+            if (!consent) return;
+
+            const allowed = consent.checked;
+            emailInput.disabled = !allowed;
+            submitButton.disabled = !allowed;
+        }
+
+        if (consent) {
+            consent.addEventListener('change', syncRegistrationConsent);
+            syncRegistrationConsent();
         }
 
         emailForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             showStatus('', false);
-            const email = emailForm.querySelector(`[data-${kind}-email]`).value.trim();
+            if (consent && !consent.checked) {
+                syncRegistrationConsent();
+                showStatus('Consent is required to create an account.', true);
+                return;
+            }
+
+            const email = emailInput.value.trim();
             if (!email) return;
 
             setBusy(emailForm, true);
@@ -208,8 +235,12 @@
                 const registrationContext = kind === 'register'
                     ? buildRegistrationContext(emailForm)
                     : undefined;
-                const { destination } = await api.start(email, registrationContext);
-                showCodeStep(destination || email);
+                const result = await api.start(email, registrationContext);
+                if (result && result.authenticated === true) {
+                    window.location.href = '/';
+                    return;
+                }
+                showCodeStep(result.destination || email);
             } catch (err) {
                 showStatus(friendlyError(err), true);
             } finally {
