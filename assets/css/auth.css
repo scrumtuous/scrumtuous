@@ -19,6 +19,29 @@
   box-shadow: none !important;
 }
 
+/* Prevent auth controls from wrapping (keep "Sign In" on one line) */
+#nav-auth-controls,
+.nav-right {
+  white-space: nowrap !important;
+}
+
+.nav-right .auth-btn {
+  white-space: nowrap !important;
+}
+
+/* Center the main nav links inside the collapse while keeping the auth controls right-aligned.
+   This overrides an existing rule that pushes `.navbar-nav` to the right. */
+.sub-menu-bar .navbar-nav {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+}
+
+/* Add a small gap between centered nav and the right-aligned auth controls */
+.nav-right {
+  padding-left: 12px;
+}
+
 #nav-auth-controls .auth-btn:hover,
 #nav-auth-controls a.auth-btn:hover,
 .nav-right .auth-btn:hover,
