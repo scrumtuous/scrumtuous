@@ -79,7 +79,7 @@ const Auth = (() => {
         return Date.now() >= payload.exp * 1000 - 30000;
     }
 
-    function setSession(result) {
+    function setSession(result, clearLocal = false) {
         const payload = parseJwt(result.IdToken);
         user = {
             userId: payload.sub,
@@ -92,6 +92,15 @@ const Auth = (() => {
         sessionStorage.setItem('auth_access_token', accessToken);
         sessionStorage.setItem('auth_id_token', result.IdToken);
         if (result.RefreshToken) sessionStorage.setItem('auth_refresh_token', result.RefreshToken);
+        // Optionally clear all localStorage when an explicit sign-in/register
+        // completed. This keeps sessionStorage (the auth session) intact.
+        if (clearLocal) {
+            try {
+                localStorage.clear();
+            } catch (e) {
+                // ignore environments without localStorage
+            }
+        }
     }
 
     function clearSession() {
@@ -235,7 +244,9 @@ const Auth = (() => {
                     Session: data.Session
                 });
                 if (authData.AuthenticationResult) {
-                    setSession(authData.AuthenticationResult);
+                    // This path is reached as part of an explicit registration
+                    // confirmation that yields tokens; clear localStorage now.
+                    setSession(authData.AuthenticationResult, true);
                     clearPending();
                     return { authenticated: true };
                 }
@@ -307,7 +318,8 @@ const Auth = (() => {
             throw new AuthError('SIGNIN_FAILED', 'Sign-in did not complete.');
         }
 
-        setSession(data.AuthenticationResult);
+        // Explicit sign-in completed; clear localStorage.
+        setSession(data.AuthenticationResult, true);
         clearPending();
     }
 
@@ -338,6 +350,13 @@ const Auth = (() => {
         sessionStorage.setItem('auth_access_token', accessToken);
         sessionStorage.setItem('auth_provider', 'mock');
         clearPending();
+        // Tests and the mock sign-in flow should mirror the real behavior
+        // of clearing localStorage after an explicit sign-in.
+        try {
+            localStorage.clear();
+        } catch (e) {
+            // ignore environments without localStorage
+        }
     }
 
     // --- public interface ----------------------------------------------------
