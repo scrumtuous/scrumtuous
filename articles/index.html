@@ -1,0 +1,27 @@
+---
+layout: article
+title: "Articles"
+description: "Browse all articles in this section."
+exam_key: braindump
+catalog: gcp_generative_ai_leader
+---
+
+<h1>Articles</h1>
+
+<p>Browse all articles in this section:</p>
+
+<ul class="article-list">
+  {% assign folder_pages = site.pages | where: "dir", page.dir | sort: "title" %}
+
+  {% for article in folder_pages %}
+    {% unless article.url == page.url %}
+      {% if article.title %}
+        <li>
+          <a href="{{ article.url | relative_url }}">
+            {{ article.title }}
+          </a>
+        </li>
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+</ul>
