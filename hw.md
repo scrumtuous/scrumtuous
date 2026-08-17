@@ -1,6 +1,6 @@
 ---
 
-layout: exam.html
+layout: exam
 
 ---
 
