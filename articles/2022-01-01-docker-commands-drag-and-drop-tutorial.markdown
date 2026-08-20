@@ -1,11 +1,15 @@
 ---
-layout: drag-and-drop
+layout: article
 title:  "Learn Docker Commands the Drag and Drop way!"
 blurb: "Want to learn some key Docker commands? This Drag and Drop Docker container tutorial will help guide your way in a foggy sea of uncharted DevOps waters."
 date:   2022-01-01 10:16:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/docker-commands-drag-and-drop-tutorial.html
-keywords: Docker Kubernetes Drag-n-Drop Tutorial Learn Containers
+
+title: Globbing, Grepping, Aliases
+exam_key: braindump
+catalog: gcp_generative_ai_leader
+
 ---
 	
 			
