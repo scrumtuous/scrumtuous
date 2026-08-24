@@ -7,23 +7,20 @@ description: "Roshambo on Intro Mode"
 user-story: "As a player, I want to choose rock, paper, or scissors, play against the computer, and see whether I win, lose, or tie so that I can immediately understand the outcome of each round."
 ---
 
-
-
-OBJECTIVE: Unscramble the following code to create an advanced Rock Paper Scissors Game.
+OBJECTIVE: Unscramble the following code to create an introductory Rock Paper Scissors Game.
 
 - Use every line of code once and only once.
 - Do not add your own code.
 - Do not edit any of the code.
 - Simply rearrange the code you are given.
 
-Name the file <team-name>-<your_initials>-<roshambo-intro>.md
+Name the file `<team-name>-<your_initials>-<roshambo-intro>.md`
 
-You may temporarily remove the frontmatter and name it as a .html file locally for testing.
+You may temporarily remove the frontmatter and name it as a `.html` file locally for testing.
 
-Make sure the frontmatter, the ---  --- , is in the file when you push it to GitHub.
+Make sure the frontmatter, the `---` `---`, is in the file when you push it to GitHub.
 
-<pre>
-
+```
 ---
 layout: default
 title: "Rock Paper Scissors: Intro Mode"
@@ -36,7 +33,6 @@ user-story: "As a player, I want to choose rock, paper, or scissors, play agains
 OBJECTIVE: Unscramble the following code to create a basic Rock Paper Scissors Game.
 Use every line of code once and only once.
 Do not add your own code. Do not edit any of the code. Simply rearrange the code you are given.
-
 
 <title>Rock Paper Roshambo in JavaScript</title>
 result = "win";
@@ -65,4 +61,4 @@ result = "tie";
 playRoshambo = function(clientGesture){
 <html>
 if (clientGesture=='scissors') {
-</pre>
+```
