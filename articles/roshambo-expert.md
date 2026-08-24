@@ -7,7 +7,6 @@ description: "Roshambo on Expert Mode"
 user-story: "As a player, I want to play Roshambo against the computer and view my game history so that I can see the results of my previous games."
 ---
 
-
 OBJECTIVE: Unscramble the following code to create an advanced Rock Paper Scissors Game.
 
 - Use every line of code once and only once.
@@ -15,14 +14,13 @@ OBJECTIVE: Unscramble the following code to create an advanced Rock Paper Scisso
 - Do not edit any of the code.
 - Simply rearrange the code you are given.
 
-Name the file <team-name>-<your_initials>-<roshambo-expert>.md
+Name the file `<team-name>-<your_initials>-<roshambo-expert>.md`
 
-You may remove the frontmatter and name it as a .html file locally for testing.
+You may remove the frontmatter and name it as a `.html` file locally for testing.
 
-Make sure the frontmatter, the ---  --- , is in the file when you push it to GitHub.
+Make sure the frontmatter, the `---` `---`, is in the file when you push it to GitHub.
 
-<pre>
-
+```
 ---
 layout: default
 title: "Rock Paper Scissors: Expert Mode"
@@ -86,5 +84,4 @@ games = games.filter(game => game.time != time);
 <a href="#" onclick="playRoshambo('rock')">rock</a>
 saveGame = function(clientGesture, serverGesture, result) {
 }
-
-</pre>
+```
