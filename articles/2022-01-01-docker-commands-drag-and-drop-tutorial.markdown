@@ -5,8 +5,6 @@ blurb: "Want to learn some key Docker commands? This Drag and Drop Docker contai
 date:   2022-01-01 10:16:00 -0500
 categories: aws exam
 canonical: http://www.scrumtuous.com/aws/exam/2022/01/01/docker-commands-drag-and-drop-tutorial.html
-
-title: Globbing, Grepping, Aliases
 exam_key: braindump
 catalog: gcp_generative_ai_leader
 
