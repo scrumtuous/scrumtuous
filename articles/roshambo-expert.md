@@ -20,6 +20,8 @@ You may remove the frontmatter and name it as a `.html` file locally for testing
 
 Make sure the frontmatter, the `---` `---`, is in the file when you push it to GitHub.
 
+You can create a new GitHub repo, but it'd be better if you used the same repo you put the games you created last week.
+
 ```
 ---
 layout: default
@@ -29,7 +31,7 @@ subheading: "Game History"
 description: "Roshambo on Expert Mode"
 user-story: "As a player, I want to play Roshambo against the computer and view my game history so that I can see the results of my previous games."
 ---
-
+{% raw %}
 }
 if (clientGesture=='rock') {
 showHistory();
@@ -84,4 +86,5 @@ games = games.filter(game => game.time != time);
 <a href="#" onclick="playRoshambo('rock')">rock</a>
 saveGame = function(clientGesture, serverGesture, result) {
 }
+{% endraw %}
 ```
