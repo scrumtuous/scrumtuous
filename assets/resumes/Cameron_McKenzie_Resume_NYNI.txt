@@ -1,0 +1,207 @@
+85 Clover Ridge Dr E
+Buffalo, NY
+14209
+(289) 314-5715
+mail@cameronmckenzie.com
+Cameron McKenzie
+Professional  
+Experience
+August. 2008 –  Present        	McKenzie Consulting                                             Buffalo, NY
+Java EE Architect specializing in WebSphere Portal Technology 
+?   specialized in migrating version 6.x and 6.1.x versions of WebSphere Portal to versions 7 an 8, 
+including the integration of Lotus Connections into WebSphere Portal 7
+?  extensive work leading teams developing JSR-286 portal applications, including the migration 
+of older JSR-168 applications to the newer standard
+? lead a variety of WebSphere Portal consolidation projects, bringing various decentralized 
+systems together into a single portal installation
+? performed requirements gathering, developed statements of work (SOWs) and developed 
+implementation paths and plans
+?   provided architectural visioning for a number of fortune 500 companies looking to implement 
+WebSphere Portal based enterprise solutions
+May. 2006 –  2008                   Master Data Management (MDM)              Las Vegas, Nevada
+WebSphere Administrator and Developer – Entity Analytics and AML Technologies
+? architected, developed and facilitated the implementation of anti-fraud and anti-money 
+laundering solutions for various fortune 500 companies and government agencies
+?  worked to develop and support RESTful APIs for software product, and assist customers in 
+building enterprise Java applications (Java EE) that leveraged these interfaces
+?  managed off-shore software delivery teams, ensuring code quality and timely product delivery
+August. 2000 –  May 2006       Perficient Inc.                                                       Austin, Texas
+Senior Java Developer and Team Lead
+?  implemented WebSphere Portal solutions that embraced the philosophies of high availability, 
+simple maintainability, and infinite scalability
+?  mentored both developers and administrators on how to effectively develop and deploy Java 2 
+Enterprise Edition (J2EE) applications to all versions of the WebSphere Application Server
+? provided direction and support, facilitating the development and deployment of J2EE 
+applications that took advantage of a variety of proprietary and open source technologies
+? uses a variety of scripting languages to automate test, QA, staging and production environments
+Oct.  1998 –  August 2000      	ITI, Information Technology Institute                    Chicago, IL
+Technical Facilitation Specialist  for the Enterprise
+? the lead technical reference for ITI's Java and DB2 modules, the Technical Facilitation 
+Specialist's role is to provide guidance and subsequently mentor ITI facilitators as they develop 
+object design, Java programming and database administration skills
+January - October 1998      	ITI, Information Technology Institute                    Chicago, IL
+Classroom Facilitator
+??provided classroom facilitation for the Object Oriented Programming with VisualAge module, 
+employing a variety of collaborative and example-based facilitation strategies 
+
+
+Education
+
+
+Cameron McKenzie
+
+1995-1997		              Durham College		                                               Oshawa, Durham
+Business Administration Diploma
+85 Clover Ridge Dr E
+Buffalo, NY
+14209
+(289) 314-5715
+mail@cameronmckenzie.com
+Department of Technology:  Internet & Multimedia Design, Post Secondary Certificate
+
+Professional 
+Designations
+
+IBM Certified Associate Developer – Rational  Application Developer for WebSphere 6 
+IBM Certified Application Developer – Rational  Application Developer for WebSphere 6
+IBM Certified Solution Developer – IBM WebSphere Portal 
+IBM Certified System Administrator – IBM WebSphere Portal 
+IBM Certified System Administrator – IBM WebSphere Application Server 
+ 
+Oracle Certified Associate  - Java 7 Programmer (OCAJP) 
+Sun Certified Java Associate (SCJA)  
+Sun Certified Enterprise Architect, Java EE 5 (SCEA)
+
+Microsoft Certified Systems Engineer  - Windows NT (MCSE)
+Microsoft Certified Professional + Internet  - Windows NT (MCP+I)
+Microsoft Certified Professional – Windows NT (MCP)
+? achieved Microsoft's premiere networking designation in late 1998
+? scored above 900 on all NT operating system exams, with a perfect 1000 on NT Server
+
+Books and 
+Publications
+Hibernate Made Easy: Simplified Java Persistence with Hibernate and JPA Annotations
+?? explains Hibernate and JPA in simple and easy to understand terms.
+JavaServer Faces Made Easy – Simplified Web Development with JSF
+?? explains Hibernate and JPA in simple and easy to understand terms.
+What is WebSphere? Demystifying IBM's Middle Tier Technology
+?? this best-selling book on WebSphere explores the technology that drives IBM's middle tier, 
+explaining the technology in a humorous and entertaining manner. Available on amazon.com.
+JSR-168 Portlet Development: Learning How to Develop Effective Portlet Applications
+?? the top selling book on the topic of JSR-168 portlet development, this book will soon be replaced by 
+an update covering the JSR-286 (not 268) specification.
+Sun Certified Java Programmer Certification Study Guide  
+Sun Certified Java Programmer: The Exam Questions
+?  currently the only books available for learning the SCJA objectives, these best selling 
+books have topped the amazon.com best-sellers chart for over a year.
+
+
+
+
+85 Clover Ridge Dr E
+Buffalo, NY
+14209
+(289) 314-5715
+mail@cameronmckenzie.com
+Cameron McKenzie
+
+
+The following is a small sampling of the many technical engagements in which I have participated over the past 
+several years.
+
+Bunge International; White Plains, NY
+?    Worked with corporate headquarters to develop a technical vision for their corporate Internet
+?    Architected a WebSphere portal vision, based heavily upon Web Services for Remote Portlets (WSRP), to tie 
+together the various business units of this 60 billion dollar a year company
+
+The GAP: Gap, Old Navy, Banana Republic and Gap Kids; San Francisco, CA
+?    Provided consulting services to help migrate an existing website into a WebSphere portal environment
+?    Assisted with architecture decisions surrounding the development of virtual portals to support both internal and 
+externally facing portal sites
+
+AAA Insurance; St.Louis, MO
+?    Mentored a group of ten developers with respect to proper J2EE development using WebSphere Studio 
+?    Provided design guidelines and best practices for developing applications using the Struts framework
+?    Helped develop internationalized applications using Struts and JSTL
+
+Sears Canada; Toronto, ON
+?    Mentored a group of WebSphere developers in best practices when using WebSphere Portal Server
+?    Communicated and demonstrated the various technologies available when architecting a WebSphere solution
+
+Unigroup Inc; St. Louis, MO
+?    Provided guidance to a group of five developers working on J2EE applications
+?    Helped develop a Struts and Tiles based application 
+
+Boeing Aircraft; St. Louis, MO
+?    Worked with a group of five developers, assisting them in the development of a parts management application 
+for the airline industry.
+?    Helped develop scripts to automate the deployment of applications from source code management tools
+
+State Farm Insurance; Bloomington, IL
+?    Worked with a group of five WebSphere administrators and senior developers
+?    Helped configure the WebSphere Application Server for J2EE application deployment
+?    Helped troubleshoot session problems between Microsoft's IIS and the WebSphere Application Server
+
+3M; St. Paul, MN
+?    Mentored and facilitated the development of an employee portal
+?    Helped develop portlets that accessed collaborative components within a single sign-on environment
+
+General Electric; St. Louis, MO
+?    Developed and deployed Cocoon based applications using WebSphere Studio Application Developer, Version 5
+?    Provided a feature analysis comparing Struts and Cocoon, two popular open source frameworks
+?    Ported inventory management applications, originally created using HP Sapphire, to IBM's WebSphere 
+Application Server
+
+Legal and General Insurance; London, England. Cardiff, Wales
+?    Mentored developers in the creation of J2EE solutions, which supported an integrated architecture that used a 
+variety of different security and session management mechanisms
+
+
+85 Clover Ridge Dr E
+Buffalo, NY
+14209
+(289) 314-5715
+mail@cameronmckenzie.com
+Cameron McKenzie
+
+
+While the majority of my time is spent developing and architecting J2EE solutions, I relish the opportunity to 
+share my knowledge and passion for technology with others. The following is a partial listing of the courses I have 
+been certified to deliver for IBM Learning Services (ILS).
+
+Developing Applications with Java Persistence API
+? This course teaches how to build Java applications that use the Java Persistence API (JPA) with IBM Rational 
+Application Developer V7.5
+
+Developing Web Services using WebSphere Studio Application Developer
+?  This course explores the built in support WebSphere Studio provides for creating, testing and publishing Web Services  
+?  Topics include: using Apache SOAP, UDDI, EJBs and WSDL
+
+IBM WebSphere Application Server V7 Problem Determination
+? Enterprise application deployment, workload management, implementing security and monitoring performance are just some 
+of the topics delivered in this challenging five-day course
+? While exercises and labs are all performed on Windows machines, attention is paid to commands and differences between 
+Windows and AIX implementations of the Application Server
+
+Java EE 5 Development for WebSphere Application Server V7
+? This course teaches how to develop and test Enterprise JavaBeans (EJBs), servlets and other components with the latest 
+Java EE 5 specifications such as EJB 3.0, Servlet 2.5, JavaServer Pages (JSP) 2.1, Java Standard Tag Library (JSTL) 1.2 
+and JavaServer Faces 1.2.
+
+Servlet and JSP Development using Rational Application Developer
+?  Along with traditional Servlet and JSP development, students are introduced to many advanced topics including custom 
+tags, servlet filtering and various J2EE design patterns
+?  Was given the privilege to provide the first European delivery of this course in Dublin, in September of 2001
+
+Getting Started with SOA
+?  This course offers an introduction to service-oriented architecture (SOA), and describes the essential concepts of SOA that 
+affect a broad technical audience.
+
+Ajax and Web 2.0 Application Development
+?  This course teaches software developers how to build the next generation of rich, interactive Web applications using 
+Asynchronous JavaScript and XML (Ajax)
+
+
+ 
+ 
+ 
