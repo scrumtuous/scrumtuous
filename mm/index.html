@@ -332,12 +332,219 @@
       color: #2c3e50;
     }
 
+
+
+    /* pgAdmin connection card */
+    .pgadmin-connect-panel {
+      margin: 22px 0 26px;
+      padding: 22px;
+      background: #f8fafc;
+      border: 1px solid #dfe5eb;
+      border-radius: 10px;
+    }
+
+    .pgadmin-connect-panel h2 {
+      margin: 0 0 8px;
+      color: #2c3e50;
+    }
+
+    .connection-steps {
+      margin: 10px 0 18px 22px;
+      padding: 0;
+    }
+
+    .connection-steps li {
+      margin: 7px 0;
+      line-height: 1.45;
+    }
+
+    .pgadmin-window {
+      max-width: 860px;
+      margin: 16px auto 0;
+      background: #fff;
+      border: 1px solid #cfd7df;
+      border-radius: 8px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .pgadmin-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #f1f3f5;
+      border-bottom: 1px solid #d9dee3;
+      font-size: 14px;
+      font-weight: bold;
+      color: #3c4650;
+    }
+
+    .pgadmin-server-name {
+      font-weight: normal;
+      color: #6b747c;
+    }
+
+    .pgadmin-tabs {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      border-bottom: 1px solid #d9dee3;
+      background: #fff;
+      padding: 0 12px;
+    }
+
+    .pgadmin-tab {
+      padding: 11px 13px 9px;
+      font-size: 13px;
+      color: #4d5660;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+    }
+
+    .pgadmin-tab.active {
+      color: #1f4f7a;
+      border-bottom-color: #2980b9;
+      font-weight: bold;
+    }
+
+    .pgadmin-form {
+      padding: 20px 22px 16px;
+    }
+
+    .pg-field {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      margin: 11px 0;
+    }
+
+    .pg-field label {
+      color: #25313b;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .pg-input {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      padding: 8px 11px;
+      background: #f7f8fa;
+      border: 1px solid #d7dce1;
+      border-radius: 4px;
+      color: #27313a;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+    }
+
+    .pg-input code {
+      background: transparent !important;
+      padding: 0 !important;
+    }
+
+    .pg-password-mask {
+      letter-spacing: 2px;
+      margin-right: 10px;
+    }
+
+    .pg-field-note {
+      color: #6c757d;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .pgadmin-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid #d9dee3;
+      background: #fbfcfd;
+    }
+
+    .pgadmin-action {
+      border: 1px solid #c8d0d8;
+      border-radius: 4px;
+      padding: 7px 14px;
+      background: #fff;
+      color: #45515c;
+      font-size: 12px;
+    }
+
+    .pgadmin-action.primary {
+      border-color: #2980b9;
+      background: #2980b9;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .connection-note {
+      margin: 14px 0 0;
+      padding: 10px 12px;
+      background: #eef6fb;
+      border-left: 4px solid #2980b9;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* Venn diagrams for join cards */
+    .join-card-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .join-card-top h3 {
+      margin-top: 0;
+    }
+
+    .venn-wrap {
+      justify-self: end;
+      width: 300px;
+      max-width: 100%;
+      padding: 8px 8px 5px;
+      background: #fafbfc;
+      border: 1px solid #e0e5ea;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .venn-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .venn-legend {
+      margin: 2px 0 0;
+      color: #69737d;
+      font-size: 11px;
+    }
+
     @media (max-width: 900px) {
       .canvas-grid {
         grid-template-columns: 1fr;
       }
       .canvas-card.wide {
         grid-column: auto;
+      }
+
+      .join-card-top {
+        grid-template-columns: 1fr;
+      }
+
+      .venn-wrap {
+        justify-self: start;
+      }
+
+      .pg-field {
+        grid-template-columns: 1fr;
+        gap: 5px;
       }
     }
 
@@ -685,11 +892,60 @@
     })(); 
   </script>
 <article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto">Outer Join Example</h1><a id="user-content-outer-join-example" class="anchor" aria-label="Permalink: Outer Join Example" href="#outer-join-example"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
-<p>Right-click on Servers and choose Register --> Create. Use the name cams-vm on the general tab and moe to the connection tab</p>
-  <p>hostname: 10.23.131.137</p>
-  <p>port: 8085</p>
-  <p>database: buybuybuy or sports_equipment</p>
-  <p>password: n3....</p>
+<section class="pgadmin-connect-panel" aria-labelledby="pgadmin-connect-heading">
+  <h2 id="pgadmin-connect-heading">Connect to the PostgreSQL VM with pgAdmin</h2>
+  <p>Register the remote PostgreSQL server in pgAdmin before running the join examples.</p>
+  <ol class="connection-steps">
+    <li>In the Object Explorer, right-click <strong>Servers</strong> and choose <strong>Register &gt; Server...</strong></li>
+    <li>On the <strong>General</strong> tab, enter <code>cams-vm</code> as the server name.</li>
+    <li>Move to the <strong>Connection</strong> tab and enter the details shown below.</li>
+    <li>Click <strong>Save</strong>. The VM should then appear beneath <strong>Servers</strong> in pgAdmin.</li>
+  </ol>
+
+  <div class="pgadmin-window" role="group" aria-label="pgAdmin connection settings example">
+    <div class="pgadmin-titlebar">
+      <span>Register - Server</span>
+      <span class="pgadmin-server-name">Server name: cams-vm</span>
+    </div>
+    <div class="pgadmin-tabs" aria-hidden="true">
+      <span class="pgadmin-tab">General</span>
+      <span class="pgadmin-tab active">Connection</span>
+      <span class="pgadmin-tab">Parameters</span>
+      <span class="pgadmin-tab">SSH Tunnel</span>
+      <span class="pgadmin-tab">Advanced</span>
+      <span class="pgadmin-tab">Post Connection SQL</span>
+      <span class="pgadmin-tab">Tags</span>
+    </div>
+    <div class="pgadmin-form">
+      <div class="pg-field">
+        <label>Host name/address</label>
+        <div class="pg-input"><code>10.23.131.137</code></div>
+      </div>
+      <div class="pg-field">
+        <label>Port</label>
+        <div class="pg-input"><code>8085</code></div>
+      </div>
+      <div class="pg-field">
+        <label>Maintenance database</label>
+        <div class="pg-input"><code>buybuybuy</code><span class="pg-field-note">or <code>sports_equipment</code></span></div>
+      </div>
+      <div class="pg-field">
+        <label>Username</label>
+        <div class="pg-input"><code>postgres</code></div>
+      </div>
+      <div class="pg-field">
+        <label>Password</label>
+        <div class="pg-input"><span class="pg-password-mask">••••••••••••</span><span class="pg-field-note">Use the VM password: <code>n3....</code></span></div>
+      </div>
+    </div>
+    <div class="pgadmin-actions" aria-hidden="true">
+      <span class="pgadmin-action">Reset</span>
+      <span class="pgadmin-action primary">Save</span>
+    </div>
+  </div>
+
+  <div class="connection-note"><strong>Why port 8085?</strong> pgAdmin is connecting to the VM's published PostgreSQL port. The PostgreSQL service may still be listening on its normal container port internally, while the VM exposes it as <code>8085</code>.</div>
+</section>
   <p dir="auto">These tables help illustrate the concepts of outer joins.  A sporting club has inherited some equipment and has independently voted upon the club sports that they will offer.  The problem is to identify those chosen sports that do not have equipment, and the equipment that can be sold off, since the sport is not going to be offered.</p>
 
 <div class="join-guide">
@@ -731,8 +987,16 @@
   <h2 class="query-group-title">Join queries</h2>
 
   <section class="join-card" id="inner-join">
-    <h3>1. INNER JOIN</h3>
-    <p>Shows only rows where a sport and an equipment item match on <code>sport_id</code>.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>1. INNER JOIN</h3>
+        <p>Shows only rows where a sport and an equipment item match on <code>sport_id</code>. In the Venn diagram, only the overlap is returned.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-inner" class="venn-canvas" width="300" height="160" aria-label="Venn diagram for an inner join, highlighting only the overlap between sport and equipment"></canvas>
+        <div class="venn-legend">Highlighted area = rows returned by the join</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-inner">Copy</button>
       <pre id="sql-inner" class="code-output sql-code">SELECT
@@ -749,8 +1013,16 @@ ORDER BY s.sport_id, e.equipment_id;</pre>
   </section>
 
   <section class="join-card" id="left-outer-join">
-    <h3>2. LEFT OUTER JOIN</h3>
-    <p>Shows <strong>every sport</strong>. If a sport has no equipment, the equipment columns are <code>NULL</code>.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>2. LEFT OUTER JOIN</h3>
+        <p>Shows <strong>every sport</strong>. If a sport has no equipment, the equipment columns are <code>NULL</code>. The entire left circle is returned, including the overlap.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-left" class="venn-canvas" width="300" height="160" aria-label="Venn diagram for a left outer join, highlighting all sport rows and the overlap with equipment"></canvas>
+        <div class="venn-legend">Highlighted area = left table plus matches</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-left">Copy</button>
       <pre id="sql-left" class="code-output sql-code">SELECT
@@ -767,8 +1039,16 @@ ORDER BY s.sport_id, e.equipment_id;</pre>
   </section>
 
   <section class="join-card" id="right-outer-join">
-    <h3>3. RIGHT OUTER JOIN</h3>
-    <p>Shows <strong>every equipment item</strong>. If an item has no matching sport, the sport columns are <code>NULL</code>.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>3. RIGHT OUTER JOIN</h3>
+        <p>Shows <strong>every equipment item</strong>. If an item has no matching sport, the sport columns are <code>NULL</code>. The entire right circle is returned, including the overlap.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-right" class="venn-canvas" width="300" height="160" aria-label="Venn diagram for a right outer join, highlighting all equipment rows and the overlap with sport"></canvas>
+        <div class="venn-legend">Highlighted area = right table plus matches</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-right">Copy</button>
       <pre id="sql-right" class="code-output sql-code">SELECT
@@ -785,8 +1065,16 @@ ORDER BY e.equipment_id;</pre>
   </section>
 
   <section class="join-card" id="full-outer-join">
-    <h3>4. FULL OUTER JOIN</h3>
-    <p>Shows <strong>all sports and all equipment</strong>, including unmatched rows from either table.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>4. FULL OUTER JOIN</h3>
+        <p>Shows <strong>all sports and all equipment</strong>, including unmatched rows from either table. Both circles are returned.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-full" class="venn-canvas" width="300" height="160" aria-label="Venn diagram for a full outer join, highlighting both sport and equipment circles"></canvas>
+        <div class="venn-legend">Highlighted area = everything from both tables</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-full">Copy</button>
       <pre id="sql-full" class="code-output sql-code">SELECT
@@ -807,8 +1095,16 @@ ORDER BY
   <h2 class="query-group-title">Find only the gaps</h2>
 
   <section class="join-card" id="sports-without-equipment">
-    <h3>5A. Sports without equipment</h3>
-    <p>Start with every sport, then keep only rows where the join failed to find an equipment record.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>5A. Sports without equipment</h3>
+        <p>Start with every sport, then keep only rows where the join failed to find an equipment record. This is the <strong>left-only</strong> portion of the Venn diagram.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-left-only" class="venn-canvas" width="300" height="160" aria-label="Venn diagram highlighting sports that have no matching equipment"></canvas>
+        <div class="venn-legend">Highlighted area = left side excluding the overlap</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-sports-gaps">Copy</button>
       <pre id="sql-sports-gaps" class="code-output sql-code">SELECT
@@ -823,8 +1119,16 @@ WHERE e.equipment_id IS NULL;</pre>
   </section>
 
   <section class="join-card" id="equipment-without-sport">
-    <h3>5B. Equipment without a matching sport</h3>
-    <p>Start with every equipment item, then keep only rows where the join failed to find a sport.</p>
+    <div class="join-card-top">
+      <div>
+        <h3>5B. Equipment without a matching sport</h3>
+        <p>Start with every equipment item, then keep only rows where the join failed to find a sport. This is the <strong>right-only</strong> portion of the Venn diagram.</p>
+      </div>
+      <div class="venn-wrap">
+        <canvas id="venn-right-only" class="venn-canvas" width="300" height="160" aria-label="Venn diagram highlighting equipment that has no matching sport"></canvas>
+        <div class="venn-legend">Highlighted area = right side excluding the overlap</div>
+      </div>
+    </div>
     <div class="query-box">
       <button class="copy-btn" type="button" data-copy-target="sql-equipment-gaps">Copy</button>
       <pre id="sql-equipment-gaps" class="code-output sql-code">SELECT
@@ -970,7 +1274,85 @@ WHERE s.sport_id IS NULL;</pre>
       ctx.fillText('Missing or nonexistent sport_id values create the gaps used by the OUTER JOIN examples.', W / 2, 292);
     }
 
-    function drawDataTable(canvasId, columns, rows, widths, unmatchedPredicate) {
+
+
+    function drawVenn(canvasId, mode) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const left = { x: 116, y: 73, r: 55 };
+      const right = { x: 184, y: 73, r: 55 };
+      const baseFill = '#eef1f4';
+      const outline = '#7d8994';
+      const selected = 'rgba(41, 128, 185, 0.72)';
+
+      function circle(c) {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      }
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw both sets in a quiet neutral color first.
+      ctx.fillStyle = baseFill;
+      circle(left); ctx.fill();
+      circle(right); ctx.fill();
+
+      // Shade the region returned by this join.
+      if (mode === 'left' || mode === 'full' || mode === 'leftOnly') {
+        ctx.fillStyle = selected;
+        circle(left); ctx.fill();
+      }
+      if (mode === 'right' || mode === 'full' || mode === 'rightOnly') {
+        ctx.fillStyle = selected;
+        circle(right); ctx.fill();
+      }
+      if (mode === 'inner') {
+        ctx.save();
+        circle(left);
+        ctx.clip();
+        ctx.fillStyle = selected;
+        circle(right);
+        ctx.fill();
+        ctx.restore();
+      }
+      if (mode === 'leftOnly') {
+        ctx.save();
+        circle(left);
+        ctx.clip();
+        ctx.fillStyle = baseFill;
+        circle(right);
+        ctx.fill();
+        ctx.restore();
+      }
+      if (mode === 'rightOnly') {
+        ctx.save();
+        circle(right);
+        ctx.clip();
+        ctx.fillStyle = baseFill;
+        circle(left);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Redraw crisp outlines after the fills.
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 2;
+      circle(left); ctx.stroke();
+      circle(right); ctx.stroke();
+
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('SPORT', 86, 145);
+      ctx.fillText('EQUIPMENT', 214, 145);
+    }
+
+        function drawDataTable(canvasId, columns, rows, widths, unmatchedPredicate) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -1042,6 +1424,12 @@ WHERE s.sport_id IS NULL;</pre>
     }
 
     drawSchema();
+    drawVenn('venn-inner', 'inner');
+    drawVenn('venn-left', 'left');
+    drawVenn('venn-right', 'right');
+    drawVenn('venn-full', 'full');
+    drawVenn('venn-left-only', 'leftOnly');
+    drawVenn('venn-right-only', 'rightOnly');
     drawDataTable(
       'sport-data-canvas',
       ['sport_id', 'sport_name'],
