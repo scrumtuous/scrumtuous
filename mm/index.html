@@ -518,24 +518,61 @@
       });
     })();
   </script>
+<article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto">Outer Join Example</h1><a id="user-content-outer-join-example" class="anchor" aria-label="Permalink: Outer Join Example" href="#outer-join-example"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">These tables help illustrate the concepts of outer joins.  A sporting club has inherited some equipment and has independently voted upon the club sports that they will offer.  The problem is to identify those chosen sports that do not have equipment, and the equipment that can be sold off, since the sport is not going to be offered.</p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto">Create and populate the tables</h2><a id="user-content-create-and-populate-the-tables" class="anchor" aria-label="Permalink: Create and populate the tables" href="#create-and-populate-the-tables"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">If desired create a new database or use an existing sample databases.</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">DROP</span> <span class="pl-k">DATABASE</span> IF EXISTS sports_equipment;
+<span class="pl-k">CREATE</span> <span class="pl-k">DATABASE</span> <span class="pl-en">sports_equipment</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="DROP DATABASE IF EXISTS sports_equipment;
+CREATE DATABASE sports_equipment;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto">Add the tables and populate with sample data.</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">DROP</span> <span class="pl-k">TABLE</span> IF EXISTS equipment;
+<span class="pl-k">DROP</span> <span class="pl-k">TABLE</span> IF EXISTS sport;
 
-  # Outer Join Example
+<span class="pl-k">CREATE</span> <span class="pl-k">TABLE</span> <span class="pl-en">sport</span> (
+    sport_id   <span class="pl-k">integer</span> GENERATED ALWAYS <span class="pl-k">AS</span> IDENTITY <span class="pl-k">PRIMARY KEY</span>,
+    sport_name <span class="pl-k">varchar</span>(<span class="pl-c1">50</span>) <span class="pl-k">NOT NULL</span> UNIQUE
+);
 
-These tables help illustrate the concepts of outer joins.  A sporting club has inherited some equipment and has independently voted upon the club sports that they will offer.  The problem is to identify those chosen sports that do not have equipment, and the equipment that can be sold off, since the sport is not going to be offered.
+<span class="pl-k">CREATE</span> <span class="pl-k">TABLE</span> <span class="pl-en">equipment</span> (
+    equipment_id   <span class="pl-k">integer</span> GENERATED ALWAYS <span class="pl-k">AS</span> IDENTITY <span class="pl-k">PRIMARY KEY</span>,
+    equipment_name <span class="pl-k">varchar</span>(<span class="pl-c1">100</span>) <span class="pl-k">NOT NULL</span>,
+    sport_id       <span class="pl-k">integer</span> <span class="pl-k">NULL</span>
+    <span class="pl-c"><span class="pl-c">--</span> Deliberately no foreign key so orphaned equipment can illustrate gaps.</span>
+);
 
-## Create and populate the tables
+<span class="pl-k">INSERT INTO</span> sport (sport_name) <span class="pl-k">VALUES</span>
+    (<span class="pl-s"><span class="pl-pds">'</span>Archery<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Basketball<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Cycling<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Soccer<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Swimming<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Tennis<span class="pl-pds">'</span></span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Whitewater Rafting<span class="pl-pds">'</span></span>);
 
-If desired create a new database or use an existing sample databases.
-
-```sql
-DROP DATABASE IF EXISTS sports_equipment;
-CREATE DATABASE sports_equipment;
-```
-
-Add the tables and populate with sample data.
-
-```sql
-DROP TABLE IF EXISTS equipment;
+<span class="pl-k">INSERT INTO</span> equipment (equipment_name, sport_id) <span class="pl-k">VALUES</span>
+    (<span class="pl-s"><span class="pl-pds">'</span>Basketball<span class="pl-pds">'</span></span>, <span class="pl-c1">2</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Basketball hoop<span class="pl-pds">'</span></span>, <span class="pl-c1">2</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Bicycle helmet<span class="pl-pds">'</span></span>, <span class="pl-c1">3</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Broom<span class="pl-pds">'</span></span>, <span class="pl-c1">10</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Goal net<span class="pl-pds">'</span></span>, <span class="pl-c1">4</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Ironing Board<span class="pl-pds">'</span></span>, <span class="pl-c1">9</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Soccer ball<span class="pl-pds">'</span></span>, <span class="pl-c1">4</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Stone<span class="pl-pds">'</span></span>, <span class="pl-c1">10</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Swim goggles<span class="pl-pds">'</span></span>, <span class="pl-c1">5</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Tennis racket<span class="pl-pds">'</span></span>, <span class="pl-c1">6</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Tennis balls<span class="pl-pds">'</span></span>, <span class="pl-c1">6</span>),
+    (<span class="pl-s"><span class="pl-pds">'</span>Unassigned training cones<span class="pl-pds">'</span></span>, <span class="pl-k">NULL</span>);</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS sport;
 
 CREATE TABLE sport (
@@ -571,21 +608,33 @@ INSERT INTO equipment (equipment_name, sport_id) VALUES
     ('Swim goggles', 5),
     ('Tennis racket', 6),
     ('Tennis balls', 6),
-    ('Unassigned training cones', NULL);
-```
-
-The data intentionally contains gaps:
-
-- **Archery** and **Whitewater Rafting** have no equipment.
-- **Broom, Stone** and **Ironing Board** refers to a nonexistent `sport_id`.
-- **Unassigned training cones** has no associated sport.
-
-### 1. INNER JOIN
-
-Shows only sport with equipemtn and equipment with sport.
-
-```sql
-SELECT
+    ('Unassigned training cones', NULL);" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto">The data intentionally contains gaps:</p>
+<ul dir="auto">
+<li><strong>Archery</strong> and <strong>Whitewater Rafting</strong> have no equipment.</li>
+<li><strong>Broom, Stone</strong> and <strong>Ironing Board</strong> refers to a nonexistent <code>sport_id</code>.</li>
+<li><strong>Unassigned training cones</strong> has no associated sport.</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto">1. INNER JOIN</h3><a id="user-content-1-inner-join" class="anchor" aria-label="Permalink: 1. INNER JOIN" href="#1-inner-join"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">Shows only sport with equipemtn and equipment with sport.</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>,
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_name</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_name</span>
+<span class="pl-k">FROM</span> sport <span class="pl-k">AS</span> s
+<span class="pl-k">JOIN</span> equipment <span class="pl-k">AS</span> e
+    <span class="pl-k">ON</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">ORDER BY</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>, <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     s.sport_id,
     s.sport_name,
     e.equipment_id,
@@ -593,15 +642,27 @@ SELECT
 FROM sport AS s
 JOIN equipment AS e
     ON e.sport_id = s.sport_id
-ORDER BY s.sport_id, e.equipment_id;
-```
-
-### 2. LEFT OUTER JOIN
-
-Shows every sport, including sports with no equipment:
-
-```sql
-SELECT
+ORDER BY s.sport_id, e.equipment_id;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto">2. LEFT OUTER JOIN</h3><a id="user-content-2-left-outer-join" class="anchor" aria-label="Permalink: 2. LEFT OUTER JOIN" href="#2-left-outer-join"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">Shows every sport, including sports with no equipment:</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>,
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_name</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_name</span>
+<span class="pl-k">FROM</span> sport <span class="pl-k">AS</span> s
+<span class="pl-k">LEFT OUTER JOIN</span> equipment <span class="pl-k">AS</span> e
+    <span class="pl-k">ON</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">ORDER BY</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>, <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     s.sport_id,
     s.sport_name,
     e.equipment_id,
@@ -609,17 +670,28 @@ SELECT
 FROM sport AS s
 LEFT OUTER JOIN equipment AS e
     ON e.sport_id = s.sport_id
-ORDER BY s.sport_id, e.equipment_id;
-```
-
-`Archery` appears with `NULL` equipment columns.
-
-### 3. RIGHT OUTER JOIN
-
-Shows every equipment item, including equipment with no matching sport:
-
-```sql
-SELECT
+ORDER BY s.sport_id, e.equipment_id;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><code>Archery</code> appears with <code>NULL</code> equipment columns.</p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto">3. RIGHT OUTER JOIN</h3><a id="user-content-3-right-outer-join" class="anchor" aria-label="Permalink: 3. RIGHT OUTER JOIN" href="#3-right-outer-join"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">Shows every equipment item, including equipment with no matching sport:</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>,
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_name</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_name</span>
+<span class="pl-k">FROM</span> sport <span class="pl-k">AS</span> s
+<span class="pl-k">RIGHT OUTER JOIN</span> equipment <span class="pl-k">AS</span> e
+    <span class="pl-k">ON</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">ORDER BY</span> <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     s.sport_id,
     s.sport_name,
     e.equipment_id,
@@ -627,17 +699,30 @@ SELECT
 FROM sport AS s
 RIGHT OUTER JOIN equipment AS e
     ON e.sport_id = s.sport_id
-ORDER BY e.equipment_id;
-```
-
-`Unassigned training cones` and `Mystery equipment` appear with `NULL` sport columns.
-
-### 4. FULL OUTER JOIN
-
-Shows all sports and all equipment, including unmatched rows on both sides:
-
-```sql
-SELECT
+ORDER BY e.equipment_id;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><code>Unassigned training cones</code> and <code>Mystery equipment</code> appear with <code>NULL</code> sport columns.</p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto">4. FULL OUTER JOIN</h3><a id="user-content-4-full-outer-join" class="anchor" aria-label="Permalink: 4. FULL OUTER JOIN" href="#4-full-outer-join"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">Shows all sports and all equipment, including unmatched rows on both sides:</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>,
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_name</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_name</span>
+<span class="pl-k">FROM</span> sport <span class="pl-k">AS</span> s
+FULL OUTER <span class="pl-k">JOIN</span> equipment <span class="pl-k">AS</span> e
+    <span class="pl-k">ON</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">ORDER BY</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span> NULLS LAST,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     s.sport_id,
     s.sport_name,
     e.equipment_id,
@@ -647,38 +732,66 @@ FULL OUTER JOIN equipment AS e
     ON e.sport_id = s.sport_id
 ORDER BY
     s.sport_id NULLS LAST,
-    e.equipment_id;
-```
-
-### 5. Find only the gaps
-
-Sports without equipment:
-
-```sql
-SELECT
+    e.equipment_id;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto">5. Find only the gaps</h3><a id="user-content-5-find-only-the-gaps" class="anchor" aria-label="Permalink: 5. Find only the gaps" href="#5-find-only-the-gaps"><svg data-component="Octicon" class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">Sports without equipment:</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>,
+    <span class="pl-c1">s</span>.<span class="pl-c1">sport_name</span>
+<span class="pl-k">FROM</span> sport <span class="pl-k">AS</span> s
+<span class="pl-k">LEFT JOIN</span> equipment <span class="pl-k">AS</span> e
+    <span class="pl-k">ON</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">WHERE</span> <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span> IS <span class="pl-k">NULL</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     s.sport_id,
     s.sport_name
 FROM sport AS s
 LEFT JOIN equipment AS e
     ON e.sport_id = s.sport_id
-WHERE e.equipment_id IS NULL;
-```
-
-Equipment without a matching sport:
-
-```sql
-SELECT
+WHERE e.equipment_id IS NULL;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto">Equipment without a matching sport:</p>
+<div class="highlight highlight-source-sql notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">SELECT</span>
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_id</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">equipment_name</span>,
+    <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">FROM</span> equipment <span class="pl-k">AS</span> e
+<span class="pl-k">LEFT JOIN</span> sport <span class="pl-k">AS</span> s
+    <span class="pl-k">ON</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span> <span class="pl-k">=</span> <span class="pl-c1">e</span>.<span class="pl-c1">sport_id</span>
+<span class="pl-k">WHERE</span> <span class="pl-c1">s</span>.<span class="pl-c1">sport_id</span> IS <span class="pl-k">NULL</span>;</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy code to clipboard" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="SELECT
     e.equipment_id,
     e.equipment_name,
     e.sport_id
 FROM equipment AS e
 LEFT JOIN sport AS s
     ON s.sport_id = e.sport_id
-WHERE s.sport_id IS NULL;
-```
-
-In a production design, you would usually add a foreign key to `equipment.sport_id`; for demonstrating unmatched outer-join rows, the deliberately omitted constraint allows the orphaned equipment examples.
-
+WHERE s.sport_id IS NULL;" tabindex="0" role="button">
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" data-component="Octicon" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto">In a production design, you would usually add a foreign key to <code>equipment.sport_id</code>; for demonstrating unmatched outer-join rows, the deliberately omitted constraint allows the orphaned equipment examples.</p>
+</article>
   
 </body>
 </html>
