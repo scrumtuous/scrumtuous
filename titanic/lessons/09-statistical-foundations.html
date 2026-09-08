@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistical Foundations — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:840px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .hist{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    align-items:end;
+    min-height:210px;
+    margin:24px 0 8px;
+    padding:18px 18px 0;
+    border-left:2px solid #dfcbe0;
+    border-bottom:2px solid #dfcbe0;
+    border-radius:0 0 0 8px;
+  }
+  .hist-col{text-align:center}
+  .bar{
+    width:100%;
+    max-width:100px;
+    margin:0 auto;
+    border-radius:14px 14px 0 0;
+    background:linear-gradient(180deg,var(--pink),var(--lav));
+    min-height:12px;
+  }
+  .hist small{display:block;margin-top:7px;color:var(--muted);font-size:11px}
+  .shape-caption{text-align:center;color:var(--muted);font-weight:700}
+
+  .stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .stat-card{
+    border:1px solid var(--line);border-radius:20px;background:#fff;padding:18px;text-align:center
+  }
+  .stat-card strong{display:block;font-size:32px;color:#92527e}
+  .stat-card span{color:var(--muted)}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.compare,.stat-cards,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>📈</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">STATISTICAL FOUNDATIONS • TITANIC EDITION</div>
+  <h1>Is It a Pattern, or Just <span class="gradient">Statistical Drama?</span></h1>
+  <p class="subtitle">Learn to read distribution shape, correlation, p-values, and hypothesis tests with enough skepticism to avoid turning one interesting number into a grand conclusion.</p>
+  <div class="chips">
+    <span class="chip">📈 Skew</span>
+    <span class="chip">🔗 Correlation</span>
+    <span class="chip">🧪 Hypothesis Tests</span>
+    <span class="chip">🎯 p-values</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>📈 Read distribution shape</b>Understand what positive and negative skew tell you about a numeric column.</div>
+    <div class="objective"><b>🔗 Interpret correlation carefully</b>Read <code>r</code> and <code>p</code> together without claiming causation.</div>
+    <div class="objective"><b>🧪 Understand test intuition</b>Use a t-test to compare group means while respecting sample-size limitations.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Distribution Shape: Skew</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Skew measures asymmetry. A large positive skew means most values are lower, with a long tail stretching toward a smaller number of much larger values.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df["Fare"].skew()
+
+# near 0  -> roughly symmetric
+# positive -> long right tail
+# negative -> long left tail</code></pre>
+    </div>
+
+    <div class="hist">
+      <div class="hist-col"><div class="bar" style="height:170px"></div><small>Low fares</small></div>
+      <div class="hist-col"><div class="bar" style="height:95px"></div><small>Moderate</small></div>
+      <div class="hist-col"><div class="bar" style="height:55px"></div><small>Higher</small></div>
+      <div class="hist-col"><div class="bar" style="height:30px"></div><small>Very high</small></div>
+      <div class="hist-col"><div class="bar" style="height:16px"></div><small>Extreme</small></div>
+    </div>
+    <div class="shape-caption">Many smaller values → a few very large values → long right tail</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Strong positive skew means a long right tail.</b> The mean is typically pulled upward relative to the median. It does <em>not</em> mean the median is larger than the mean.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>If Titanic fares have a strong positive skew, what does that tell you about the shape of the distribution?</p>
+      <textarea placeholder="# Explain in plain English..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Shape understood ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Most fares are relatively low, while a smaller
+number of very expensive fares create a long
+right-hand tail.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>See the Shape with Buckets</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">You do not need a plotting library just to get a first feel for shape. <code>pd.cut()</code> can bucket a numeric column into ranges.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>(
+    pd.cut(df["Fare"], bins=5)
+      .value_counts()
+      .sort_index()
+)</code></pre>
+    </div>
+
+    <div class="tip"><b>Why this helps:</b> skew gives one summary number; bucket counts let you see how that number arises from the actual distribution.</div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Write pandas code that divides <code>Age</code> into four buckets and counts how many passengers fall into each.</p>
+      <textarea placeholder="# Bucket Age into 4 ranges..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Buckets built 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>(
+    pd.cut(df["Age"], bins=4)
+      .value_counts()
+      .sort_index()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Correlation with <code>pearsonr()</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain"><code>pearsonr()</code> returns two values: a correlation coefficient <code>r</code> and a p-value <code>p</code>.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from scipy import stats
+
+clean = df[["Age", "Fare"]].dropna()
+
+r, p = stats.pearsonr(
+    clean["Age"],
+    clean["Fare"]
+)
+
+print("r =", r)
+print("p =", p)</code></pre>
+    </div>
+
+    <div class="stat-cards">
+      <div class="stat-card"><strong>r</strong><span>Direction and strength of the linear relationship</span></div>
+      <div class="stat-card"><strong>p</strong><span>How surprising this result would be if there were no real linear relationship</span></div>
+      <div class="stat-card"><strong>n</strong><span>Sample size matters when judging how stable the result is</span></div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Report both <code>r</code> and <code>p</code>.</b> A correlation coefficient alone does not tell you how much evidence the sample provides for a non-zero linear relationship.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔗 Your challenge</h3>
+      <p>Suppose <code>r = 0.62</code> and <code>p = 0.003</code>. What does each number tell you?</p>
+      <textarea placeholder="# r:
+# p:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Numbers interpreted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>r = 0.62:
+A moderate positive linear relationship.
+
+p = 0.003:
+Under the null hypothesis of zero correlation,
+a result this extreme would be unlikely.
+
+It still does not prove causation.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>Read <code>r</code> and <code>p</code> Together</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Careful interpretation</h3>
+        <p>“The sample shows a moderate positive correlation, and the low p-value provides evidence that the relationship is unlikely to be chance alone under the null.”</p>
+      </div>
+      <div class="bad">
+        <h3>🚫 Overclaim</h3>
+        <p>“Higher quantity causes higher value in every situation.”</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>A low p-value does not prove causal direction.</b> Statistical significance says something about evidence against a null model, not about what caused what.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>You calculate <code>r = -0.15</code> and <code>p = 0.52</code>. Which is stronger: “there is no relationship” or “this sample does not give us enough evidence to claim a linear relationship”?</p>
+      <textarea placeholder="# Choose and explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Cautious conclusion 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>"This sample does not give us enough evidence
+to claim a linear relationship."
+
+A high p-value does not prove the variables are
+truly unrelated.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Correlation Is Not Causation</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Even a strong correlation can be produced by a third factor, selection effects, or coincidence.</p>
+
+    <div class="flow">
+      <span>Ice cream sales ↑</span><span>↗️</span>
+      <span>Hot weather</span><span>↘️</span>
+      <span>Drowning deaths ↑</span>
+    </div>
+
+    <div class="tip"><b>Classic lesson:</b> ice cream sales do not cause drowning. Summer heat influences both.</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Even a strong, statistically significant correlation does not prove causation.</b> There may be confounding variables, reverse causality, selection bias, or other explanations.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🛳️ Your challenge</h3>
+      <p>If Titanic fare correlates with survival, name one third variable that might help explain the relationship.</p>
+      <textarea placeholder="# Think of a confounder..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Causation trap avoided ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>Passenger class.
+
+Higher fares are strongly related to passenger class,
+and passenger class may itself be related to survival.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Testing a Hypothesis</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">EDA might suggest that two groups differ. A hypothesis test gives you a formal way to ask how compatible the observed difference is with a null hypothesis of no difference.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>survivors = df.loc[
+    df["Survived"] == 1,
+    "Fare"
+].dropna()
+
+non_survivors = df.loc[
+    df["Survived"] == 0,
+    "Fare"
+].dropna()
+
+t_stat, p_value = stats.ttest_ind(
+    survivors,
+    non_survivors,
+    equal_var=False
+)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>EDA sees a difference</span><span>➡️</span>
+      <span>Define null hypothesis</span><span>➡️</span>
+      <span>Run test</span><span>➡️</span>
+      <span>Interpret p-value</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>ttest_ind()</code> compares the means of two independent groups.</b> Using <code>equal_var=False</code> avoids assuming the two groups have identical variance.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧪 Your challenge</h3>
+      <p>Write code that compares <code>Age</code> for first-class vs third-class passengers with <code>ttest_ind(..., equal_var=False)</code>.</p>
+      <textarea placeholder="# Build the two groups and run the test..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Hypothesis tested 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>first = df.loc[
+    df["Pclass"] == 1,
+    "Age"
+].dropna()
+
+third = df.loc[
+    df["Pclass"] == 3,
+    "Age"
+].dropna()
+
+t_stat, p_value = stats.ttest_ind(
+    first,
+    third,
+    equal_var=False
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>What the p-value Means</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The null hypothesis says the underlying groups do not differ in the way being tested. The p-value tells you how unusual your observed result would be if that null model were true.</p>
+
+    <div class="stat-cards">
+      <div class="stat-card"><strong>H₀</strong><span>No real difference between group means</span></div>
+      <div class="stat-card"><strong>p</strong><span>How surprising this result is under H₀</span></div>
+      <div class="stat-card"><strong>.05</strong><span>A common convention, not a law of nature</span></div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>p &lt; 0.05</code> is a common convention, not a magical truth threshold.</b> A p-value just below .05 may still be fragile, especially in a small or imbalanced dataset.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎯 Your challenge</h3>
+      <p>A test returns <code>p = 0.049</code>. Which is better: “the difference is proven” or “the result is statistically suggestive under a common threshold, but should be interpreted with context”?</p>
+      <textarea placeholder="# Choose and explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Threshold treated wisely 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The second statement is better.
+
+p = 0.049 is just under a common threshold,
+but it does not prove the effect is large,
+important, causal, or robust.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>The Small-Sample Caveat</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A result can technically cross a significance threshold and still deserve skepticism.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Too confident</h3>
+        <p>“p = 0.04, so the market insight is established.”</p>
+      </div>
+      <div class="good">
+        <h3>✅ Better</h3>
+        <p>“The result is suggestive, but the smaller group is tiny and the p-value may be unstable.”</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Small, imbalanced groups make borderline p-values less reliable.</b> One unusual observation can materially change the result. Statistical significance is a starting point for more evidence, not the end of the story.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚩 Your challenge</h3>
+      <p>You compare two groups and get <code>p = 0.04</code>, but one group contains only 6 observations. Write the caveat you would present to a stakeholder.</p>
+      <textarea placeholder="# Write the caveat..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Skepticism unlocked ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>The result is suggestive, but the smaller group has
+only six observations, so the p-value may be unstable
+and should not be treated as a definitive finding.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Titanic Statistical Foundations Lab</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Use statistics to strengthen the questions you uncovered during EDA — without turning uncertainty into certainty.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Calculate skew for <code>Fare</code> and <code>Age</code>.</span></div>
+      <div class="check">2️⃣ <span>Use <code>pd.cut()</code> to inspect the shape of one numeric column.</span></div>
+      <div class="check">3️⃣ <span>Run <code>pearsonr()</code> on two numeric columns and report both <code>r</code> and <code>p</code>.</span></div>
+      <div class="check">4️⃣ <span>Explain why a strong correlation would still not prove causation.</span></div>
+      <div class="check">5️⃣ <span>Run an independent two-sample t-test on a reasonable Titanic grouping.</span></div>
+      <div class="check">6️⃣ <span>Include a sample-size or imbalance caveat in your interpretation.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact script that calculates fare skew, buckets Fare into five ranges, runs <code>pearsonr(Age, Fare)</code> after dropping missing rows, and compares Fare for survivors vs non-survivors using Welch's t-test.</p>
+      <textarea style="min-height:240px" placeholder="# Build your Titanic statistics script..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch statistical confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+from scipy import stats
+
+df = pd.read_csv("titanic.csv")
+
+print("Fare skew:", df["Fare"].skew())
+
+print(
+    pd.cut(df["Fare"], bins=5)
+      .value_counts()
+      .sort_index()
+)
+
+clean = df[["Age", "Fare"]].dropna()
+
+r, p = stats.pearsonr(
+    clean["Age"],
+    clean["Fare"]
+)
+
+print("r =", r)
+print("p =", p)
+
+survivors = df.loc[
+    df["Survived"] == 1,
+    "Fare"
+].dropna()
+
+non_survivors = df.loc[
+    df["Survived"] == 0,
+    "Fare"
+].dropna()
+
+t_stat, p_value = stats.ttest_ind(
+    survivors,
+    non_survivors,
+    equal_var=False
+)
+
+print("t =", t_stat)
+print("p =", p_value)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>📈 Numbers deserve skepticism, not worship.</h2>
+  <p>You can now recognize skew, read distribution shape, interpret <code>r</code> and <code>p</code> together, explain why correlation never proves causation, understand the intuition behind a two-sample t-test, and treat small-sample significance as a clue rather than a verdict.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived Statistical Foundations! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Statistically fabulous! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETL Concepts & Data Validation — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:860px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .etl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .etl-card{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center
+  }
+  .etl-card .icon{font-size:34px}
+  .etl-card b{display:block;font-size:19px;margin:5px 0}
+  .etl-card small{color:var(--muted)}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .error-box{
+    margin:18px 0;
+    border:1px solid #e1ccd8;
+    border-radius:20px;
+    overflow:hidden;
+    background:#18141b;
+  }
+  .error-top{
+    padding:10px 14px;background:#2b222f;color:#eaddeb;font-weight:900;font-size:13px
+  }
+  .error-body{
+    padding:18px;color:#ffb9ce;font-family:"SFMono-Regular",Consolas,monospace;
+    white-space:pre-wrap;font-size:14px
+  }
+
+  .truth-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .truth{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px
+  }
+  .truth b{display:block;margin-bottom:8px}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:780px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.etl-grid,.compare,.truth-grid,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🧪</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">ETL CONCEPTS & DATA VALIDATION • TITANIC EDITION</div>
+  <h1>Clean It Once. Test It Early. <span class="gradient">Trust It Later.</span></h1>
+  <p class="subtitle">Turn messy passenger data into a reusable pipeline, then use pytest to catch missing IDs, impossible values, bad categories, and duplicate keys before analysis ever sees them.</p>
+  <div class="chips">
+    <span class="chip">📥 Extract</span>
+    <span class="chip">🧹 Transform</span>
+    <span class="chip">📤 Load</span>
+    <span class="chip">🧪 pytest</span>
+    <span class="chip">✅ Validation</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🔄 Understand ETL</b>Separate data movement into extract, transform, and load stages.</div>
+    <div class="objective"><b>🌐 Choose live vs pipeline access</b>Understand how APIs and batch extracts feed downstream ETL.</div>
+    <div class="objective"><b>🧪 Validate automatically</b>Use pytest to fail loudly when data violates schema or business rules.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Extract, Transform, Load</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">ETL simply separates three jobs that are often tangled together in one giant script.</p>
+
+    <div class="etl-grid">
+      <div class="etl-card">
+        <div class="icon">📥</div>
+        <b>Extract</b>
+        <small>Get raw data from the source without pretending it is already clean.</small>
+      </div>
+      <div class="etl-card">
+        <div class="icon">🧹</div>
+        <b>Transform</b>
+        <small>Clean, validate, normalize, derive, and reshape.</small>
+      </div>
+      <div class="etl-card">
+        <div class="icon">📤</div>
+        <b>Load</b>
+        <small>Write the trusted result somewhere downstream users can rely on.</small>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import pandas as pd
+
+def extract():
+    return pd.read_csv(
+        "titanic-messy.csv"
+    )
+
+def transform(df):
+    # Cleaning logic lives here
+    clean = df.copy()
+
+    clean = clean.drop_duplicates()
+
+    clean["Embarked"] = (
+        clean["Embarked"]
+          .str.strip()
+          .str.title()
+    )
+
+    return clean
+
+def load(df, out_path):
+    df.to_csv(
+        out_path,
+        index=False
+    )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Separating ETL stages makes each one independently testable and reusable.</b> The transform step is where your earlier data-cleaning logic belongs.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Which ETL stage should remove exact duplicate Titanic rows?</p>
+      <textarea placeholder="# Extract, Transform, or Load?"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Stage selected ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Transform
+
+Removing duplicates is a data-cleaning step.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>API vs Pipeline: Same Journey, Different Entry Point</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The API module explained how data arrives. ETL explains what happens after you receive it.</p>
+
+    <div class="flow">
+      <span>API or batch extract</span><span>➡️</span>
+      <span>Extract</span><span>➡️</span>
+      <span>Transform</span><span>➡️</span>
+      <span>Validate</span><span>➡️</span>
+      <span>Load</span>
+    </div>
+
+    <div class="compare">
+      <div class="good">
+        <h3>🌐 Live API</h3>
+        <p>Useful for fresh, selective, interactive access.</p>
+      </div>
+      <div class="neutral">
+        <h3>📦 Batch extract</h3>
+        <p>Often better for large, complete, periodic data movement.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>An ETL pipeline can consume either API data or batch-extract data.</b> API vs extract describes how the data arrives; ETL describes how it becomes analysis-ready.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📦 Your challenge</h3>
+      <p>A nightly Titanic warehouse load receives one complete CSV file. Is that still ETL even though no API is involved?</p>
+      <textarea placeholder="# Yes or no, and why?"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Pipeline perspective unlocked 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Yes.
+
+The CSV is the extracted input. The pipeline can still
+transform it and load the cleaned output downstream.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Validate Before Analysis Touches the Data</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A loud test failure now is cheaper than a mysteriously wrong chart, model, or stakeholder decision later.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def test_no_missing_passenger_ids(
+    clean_passengers
+):
+    assert (
+        clean_passengers["PassengerId"]
+        .notna()
+        .all()
+    )
+
+def test_age_is_non_negative(
+    clean_passengers
+):
+    assert (
+        clean_passengers["Age"]
+        .dropna()
+        .ge(0)
+        .all()
+    )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Validation belongs before analysis.</b> A schema or range problem should fail clearly at the pipeline boundary instead of quietly poisoning later results.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧪 Your challenge</h3>
+      <p>Write a pytest assertion that checks every non-missing <code>Fare</code> is at least 0.</p>
+      <textarea placeholder="# Write the assertion..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Validation added ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>assert (
+    clean_passengers["Fare"]
+    .dropna()
+    .ge(0)
+    .all()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Validate Categories & Uniqueness</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Some rules are categorical: only known values are allowed. Others are structural: a key should never repeat.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def test_sex_is_valid(
+    clean_passengers
+):
+    valid = {
+        "Male",
+        "Female"
+    }
+
+    assert (
+        clean_passengers["Sex"]
+        .isin(valid)
+        .all()
+    )
+
+def test_passenger_ids_are_unique(
+    clean_passengers
+):
+    assert (
+        clean_passengers["PassengerId"]
+        .is_unique
+    )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>.isin(valid)</code> checks each row against an allowed set, while <code>.is_unique</code> checks the whole Series for duplicate values.</b></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Write a test allowing only passenger classes <code>1</code>, <code>2</code>, and <code>3</code>.</p>
+      <textarea placeholder="# Use .isin(...).all()"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Categories constrained 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def test_pclass_is_valid(
+    clean_passengers
+):
+    valid = {1, 2, 3}
+
+    assert (
+        clean_passengers["Pclass"]
+        .isin(valid)
+        .all()
+    )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>The Deliberately Broken Test</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">This test looks plausible, but it contains a subtle bug.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def test_pclass_is_valid_broken(
+    clean_passengers
+):
+    valid = {1, 2, 3}
+
+    assert (
+        clean_passengers["Pclass"]
+        .isin(valid)
+    )
+    # missing .all()</code></pre>
+    </div>
+
+    <div class="error-box">
+      <div class="error-top">pytest output</div>
+      <div class="error-body">ValueError: The truth value of a Series is ambiguous.
+Use a.empty, a.bool(), a.item(), a.any() or a.all().</div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>This is a direct quiz concept.</b> <code>.isin(valid)</code> returns a whole Boolean Series, one True/False per row. <code>assert</code> needs one Boolean answer.</div>
+    </div>
+
+    <div class="truth-grid">
+      <div class="truth">
+        <b><code>.isin(valid)</code></b>
+        <pre><code>0     True
+1     True
+2    False
+3     True</code></pre>
+        <p>Many Boolean values.</p>
+      </div>
+      <div class="truth">
+        <b><code>.isin(valid).all()</code></b>
+        <pre><code>False</code></pre>
+        <p>One Boolean answer: “Were all rows valid?”</p>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚨 Your challenge</h3>
+      <p>Why does <code>assert df["Pclass"].isin({1,2,3})</code> fail with an “ambiguous truth value” error?</p>
+      <textarea placeholder="# Explain the mismatch..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Ambiguity explained 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because .isin(...) returns one Boolean per row,
+not a single True/False value.
+
+assert needs one Boolean, so .all() is required
+to ask whether every row passed.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2><code>.all()</code> vs <code>.any()</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">These two reductions ask very different questions.</p>
+
+    <div class="compare">
+      <div class="good">
+        <h3><code>.all()</code></h3>
+        <p>“Did every passenger satisfy the rule?”</p>
+        <pre><code>df["Pclass"].isin(
+    {1, 2, 3}
+).all()</code></pre>
+      </div>
+      <div class="neutral">
+        <h3><code>.any()</code></h3>
+        <p>“Did at least one passenger satisfy the rule?”</p>
+        <pre><code>(
+    df["Fare"] &gt; 100
+).any()</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>For “every row must be valid,” use <code>.all()</code>, not <code>.any()</code>.</b> <code>.any()</code> would let a dataset pass even if only one row were valid.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>You want a test that fails if even one passenger has an invalid class. Should you use <code>.all()</code> or <code>.any()</code>?</p>
+      <textarea placeholder="# Choose and explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Boolean logic mastered ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>.all()
+
+The validation should pass only when every row
+belongs to the allowed set.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Five Useful Validation Tests</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A small set of automatic checks catches a surprising amount of bad data.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span><b>Required key:</b> no missing <code>PassengerId</code>.</span></div>
+      <div class="check">2️⃣ <span><b>Uniqueness:</b> <code>PassengerId</code> is unique.</span></div>
+      <div class="check">3️⃣ <span><b>Allowed categories:</b> <code>Pclass</code> is only 1, 2, or 3.</span></div>
+      <div class="check">4️⃣ <span><b>Range:</b> Fare is never negative.</span></div>
+      <div class="check">5️⃣ <span><b>Canonical values:</b> Sex contains only expected normalized values.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧪 Your challenge</h3>
+      <p>Write five pytest assertions corresponding to the checklist above.</p>
+      <textarea style="min-height:190px" placeholder="# Build the five checks..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Test suite sparkling 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one solution</button>
+      </div>
+      <div class="solution"><pre><code>assert (
+    clean["PassengerId"]
+    .notna()
+    .all()
+)
+
+assert clean["PassengerId"].is_unique
+
+assert (
+    clean["Pclass"]
+    .isin({1, 2, 3})
+    .all()
+)
+
+assert (
+    clean["Fare"]
+    .dropna()
+    .ge(0)
+    .all()
+)
+
+assert (
+    clean["Sex"]
+    .isin({"Male", "Female"})
+    .all()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">GenAI</div>
+    <h2>Use It to Translate Errors, Not Replace Understanding</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">An unfamiliar pytest error is a perfect place to ask for an explanation — then write and understand the fix yourself.</p>
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Good prompt</h3>
+        <p>“Explain why pandas says the truth value of a Series is ambiguous in this assertion.”</p>
+      </div>
+      <div class="bad">
+        <h3>🚫 Weak learning</h3>
+        <p>“Rewrite all my tests so they pass,” followed by submitting code you cannot explain.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>GenAI can explain an error quickly, but the student still owns the reasoning and fix.</b> Here, the key insight is that a Series must be reduced to one Boolean with <code>.all()</code>.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🤖 Your challenge</h3>
+      <p>Write a good GenAI question for understanding the ambiguous-Series pytest error without asking the AI to rewrite the whole assignment.</p>
+      <textarea placeholder="# Write the learning-oriented prompt..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">AI used responsibly ✨</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2>Validate Early, Fail Loudly</h2>
+  </div>
+  <div class="module-body">
+    <div class="flow">
+      <span>Messy input</span><span>➡️</span>
+      <span>Transform</span><span>➡️</span>
+      <span>pytest validation</span><span>➡️</span>
+      <span>Load trusted output</span><span>➡️</span>
+      <span>EDA / models</span>
+    </div>
+
+    <div class="tip"><b>Core principle:</b> a loud failure at the pipeline boundary is dramatically cheaper than a silent bad-data problem discovered after reporting or modeling.</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Tests are not just for application code.</b> Data pipelines should test schema, allowed categories, ranges, uniqueness, and other invariants automatically.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📣 Your challenge</h3>
+      <p>Why is a failed data-validation test generally better than silently replacing an invalid value with a guess?</p>
+      <textarea placeholder="# Explain the principle..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Fail loudly, learn quickly 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>A loud failure makes the data problem visible and
+traceable.
+
+A guessed replacement can silently corrupt later
+analysis while making the pipeline appear successful.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Build & Validate a Titanic ETL Pipeline</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Structure the pipeline cleanly, then prove the transformed output obeys the rules you rely on.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Create separate <code>extract()</code>, <code>transform()</code>, and <code>load()</code> functions.</span></div>
+      <div class="check">2️⃣ <span>Use your Data Cleaning module logic inside <code>transform()</code>.</span></div>
+      <div class="check">3️⃣ <span>Write five pytest validation tests against transformed output.</span></div>
+      <div class="check">4️⃣ <span>Include required-key, range, category, and uniqueness checks.</span></div>
+      <div class="check">5️⃣ <span>Add one deliberately broken <code>.isin()</code> test without <code>.all()</code>.</span></div>
+      <div class="check">6️⃣ <span>Run it, read the ambiguous-Series error, then fix it yourself.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact ETL skeleton plus a small pytest suite that validates the cleaned Titanic output.</p>
+      <textarea style="min-height:280px" placeholder="# Build the pipeline and tests..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch ETL confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+
+def extract():
+    return pd.read_csv(
+        "titanic-messy.csv"
+    )
+
+def transform(df):
+    clean = df.copy()
+
+    clean = clean.drop_duplicates()
+
+    clean["Sex"] = (
+        clean["Sex"]
+        .str.strip()
+        .str.lower()
+        .map({
+            "male": "Male",
+            "female": "Female"
+        })
+    )
+
+    return clean
+
+def load(df, out_path):
+    df.to_csv(
+        out_path,
+        index=False
+    )
+
+
+# pytest examples
+
+def test_passenger_ids_present(clean):
+    assert (
+        clean["PassengerId"]
+        .notna()
+        .all()
+    )
+
+def test_passenger_ids_unique(clean):
+    assert clean["PassengerId"].is_unique
+
+def test_valid_class(clean):
+    assert (
+        clean["Pclass"]
+        .isin({1, 2, 3})
+        .all()
+    )
+
+def test_non_negative_fares(clean):
+    assert (
+        clean["Fare"]
+        .dropna()
+        .ge(0)
+        .all()
+    )
+
+def test_valid_sex(clean):
+    assert (
+        clean["Sex"]
+        .isin({"Male", "Female"})
+        .all()
+    )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🧪 A trustworthy pipeline should complain before your analysis has to.</h2>
+  <p>You can now separate extract, transform, and load stages, understand how APIs or batch files feed an ETL pipeline, validate schema and business rules with pytest, use <code>.isin(...).all()</code> correctly, and interpret the “truth value of a Series is ambiguous” error instead of being intimidated by it.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived ETL & Data Validation! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+
+  const old=button.textContent;
+  button.textContent="✨ Data validated! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandas Fundamentals — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --blue:#84c7ef;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:980px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:820px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.plain,.pandas{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .plain{background:#fff8e7}
+  .pandas{background:#f2efff}
+
+  .structure-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .structure{
+    border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff
+  }
+  .structure .icon{font-size:30px}
+  .structure b{display:block;font-size:19px;margin:5px 0}
+
+  .fake-table{
+    overflow:auto;border:1px solid var(--line);border-radius:18px;margin:16px 0;background:#fff
+  }
+  table{border-collapse:collapse;width:100%;min-width:620px}
+  th,td{padding:12px 14px;border-bottom:1px solid #f0e3ec;text-align:left}
+  th{background:#fff5fa;color:#72536d}
+  tr:last-child td{border-bottom:none}
+  .series-highlight{background:#fff1f7}
+  .row-highlight{background:#f3eeff}
+
+  .terminal{
+    background:#17141b;color:#f7eff9;border-radius:18px;padding:19px;
+    font-family:"SFMono-Regular",Consolas,monospace
+  }
+  .prompt{color:#f2a8d0}.out{color:#cbeee5}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid{grid-template-columns:1fr 1fr}
+    .compare,.structure-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .objective-grid{grid-template-columns:1fr}
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">WELCOME TO DAY 2 • PANDAS FUNDAMENTALS</div>
+  <h1>DataFrames, Series & <span class="gradient">Titanic Data Magic</span></h1>
+  <p class="subtitle">Yesterday you processed passengers by hand. Today pandas turns those loops, dictionaries, and CSV records into powerful table operations.</p>
+  <div class="chips">
+    <span class="chip">🐼 pandas</span>
+    <span class="chip">📊 DataFrames</span>
+    <span class="chip">🎀 Series</span>
+    <span class="chip">🎯 .loc / .iloc</span>
+    <span class="chip">✨ groupby</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>📊 Understand DataFrames</b>See a DataFrame as a table of rows and named columns.</div>
+    <div class="objective"><b>🎀 Understand Series</b>Recognize that selecting one column normally returns a Series.</div>
+    <div class="objective"><b>🎯 Select & filter</b>Use <code>.iloc</code>, <code>.loc</code>, and Boolean conditions.</div>
+    <div class="objective"><b>✨ Aggregate</b>Replace manual accumulation loops with <code>groupby()</code>.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Day 1 → Day 2</div>
+    <h2>Same Passenger Data. Much Less Bookkeeping.</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">On Day 1, you read CSV rows into dictionaries and stored those dictionaries in a list. pandas gives you a table-shaped object immediately.</p>
+
+    <div class="compare">
+      <div class="plain">
+        <h3>Yesterday: plain Python</h3>
+        <pre><code>import csv
+
+with open("titanic.csv") as f:
+    reader = csv.DictReader(f)
+    passengers = list(reader)</code></pre>
+      </div>
+      <div class="pandas">
+        <h3>Today: pandas</h3>
+        <pre><code>import pandas as pd
+
+df = pd.read_csv("titanic.csv")</code></pre>
+      </div>
+    </div>
+
+    <div class="tip"><b>The important idea:</b> pandas doesn't change the data problem. It removes much of the manual bookkeeping.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>DataFrame vs Series</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A <b>DataFrame</b> is a table. A <b>Series</b> is one labeled column of that table.</p>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>index</th><th>Name</th><th>Age</th><th>Sex</th><th>Fare</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>Owen</td><td class="series-highlight">22</td><td>male</td><td>7.25</td></tr>
+          <tr><td>1</td><td>Anna</td><td class="series-highlight">38</td><td>female</td><td>71.28</td></tr>
+          <tr><td>2</td><td>Laina</td><td class="series-highlight">26</td><td>female</td><td>7.93</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import pandas as pd
+
+df = pd.read_csv("titanic.csv")
+
+print(type(df))
+# pandas.core.frame.DataFrame
+
+print(type(df["Age"]))
+# pandas.core.series.Series</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>df["Age"]</code> returns a Series.</b> But <code>df[["Age"]]</code> returns a one-column DataFrame because the inner brackets contain a list of column names.</div>
+    </div>
+
+    <div class="compare">
+      <div class="plain">
+        <h3><code>df["Age"]</code></h3>
+        <pre><code>0    22
+1    38
+2    26
+Name: Age, dtype: int64</code></pre>
+        <p><b>Series</b></p>
+      </div>
+      <div class="pandas">
+        <h3><code>df[["Age"]]</code></h3>
+        <pre><code>   Age
+0   22
+1   38
+2   26</code></pre>
+        <p><b>DataFrame</b></p>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Write one expression that returns a Series for <code>Fare</code>, and one that returns a DataFrame containing <code>Name</code>, <code>Age</code>, and <code>Sex</code>.</p>
+      <textarea placeholder="# Series:
+# DataFrame:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Structures sorted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df["Fare"]
+
+df[["Name", "Age", "Sex"]]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Load & Inspect a DataFrame</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Before analyzing anything, inspect what pandas actually loaded.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df = pd.read_csv("titanic.csv")
+
+df.head()
+df.tail()
+df.shape
+df.columns
+df.info()
+df.describe()
+df.dtypes</code></pre>
+    </div>
+
+    <div class="tip"><b>Beginner workflow:</b> look at the first rows, check the size, inspect column names and types, then summarize the numbers.</div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>Which command would you use to answer each question: “How many rows?”, “What types are the columns?”, and “What are the first five passengers?”</p>
+      <textarea placeholder="# 1) ...
+# 2) ...
+# 3) ..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Data inspected 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) df.shape
+2) df.dtypes   # or df.info()
+3) df.head()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2><code>.iloc</code> vs <code>.loc</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">These two names look similar but mean different things. Memorize the distinction early.</p>
+
+    <div class="structure-grid">
+      <div class="structure">
+        <div class="icon">🔢</div>
+        <b><code>.iloc</code> = integer position</b>
+        <p>Think list-style position: first row, second row, etc.</p>
+        <pre><code>df.iloc[0]</code></pre>
+      </div>
+      <div class="structure">
+        <div class="icon">🏷️</div>
+        <b><code>.loc</code> = labels / conditions</b>
+        <p>Use row labels or Boolean conditions.</p>
+        <pre><code>df.loc[df["Sex"] == "female"]</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>.iloc</code> is position-based; <code>.loc</code> is label/condition-based.</b> This distinction is a frequent source of pandas mistakes.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎯 Your challenge</h3>
+      <p>Write one expression for the first row by position, and another expression for all passengers whose <code>Pclass</code> equals 1.</p>
+      <textarea placeholder="# First row:
+# First-class rows:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Location mastered 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.iloc[0]
+
+df.loc[df["Pclass"] == 1]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Boolean Filtering</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A Boolean condition creates one True/False value per row. pandas keeps the rows where the condition is True.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.loc[
+    df["Sex"] == "female",
+    ["Name", "Age", "Fare"]
+]</code></pre>
+    </div>
+
+    <p>This says:</p>
+
+    <div class="flow">
+      <span>Check each row</span><span>➡️</span>
+      <span>Keep females</span><span>➡️</span>
+      <span>Return Name, Age, Fare</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>.loc[condition, columns]</code> is the clear, safe pattern when filtering rows and selecting columns together.</b> It is especially preferable when assignment may follow.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌷 Your challenge</h3>
+      <p>Select only passengers younger than 18 and return just <code>Name</code>, <code>Age</code>, and <code>Survived</code>.</p>
+      <textarea placeholder="# Filter rows and choose columns..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Filtered fabulously ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.loc[
+    df["Age"] &lt; 18,
+    ["Name", "Age", "Survived"]
+]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>Avoid Chained Indexing</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Some pandas expressions seem to work but are less robust, especially when you later modify the filtered result.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Chained indexing</h3>
+        <pre><code>child_df = (
+    df[df["Age"] &lt; 18]
+    [["Name", "Age"]]
+)
+
+child_df["Child"] = True</code></pre>
+      </div>
+      <div class="good">
+        <h3>✅ Clearer with <code>.loc</code></h3>
+        <pre><code>child_df = df.loc[
+    df["Age"] &lt; 18,
+    ["Name", "Age"]
+].copy()
+
+child_df["Child"] = True</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Chained indexing can produce a view or a copy, so later assignment may be ambiguous.</b> This is why pandas may warn with <code>SettingWithCopyWarning</code>. Using <code>.loc</code> makes the intent clearer and safer.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🛟 Your challenge</h3>
+      <p>Rewrite <code>df[df["Fare"] &gt; 50][["Name", "Fare"]]</code> using <code>.loc</code>.</p>
+      <textarea placeholder="# Rewrite safely..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">No chained indexing 💅</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.loc[
+    df["Fare"] &gt; 50,
+    ["Name", "Fare"]
+]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2><code>groupby()</code>: Yesterday's Loop in One Line</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">This is one of the biggest Day 2 payoffs. <code>groupby()</code> partitions rows into groups and then applies an aggregation such as <code>sum()</code> within each group.</p>
+
+    <div class="compare">
+      <div class="plain">
+        <h3>Plain Python</h3>
+        <pre><code>totals = {}
+
+for passenger in passengers:
+    key = passenger["Pclass"]
+    fare = float(passenger["Fare"])
+
+    totals[key] = (
+        totals.get(key, 0.0) + fare
+    )</code></pre>
+      </div>
+      <div class="pandas">
+        <h3>pandas</h3>
+        <pre><code>df.groupby("Pclass")["Fare"].sum()</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>groupby()</code> is conceptually the same as manual dictionary accumulation.</b> It groups rows by the chosen key and performs the requested aggregation within each group. Matching totals are expected, not a coincidence.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✨ Your challenge</h3>
+      <p>Calculate the average age for each passenger class.</p>
+      <textarea placeholder="# Group by Pclass and average Age..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Grouped gorgeously 🌸</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.groupby("Pclass")["Age"].mean()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Filter, Then Aggregate</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">pandas operations compose naturally. Read a chain top to bottom: filter first, then group, then aggregate.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>(
+    df.loc[df["Sex"] == "female"]
+      .groupby("Pclass")["Fare"]
+      .mean()
+)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>Female passengers</span><span>➡️</span>
+      <span>Group by class</span><span>➡️</span>
+      <span>Average fare</span>
+    </div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>Filter to passengers who survived, then calculate the mean age for each passenger class.</p>
+      <textarea placeholder="# Filter → group → mean..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Chain champion ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>(
+    df.loc[df["Survived"] == 1]
+      .groupby("Pclass")["Age"]
+      .mean()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2>Unique Values Without Building a Set</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Yesterday you converted a list to a set to get distinct values. pandas gives columns their own convenience methods.</p>
+
+    <div class="compare">
+      <div class="plain">
+        <h3>Plain Python</h3>
+        <pre><code>ports = set()
+
+for passenger in passengers:
+    ports.add(passenger["Embarked"])</code></pre>
+      </div>
+      <div class="pandas">
+        <h3>pandas</h3>
+        <pre><code>df["Embarked"].unique()</code></pre>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Return the distinct values in the <code>Pclass</code> column.</p>
+      <textarea placeholder="# One pandas expression..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Unique and lovely 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df["Pclass"].unique()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Important Reality Check</div>
+    <h2>What pandas Does NOT Remove</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">pandas makes operations shorter. It does not magically make bad data correct.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Looks numeric, but isn't</h3>
+        <pre><code>df["Fare"]
+
+# maybe dtype: object
+# values could contain strings</code></pre>
+      </div>
+      <div class="good">
+        <h3>✅ Check first</h3>
+        <pre><code>df.dtypes
+df.info()
+df["Fare"].head()</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>groupby(...).sum()</code> only gives meaningful numeric results if the underlying column is actually numeric and semantically valid.</b> pandas removes bookkeeping, not the need to understand your data.</div>
+    </div>
+
+    <div class="tip"><b>Coming next:</b> data cleaning exists because real files contain missing values, inconsistent categories, strange dates, outliers, and incorrect types.</div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>Before calculating total fares, name two pandas commands you could use to inspect whether <code>Fare</code> looks trustworthy.</p>
+      <textarea placeholder="# Name two inspection commands..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Skeptical data scientist 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>df.info()
+df.dtypes
+
+# Also useful:
+df["Fare"].head()
+df["Fare"].describe()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Rebuild Yesterday's Titanic Work in pandas</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Your goal is not merely shorter code. Your pandas answers should match the results from your plain-Python version.</p>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Using <code>titanic.csv</code>:</p>
+      <ol>
+        <li>Load the file into a DataFrame.</li>
+        <li>Select female passengers using <code>.loc</code>.</li>
+        <li>Return only <code>Name</code>, <code>Age</code>, and <code>Fare</code>.</li>
+        <li>Calculate total fare by passenger class using <code>groupby()</code>.</li>
+        <li>Return distinct embarkation ports with <code>.unique()</code>.</li>
+      </ol>
+      <textarea style="min-height:220px" placeholder="# Build the pandas version..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch pandas confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+
+df = pd.read_csv("titanic.csv")
+
+female_passengers = df.loc[
+    df["Sex"] == "female",
+    ["Name", "Age", "Fare"]
+]
+
+fare_by_class = (
+    df.groupby("Pclass")["Fare"]
+      .sum()
+)
+
+ports = df["Embarked"].unique()
+
+print(female_passengers)
+print(fare_by_class)
+print(ports)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🐼 Yesterday's loops just got very small.</h2>
+  <p>You now understand DataFrames and Series, can select rows and columns with <code>.iloc</code> and <code>.loc</code>, filter with Boolean conditions, avoid chained indexing, and use <code>groupby()</code> to replace manual accumulation loops.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived pandas Fundamentals! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc","#84c7ef"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Pandas perfection! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

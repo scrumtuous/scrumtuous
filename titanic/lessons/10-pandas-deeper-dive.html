@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pandas Deeper Dive — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1020px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:850px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .fake-table{
+    overflow:auto;border:1px solid var(--line);border-radius:18px;margin:16px 0;background:#fff
+  }
+  table{border-collapse:collapse;width:100%;min-width:700px}
+  th,td{padding:12px 14px;border-bottom:1px solid #f0e3ec;text-align:left}
+  th{background:#fff5fa;color:#72536d}
+  tr:last-child td{border-bottom:none}
+  .highlight{background:#fff3f9;font-weight:800}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .concept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+  .concept{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center
+  }
+  .concept .icon{font-size:30px}
+  .concept b{display:block;margin:5px 0}
+  .concept small{color:var(--muted)}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.compare,.concept-grid,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>📊</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PANDAS DEEPER DIVE • TITANIC EDITION</div>
+  <h1>Group, Pivot, Merge & <span class="gradient">Time-Travel Through the Titanic</span></h1>
+  <p class="subtitle">Now that you know DataFrames, go deeper: summarize many ways at once, reshape tables, combine reference data, and analyze passenger activity over time.</p>
+  <div class="chips">
+    <span class="chip">✨ groupby</span>
+    <span class="chip">🧩 pivot_table</span>
+    <span class="chip">🔗 merge</span>
+    <span class="chip">🕰️ resample</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>✨ Summarize several ways at once</b>Use <code>.agg()</code> for count, sum, mean, and more.</div>
+    <div class="objective"><b>🧩 Reshape & combine</b>Use <code>pivot_table()</code> and <code>merge()</code> to answer richer questions.</div>
+    <div class="objective"><b>🕰️ Work with time</b>Parse dates, create a datetime index, and summarize into daily, weekly, or monthly buckets.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2><code>groupby()</code> with Multiple Aggregations</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">You already know how to do one aggregation. <code>.agg([...])</code> lets you calculate several statistics on the same grouped column in a single call.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.groupby("Pclass")["Fare"].agg(
+    ["count", "sum", "mean"]
+)</code></pre>
+    </div>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>Pclass</th><th>count</th><th>sum</th><th>mean</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>...</td><td>...</td><td>...</td></tr>
+          <tr><td>2</td><td>...</td><td>...</td><td>...</td></tr>
+          <tr><td>3</td><td>...</td><td>...</td><td>...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>.agg(["sum", "count", "mean"])</code> calculates multiple summaries in one clear pipeline.</b> This is a direct quiz concept.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Group passengers by <code>Embarked</code> and calculate the count, mean, and maximum of <code>Fare</code>.</p>
+      <textarea placeholder="# Group and aggregate..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Aggregated elegantly ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.groupby("Embarked")["Fare"].agg(
+    ["count", "mean", "max"]
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Different Columns, Different Aggregations</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A dictionary passed to <code>.agg()</code> lets you summarize different columns in different ways.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.groupby("Pclass").agg({
+    "Fare": ["sum", "mean"],
+    "Age": "mean",
+    "Survived": "mean"
+})</code></pre>
+    </div>
+
+    <div class="tip"><b>Useful pattern:</b> one grouping, several business questions answered at once.</div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Group by <code>Sex</code>. Calculate mean <code>Age</code>, mean <code>Fare</code>, and mean <code>Survived</code>.</p>
+      <textarea placeholder="# Different columns, different summaries..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Multi-metric magic 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.groupby("Sex").agg({
+    "Age": "mean",
+    "Fare": "mean",
+    "Survived": "mean"
+})</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2><code>pivot_table()</code>: Turn a Summary Sideways</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A pivot table summarizes like <code>groupby()</code>, but reshapes the output so one category becomes rows and another becomes columns.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>pd.pivot_table(
+    df,
+    values="Fare",
+    index="Pclass",
+    columns="Sex",
+    aggfunc="mean",
+    fill_value=0
+)</code></pre>
+    </div>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>Pclass</th><th>female</th><th>male</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>...</td><td>...</td></tr>
+          <tr><td>2</td><td>...</td><td>...</td></tr>
+          <tr><td>3</td><td>...</td><td>...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>pivot_table()</code> is ideal for dense two-dimensional summaries.</b> The quiz specifically expects the pattern <code>values=..., index=..., columns=..., aggfunc=..., fill_value=0</code>.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧩 Your challenge</h3>
+      <p>Create a pivot table showing mean <code>Survived</code>, with <code>Pclass</code> down the rows and <code>Sex</code> across the columns.</p>
+      <textarea placeholder="# Build the pivot table..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Pivot perfection ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>pd.pivot_table(
+    df,
+    values="Survived",
+    index="Pclass",
+    columns="Sex",
+    aggfunc="mean",
+    fill_value=0
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>The <code>fill_value=0</code> Gotcha</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">If a row/column combination has no matching records, pandas normally shows <code>NaN</code>.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>Without <code>fill_value</code></h3>
+        <pre><code>             male  female
+Pclass
+1            80.0    110.0
+2            25.0     28.0
+3            12.0      NaN</code></pre>
+      </div>
+      <div class="good">
+        <h3>With <code>fill_value=0</code></h3>
+        <pre><code>             male  female
+Pclass
+1            80.0    110.0
+2            25.0     28.0
+3            12.0      0.0</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>fill_value=0</code> makes missing combinations explicit as zero where that interpretation is appropriate.</b> Otherwise the pivot contains <code>NaN</code>, which can be confusing and may complicate later arithmetic.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌷 Your challenge</h3>
+      <p>Why might a pivot table show <code>NaN</code> for one row/column combination?</p>
+      <textarea placeholder="# Explain the missing combination..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Gotcha avoided 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because there were no source rows matching that
+combination of categories.
+
+For a summary where "no matching rows" should mean
+zero, fill_value=0 makes that explicit.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2><code>merge()</code>: Bring in Another Table</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A merge combines two DataFrames using a shared key, just like a SQL join.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>class_info = pd.DataFrame([
+    {"Pclass": 1, "ClassName": "First Class"},
+    {"Pclass": 2, "ClassName": "Second Class"},
+    {"Pclass": 3, "ClassName": "Third Class"}
+])
+
+merged = df.merge(
+    class_info,
+    on="Pclass",
+    how="left"
+)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>Titanic passengers</span><span>+</span>
+      <span>Class reference table</span><span>➡️</span>
+      <span>One richer DataFrame</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>A left join is correct when the requirement is “keep every original passenger/trade row and attach reference data when available.”</b> A right join changes the preserved row set to favor the reference table.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔗 Your challenge</h3>
+      <p>You have one row per passenger in <code>df</code> and a small port reference table keyed by <code>Embarked</code>. Which merge keeps every passenger even if the port lookup is missing?</p>
+      <textarea placeholder="# Write the merge..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Join chosen wisely ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>merged = df.merge(
+    ports,
+    on="Embarked",
+    how="left"
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>Why the Wrong Join Changes the Question</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Left join</h3>
+        <p>Preserves every passenger row and attaches matching reference data.</p>
+      </div>
+      <div class="bad">
+        <h3>🚫 Right join</h3>
+        <p>Preserves every row in the reference table, including entries with no passengers. That may not match the passenger-level requirement.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>The problem is not “right joins are bad.”</b> The problem is choosing a join that preserves the wrong side for the business question.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>If the business question changed to “show every known embarkation port, even ports with zero passengers,” which side should be preserved?</p>
+      <textarea placeholder="# Explain the join choice..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Business question matched 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The reference-table side should be preserved.
+
+Depending on table order, that could mean a right join
+or swapping the tables and using a left join.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Time Series Basics: Parse the Date</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Your synthetic <code>ticket_purchase_date</code> now becomes especially useful. pandas must treat it as a real datetime before time-aware operations make sense.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df = pd.read_csv(
+    "titanic.csv",
+    parse_dates=["ticket_purchase_date"]
+)
+
+by_date = df.set_index(
+    "ticket_purchase_date"
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Before resampling, the date column should be converted to datetime and used as the index.</b> A column merely containing the word “date” does not make it a valid time series.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📅 Your challenge</h3>
+      <p>If the date column is already loaded as text, convert it with <code>pd.to_datetime()</code> and then set it as the index.</p>
+      <textarea placeholder="# Convert and set index..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Time unlocked ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df["ticket_purchase_date"] = pd.to_datetime(
+    df["ticket_purchase_date"]
+)
+
+by_date = df.set_index(
+    "ticket_purchase_date"
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2><code>resample()</code>: groupby for Time</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Once the DataFrame has a datetime index, <code>resample()</code> groups records into time buckets.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>weekly_fares = (
+    by_date["Fare"]
+      .resample("W")
+      .sum()
+)
+
+print(weekly_fares)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>Individual ticket purchases</span><span>➡️</span>
+      <span>Weekly buckets</span><span>➡️</span>
+      <span>Weekly total fare</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>resample()</code> is conceptually “groupby for time.”</b> Common frequency codes include <code>D</code> for day, <code>W</code> for week, and <code>M</code> for month.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🕰️ Your challenge</h3>
+      <p>Count how many tickets were purchased each week.</p>
+      <textarea placeholder="# Weekly passenger/ticket count..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Time buckets built 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>weekly_counts = (
+    by_date["Name"]
+      .resample("W")
+      .count()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">One Idea, Four Operations</div>
+    <h2>What Each Tool Is Really Doing</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="concept-grid">
+      <div class="concept">
+        <div class="icon">✨</div>
+        <b>groupby</b>
+        <small>Reduce many rows to a summary by category.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🧩</div>
+        <b>pivot_table</b>
+        <small>Summarize across two categorical dimensions in a wide layout.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🔗</div>
+        <b>merge</b>
+        <small>Combine tables before asking a richer question.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🕰️</div>
+        <b>resample</b>
+        <small>Reduce many rows into time buckets.</small>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>👑 Quick challenge</h3>
+      <p>Match each question to the best operation:</p>
+      <p>1. Average fare by passenger class<br>
+         2. Survival rate by class and sex<br>
+         3. Add class names from another table<br>
+         4. Weekly ticket sales</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)
+# 4)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Tool matched perfectly ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) groupby
+2) pivot_table
+3) merge
+4) resample</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>One-Page Titanic EDA Summary</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Combine the four operations into one compact analysis that would make sense in a stakeholder demo.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Use <code>groupby().agg()</code> for count, sum, and mean fare by class.</span></div>
+      <div class="check">2️⃣ <span>Create a pivot table of survival rate by class and sex with <code>fill_value=0</code>.</span></div>
+      <div class="check">3️⃣ <span>Merge in a small class reference table using a left join.</span></div>
+      <div class="check">4️⃣ <span>Parse <code>ticket_purchase_date</code> as datetime and set it as the index.</span></div>
+      <div class="check">5️⃣ <span>Resample weekly ticket counts or weekly total fares.</span></div>
+      <div class="check">6️⃣ <span>Write 3–5 takeaways that cite specific numbers.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact pandas script that demonstrates all four operations: multi-aggregation <code>groupby</code>, a pivot table, a left merge, and weekly resampling.</p>
+      <textarea style="min-height:250px" placeholder="# Build your deeper-dive Titanic summary..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch pandas confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+
+df = pd.read_csv(
+    "titanic.csv",
+    parse_dates=["ticket_purchase_date"]
+)
+
+# 1. Multiple aggregations
+class_summary = (
+    df.groupby("Pclass")["Fare"]
+      .agg(["count", "sum", "mean"])
+)
+
+# 2. Pivot table
+survival_pivot = pd.pivot_table(
+    df,
+    values="Survived",
+    index="Pclass",
+    columns="Sex",
+    aggfunc="mean",
+    fill_value=0
+)
+
+# 3. Merge
+class_info = pd.DataFrame([
+    {"Pclass": 1, "ClassName": "First Class"},
+    {"Pclass": 2, "ClassName": "Second Class"},
+    {"Pclass": 3, "ClassName": "Third Class"}
+])
+
+merged = df.merge(
+    class_info,
+    on="Pclass",
+    how="left"
+)
+
+# 4. Resample
+by_date = df.set_index(
+    "ticket_purchase_date"
+)
+
+weekly_fares = (
+    by_date["Fare"]
+      .resample("W")
+      .sum()
+)
+
+print(class_summary)
+print(survival_pivot)
+print(merged.head())
+print(weekly_fares)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>📊 One DataFrame, four powerful ways to rethink it.</h2>
+  <p>You can now summarize with multiple aggregations, reshape with pivot tables, combine tables with the correct join, parse dates into a real time index, and use <code>resample()</code> to create time-based summaries.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived the pandas Deeper Dive! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Data reshaped beautifully! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

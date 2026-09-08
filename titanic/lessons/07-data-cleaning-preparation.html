@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Cleaning & Preparation — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:980px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:820px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .decision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .decision{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+  .decision .icon{font-size:30px}
+  .decision b{display:block;font-size:18px;margin:5px 0}
+  .decision small{color:var(--muted)}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .fake-table{
+    overflow:auto;border:1px solid var(--line);border-radius:18px;margin:16px 0;background:#fff
+  }
+  table{border-collapse:collapse;width:100%;min-width:700px}
+  th,td{padding:12px 14px;border-bottom:1px solid #f0e3ec;text-align:left}
+  th{background:#fff5fa;color:#72536d}
+  tr:last-child td{border-bottom:none}
+  .badcell{background:#fff1f5;font-weight:700;color:#a43f62}
+  .warncell{background:#fff8df;font-weight:700;color:#8a641c}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.decision-grid,.compare,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🧹</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">DAY 2 • DATA CLEANING & PREPARATION</div>
+  <h1>Clean the Passenger Manifest <span class="gradient">Without Inventing Facts</span></h1>
+  <p class="subtitle">Real data is messy. The goal isn't to make every cell look neat — it's to make defensible decisions about what can be fixed, what can be inferred, and what must remain uncertain.</p>
+  <div class="chips">
+    <span class="chip">🧹 Missing Values</span>
+    <span class="chip">📅 Dates</span>
+    <span class="chip">🎀 Categories</span>
+    <span class="chip">👯 Duplicates</span>
+    <span class="chip">🚩 Outliers</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🧩 Handle missing values thoughtfully</b>Choose drop, recompute, backfill, or leave missing based on what is actually knowable.</div>
+    <div class="objective"><b>📅 Fix types and dates carefully</b>Convert columns without silently changing the meaning of ambiguous values.</div>
+    <div class="objective"><b>🚩 Treat outliers as questions</b>Flag suspicious records for review instead of automatically deleting them.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Quantify the Damage First</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Do not immediately start “fixing” the dataset. First measure what is wrong.</p>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Age</th><th>Fare</th><th>Ticket Purchase Date</th><th>Embarked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Owen</td><td>22</td><td>7.25</td><td>1912-03-10</td><td>Southampton</td></tr>
+          <tr><td>Anna</td><td class="badcell">NaN</td><td>71.28</td><td>1912-03-11</td><td>Cherbourg</td></tr>
+          <tr><td>Laina</td><td>26</td><td class="badcell">NaN</td><td class="warncell">03/04/1912</td><td>southampton</td></tr>
+          <tr><td>Owen</td><td>22</td><td>7.25</td><td>1912-03-10</td><td>Southampton</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.isna().sum()
+
+df.duplicated().sum()
+
+df.dtypes
+
+df["Embarked"].unique()
+
+df["Fare"].describe()</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>df.isna().sum()</code> only finds missing values.</b> It does not reveal duplicates, ambiguous dates, inconsistent categories, or outliers. Different problems require different checks.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Write three pandas expressions that check: missing values, exact duplicates, and distinct values in <code>Embarked</code>.</p>
+      <textarea placeholder="# Missing values:
+# Duplicates:
+# Unique Embarked values:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Damage assessed ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.isna().sum()
+
+df.duplicated().sum()
+
+df["Embarked"].unique()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Missing Values Need Different Decisions</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">There is no universal “fill missing values” rule. The correct action depends on what the field means and what information is available.</p>
+
+    <div class="decision-grid">
+      <div class="decision">
+        <div class="icon">🗑️</div>
+        <b>Drop</b>
+        <small>Use when the value is required and cannot be reconstructed reliably.</small>
+      </div>
+      <div class="decision">
+        <div class="icon">🧮</div>
+        <b>Recompute</b>
+        <small>Use when the missing value can be derived exactly from other trustworthy fields.</small>
+      </div>
+      <div class="decision">
+        <div class="icon">🔁</div>
+        <b>Backfill</b>
+        <small>Use when the same fact is known elsewhere for the same entity.</small>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code># Example 1: age missing and not reconstructable
+df = df[df["Age"].notna()]
+
+# Example 2: fare-per-person missing but derivable
+m = df["FarePerPerson"].isna()
+
+df.loc[m, "FarePerPerson"] = (
+    df.loc[m, "Fare"] /
+    df.loc[m, "FamilySize"]
+)
+
+# Example 3: passenger surname known elsewhere
+df["Surname"] = (
+    df.groupby("FamilyId")["Surname"]
+      .transform("first")
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>“Drop it,” “recompute it,” and “backfill it” can all be correct.</b> The right answer depends on whether the missing value is unreconstructable, derivable, or known elsewhere.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>A passenger's age is missing and there is no reliable source to infer it. A derived field called <code>FarePerPerson</code> is missing but <code>Fare</code> and <code>FamilySize</code> are present. Which strategy fits each field?</p>
+      <textarea placeholder="# Age:
+# FarePerPerson:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Decision made 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Age:
+Drop the row if the exercise requires a known age,
+or leave it missing if downstream analysis can tolerate it.
+
+FarePerPerson:
+Recompute it from Fare / FamilySize.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Dates: Don't Guess</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A value like <code>03/04/1912</code> could mean March 4 or April 3. The characters alone do not tell you which.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code># Surrounding records:
+# P001 -> 1912-03-03
+# P002 -> 03/04/1912
+# P003 -> 1912-03-05
+
+# Context suggests P002 is 1912-03-04,
+# but only if the sequence is trustworthy.
+
+df["ticket_purchase_date"] = pd.to_datetime(
+    df["ticket_purchase_date"],
+    format="mixed",
+    dayfirst=False
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Never resolve an ambiguous date merely by assuming a regional convention.</b> Use trustworthy context such as surrounding records or the source system. A wrong conversion silently corrupts the data.</div>
+    </div>
+
+    <div class="tip"><b>Important:</b> nearby rows can help only when that sequence is known to be meaningful. If the dataset may be unsorted, go back to the source rather than inventing certainty.</div>
+
+    <div class="challenge">
+      <h3>📅 Your challenge</h3>
+      <p>You find <code>05/04/1912</code>. The previous and next rows are <code>1912-04-04</code> and <code>1912-04-06</code>, and the source guarantees chronological ordering. What is the strongest interpretation?</p>
+      <textarea placeholder="# Explain your interpretation and why..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Date detective ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1912-04-05
+
+The trusted chronological context makes April 5
+the defensible interpretation.
+
+Without trustworthy ordering, do not guess.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Normalize Categories Carefully</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Generic string functions can create new inconsistencies while fixing old ones. Explicit mappings are often safer for business categories.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Generic transformation</h3>
+        <pre><code>df["Embarked"] = (
+    df["Embarked"]
+      .str.capitalize()
+)</code></pre>
+        <p>This may be fine for some values, but generic transformations do not understand your business vocabulary.</p>
+      </div>
+      <div class="good">
+        <h3>✅ Explicit mapping</h3>
+        <pre><code>CANONICAL = {
+    "southampton": "Southampton",
+    "s": "Southampton",
+    "cherbourg": "Cherbourg",
+    "c": "Cherbourg",
+    "queenstown": "Queenstown",
+    "q": "Queenstown"
+}
+
+df["Embarked"] = (
+    df["Embarked"]
+      .str.strip()
+      .str.lower()
+      .map(CANONICAL)
+)</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Transform, then validate.</b> After canonicalizing categories, check <code>.unique()</code> to make sure only the expected values remain.</div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df["Embarked"].unique()</code></pre>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Create a mapping that turns <code>"male"</code>, <code>"MALE"</code>, <code>" female "</code>, and <code>"FEMALE"</code> into exactly <code>"Male"</code> and <code>"Female"</code>.</p>
+      <textarea placeholder="# Build a clean mapping strategy..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Categories canonicalized 💅</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>CANONICAL = {
+    "male": "Male",
+    "female": "Female"
+}
+
+df["Sex"] = (
+    df["Sex"]
+      .str.strip()
+      .str.lower()
+      .map(CANONICAL)
+)
+
+print(df["Sex"].unique())</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Duplicates vs Outliers</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">An exact duplicate and an extreme value are not the same kind of problem.</p>
+
+    <div class="compare">
+      <div class="good">
+        <h3>👯 Exact duplicate</h3>
+        <p>If two rows are truly identical and one is accidental, dropping the duplicate is usually safe.</p>
+        <pre><code>df = df.drop_duplicates()</code></pre>
+      </div>
+      <div class="neutral">
+        <h3>🚩 Outlier</h3>
+        <p>An extreme fare or age may be wrong — or it may be a real unusual passenger. Flag it first.</p>
+        <pre><code>high_fare = (
+    df["Fare"] &gt;
+    df["Fare"].quantile(.75) * 5
+)
+
+outliers = df.loc[high_fare]</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Outlier does not mean error.</b> Without investigation, deleting an extreme value can destroy legitimate information. Flag it, document it, and investigate.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚩 Your challenge</h3>
+      <p>A first-class passenger paid a fare far above everyone else. You have no evidence that it is wrong. Should you delete it, replace it with the mean, or flag it?</p>
+      <textarea placeholder="# Choose an action and justify it..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Outlier handled wisely 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Flag it.
+
+An extreme value could be a legitimate expensive fare.
+Deleting or overwriting it without evidence could make
+the dataset less truthful.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Cleaning Is a Series of Decisions</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Good cleaning is not “apply one function everywhere.” Each correction needs its own reason.</p>
+
+    <div class="flow">
+      <span>Measure problem</span><span>➡️</span>
+      <span>Understand meaning</span><span>➡️</span>
+      <span>Choose fix</span><span>➡️</span>
+      <span>Validate result</span><span>➡️</span>
+      <span>Document decision</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>The reasoning matters as much as the code.</b> A cleaning action should be justified by what is actually knowable from the data or source system.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>For each case, write the most defensible action: (1) exact duplicate, (2) ambiguous date with no trustworthy context, (3) inconsistent capitalization in a known category, (4) extreme but plausible fare.</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)
+# 4)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Cleaning judgment unlocked ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) Drop the exact duplicate.
+2) Go back to the source / leave unresolved.
+3) Normalize with an explicit canonical mapping.
+4) Flag and investigate; do not auto-delete.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Clean <code>titanic-messy.csv</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The messy Titanic dataset contains intentionally dirty values. Your task is not just to fix them — it is to justify every fix.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Quantify missing values and exact duplicates before changing anything.</span></div>
+      <div class="check">2️⃣ <span>Use different missing-value strategies based on what is knowable.</span></div>
+      <div class="check">3️⃣ <span>Resolve an ambiguous ticket purchase date only if context is trustworthy.</span></div>
+      <div class="check">4️⃣ <span>Normalize <code>Sex</code> and <code>Embarked</code> with canonical values.</span></div>
+      <div class="check">5️⃣ <span>Drop the exact duplicate row.</span></div>
+      <div class="check">6️⃣ <span>Flag the extreme fare or age instead of deleting it automatically.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact pandas cleaning pipeline that demonstrates the core ideas: inspect first, normalize a category, drop duplicates, parse the purchase date, and create an outlier flag.</p>
+      <textarea style="min-height:230px" placeholder="# Build your Titanic cleaning pipeline..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch cleaning confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+
+df = pd.read_csv("titanic-messy.csv")
+
+# Inspect first
+print(df.isna().sum())
+print("Duplicates:", df.duplicated().sum())
+print(df["Embarked"].unique())
+
+# Canonical category mapping
+PORTS = {
+    "southampton": "Southampton",
+    "s": "Southampton",
+    "cherbourg": "Cherbourg",
+    "c": "Cherbourg",
+    "queenstown": "Queenstown",
+    "q": "Queenstown"
+}
+
+df["Embarked"] = (
+    df["Embarked"]
+      .str.strip()
+      .str.lower()
+      .map(PORTS)
+)
+
+# Remove exact duplicates
+df = df.drop_duplicates()
+
+# Parse date only after ambiguity is resolved
+df["ticket_purchase_date"] = pd.to_datetime(
+    df["ticket_purchase_date"],
+    format="mixed"
+)
+
+# Flag, don't delete, extreme fares
+q3 = df["Fare"].quantile(.75)
+
+df["fare_outlier"] = (
+    df["Fare"] &gt; q3 * 5
+)
+
+# Validate category cleanup
+print(df["Embarked"].unique())</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🧹 Clean data without cleaning away the truth.</h2>
+  <p>You can now quantify data-quality problems, choose different strategies for missing values, resolve dates without guessing, normalize categories carefully, distinguish duplicates from outliers, and document the reasoning behind every cleaning decision.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived Data Cleaning! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Sparkling clean! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Fundamentals Consolidation Lab — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:980px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:800px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .lab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .lab-card{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+  .lab-card .icon{font-size:28px}
+  .lab-card b{display:block;font-size:18px;margin:5px 0}
+  .lab-card small{color:var(--muted)}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+
+  .terminal{
+    background:#17141b;color:#f7eff9;border-radius:18px;padding:19px;
+    font-family:"SFMono-Regular",Consolas,monospace
+  }
+  .prompt{color:#f2a8d0}.out{color:#cbeee5}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.lab-grid,.compare,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PYTHON FUNDAMENTALS CONSOLIDATION LAB • TITANIC EDITION</div>
+  <h1>Put It All Together: <span class="gradient">The Titanic Passenger Checker</span></h1>
+  <p class="subtitle">Less slide deck. More doing. Today you combine functions, loops, data structures, file I/O, and error handling into one larger command-line tool.</p>
+  <div class="chips">
+    <span class="chip">🐍 Functions</span>
+    <span class="chip">📚 Data Structures</span>
+    <span class="chip">🔁 Control Flow</span>
+    <span class="chip">📄 File I/O</span>
+    <span class="chip">🚨 Error Handling</span>
+    <span class="chip">🤖 GenAI, Carefully</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>Today is about connecting the dots</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🧠 Consolidate</b>Use functions, data structures, loops, conditions, and files in one program.</div>
+    <div class="objective"><b>🔍 Read unfamiliar code</b>Predict what code does before running it — a real workplace skill.</div>
+    <div class="objective"><b>🤖 Use GenAI responsibly</b>Ask for explanations, edge cases, and alternatives without outsourcing your understanding.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Warm-up</div>
+    <h2>Read Code You Didn't Write</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Most professional code you touch was written by somebody else. Before changing unfamiliar code, practice predicting what it does.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def flag_classes(passengers, min_count=3):
+    counts = {}
+
+    for p in passengers:
+        counts[p["pclass"]] = (
+            counts.get(p["pclass"], 0) + 1
+        )
+
+    return {
+        pclass: n
+        for pclass, n in counts.items()
+        if n &gt;= min_count
+    }</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>This function uses three concepts at once:</b> dictionary accumulation with <code>.get()</code>, a <code>for</code> loop, and a dictionary comprehension that filters results.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔍 Predict before you run</h3>
+      <p>If passenger classes appear 5 times for class 3, 2 times for class 2, and 4 times for class 1, what does <code>flag_classes(passengers, min_count=3)</code> return?</p>
+      <textarea placeholder="# Predict the returned dictionary..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Prediction locked in ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>{
+    3: 5,
+    1: 4
+}</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>Dictionary Accumulation, Again</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">One of the most useful plain-Python data patterns is counting or summing by key.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>counts = {}
+
+for passenger in passengers:
+    key = passenger["pclass"]
+
+    counts[key] = (
+        counts.get(key, 0) + 1
+    )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>dict.get(key, default)</code> avoids a <code>KeyError</code> on the first sighting of a key.</b> This is the manual logic pandas <code>groupby()</code> will replace later.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Count passengers by embarkation port using a dictionary and <code>.get(..., 0)</code>.</p>
+      <textarea placeholder="# Count by port..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Counted beautifully 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>counts = {}
+
+for passenger in passengers:
+    port = passenger["embarked"]
+
+    counts[port] = (
+        counts.get(port, 0) + 1
+    )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">GenAI</div>
+    <h2>Use It as a Learning Aid, Not a Crutch</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">GenAI is useful when it helps you understand, review, and improve code you can already explain.</p>
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Good Uses</h3>
+        <ul>
+          <li>“Explain what this traceback means.”</li>
+          <li>“What edge cases might this function miss?”</li>
+          <li>“Is there a cleaner way to write this nested <code>if</code>?”</li>
+          <li>“Explain this comprehension in plain English.”</li>
+        </ul>
+      </div>
+      <div class="bad">
+        <h3>🚫 Not Good</h3>
+        <ul>
+          <li>“Write the entire assignment for me.”</li>
+          <li>Submitting code you cannot explain.</li>
+          <li>Accepting a rewrite without checking behavior.</li>
+          <li>Assuming shorter code is automatically better.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>“More modern” or “shorter” does not automatically mean better.</b> Compare correctness first, then readability, maintainability, and whether the change is materially better.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🤖 Your challenge</h3>
+      <p>Which is the better GenAI prompt for learning: <br><b>A)</b> “Write the whole Titanic checker for me.”<br><b>B)</b> “Explain why my loop skips malformed passenger rows and suggest edge cases I should test.”</p>
+      <textarea placeholder="# Answer A or B, and explain why..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">AI used wisely ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>B
+
+It helps you understand and improve your own code
+instead of replacing your understanding.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Build a Titanic Passenger Checker</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Build one command-line program that reads passenger data, applies independent rules, handles malformed records, and writes a report.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="icon">💰</div>
+        <b>HIGH_FARE</b>
+        <small>Flag passengers whose fare exceeds a threshold.</small>
+      </div>
+      <div class="lab-card">
+        <div class="icon">👶</div>
+        <b>CHILD</b>
+        <small>Flag passengers under a chosen age threshold.</small>
+      </div>
+      <div class="lab-card">
+        <div class="icon">🧳</div>
+        <b>EARLY_BOOKING</b>
+        <small>Optional synthetic rule using ticket purchase date.</small>
+      </div>
+    </div>
+
+    <div class="tip"><b>Important:</b> these rules are independent. A passenger may match zero, one, two, or all three.</div>
+
+    <div class="flow">
+      <span>Read CSV</span><span>➡️</span>
+      <span>Validate row</span><span>➡️</span>
+      <span>Apply rules</span><span>➡️</span>
+      <span>Print result</span><span>➡️</span>
+      <span>Write report</span>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Design challenge</h3>
+      <p>Sketch the functions you would create. Aim for small responsibilities such as reading, validating, flagging, and writing.</p>
+      <textarea placeholder="# Example:
+# def read_passengers(...):
+# def validate_passenger(...):
+# def flag_passenger(...):
+# def write_report(...):"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Architecture approved 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show suggested structure</button>
+      </div>
+      <div class="solution"><pre><code>def read_passengers(path):
+    ...
+
+def validate_passenger(passenger):
+    ...
+
+def get_flags(passenger):
+    ...
+
+def write_report(results, path):
+    ...
+
+def main():
+    ...</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 1</div>
+    <h2>Read the Passenger File Safely</h2>
+  </div>
+  <div class="module-body">
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import csv
+
+def read_passengers(path):
+    with open(path) as f:
+        reader = csv.DictReader(f)
+        return list(reader)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>with open(...)</code> closes the file even if an error occurs.</b> Also remember that <code>csv.DictReader</code> returns field values as strings.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📄 Your challenge</h3>
+      <p>Modify <code>read_passengers()</code> so it also prints how many records were loaded before returning them.</p>
+      <textarea placeholder="# Update the function..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Manifest loaded ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def read_passengers(path):
+    with open(path) as f:
+        reader = csv.DictReader(f)
+        passengers = list(reader)
+
+    print("Loaded:", len(passengers))
+    return passengers</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 2</div>
+    <h2>Handle Malformed Rows Without Crashing</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Real data is messy. One bad row should not silently corrupt your totals or crash the entire program.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>for passenger in passengers:
+    try:
+        age = float(passenger["age"])
+        fare = float(passenger["fare"])
+
+    except (TypeError, ValueError) as e:
+        print(f"Bad data: {e}")
+        continue
+
+    else:
+        print("Valid row")
+
+    finally:
+        print("processed")</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>except (TypeError, ValueError)</code> is appropriate when the handling is the same.</b> Use <code>else</code> for success-only logic and <code>finally</code> for logic that always runs.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚨 Your challenge</h3>
+      <p>Add a custom <code>InvalidPassengerError</code> for impossible negative ages, and catch it separately from <code>TypeError</code>/<code>ValueError</code>.</p>
+      <textarea placeholder="# Add custom validation..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Errors contained 🛟</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>class InvalidPassengerError(Exception):
+    pass
+
+for passenger in passengers:
+    try:
+        age = float(passenger["age"])
+        fare = float(passenger["fare"])
+
+        if age &lt; 0:
+            raise InvalidPassengerError(
+                f"negative age: {age}"
+            )
+
+    except (TypeError, ValueError) as e:
+        print(f"Bad data: {e}")
+
+    except InvalidPassengerError as e:
+        print(f"Rule violation: {e}")
+
+    else:
+        print("Valid row")
+
+    finally:
+        print("processed")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 3</div>
+    <h2>Apply Independent Business Rules</h2>
+  </div>
+  <div class="module-body">
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def get_flags(passenger):
+    flags = []
+
+    if float(passenger["fare"]) &gt; 50:
+        flags.append("HIGH_FARE")
+
+    if float(passenger["age"]) &lt; 18:
+        flags.append("CHILD")
+
+    return flags</code></pre>
+    </div>
+
+    <div class="tip"><b>Why separate <code>if</code> statements?</b> Because the rules are independent. A child could also have a high fare.</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Use separate <code>if</code> statements when multiple conditions may all be true.</b> Use <code>if/elif/else</code> when branches are mutually exclusive.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>Add a third rule that appends <code>"FIRST_CLASS"</code> when <code>pclass == 1</code>.</p>
+      <textarea placeholder="# Add the third independent rule..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Rule engine ready 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def get_flags(passenger):
+    flags = []
+
+    if float(passenger["fare"]) &gt; 50:
+        flags.append("HIGH_FARE")
+
+    if float(passenger["age"]) &lt; 18:
+        flags.append("CHILD")
+
+    if int(passenger["pclass"]) == 1:
+        flags.append("FIRST_CLASS")
+
+    return flags</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 4</div>
+    <h2>Write the Report</h2>
+  </div>
+  <div class="module-body">
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def write_report(results, path):
+    with open(path, "w") as f:
+        for result in results:
+            f.write(
+                f"{result['name']}: "
+                f"{', '.join(result['flags'])}\n"
+            )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>with</code> is just as important for writing as for reading.</b> It closes the file and helps ensure buffered output is flushed properly.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📝 Your challenge</h3>
+      <p>If a passenger has no flags, write <code>"CLEAR"</code> instead of a blank list.</p>
+      <textarea placeholder="# Add the CLEAR behavior..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Report polished ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def write_report(results, path):
+    with open(path, "w") as f:
+        for result in results:
+            label = (
+                ", ".join(result["flags"])
+                if result["flags"]
+                else "CLEAR"
+            )
+
+            f.write(
+                f"{result['name']}: {label}\n"
+            )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Command Line</div>
+    <h2>Make It a Real CLI Tool with <code>argparse</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Instead of hard-coding filenames, let the user pass them from the command line.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("input_file")
+parser.add_argument(
+    "--output",
+    default="titanic_report.txt"
+)
+
+args = parser.parse_args()
+
+print(args.input_file)
+print(args.output)</code></pre>
+    </div>
+
+    <div class="terminal">
+      <span class="prompt">&gt; python passenger_checker.py titanic.csv --output report.txt</span>
+    </div>
+
+    <div class="challenge">
+      <h3>💻 Your challenge</h3>
+      <p>Add a command-line option called <code>--fare-threshold</code> with a default of <code>50</code>.</p>
+      <textarea placeholder="# Add the argparse option..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">CLI complete 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>parser.add_argument(
+    "--fare-threshold",
+    type=float,
+    default=50
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Partner Review</div>
+    <h2>Can You Explain Every Function?</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Acceptance is not just “it runs.” You should be able to explain what every function receives, does, returns, and how it behaves when data is bad.</p>
+
+    <div class="checklist">
+      <div class="check">✅ <span>Explain what <code>read_passengers()</code> returns.</span></div>
+      <div class="check">✅ <span>Explain why CSV values need type conversion.</span></div>
+      <div class="check">✅ <span>Explain why rules use separate <code>if</code> statements.</span></div>
+      <div class="check">✅ <span>Explain what happens when one row is malformed.</span></div>
+      <div class="check">✅ <span>Explain why <code>with open(...)</code> is used twice.</span></div>
+      <div class="check">✅ <span>Explain what GenAI helped with, if anything.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎤 Explain-it challenge</h3>
+      <p>In your own words, explain the difference between <code>read_passengers()</code>, <code>get_flags()</code>, and <code>write_report()</code>.</p>
+      <textarea placeholder="# Explain each function in plain English..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">I can explain my code 👑</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Final Lab Brief</div>
+    <h2>Your Titanic Passenger Checker</h2>
+  </div>
+  <div class="module-body">
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Read <code>titanic.csv</code> with <code>csv.DictReader</code>.</span></div>
+      <div class="check">2️⃣ <span>Handle malformed passenger rows without crashing.</span></div>
+      <div class="check">3️⃣ <span>Apply at least three independent rules.</span></div>
+      <div class="check">4️⃣ <span>Print results to the console.</span></div>
+      <div class="check">5️⃣ <span>Write the same results to a report file.</span></div>
+      <div class="check">6️⃣ <span>Take input/output paths with <code>argparse</code>.</span></div>
+      <div class="check">7️⃣ <span>Run it against clean and intentionally messy data.</span></div>
+      <div class="check">8️⃣ <span>Be ready to explain every function.</span></div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>The goal is not clever code.</b> The goal is correct, readable, explainable code that handles bad data explicitly and safely.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write the skeleton of the entire program: imports, custom exception, function definitions, <code>main()</code>, and the <code>__main__</code> guard.</p>
+      <textarea style="min-height:230px" placeholder="# Build the full skeleton..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch final confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show a possible skeleton</button>
+      </div>
+      <div class="solution"><pre><code>import argparse
+import csv
+
+class InvalidPassengerError(Exception):
+    pass
+
+def read_passengers(path):
+    ...
+
+def validate_passenger(passenger):
+    ...
+
+def get_flags(passenger):
+    ...
+
+def write_report(results, path):
+    ...
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file")
+    parser.add_argument(
+        "--output",
+        default="titanic_report.txt"
+    )
+
+    args = parser.parse_args()
+
+    passengers = read_passengers(
+        args.input_file
+    )
+
+    results = []
+
+    for passenger in passengers:
+        ...
+
+    write_report(results, args.output)
+
+if __name__ == "__main__":
+    main()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🛳️ You’re no longer writing tiny snippets.</h2>
+  <p>You’re combining Python fundamentals into a real tool: reading unfamiliar code, structuring functions, processing collections, handling bad records, reading and writing files, and using GenAI as a reviewer rather than a replacement for understanding.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived the Consolidation Lab! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Gorgeous work! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Aboard the Titanic ✨</title>
+<style>
+  :root{
+    --bg:#fff7fb;
+    --paper:#ffffff;
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --lav2:#ded1ff;
+    --peach:#ffc7a8;
+    --mint:#bfeadf;
+    --gold:#f2b84b;
+    --line:#f0d9e7;
+    --shadow:0 16px 40px rgba(100,54,95,.13);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,157,204,.22), transparent 25%),
+      radial-gradient(circle at 85% 20%, rgba(182,148,255,.18), transparent 28%),
+      linear-gradient(180deg,#fff8fc 0%,#fff 50%,#fff8fc 100%);
+    color:var(--ink);
+    line-height:1.55;
+  }
+
+  .sparkles{
+    pointer-events:none;
+    position:fixed; inset:0;
+    overflow:hidden;
+    z-index:-1;
+  }
+  .sparkles span{
+    position:absolute;
+    opacity:.22;
+    animation:float 9s ease-in-out infinite;
+    font-size:clamp(18px,2vw,34px);
+  }
+  .sparkles span:nth-child(1){left:4%;top:8%}
+  .sparkles span:nth-child(2){right:8%;top:16%;animation-delay:-3s}
+  .sparkles span:nth-child(3){left:10%;top:62%;animation-delay:-6s}
+  .sparkles span:nth-child(4){right:12%;top:70%;animation-delay:-2s}
+  @keyframes float{
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-18px) rotate(8deg)}
+  }
+
+  header{
+    padding:72px 22px 48px;
+    text-align:center;
+  }
+  .eyebrow{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid var(--line);
+    box-shadow:0 8px 22px rgba(125,68,115,.08);
+    font-weight:800;
+    color:#8a4e77;
+    letter-spacing:.03em;
+    margin-bottom:16px;
+  }
+  h1{
+    margin:0 auto 14px;
+    max-width:980px;
+    font-size:clamp(42px,7vw,86px);
+    line-height:.98;
+    letter-spacing:-.055em;
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#d36ac4,var(--lav));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    max-width:760px;
+    margin:0 auto;
+    font-size:clamp(17px,2vw,22px);
+    color:var(--muted);
+  }
+
+  .ship-strip{
+    margin:34px auto 0;
+    max-width:820px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    padding:9px 13px;
+    border-radius:999px;
+    background:rgba(255,255,255,.9);
+    border:1px solid var(--line);
+    font-size:14px;
+    font-weight:750;
+  }
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .intro{
+    background:linear-gradient(135deg,#fff,#fff7fb);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:28px;
+    margin-bottom:28px;
+  }
+  .intro-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:18px;
+  }
+  .mini{
+    border-radius:20px;
+    padding:18px;
+    background:#fff;
+    border:1px solid var(--line);
+  }
+  .mini b{display:block;margin-bottom:5px}
+
+  .module{
+    margin:30px 0;
+    background:rgba(255,255,255,.96);
+    border:1px solid var(--line);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .module-head{
+    padding:24px 26px;
+    background:linear-gradient(135deg,#fff5fb,#f8f1ff);
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    color:#a55787;
+    font-weight:850;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-size:12px;
+  }
+  h2{
+    margin:4px 0 8px;
+    font-size:clamp(28px,4vw,44px);
+    line-height:1.05;
+  }
+  .module-body{padding:26px}
+  .explain{
+    font-size:18px;
+    color:#4e4155;
+    margin-bottom:18px;
+  }
+  .tip{
+    background:#fff5cf;
+    border:1px solid #f2dda0;
+    border-radius:16px;
+    padding:14px 16px;
+    margin:14px 0 20px;
+  }
+  .code-wrap{
+    position:relative;
+    margin:18px 0;
+  }
+  pre{
+    margin:0;
+    background:#2e2534;
+    color:#fff8fd;
+    border-radius:20px;
+    padding:22px;
+    overflow:auto;
+    font-size:14px;
+    line-height:1.6;
+    border:1px solid #4f3b58;
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;
+    right:12px;
+    top:12px;
+    border:none;
+    border-radius:999px;
+    background:#fff;
+    color:#5d4767;
+    font-weight:800;
+    padding:8px 12px;
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(0,0,0,.14);
+  }
+
+  .challenge{
+    margin-top:22px;
+    background:linear-gradient(135deg,#fff1f8,#f7f1ff);
+    border:1px solid #ead7f1;
+    border-radius:22px;
+    padding:20px;
+  }
+  .challenge h3{
+    margin:0 0 8px;
+    font-size:22px;
+  }
+  .challenge .prompt{
+    color:#5e4b66;
+    margin-bottom:12px;
+  }
+  textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    border:1px solid #dfc8e5;
+    background:#fff;
+    color:#352c3a;
+    border-radius:16px;
+    padding:14px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:14px;
+    outline:none;
+  }
+  textarea:focus{box-shadow:0 0 0 4px rgba(255,111,181,.14);border-color:var(--pink)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;
+    border-radius:999px;
+    padding:10px 15px;
+    font-weight:850;
+    cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));
+    color:#fff;
+    box-shadow:0 8px 18px rgba(168,85,164,.24);
+  }
+  button.secondary{
+    background:#fff;
+    color:#755b7e;
+    border:1px solid var(--line);
+    box-shadow:none;
+  }
+  .solution{
+    display:none;
+    margin-top:14px;
+    animation:pop .35s ease;
+  }
+  @keyframes pop{
+    from{opacity:0;transform:scale(.98) translateY(6px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+  }
+  .solution.show{display:block}
+
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+
+  .terminal{
+    background:#17141b;
+    color:#f3eafa;
+    border-radius:18px;
+    padding:20px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+  }
+  .terminal .promptline{color:#f0a6cf}
+  .terminal .out{color:#ccebdd}
+
+  .finale{
+    text-align:center;
+    padding:34px;
+    background:linear-gradient(135deg,#fff1f7,#f4edff,#fff9ec);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+  }
+  .finale h2{font-size:40px}
+  .finale p{max-width:720px;margin:8px auto;color:var(--muted)}
+
+  .confetti{
+    position:fixed;
+    width:10px;height:10px;
+    top:-12px;
+    z-index:9999;
+    pointer-events:none;
+    border-radius:3px;
+    animation:fall 1.8s linear forwards;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(760deg);opacity:.3}
+  }
+
+  @media(max-width:800px){
+    .intro-grid,.two-col{grid-template-columns:1fr}
+    header{padding-top:50px}
+    .module-body,.module-head{padding:20px}
+  }
+</style>
+</head>
+<body>
+<div class="sparkles" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🌸</span><span>🛳️</span>
+</div>
+
+<header>
+  <div class="eyebrow">PYTHON FUNDAMENTALS • TITANIC EDITION</div>
+  <h1>Everything I Learned About Python, <span class="gradient">I Learned from the Titanic</span></h1>
+  <p class="subtitle">A cheerful beginner tour through syntax, data types, decisions, loops, and running Python scripts — one passenger manifest at a time.</p>
+  <div class="ship-strip">
+    <span class="chip">🐍 Python</span>
+    <span class="chip">🛳️ Titanic Data</span>
+    <span class="chip">✨ Tiny Challenges</span>
+    <span class="chip">💻 Real Code</span>
+    <span class="chip">🌷 No scary jargon</span>
+  </div>
+</header>
+
+<main>
+
+<section class="intro">
+  <div class="kicker">Module objectives</div>
+  <h2>What you'll be able to do</h2>
+  <div class="intro-grid">
+    <div class="mini"><b>💎 Understand values</b>Work with strings, integers, decimals, and True/False values.</div>
+    <div class="mini"><b>🧭 Make decisions</b>Use <code>if</code>, <code>elif</code>, and <code>else</code> to react to passenger data.</div>
+    <div class="mini"><b>🔁 Repeat work</b>Use <code>for</code> and <code>while</code> loops to process many passengers.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Variables & Data Types</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A variable gives a value a name. Python is dynamically typed, so you don't declare the type first — Python figures it out from the value.</p>
+    <div class="tip"><b>Four beginner types:</b> <code>str</code> = text, <code>int</code> = whole number, <code>float</code> = decimal number, <code>bool</code> = True/False.</div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>name = "Braund, Mr. Owen Harris"  # str
+pclass = 3                        # int
+fare = 7.25                       # float
+survived = False                  # bool
+
+print(type(fare))
+# &lt;class 'float'&gt;</code></pre>
+    </div>
+
+    <p>We can also keep all of those values together in a passenger dictionary:</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passenger = {
+    "name": "Braund, Mr. Owen Harris",
+    "pclass": 3,
+    "sex": "male",
+    "age": 22,
+    "fare": 7.25,
+    "ticket_purchase_date": "1912-03-10",
+    "survived": 0
+}</code></pre>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p class="prompt">Create a variable called <code>age</code> with the value <code>38</code>, a variable called <code>fare</code> with <code>71.28</code>, and a variable called <code>name</code> containing <code>"Anna"</code>. Print the type of each.</p>
+      <textarea placeholder="# Type your Python here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">I did it! ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>age = 38
+fare = 71.28
+name = "Anna"
+
+print(type(age))
+print(type(fare))
+print(type(name))</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>if / elif / else</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Control flow lets Python choose what to do based on a condition. Think: “If this passenger is a child, do one thing. Otherwise, do something else.”</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>age = 22
+
+if age &lt; 18:
+    print("Child passenger")
+elif age &lt; 65:
+    print("Adult passenger")
+else:
+    print("Senior passenger")</code></pre>
+    </div>
+
+    <div class="tip"><b>Why <code>elif</code>?</b> Use it when the choices are mutually exclusive — once one branch matches, Python skips the rest.</div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p class="prompt">Using <code>fare = 71.28</code>, print <code>"High fare"</code> if the fare is over 50, <code>"Medium fare"</code> if it is over 20, otherwise print <code>"Low fare"</code>.</p>
+      <textarea placeholder="# Write your if / elif / else here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Nailed it 💅</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>fare = 71.28
+
+if fare &gt; 50:
+    print("High fare")
+elif fare &gt; 20:
+    print("Medium fare")
+else:
+    print("Low fare")</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>for Loops</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A <code>for</code> loop visits every item in a known collection. In data work, this is one of the most common things you'll ever do.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = [
+    {"name": "Owen", "age": 22, "fare": 7.25},
+    {"name": "Anna", "age": 38, "fare": 71.28}
+]
+
+for passenger in passengers:
+    print(passenger["name"])</code></pre>
+    </div>
+
+    <p>Output:</p>
+    <div class="terminal"><span class="out">Owen<br>Anna</span></div>
+
+    <div class="challenge">
+      <h3>🛳️ Your challenge</h3>
+      <p class="prompt">Loop through the two passengers above and print only the name of anyone whose fare is greater than 20.</p>
+      <textarea placeholder="# Try your for loop here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Passenger processed! 🎀</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>for passenger in passengers:
+    if passenger["fare"] &gt; 20:
+        print(passenger["name"])</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Accumulating a Total</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Loops become especially useful when you want to add something up — fares, passengers, survivors, or any other running total.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = [
+    {"name": "Owen", "fare": 7.25},
+    {"name": "Anna", "fare": 71.28}
+]
+
+total = 0.0
+
+for passenger in passengers:
+    total += passenger["fare"]
+
+print(f"Total fares: {total:.2f}")</code></pre>
+    </div>
+
+    <div class="terminal"><span class="out">Total fares: 78.53</span></div>
+
+    <div class="challenge">
+      <h3>✨ Your challenge</h3>
+      <p class="prompt">Add a <code>survived</code> field to each passenger and count how many survived. Hint: start with <code>survivor_count = 0</code>.</p>
+      <textarea placeholder="# Count the survivors..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Count complete! 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>passengers = [
+    {"name": "Owen", "survived": 0},
+    {"name": "Anna", "survived": 1}
+]
+
+survivor_count = 0
+
+for passenger in passengers:
+    if passenger["survived"] == 1:
+        survivor_count += 1
+
+print(survivor_count)</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>while Loops</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A <code>while</code> loop keeps repeating as long as a condition remains true. They're useful, but less common than <code>for</code> loops in everyday data work.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = ["Owen", "Anna", "Laina"]
+
+i = 0
+
+while i &lt; len(passengers):
+    print(passengers[i])
+    i += 1</code></pre>
+    </div>
+
+    <div class="tip"><b>⚠️ Infinite-loop alert:</b> if you forget <code>i += 1</code>, <code>i</code> never changes and the loop may run forever.</div>
+
+    <div class="challenge">
+      <h3>🧁 Your challenge</h3>
+      <p class="prompt">Use a <code>while</code> loop to print the numbers 1 through 5. Start with <code>i = 1</code>.</p>
+      <textarea placeholder="# Write your while loop..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Loop conquered! 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>i = 1
+
+while i &lt;= 5:
+    print(i)
+    i += 1</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Running a Python Script</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Python code can live in a file ending in <code>.py</code>. Save it, open a terminal in that folder, and run it with Python.</p>
+
+    <div class="two-col">
+      <div>
+        <h3>1. Save this as <code>titanic_summary.py</code></h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>passengers = ["Owen", "Anna", "Laina"]
+
+print("Passenger count:")
+print(len(passengers))</code></pre>
+        </div>
+      </div>
+      <div>
+        <h3>2. Run it from a terminal</h3>
+        <div class="terminal">
+          <div class="promptline">&gt; python titanic_summary.py</div>
+          <br>
+          <div class="out">Passenger count:<br>3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>💻 Your challenge</h3>
+      <p class="prompt">Create a script called <code>passenger.py</code> that stores a passenger's name and age, then prints both values. Run it from the command line.</p>
+      <textarea placeholder="# Write the contents of passenger.py..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">It ran! 🎉</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>name = "Owen"
+age = 22
+
+print(name)
+print(age)
+
+# Run:
+# python passenger.py</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Mini Lab</div>
+    <h2>Build a Titanic Passenger Summary</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Now combine the ideas. This is the little bridge from “learning Python syntax” to “doing actual data work.”</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = [
+    {
+        "name": "Owen",
+        "pclass": 3,
+        "age": 22,
+        "fare": 7.25,
+        "survived": 0
+    },
+    {
+        "name": "Anna",
+        "pclass": 1,
+        "age": 38,
+        "fare": 71.28,
+        "survived": 1
+    },
+    {
+        "name": "Laina",
+        "pclass": 3,
+        "age": 26,
+        "fare": 7.93,
+        "survived": 1
+    }
+]</code></pre>
+    </div>
+
+    <div class="challenge">
+      <h3>🌟 Final challenge</h3>
+      <p class="prompt">Using the passenger list above, write code that prints: total passenger count, total fares, survivor count, and the name of every passenger younger than 30.</p>
+      <textarea style="min-height:180px" placeholder="# Your mini Titanic program goes here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this, 50)">Launch the confetti! 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution">
+        <pre><code>total_fares = 0.0
+survivor_count = 0
+
+for passenger in passengers:
+    total_fares += passenger["fare"]
+
+    if passenger["survived"] == 1:
+        survivor_count += 1
+
+    if passenger["age"] &lt; 30:
+        print(passenger["name"])
+
+print("Passenger count:", len(passengers))
+print("Total fares:", total_fares)
+print("Survivors:", survivor_count)</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Why this matters</div>
+  <h2>🎀 Plain Python first. Machine learning later.</h2>
+  <p>pandas, matplotlib, NumPy, and scikit-learn will eventually let you replace many manual loops with powerful one-line operations. But understanding what Python is doing underneath makes every later tool easier to trust, debug, and explain.</p>
+  <button class="fun" onclick="celebrate(this, 70)">I survived Python Fundamentals! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text = button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const original = button.textContent;
+    button.textContent = "Copied ✨";
+    setTimeout(()=>button.textContent = original, 1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge = button.closest(".challenge");
+  const solution = challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent = solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=26){
+  const colors = ["#ff6fb5","#b694ff","#ffc7a8","#f2b84b","#bfeadf","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random()*100 + "vw";
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.width = (6 + Math.random()*8) + "px";
+    c.style.height = (6 + Math.random()*10) + "px";
+    c.style.animationDuration = (1.2 + Math.random()*1.5) + "s";
+    c.style.transform = `rotate(${Math.random()*180}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 3000);
+  }
+
+  const original = button.textContent;
+  button.textContent = "✨ Gorgeous work! ✨";
+  setTimeout(()=>button.textContent = original, 1300);
+}
+</script>
+</body>
+</html>

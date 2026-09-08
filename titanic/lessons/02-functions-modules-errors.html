@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Functions & Error Handling — Titanic Edition ✨</title>
+<style>
+  :root{
+    --bg:#fff7fb;
+    --paper:#fff;
+    --ink:#352c3a;
+    --muted:#77697d;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --lav2:#e2d8ff;
+    --peach:#ffc8a8;
+    --mint:#c7eee5;
+    --gold:#f6be55;
+    --danger:#d94776;
+    --line:#eed8e7;
+    --shadow:0 18px 44px rgba(102,52,96,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 10% 8%,rgba(255,157,204,.22),transparent 23%),
+      radial-gradient(circle at 88% 13%,rgba(182,148,255,.18),transparent 26%),
+      linear-gradient(180deg,#fff8fc,#fff 52%,#fff7fb);
+  }
+  .floaties{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+  .floaties span{position:absolute;opacity:.20;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:3%;top:8%}
+  .floaties span:nth-child(2){right:5%;top:20%;animation-delay:-3s}
+  .floaties span:nth-child(3){left:7%;top:70%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:11%;top:78%;animation-delay:-1s}
+  @keyframes float{50%{transform:translateY(-18px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;border:1px solid var(--line);
+    background:#fff;border-radius:999px;font-weight:850;color:#8a5278;
+    letter-spacing:.06em;font-size:12px;box-shadow:0 8px 20px rgba(86,44,80,.08)
+  }
+  h1{max-width:980px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);line-height:.98;letter-spacing:-.055em}
+  .gradient{background:linear-gradient(90deg,var(--pink),#ce6ac2,var(--lav));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .subtitle{max-width:790px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:14px;font-weight:750}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  section.card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:15px}
+  .objective{border:1px solid var(--line);border-radius:18px;padding:17px;background:#fff}
+  .objective b{display:block;margin-bottom:4px}
+  .module-head{background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line);padding:24px 26px}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-weight:900;color:#a75b8a;font-size:12px}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#514557}
+
+  .quiz-alert{
+    margin:18px 0;
+    border:2px solid #f2b3ca;
+    background:linear-gradient(135deg,#fff0f7,#fff9fc);
+    border-radius:20px;padding:17px 18px;
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:white;font-weight:900;
+    border-radius:999px;padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#803650}
+
+  .tip{
+    margin:16px 0;background:#fff6d6;border:1px solid #efdca5;border-radius:16px;padding:14px 16px
+  }
+  .goodbad{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:18px 0}
+  .good,.bad{border-radius:18px;padding:16px;border:1px solid var(--line)}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;
+    overflow:auto;font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+    background:#fff;color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;background:linear-gradient(135deg,#fff0f7,#f7f1ff);
+    border:1px solid #ead4ed;border-radius:22px;padding:20px
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;border:1px solid #dbc4e2;
+    background:#fff;border-radius:16px;padding:14px;font:14px "SFMono-Regular",Consolas,monospace;
+    color:var(--ink);outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .terminal{background:#17141b;color:#f7eff9;border-radius:18px;padding:19px;font-family:"SFMono-Regular",Consolas,monospace}
+  .prompt{color:#f2a8d0}
+  .out{color:#cbeee5}
+
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+    margin:18px 0
+  }
+  .flow span{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px;font-weight:850
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:750px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:820px){
+    .objective-grid,.goodbad,.two-col{grid-template-columns:1fr}
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🛟</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PYTHON FUNDAMENTALS • TITANIC EDITION</div>
+  <h1>Functions, Modules & <span class="gradient">Error Handling</span></h1>
+  <p class="subtitle">Teach Python to do useful work, survive bad data, and explain what went wrong — without sinking the whole program.</p>
+  <div class="chips">
+    <span class="chip">🐍 Functions</span>
+    <span class="chip">🧩 Modules</span>
+    <span class="chip">🚨 Exceptions</span>
+    <span class="chip">🛳️ Titanic Examples</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>✨ Write reusable functions</b>Use parameters, return values, type hints, defaults, positional calls, and keyword arguments.</div>
+    <div class="objective"><b>🧩 Build a clean module</b>Add docstrings and use the <code>__main__</code> guard to avoid surprise side effects.</div>
+    <div class="objective"><b>🛟 Handle errors properly</b>Catch specific exceptions, create business-rule exceptions, use <code>else</code>/<code>finally</code>, and re-raise with context.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Functions & Type Hints</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A function gives a name to logic you want to reuse. Parameters are inputs; <code>return</code> sends a result back.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def passenger_fare_with_fee(
+    fare: float,
+    fee: float
+) -> float:
+    return fare + fee
+
+total = passenger_fare_with_fee(7.25, 2.00)
+print(total)</code></pre>
+    </div>
+
+    <div class="tip"><b>Read it like English:</b> the function expects <code>fare</code> and <code>fee</code> to be floats, and the arrow says it intends to return a float.</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Type hints are not normally enforced at runtime.</b> <code>fare: float</code> and <code>-&gt; float</code> document intent and help tools, but Python itself does not automatically reject every wrong type.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Create <code>is_child(age: float) -&gt; bool</code> that returns <code>True</code> if the passenger is under 18.</p>
+      <textarea placeholder="# Write your function here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Function fabulous ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def is_child(age: float) -&gt; bool:
+    return age &lt; 18</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Default & Keyword Arguments</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A default argument supplies a value when the caller leaves that argument out. A keyword argument names the parameter explicitly.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def classify_fare(
+    fare: float,
+    threshold: float = 50
+) -&gt; str:
+    if fare &gt; threshold:
+        return "high"
+    return "normal"
+
+print(classify_fare(71.28))
+print(classify_fare(71.28, threshold=100))</code></pre>
+    </div>
+
+    <p>The first call uses the default <code>50</code>. The second explicitly overrides it with <code>100</code>.</p>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Do not use a mutable object such as <code>[]</code> or <code>{}</code> as a default unless you deliberately want it shared.</b> Default values are created once when the function is defined.</div>
+    </div>
+
+    <div class="goodbad">
+      <div class="bad">
+        <h3>🚫 Risky</h3>
+        <pre><code>def add_note(name, notes=[]):
+    notes.append(name)
+    return notes</code></pre>
+        <p>The same list can be reused across calls.</p>
+      </div>
+      <div class="good">
+        <h3>✅ Safer</h3>
+        <pre><code>def add_note(name, notes=None):
+    if notes is None:
+        notes = []
+    notes.append(name)
+    return notes</code></pre>
+        <p>Each call gets a fresh list when no list is supplied.</p>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>Write <code>classify_age(age, adult_age=18)</code>. Call it once with the default and once with <code>adult_age=21</code>.</p>
+      <textarea placeholder="# Write your function and two calls..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Default defeated 💅</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def classify_age(age, adult_age=18):
+    if age &gt;= adult_age:
+        return "adult"
+    return "child"
+
+print(classify_age(20))
+print(classify_age(20, adult_age=21))</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Positional vs Keyword Calls</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain"><b>Positional</b> arguments are matched by order. <b>Keyword</b> arguments are matched by parameter name.</p>
+
+    <div class="two-col">
+      <div>
+        <h3>Positional</h3>
+        <div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>fare_with_fee(7.25, 2.00)</code></pre></div>
+        <p>Python matches <code>7.25</code> to the first parameter and <code>2.00</code> to the second.</p>
+      </div>
+      <div>
+        <h3>Keyword</h3>
+        <div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>fare_with_fee(
+    fare=7.25,
+    fee=2.00
+)</code></pre></div>
+        <p>The names make the call easier to read.</p>
+      </div>
+    </div>
+
+    <div class="tip"><b>Good habit:</b> use keyword arguments when the meaning would be unclear from position alone.</div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Call <code>classify_fare</code> using the keyword argument <code>threshold=25</code> for a passenger with a fare of <code>30</code>.</p>
+      <textarea placeholder="# Write the call..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Crystal clear ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>print(classify_fare(30, threshold=25))</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Well-Behaved Modules</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A Python file can be a reusable module. Docstrings explain its purpose, while the <code>__main__</code> guard prevents demo code from running when the file is imported elsewhere.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>"""titanic_math.py — passenger calculations."""
+
+def fare_per_year(age, fare):
+    """Return fare divided by passenger age."""
+    return fare / age
+
+if __name__ == "__main__":
+    print(fare_per_year(22, 7.25))</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>if __name__ == "__main__":</code> runs only when the file is executed directly.</b> Importing the module does not run that block, which avoids surprise side effects.</div>
+    </div>
+
+    <div class="flow">
+      <span>Run file directly</span><span>➡️</span><span><code>__main__</code> block runs</span>
+      <span>Import file</span><span>➡️</span><span><code>__main__</code> block skips</span>
+    </div>
+
+    <div class="challenge">
+      <h3>🧩 Your challenge</h3>
+      <p>Create a function called <code>passenger_label(name)</code>, add a docstring, and call it only inside a <code>__main__</code> guard.</p>
+      <textarea placeholder="# Create a tiny module..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Module behaved! 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def passenger_label(name):
+    """Return a printable passenger label."""
+    return f"Passenger: {name}"
+
+if __name__ == "__main__":
+    print(passenger_label("Owen"))</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Custom Exceptions</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Built-in exceptions describe Python-level problems. A custom exception can describe a problem in your own business or data domain.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>class InvalidPassengerError(Exception):
+    """Passenger data failed validation."""
+
+def validate_fare(fare):
+    if fare &lt; 0:
+        raise InvalidPassengerError(
+            f"fare cannot be negative: {fare}"
+        )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Custom exceptions are ideal for business-rule violations.</b> Example: negative fare, impossible age, or invalid passenger class. They are different from a Python type error.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚨 Your challenge</h3>
+      <p>Create <code>InvalidAgeError</code> and raise it if a passenger age is less than 0.</p>
+      <textarea placeholder="# Create and raise your exception..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Error elegantly handled ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>class InvalidAgeError(Exception):
+    pass
+
+def validate_age(age):
+    if age &lt; 0:
+        raise InvalidAgeError(
+            f"invalid age: {age}"
+        )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Multiple <code>except</code> Blocks</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Different kinds of failures deserve different handling. Avoid a giant catch-all when you know what kinds of problems you expect.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>try:
+    age = float(passenger["age"])
+    validate_age(age)
+
+except (TypeError, ValueError) as e:
+    print(f"Bad data type: {e}")
+
+except InvalidAgeError as e:
+    print(f"Rule violation: {e}")</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Catch <code>(TypeError, ValueError)</code> together when they should be handled the same way.</b> Keep a custom exception such as <code>InvalidPassengerError</code> separate when it represents a different kind of problem.</div>
+    </div>
+
+    <div class="tip"><b>Big principle:</b> narrow, specific exception handling is easier to debug and less likely to silently hide data-quality problems.</div>
+
+    <div class="challenge">
+      <h3>🛟 Your challenge</h3>
+      <p>Write a <code>try</code> block that converts <code>"twenty"</code> to a float, catches <code>ValueError</code>, and prints <code>"Bad age"</code>.</p>
+      <textarea placeholder="# Try it..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Caught it! 🎉</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>try:
+    age = float("twenty")
+except ValueError:
+    print("Bad age")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2><code>else</code> and <code>finally</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain"><code>else</code> runs only if the <code>try</code> succeeds. <code>finally</code> always runs — whether the operation worked or failed.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>try:
+    fare = float(passenger["fare"])
+    validate_fare(fare)
+
+except (TypeError, ValueError):
+    print("Bad fare")
+
+except InvalidPassengerError as e:
+    print(f"Skipped: {e}")
+
+else:
+    total += fare
+
+finally:
+    print("processed")</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>else</code> is for success-only logic. <code>finally</code> is for logic that must happen no matter what.</b> Do not put success-only work in <code>finally</code>.</div>
+    </div>
+
+    <div class="goodbad">
+      <div class="good"><h3>✅ <code>else</code></h3><p>Add the fare to the total only if validation succeeded.</p></div>
+      <div class="good"><h3>✅ <code>finally</code></h3><p>Print a status marker or perform unconditional cleanup.</p></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌷 Your challenge</h3>
+      <p>Write a tiny <code>try/except/else/finally</code> where success prints <code>"Valid passenger"</code> and <code>finally</code> always prints <code>"Checked"</code>.</p>
+      <textarea placeholder="# Write the four-part structure..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Structure mastered 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>try:
+    age = float("22")
+except ValueError:
+    print("Bad age")
+else:
+    print("Valid passenger")
+finally:
+    print("Checked")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 8</div>
+    <h2>Re-raising with Context</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Sometimes you should not swallow an exception. Instead, add useful context and let the failure keep travelling upward.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def safe_fare(passenger: dict) -&gt; float:
+    try:
+        fare = float(passenger["fare"])
+        validate_fare(fare)
+        return fare
+
+    except InvalidPassengerError as e:
+        raise InvalidPassengerError(
+            f"{passenger['name']}: {e}"
+        ) from e</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>raise ... from e</code> preserves the original exception as the visible cause.</b> That means you can add passenger context without hiding the root problem.</div>
+    </div>
+
+    <div class="flow">
+      <span>Negative fare</span><span>➡️</span>
+      <span><code>InvalidPassengerError</code></span><span>➡️</span>
+      <span>Add passenger name</span><span>➡️</span>
+      <span>Re-raise with <code>from e</code></span>
+    </div>
+
+    <div class="challenge">
+      <h3>👑 Your challenge</h3>
+      <p>Create <code>safe_age(passenger)</code>. If <code>validate_age()</code> raises <code>InvalidAgeError</code>, re-raise it with the passenger's name and use <code>from e</code>.</p>
+      <textarea placeholder="# Add context without losing the cause..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Context queen ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>def safe_age(passenger):
+    try:
+        validate_age(passenger["age"])
+        return passenger["age"]
+    except InvalidAgeError as e:
+        raise InvalidAgeError(
+            f"{passenger['name']}: {e}"
+        ) from e</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Mini Lab</div>
+    <h2>Build a Safe Titanic Passenger Processor</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Now combine the pieces: reusable functions, validation rules, specific exceptions, success-only logic, unconditional cleanup, and re-raising with context.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = [
+    {"name": "Owen", "age": 22, "fare": 7.25},
+    {"name": "Anna", "age": 38, "fare": 71.28},
+    {"name": "Mystery", "age": "twenty", "fare": -5}
+]</code></pre>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Create a small program that: validates age and fare, catches <code>(TypeError, ValueError)</code> separately from your custom exception, adds fare to a total only in <code>else</code>, and always prints <code>"processed"</code> in <code>finally</code>.</p>
+      <textarea style="min-height:200px" placeholder="# Build your safe passenger loop..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,60)">Launch confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>class InvalidPassengerError(Exception):
+    pass
+
+def validate_fare(fare):
+    if fare &lt; 0:
+        raise InvalidPassengerError(
+            f"bad fare: {fare}"
+        )
+
+total = 0.0
+
+for passenger in passengers:
+    try:
+        age = float(passenger["age"])
+        fare = float(passenger["fare"])
+        validate_fare(fare)
+
+    except (TypeError, ValueError) as e:
+        print(f"Bad data type: {e}")
+
+    except InvalidPassengerError as e:
+        print(f"Rule violation: {e}")
+
+    else:
+        total += fare
+
+    finally:
+        print("processed")
+
+print("Total:", total)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🛳️ Your Python code now has lifeboats.</h2>
+  <p>You can write reusable functions, document intent with type hints, use sensible defaults, build modules that behave properly, and handle malformed passenger data without silently corrupting your results.</p>
+  <button class="fun" onclick="celebrate(this,75)">I survived Functions & Errors! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text = button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old = button.textContent;
+    button.textContent = "Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge = button.closest(".challenge");
+  const solution = challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent = solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc8a8","#f6be55","#c7eee5","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Beautiful work! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

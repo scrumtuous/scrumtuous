@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessing Data Through APIs — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:860px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .concept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+  .concept{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center
+  }
+  .concept .icon{font-size:30px}
+  .concept b{display:block;margin:5px 0}
+  .concept small{color:var(--muted)}
+
+  .console{
+    background:#18141b;
+    border:1px solid #4d3b56;
+    border-radius:22px;
+    overflow:hidden;
+    margin:18px 0;
+  }
+  .console-top{
+    display:flex;gap:8px;align-items:center;
+    background:#2b2230;padding:11px 14px;
+    color:#eadceb;font-weight:800;font-size:13px
+  }
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .d1{background:#ff8bae}.d2{background:#f4bd52}.d3{background:#95dfcb}
+  .console-body{padding:18px;color:#f8f2fa;font-family:"SFMono-Regular",Consolas,monospace}
+  .console-controls{
+    display:grid;grid-template-columns:1fr 120px 120px;gap:10px;margin-bottom:13px
+  }
+  .console input{
+    width:100%;border:1px solid #5b4963;border-radius:12px;padding:10px 12px;
+    background:#241d29;color:#fff;font:13px "SFMono-Regular",Consolas,monospace
+  }
+  .console button{
+    border:0;border-radius:12px;font-weight:900;cursor:pointer;padding:9px 12px
+  }
+  .send{background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff}
+  .rate{background:#f4bd52;color:#473415}
+  .response{
+    white-space:pre-wrap;min-height:180px;border-top:1px solid #493a51;
+    padding-top:15px;color:#c9eee6;font-size:13px
+  }
+
+  .status{
+    display:inline-block;border-radius:999px;padding:4px 9px;font-weight:900;font-family:inherit
+  }
+  .s200{background:#dff8ef;color:#226451}
+  .s401{background:#ffe3ec;color:#943954}
+  .s429{background:#fff1cc;color:#805d12}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:780px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.compare,.concept-grid,.checklist{grid-template-columns:1fr}
+    .console-controls{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌐</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">ACCESSING DATA THROUGH APIs • TITANIC EDITION</div>
+  <h1>Request Passenger Data <span class="gradient">Without Sinking the Server</span></h1>
+  <p class="subtitle">Learn endpoints, API keys, pagination, rate limits, and the judgment call between fetching live data through an API and requesting a complete batch extract.</p>
+  <div class="chips">
+    <span class="chip">🌐 Endpoints</span>
+    <span class="chip">🔐 Authentication</span>
+    <span class="chip">📄 Pagination</span>
+    <span class="chip">⏳ 429 Rate Limits</span>
+    <span class="chip">📦 API vs Extract</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🌐 Behave like a good API client</b>Authenticate every request, follow pagination, and respect rate limits.</div>
+    <div class="objective"><b>📦 Choose API vs batch extract</b>Match the access method to freshness, volume, scope, and operational needs.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">The mock service</div>
+    <h2>A Self-Contained Titanic Passenger API</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">For class, imagine a tiny local Flask service serving Titanic passenger records. It behaves like a real API without depending on the internet.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code># Local classroom API
+# GET http://127.0.0.1:5050/passengers
+
+# Features:
+# - API-key authentication
+# - pagination
+# - 429 rate limits
+# - JSON responses</code></pre>
+    </div>
+
+    <div class="tip"><b>Why a local mock?</b> Everyone sees the same behavior, and the lesson is about client logic rather than a third-party service changing unexpectedly.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Endpoints & Authentication</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">An endpoint is a URL the server knows how to handle. Authentication tells the server who or what is making the request.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 No API key</h3>
+        <pre><code>resp = requests.get(
+    "http://127.0.0.1:5050/passengers"
+)
+
+print(resp.status_code)
+# 401</code></pre>
+      </div>
+      <div class="good">
+        <h3>✅ Authenticated</h3>
+        <pre><code>resp = requests.get(
+    "http://127.0.0.1:5050/passengers",
+    headers={
+        "X-API-Key": "titanic-class-key"
+    }
+)
+
+print(resp.status_code)
+# 200</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Authenticate every request.</b> Also, never commit a real production API key into source control. The classroom key is intentionally disposable.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔐 Your challenge</h3>
+      <p>Write a <code>requests.get()</code> call to <code>/passengers</code> with an <code>X-API-Key</code> header.</p>
+      <textarea placeholder="# Build the authenticated request..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Authenticated ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>resp = requests.get(
+    "http://127.0.0.1:5050/passengers",
+    headers={
+        "X-API-Key": "titanic-class-key"
+    }
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Interactive demo</div>
+    <h2>Try the Mock API Console</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">This little in-page simulator behaves like the classroom API. Remove the key to see a 401, move through pages, or deliberately trigger a 429.</p>
+
+    <div class="console">
+      <div class="console-top">
+        <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+        <span style="margin-left:8px">Titanic API Console</span>
+      </div>
+      <div class="console-body">
+        <div class="console-controls">
+          <input id="apiKey" value="titanic-class-key" aria-label="API key">
+          <input id="pageNum" value="1" aria-label="Page number">
+          <input id="pageSize" value="3" aria-label="Page size">
+        </div>
+        <div class="actions" style="margin:0 0 14px">
+          <button class="send" onclick="mockFetch()">GET /passengers</button>
+          <button class="rate" onclick="mockRateLimit()">Simulate 429</button>
+        </div>
+        <div id="apiResponse" class="response">Ready.
+Try page 1 with the API key, then remove the key and try again.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Pagination: One Request, One Page</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Most APIs do not send every record at once. You request a page, inspect the metadata, then request the next page.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>resp = requests.get(
+    url,
+    headers=HEADERS,
+    params={
+        "page": 1,
+        "page_size": 5
+    }
+)
+
+body = resp.json()
+
+# {
+#   "page": 1,
+#   "page_size": 5,
+#   "total_pages": 4,
+#   "total_records": 20,
+#   "data": [...5 passenger rows...]
+# }</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>data</code> contains only the current page.</b> A successful 200 response does not mean you have retrieved the entire dataset.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📄 Your challenge</h3>
+      <p>If the response says <code>page=2</code> and <code>total_pages=5</code>, are you finished?</p>
+      <textarea placeholder="# Answer and explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Pagination understood 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+
+Pages 3, 4, and 5 still need to be requested.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Loop Until Every Page Is Fetched</h2>
+  </div>
+  <div class="module-body">
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>all_rows = []
+page = 1
+
+while True:
+    body = fetch_page(
+        page,
+        page_size
+    )
+
+    all_rows.extend(
+        body["data"]
+    )
+
+    if page &gt;= body["total_pages"]:
+        break
+
+    page += 1</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>Page 1</span><span>➡️</span>
+      <span>extend list</span><span>➡️</span>
+      <span>Page 2</span><span>➡️</span>
+      <span>extend list</span><span>➡️</span>
+      <span>until done</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>The pagination loop is the client's responsibility.</b> The server answers one page at a time; your code must accumulate every page.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🛳️ Your challenge</h3>
+      <p>What Python list method is useful for adding all rows from one page into the master list?</p>
+      <textarea placeholder="# Method name and why..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">All aboard ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>all_rows.extend(body["data"])
+
+extend() adds each row from the page into
+the existing master list.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>429 Rate Limits: Back Off, Don't Skip</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">HTTP 429 means the server is asking you to slow down. A well-behaved client waits, then retries.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>resp = requests.get(
+    url,
+    headers=HEADERS,
+    params={
+        "page": page,
+        "page_size": page_size
+    }
+)
+
+if resp.status_code == 429:
+    retry_after = int(
+        resp.headers.get(
+            "Retry-After",
+            1
+        )
+    )
+
+    time.sleep(retry_after)
+
+    continue
+    # retry the SAME page</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>This is one of the most important quiz rules: on 429, wait for <code>Retry-After</code> and retry the SAME page.</b> Do not increment the page number, do not skip the data, and do not hammer the endpoint immediately.</div>
+    </div>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Wrong</h3>
+        <pre><code>if resp.status_code == 429:
+    page += 1
+    continue</code></pre>
+        <p>This silently skips a page.</p>
+      </div>
+      <div class="good">
+        <h3>✅ Correct</h3>
+        <pre><code>if resp.status_code == 429:
+    time.sleep(retry_after)
+    continue</code></pre>
+        <p>The page number stays unchanged.</p>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>⏳ Your challenge</h3>
+      <p>You receive a 429 while fetching page 3. <code>Retry-After</code> is 4 seconds. What page should the next request ask for?</p>
+      <textarea placeholder="# Page number and reasoning..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Rate-limit royalty 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Page 3.
+
+Wait four seconds, then retry the same page.
+Only advance after page 3 succeeds.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>A Well-Behaved Client</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="concept-grid">
+      <div class="concept">
+        <div class="icon">🔐</div>
+        <b>Authenticate</b>
+        <small>Send credentials with every request.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">📄</div>
+        <b>Paginate</b>
+        <small>Keep requesting until every page is fetched.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">⏳</div>
+        <b>Back off</b>
+        <small>Honor 429 and Retry-After.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🔁</div>
+        <b>Retry safely</b>
+        <small>Retry the same failed page.</small>
+      </div>
+    </div>
+
+    <div class="tip"><b>These aren't optional niceties.</b> Ignoring any one may appear to work during a tiny demo, then fail against a real service under load.</div>
+
+    <div class="challenge">
+      <h3>🌷 Your challenge</h3>
+      <p>Name the three responsibilities every well-behaved client in this module must handle.</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Client behaved beautifully ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) Authenticate each request
+2) Follow pagination until complete
+3) Back off and retry on 429</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Load the API Results into pandas</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Once all pages have been accumulated into a list of dictionaries, pandas can turn them into a DataFrame immediately.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import pandas as pd
+
+df = pd.DataFrame(all_rows)
+
+print(df.head())
+print(df.shape)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>JSON rows</span><span>➡️</span>
+      <span>list of dicts</span><span>➡️</span>
+      <span>DataFrame</span>
+    </div>
+
+    <div class="challenge">
+      <h3>🐼 Your challenge</h3>
+      <p>After loading all passenger rows into a DataFrame, show the first five rows and count passengers by <code>Pclass</code>.</p>
+      <textarea placeholder="# Build and inspect the DataFrame..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">API met pandas 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df = pd.DataFrame(all_rows)
+
+print(df.head())
+
+print(
+    df["Pclass"].value_counts()
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Judgment Call</div>
+    <h2>API or Batch Extract?</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">An API is not automatically “better” than a file. The right choice depends on the data-access need.</p>
+
+    <div class="compare">
+      <div class="good">
+        <h3>🌐 API fits when...</h3>
+        <ul>
+          <li>You need current or frequently changing data.</li>
+          <li>You only need a subset of records.</li>
+          <li>You need to trigger an action.</li>
+          <li>Interactive access matters.</li>
+        </ul>
+      </div>
+      <div class="neutral">
+        <h3>📦 Batch extract fits when...</h3>
+        <ul>
+          <li>You need a large complete dataset.</li>
+          <li>You need it infrequently, such as nightly.</li>
+          <li>Pagination overhead adds no value.</li>
+          <li>You don't want analytics to depend on the source being online at query time.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>API vs extract is a business and engineering judgment, not a technology popularity contest.</b> Fresh subset access favors APIs; large complete periodic datasets often favor batch extracts.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📦 Your challenge</h3>
+      <p>You need the complete Titanic passenger dataset once each night for a warehouse refresh. There is no need for second-by-second freshness. API or nightly extract?</p>
+      <textarea placeholder="# Choose and justify..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Architecture chosen wisely ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>A nightly batch extract is likely the simpler fit.
+
+The requirement is a complete dataset on a periodic
+schedule, so pagination and live API availability add
+little value.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Build a Complete Titanic API Client</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Create <code>fetch_page(page, page_size)</code> with the API-key header.</span></div>
+      <div class="check">2️⃣ <span>Pass <code>page</code> and <code>page_size</code> as query parameters.</span></div>
+      <div class="check">3️⃣ <span>On 429, read <code>Retry-After</code>, sleep, and retry the same page.</span></div>
+      <div class="check">4️⃣ <span>Create <code>fetch_all_passengers()</code> and loop until <code>page &gt;= total_pages</code>.</span></div>
+      <div class="check">5️⃣ <span>Load all accumulated rows into a pandas DataFrame.</span></div>
+      <div class="check">6️⃣ <span>Write one paragraph choosing API or batch extract for the scenario.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write the skeleton of a robust paginated client with authentication and 429 handling.</p>
+      <textarea style="min-height:260px" placeholder="# Build the client..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch API confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import time
+import requests
+import pandas as pd
+
+URL = "http://127.0.0.1:5050/passengers"
+
+HEADERS = {
+    "X-API-Key": "titanic-class-key"
+}
+
+def fetch_page(page, page_size):
+    while True:
+        resp = requests.get(
+            URL,
+            headers=HEADERS,
+            params={
+                "page": page,
+                "page_size": page_size
+            }
+        )
+
+        if resp.status_code == 429:
+            retry_after = int(
+                resp.headers.get(
+                    "Retry-After",
+                    1
+                )
+            )
+
+            time.sleep(retry_after)
+            continue
+
+        resp.raise_for_status()
+        return resp.json()
+
+def fetch_all_passengers(page_size=5):
+    rows = []
+    page = 1
+
+    while True:
+        body = fetch_page(
+            page,
+            page_size
+        )
+
+        rows.extend(
+            body["data"]
+        )
+
+        if page &gt;= body["total_pages"]:
+            break
+
+        page += 1
+
+    return rows
+
+rows = fetch_all_passengers()
+
+df = pd.DataFrame(rows)
+
+print(df.head())
+print(df.shape)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🌐 Be polite to APIs and they’ll be polite back.</h2>
+  <p>You can now authenticate requests, retrieve a complete paginated dataset, handle HTTP 429 by honoring <code>Retry-After</code> and retrying the same page, convert JSON rows into a DataFrame, and choose between live API access and a batch extract based on the actual data need.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived API Access! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+const mockPassengers = [
+  {"name":"Owen","pclass":3,"age":22,"fare":7.25,"survived":0},
+  {"name":"Anna","pclass":1,"age":38,"fare":71.28,"survived":1},
+  {"name":"Laina","pclass":3,"age":26,"fare":7.93,"survived":1},
+  {"name":"Margaret","pclass":1,"age":35,"fare":53.10,"survived":1},
+  {"name":"James","pclass":2,"age":30,"fare":13.00,"survived":0},
+  {"name":"Beatrice","pclass":2,"age":19,"fare":26.00,"survived":1},
+  {"name":"Thomas","pclass":3,"age":41,"fare":8.05,"survived":0},
+  {"name":"Eleanor","pclass":1,"age":29,"fare":83.16,"survived":1},
+  {"name":"Henry","pclass":3,"age":17,"fare":7.89,"survived":0},
+  {"name":"Clara","pclass":2,"age":24,"fare":21.00,"survived":1}
+];
+
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ API excellence! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+
+function mockFetch(){
+  const key=document.getElementById("apiKey").value;
+  const page=Math.max(1,parseInt(document.getElementById("pageNum").value)||1);
+  const size=Math.max(1,parseInt(document.getElementById("pageSize").value)||3);
+  const out=document.getElementById("apiResponse");
+
+  if(key !== "titanic-class-key"){
+    out.innerHTML =
+      '<span class="status s401">401 Unauthorized</span>\n\n' +
+      JSON.stringify({
+        error:"Missing or invalid X-API-Key"
+      },null,2);
+    return;
+  }
+
+  const totalPages=Math.ceil(mockPassengers.length/size);
+  const start=(page-1)*size;
+  const data=mockPassengers.slice(start,start+size);
+
+  out.innerHTML =
+    '<span class="status s200">200 OK</span>\n\n' +
+    escapeHtml(JSON.stringify({
+      page:page,
+      page_size:size,
+      total_pages:totalPages,
+      total_records:mockPassengers.length,
+      data:data
+    },null,2));
+}
+
+function mockRateLimit(){
+  const page=Math.max(1,parseInt(document.getElementById("pageNum").value)||1);
+  const out=document.getElementById("apiResponse");
+
+  out.innerHTML =
+    '<span class="status s429">429 Too Many Requests</span>\n\n' +
+    'Retry-After: 3\n\n' +
+    escapeHtml(JSON.stringify({
+      message:"Slow down. Wait 3 seconds, then retry page "+page+".",
+      important:"Do NOT increment the page number."
+    },null,2));
+}
+
+function escapeHtml(s){
+  return s
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;");
+}
+</script>
+</body>
+</html>

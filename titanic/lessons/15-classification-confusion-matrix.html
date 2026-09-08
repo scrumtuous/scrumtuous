@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titanic Classification Tutorial — From Prediction to Confusion Matrix ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1050px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:880px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .concept{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center}
+  .concept .icon{font-size:32px}
+  .concept b{display:block;font-size:19px;margin:5px 0}
+  .concept small{color:var(--muted)}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .fake-table{
+    overflow:auto;border:1px solid var(--line);border-radius:18px;margin:16px 0;background:#fff
+  }
+  table{border-collapse:collapse;width:100%;min-width:680px}
+  th,td{padding:12px 14px;border-bottom:1px solid #f0e3ec;text-align:left}
+  th{background:#fff5fa;color:#72536d}
+  tr:last-child td{border-bottom:none}
+  .target{background:#fff0f6;font-weight:800}
+  .feature{background:#f6f2ff}
+
+  .matrix-wrap{max-width:760px;margin:20px auto}
+  .matrix{
+    display:grid;
+    grid-template-columns:140px 1fr 1fr;
+    gap:8px;
+    align-items:stretch;
+  }
+  .mcell{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px;
+    text-align:center;
+    background:#fff;
+  }
+  .mhead{background:#f7f1ff;font-weight:900}
+  .mrow{background:#fff8e8;font-weight:900}
+  .tn,.tp{background:#ecfbf5}
+  .fp,.fn{background:#fff0f4}
+  .mcell strong{display:block;font-size:30px}
+  .mcell small{display:block;color:var(--muted);margin-top:5px}
+
+  .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .metric{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center}
+  .metric strong{display:block;font-size:29px;color:#92527e}
+  .metric span{color:var(--muted)}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:790px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.concept-grid,.compare,.metric-grid,.checklist{grid-template-columns:1fr}
+    .matrix{grid-template-columns:100px 1fr 1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+    .matrix{grid-template-columns:72px 1fr 1fr}
+    .mcell{padding:12px 7px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🎯</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">INTRO TO CLASSIFICATION • TITANIC EDITION</div>
+  <h1>Could We Have Predicted <span class="gradient">Who Survived?</span></h1>
+  <p class="subtitle">A beginner-friendly journey from features and targets to a trained classifier, predictions, accuracy, and finally the confusion matrix — where we see exactly what the model got right and wrong.</p>
+  <div class="chips">
+    <span class="chip">🎯 Classification</span>
+    <span class="chip">🧩 Features</span>
+    <span class="chip">🏷️ Target</span>
+    <span class="chip">✂️ Train/Test Split</span>
+    <span class="chip">🤖 Logistic Regression</span>
+    <span class="chip">🧮 Confusion Matrix</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Learning objectives</div>
+  <h2>By the end, you'll understand...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>1️⃣ Classification</b>Predicting a category rather than a continuous number.</div>
+    <div class="objective"><b>2️⃣ Features vs target</b>What the model sees versus what it is trying to predict.</div>
+    <div class="objective"><b>3️⃣ Training vs testing</b>Why the model must be evaluated on unseen passengers.</div>
+    <div class="objective"><b>4️⃣ Confusion matrix</b>How to see correct and incorrect predictions in detail.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 1</div>
+    <h2>What Is Classification?</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Classification means predicting which category an observation belongs to.</p>
+
+    <div class="concept-grid">
+      <div class="concept">
+        <div class="icon">📈</div>
+        <b>Regression</b>
+        <small>Predict a number, like Fare.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🎯</div>
+        <b>Classification</b>
+        <small>Predict a category, like Survived = 0 or 1.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🕰️</div>
+        <b>Forecasting</b>
+        <small>Predict a future value over time.</small>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b>Titanic survival is a binary classification problem.</b> The model predicts one of two categories: <code>0</code> = did not survive, <code>1</code> = survived.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>Why isn't predicting <code>Survived</code> a regression problem?</p>
+      <textarea placeholder="# Explain in one sentence..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Classification clicked ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because Survived is a category with two possible
+classes: 0 or 1.
+
+We are choosing a class, not predicting an arbitrary
+continuous number.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 2</div>
+    <h2>Features vs Target</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The <b>features</b> are what the model is allowed to look at. The <b>target</b> is the answer we want it to learn to predict.</p>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Pclass</th><th>Sex</th><th>Age</th><th>Fare</th><th>Embarked</th><th>Survived</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Owen</td><td class="feature">3</td><td class="feature">male</td><td class="feature">22</td><td class="feature">7.25</td><td class="feature">S</td><td class="target">0</td>
+          </tr>
+          <tr>
+            <td>Anna</td><td class="feature">1</td><td class="feature">female</td><td class="feature">38</td><td class="feature">71.28</td><td class="feature">C</td><td class="target">1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>X = df[
+    ["Pclass", "Sex", "Age", "Fare", "Embarked"]
+]
+
+y = df["Survived"]</code></pre>
+    </div>
+
+    <div class="tip"><b>Think of it like an exam.</b> <code>X</code> contains the clues. <code>y</code> contains the correct answers.</div>
+
+    <div class="challenge">
+      <h3>🎀 Quick check</h3>
+      <p>Which variable is the target in this tutorial?</p>
+      <textarea placeholder="# Target = ..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Target acquired 🎯</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>y = df["Survived"]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 3</div>
+    <h2>Prepare the Data</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Machine-learning models need clean inputs. Numeric columns may need missing-value handling, and text categories must be converted into numeric representations.</p>
+
+    <div class="compare">
+      <div class="neutral">
+        <h3>Numeric features</h3>
+        <pre><code>Age
+Fare</code></pre>
+        <p>Fill missing values, often with the median.</p>
+      </div>
+      <div class="neutral">
+        <h3>Categorical features</h3>
+        <pre><code>Sex
+Embarked
+Pclass</code></pre>
+        <p>Encode categories, often with one-hot encoding.</p>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
+
+numeric_features = [
+    "Age",
+    "Fare"
+]
+
+categorical_features = [
+    "Sex",
+    "Embarked",
+    "Pclass"
+]
+
+numeric_pipeline = Pipeline([
+    (
+        "imputer",
+        SimpleImputer(strategy="median")
+    )
+])
+
+categorical_pipeline = Pipeline([
+    (
+        "imputer",
+        SimpleImputer(strategy="most_frequent")
+    ),
+    (
+        "encoder",
+        OneHotEncoder(handle_unknown="ignore")
+    )
+])
+
+preprocessor = ColumnTransformer([
+    (
+        "numeric",
+        numeric_pipeline,
+        numeric_features
+    ),
+    (
+        "categorical",
+        categorical_pipeline,
+        categorical_features
+    )
+])</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b>The model should not be expected to understand strings such as <code>"female"</code> or <code>"Cherbourg"</code> directly.</b> The preprocessing step converts them into a numeric form the model can learn from.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 4</div>
+    <h2>Split the Passengers into Train & Test Sets</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">We let the model learn from one set of passengers, then test it on different passengers it has never seen.</p>
+
+    <div class="flow">
+      <span>All passengers</span><span>➡️</span>
+      <span>70% TRAIN</span><span>+</span>
+      <span>30% TEST</span>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = (
+    train_test_split(
+        X,
+        y,
+        test_size=0.30,
+        random_state=42,
+        stratify=y
+    )
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b>The test set is the exam.</b> If the model trains on those rows first, the evaluation is no longer a fair measure of generalization.</div>
+    </div>
+
+    <div class="tip"><b>Why <code>stratify=y</code>?</b> It helps preserve roughly the same survivor/non-survivor proportions in both train and test sets.</div>
+
+    <div class="challenge">
+      <h3>✂️ Quick check</h3>
+      <p>What does <code>test_size=0.30</code> mean?</p>
+      <textarea placeholder="# Explain it..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Split understood ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>30% of the rows are held back for testing.
+
+The model trains on the remaining 70%.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 5</div>
+    <h2>Start with a Dumb Baseline</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Before celebrating a machine-learning model, ask whether it can beat the simplest possible strategy.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+
+baseline = DummyClassifier(
+    strategy="most_frequent"
+)
+
+baseline.fit(
+    X_train,
+    y_train
+)
+
+baseline_preds = baseline.predict(
+    X_test
+)
+
+baseline_accuracy = accuracy_score(
+    y_test,
+    baseline_preds
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b><code>DummyClassifier(strategy="most_frequent")</code> always guesses the most common class.</b> Your real classifier should beat this baseline before you claim it has learned anything useful.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🤔 Quick check</h3>
+      <p>If a real classifier has 74% accuracy and the DummyClassifier has 78%, which one is better?</p>
+      <textarea placeholder="# Explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Baseline respected 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The DummyClassifier is better.
+
+The trained model is not adding useful predictive value
+if it cannot beat the naive baseline.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 6</div>
+    <h2>Train a Logistic Regression Classifier</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Logistic Regression is one of the best first classification models because it is simple, fast, and interpretable.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.linear_model import LogisticRegression
+
+model = Pipeline([
+    (
+        "preprocessor",
+        preprocessor
+    ),
+    (
+        "classifier",
+        LogisticRegression(
+            max_iter=1000
+        )
+    )
+])
+
+model.fit(
+    X_train,
+    y_train
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b>Despite its name, Logistic Regression is commonly used for classification.</b> Here it learns to predict the two survival classes.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🤖 Quick check</h3>
+      <p>What does <code>model.fit(X_train, y_train)</code> do?</p>
+      <textarea placeholder="# Explain in plain English..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Model trained ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>It lets the model learn patterns connecting the
+training features in X_train to the known answers
+in y_train.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 7</div>
+    <h2>Make Predictions</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Now the model faces the passengers it did not train on.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>predictions = model.predict(
+    X_test
+)</code></pre>
+    </div>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>Passenger</th><th>Actual</th><th>Predicted</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>1</td><td>1</td><td>Correct</td></tr>
+          <tr><td>B</td><td>0</td><td>0</td><td>Correct</td></tr>
+          <tr><td>C</td><td>1</td><td>0</td><td>Wrong</td></tr>
+          <tr><td>D</td><td>0</td><td>1</td><td>Wrong</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip"><b>This is the moment where evaluation becomes possible.</b> We now have two answers for each test passenger: what actually happened and what the model predicted.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 8</div>
+    <h2>Accuracy: Useful, but Incomplete</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.metrics import accuracy_score
+
+accuracy = accuracy_score(
+    y_test,
+    predictions
+)
+
+print(accuracy)</code></pre>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric">
+        <strong>Correct</strong>
+        <span>Number of predictions matching reality.</span>
+      </div>
+      <div class="metric">
+        <strong>÷</strong>
+        <span>Total number of test predictions.</span>
+      </div>
+      <div class="metric">
+        <strong>Accuracy</strong>
+        <span>Overall fraction correct.</span>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">KEY IDEA</span>
+      <div><b>Accuracy tells you how often the model was right overall.</b> It does not tell you what kind of mistakes it made.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✅ Quick check</h3>
+      <p>A classifier gets 80 out of 100 passengers correct. What is its accuracy?</p>
+      <textarea placeholder="# Accuracy = ..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Accuracy calculated ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>80 / 100 = 0.80
+
+Accuracy = 80%</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 9</div>
+    <h2>Why Accuracy Is Not the Whole Story</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Two models can have the same accuracy and still make very different kinds of mistakes.</p>
+
+    <div class="compare">
+      <div class="neutral">
+        <h3>Model A</h3>
+        <p>Misses mostly survivors.</p>
+      </div>
+      <div class="neutral">
+        <h3>Model B</h3>
+        <p>Misses mostly non-survivors.</p>
+      </div>
+    </div>
+
+    <p>The overall percentage correct may be identical, but the error pattern is not.</p>
+
+    <div class="quiz-alert">
+      <span class="badge">NEXT BIG IDEA</span>
+      <div><b>To understand the mistakes, we need more than one number.</b> We need to count actual vs predicted classes separately.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 10</div>
+    <h2>Enter the Confusion Matrix</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The confusion matrix organizes predictions into four boxes.</p>
+
+    <div class="matrix-wrap">
+      <div class="matrix">
+        <div class="mcell mhead"></div>
+        <div class="mcell mhead">Predicted 0<br><small>Died</small></div>
+        <div class="mcell mhead">Predicted 1<br><small>Survived</small></div>
+
+        <div class="mcell mrow">Actual 0<br><small>Died</small></div>
+        <div class="mcell tn"><strong>TN</strong><small>True Negative<br>Correctly predicted death</small></div>
+        <div class="mcell fp"><strong>FP</strong><small>False Positive<br>Predicted survival, but died</small></div>
+
+        <div class="mcell mrow">Actual 1<br><small>Survived</small></div>
+        <div class="mcell fn"><strong>FN</strong><small>False Negative<br>Predicted death, but survived</small></div>
+        <div class="mcell tp"><strong>TP</strong><small>True Positive<br>Correctly predicted survival</small></div>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">MEMORIZE THIS</span>
+      <div><b>True = prediction was correct. False = prediction was wrong. Positive = predicted class 1. Negative = predicted class 0.</b></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧮 Quick check</h3>
+      <p>The model predicts that a passenger survives, but the passenger actually died. Which box is that?</p>
+      <textarea placeholder="# TN, FP, FN, or TP?"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Matrix logic clicked ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>False Positive (FP)
+
+The model predicted positive/survived,
+but that prediction was false.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 11</div>
+    <h2>Create the Confusion Matrix in Python</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(
+    y_test,
+    predictions
+)
+
+print(cm)</code></pre>
+    </div>
+
+    <p>Example output:</p>
+
+    <div class="code-wrap">
+      <pre><code>[[90 15]
+ [20 55]]</code></pre>
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix">
+        <div class="mcell mhead"></div>
+        <div class="mcell mhead">Predicted 0</div>
+        <div class="mcell mhead">Predicted 1</div>
+
+        <div class="mcell mrow">Actual 0</div>
+        <div class="mcell tn"><strong>90</strong><small>True Negatives</small></div>
+        <div class="mcell fp"><strong>15</strong><small>False Positives</small></div>
+
+        <div class="mcell mrow">Actual 1</div>
+        <div class="mcell fn"><strong>20</strong><small>False Negatives</small></div>
+        <div class="mcell tp"><strong>55</strong><small>True Positives</small></div>
+      </div>
+    </div>
+
+    <div class="tip"><b>Read across actual rows, then down predicted columns.</b> Scikit-learn's standard binary confusion matrix is arranged as <code>[[TN, FP], [FN, TP]]</code>.</div>
+
+    <div class="challenge">
+      <h3>🎯 Quick check</h3>
+      <p>Using the example matrix above, how many survivors did the model correctly identify?</p>
+      <textarea placeholder="# Number = ..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Confusion conquered 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>55
+
+Those are the True Positives.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 12</div>
+    <h2>Accuracy Comes From the Matrix Too</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="flow">
+      <span>TN + TP</span><span>÷</span>
+      <span>TN + FP + FN + TP</span><span>=</span>
+      <span>Accuracy</span>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code># Example matrix:
+# TN = 90
+# FP = 15
+# FN = 20
+# TP = 55
+
+accuracy = (
+    (90 + 55)
+    /
+    (90 + 15 + 20 + 55)
+)
+
+# 145 / 180
+# ≈ 0.806</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">BIG CONNECTION</span>
+      <div><b>The confusion matrix contains more information than accuracy.</b> Accuracy is just one summary calculated from those four boxes.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Step 13</div>
+    <h2>Visualize the Matrix</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.metrics import (
+    ConfusionMatrixDisplay
+)
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    predictions,
+    display_labels=[
+        "Died",
+        "Survived"
+    ]
+)</code></pre>
+    </div>
+
+    <div class="tip"><b>This is often the first classification visualization students should learn.</b> It immediately shows whether the model is making more false positives or false negatives.</div>
+
+    <div class="challenge">
+      <h3>🔎 Think like an analyst</h3>
+      <p>If the matrix has many false negatives, what kind of passenger is the model failing to identify?</p>
+      <textarea placeholder="# Explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Errors interpreted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Passengers who actually survived but whom the model
+predicted would not survive.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Full tutorial</div>
+    <h2>Put It All Together</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.dummy import DummyClassifier
+
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    ConfusionMatrixDisplay
+)
+
+df = pd.read_csv("titanic.csv")
+
+X = df[
+    ["Pclass", "Sex", "Age", "Fare", "Embarked"]
+]
+
+y = df["Survived"]
+
+numeric_features = [
+    "Age",
+    "Fare"
+]
+
+categorical_features = [
+    "Sex",
+    "Embarked",
+    "Pclass"
+]
+
+numeric_pipeline = Pipeline([
+    (
+        "imputer",
+        SimpleImputer(strategy="median")
+    )
+])
+
+categorical_pipeline = Pipeline([
+    (
+        "imputer",
+        SimpleImputer(strategy="most_frequent")
+    ),
+    (
+        "encoder",
+        OneHotEncoder(handle_unknown="ignore")
+    )
+])
+
+preprocessor = ColumnTransformer([
+    (
+        "numeric",
+        numeric_pipeline,
+        numeric_features
+    ),
+    (
+        "categorical",
+        categorical_pipeline,
+        categorical_features
+    )
+])
+
+X_train, X_test, y_train, y_test = (
+    train_test_split(
+        X,
+        y,
+        test_size=0.30,
+        random_state=42,
+        stratify=y
+    )
+)
+
+baseline = DummyClassifier(
+    strategy="most_frequent"
+)
+
+baseline.fit(
+    X_train,
+    y_train
+)
+
+baseline_preds = baseline.predict(
+    X_test
+)
+
+print(
+    "Baseline accuracy:",
+    accuracy_score(
+        y_test,
+        baseline_preds
+    )
+)
+
+model = Pipeline([
+    (
+        "preprocessor",
+        preprocessor
+    ),
+    (
+        "classifier",
+        LogisticRegression(
+            max_iter=1000
+        )
+    )
+])
+
+model.fit(
+    X_train,
+    y_train
+)
+
+predictions = model.predict(
+    X_test
+)
+
+print(
+    "Model accuracy:",
+    accuracy_score(
+        y_test,
+        predictions
+    )
+)
+
+print(
+    confusion_matrix(
+        y_test,
+        predictions
+    )
+)
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    predictions,
+    display_labels=[
+        "Died",
+        "Survived"
+    ]
+)</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Final lab</div>
+    <h2>Your First Titanic Classification Investigation</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Load <code>titanic.csv</code>.</span></div>
+      <div class="check">2️⃣ <span>Use <code>Pclass</code>, <code>Sex</code>, <code>Age</code>, <code>Fare</code>, and <code>Embarked</code> as features.</span></div>
+      <div class="check">3️⃣ <span>Use <code>Survived</code> as the target.</span></div>
+      <div class="check">4️⃣ <span>Split into training and testing data.</span></div>
+      <div class="check">5️⃣ <span>Establish a <code>DummyClassifier</code> baseline.</span></div>
+      <div class="check">6️⃣ <span>Train a Logistic Regression pipeline.</span></div>
+      <div class="check">7️⃣ <span>Compare model accuracy to baseline accuracy.</span></div>
+      <div class="check">8️⃣ <span>Generate and interpret the confusion matrix.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final questions</h3>
+      <p>After running your model, answer:</p>
+      <ol>
+        <li>Did the classifier beat the baseline?</li>
+        <li>How many true positives were there?</li>
+        <li>How many false positives?</li>
+        <li>How many false negatives?</li>
+        <li>Which kind of error was more common?</li>
+        <li>What feature would you try adding next?</li>
+      </ol>
+      <textarea style="min-height:230px" placeholder="# Write your interpretation here..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,80)">Launch classification confetti 🎊</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">You made it</div>
+  <h2>🧮 Accuracy tells you how often. The confusion matrix tells you how.</h2>
+  <p>You now understand the entire beginner classification workflow: choose features and a target, preprocess the data, hold out a test set, establish a naive baseline, train Logistic Regression, make predictions, calculate accuracy, and inspect true positives, true negatives, false positives, and false negatives in a confusion matrix.</p>
+  <button class="fun" onclick="celebrate(this,90)">I built my first classifier! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+
+  const old=button.textContent;
+  button.textContent="✨ Classification conquered! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+</script>
+</body>
+</html>

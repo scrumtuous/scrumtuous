@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mutable Default Arguments — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:880px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+  .rule{
+    margin:18px 0;
+    padding:20px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#effcf7,#f7f1ff);
+    border:1px solid var(--line);
+    text-align:center;
+    font-size:20px;
+    font-weight:900;
+  }
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .bad,.good,.neutral{
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px;
+  }
+  .bad{background:#fff1f5}
+  .good{background:#effcf7}
+  .neutral{background:#f5f1ff}
+
+  .sequence{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin:18px 0;
+  }
+  .seq{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:14px;
+    text-align:center;
+  }
+  .seq strong{display:block;margin-bottom:5px}
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:800px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.compare,.sequence,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🧠</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PYTHON GOTCHA • TITANIC EDITION</div>
+  <h1>The <span class="gradient">Mutable Default Argument</span> Trap</h1>
+  <p class="subtitle">Why a list, dictionary, set, or nested object can mysteriously remember previous function calls — and the simple <code>None</code> pattern that fixes it.</p>
+  <div class="chips">
+    <span class="chip">📋 Lists</span>
+    <span class="chip">🗂️ Dicts</span>
+    <span class="chip">🧺 Sets</span>
+    <span class="chip">🏗️ Methods</span>
+    <span class="chip">🪆 Nested Data</span>
+    <span class="chip">📝 Quiz Alert</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll understand...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🚨 The bug</b>Why mutable defaults can keep state between function calls.</div>
+    <div class="objective"><b>🧪 How to prove it</b>Test repeated calls and even compare object identities with <code>id()</code> or <code>is</code>.</div>
+    <div class="objective"><b>✅ The fix</b>Use <code>None</code> as the default and create a fresh object inside the function.</div>
+  </div>
+
+  <div class="rule">
+    If you see <code>def f(x, values=[])</code>, <code>{}</code>, or <code>set()</code> in a default parameter, be suspicious.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">The core idea</div>
+    <h2>Why This Happens</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Python evaluates default argument values when the function is defined — not every time the function is called.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>def add_passenger(name, passengers=[]):
+    passengers.append(name)
+    return passengers</code></pre>
+    </div>
+
+    <div class="sequence">
+      <div class="seq"><strong>1️⃣ Define</strong><code>[]</code> is created once.</div>
+      <div class="seq"><strong>2️⃣ Call</strong>Rose is appended.</div>
+      <div class="seq"><strong>3️⃣ Call</strong>The same list is reused.</div>
+      <div class="seq"><strong>4️⃣ Mutate</strong>Jack is appended too.</div>
+      <div class="seq"><strong>5️⃣ Surprise</strong>Old data remains.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>The default list is created once when the function is defined.</b> Every call that omits the argument can reuse and mutate that exact same object.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Example 1</div>
+    <h2>A List That Remembers Previous Calls</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="bad">
+      <h3>🚫 Bad version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_passenger(name, passengers=[]):
+    passengers.append(name)
+    return passengers</code></pre>
+      </div>
+    </div>
+
+    <h3>Test it</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>print(add_passenger("Rose"))
+print(add_passenger("Jack"))
+print(add_passenger("Molly"))</code></pre>
+    </div>
+
+    <div class="bad">
+      <h3>Bad result</h3>
+      <pre><code>['Rose']
+['Rose', 'Jack']
+['Rose', 'Jack', 'Molly']</code></pre>
+    </div>
+
+    <div class="good">
+      <h3>✅ Fix</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_passenger(name, passengers=None):
+    if passengers is None:
+        passengers = []
+
+    passengers.append(name)
+    return passengers</code></pre>
+      </div>
+    </div>
+
+    <h3>Test again</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>print(add_passenger("Rose"))
+print(add_passenger("Jack"))
+print(add_passenger("Molly"))</code></pre>
+    </div>
+
+    <div class="good">
+      <h3>Proper result</h3>
+      <pre><code>['Rose']
+['Jack']
+['Molly']</code></pre>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>Why did Jack's original bad result still include Rose?</p>
+      <textarea placeholder="# Explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">List trap spotted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because both calls reused the same default list object.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Example 2</div>
+    <h2>A Dictionary That Changes Earlier Results</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="bad">
+      <h3>🚫 Bad version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def passenger_info(name, info={}):
+    info["name"] = name
+    return info</code></pre>
+      </div>
+    </div>
+
+    <h3>Test it</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>rose = passenger_info("Rose")
+jack = passenger_info("Jack")
+
+print(rose)
+print(jack)
+print(rose is jack)</code></pre>
+    </div>
+
+    <div class="bad">
+      <h3>Bad result</h3>
+      <pre><code>{'name': 'Jack'}
+{'name': 'Jack'}
+True</code></pre>
+    </div>
+
+    <div class="tip"><b>Why did Rose change?</b> Both variables point to the same dictionary. The second call overwrote the <code>"name"</code> key inside that shared object.</div>
+
+    <div class="good">
+      <h3>✅ Fix</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def passenger_info(name, info=None):
+    if info is None:
+        info = {}
+
+    info["name"] = name
+    return info</code></pre>
+      </div>
+    </div>
+
+    <h3>Proper result</h3>
+    <pre><code>{'name': 'Rose'}
+{'name': 'Jack'}
+False</code></pre>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>rose is jack</code> returning <code>True</code> proves both names refer to the exact same object.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Example 3</div>
+    <h2>A Set of Warnings That Keeps Growing</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="bad">
+      <h3>🚫 Bad version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_warning(warning, warnings=set()):
+    warnings.add(warning)
+    return warnings</code></pre>
+      </div>
+    </div>
+
+    <h3>Test it</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>print(add_warning("HIGH_FARE"))
+print(add_warning("CHILD"))</code></pre>
+    </div>
+
+    <div class="bad">
+      <h3>Bad result</h3>
+      <pre><code>{'HIGH_FARE'}
+{'HIGH_FARE', 'CHILD'}</code></pre>
+    </div>
+
+    <div class="good">
+      <h3>✅ Fix</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_warning(warning, warnings=None):
+    if warnings is None:
+        warnings = set()
+
+    warnings.add(warning)
+    return warnings</code></pre>
+      </div>
+    </div>
+
+    <h3>Proper result</h3>
+    <pre><code>{'HIGH_FARE'}
+{'CHILD'}</code></pre>
+
+    <div class="challenge">
+      <h3>🧺 Quick check</h3>
+      <p>Why is <code>set()</code> dangerous as a default even though it does not use square brackets?</p>
+      <textarea placeholder="# Explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Set trap spotted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because a set is mutable too.
+
+Its contents can change after the object is created.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Example 4</div>
+    <h2>Methods Have the Same Problem</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Putting the function inside a class does not change the rule.</p>
+
+    <div class="bad">
+      <h3>🚫 Bad version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>class PassengerService:
+
+    def add_note(self, note, notes=[]):
+        notes.append(note)
+        return notes</code></pre>
+      </div>
+    </div>
+
+    <h3>Test with two objects</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>service1 = PassengerService()
+service2 = PassengerService()
+
+print(service1.add_note("Rose"))
+print(service2.add_note("Jack"))</code></pre>
+    </div>
+
+    <div class="bad">
+      <h3>Bad result</h3>
+      <pre><code>['Rose']
+['Rose', 'Jack']</code></pre>
+    </div>
+
+    <div class="tip"><b>Surprise:</b> even two different <code>PassengerService</code> instances can reuse the same default list because the default belongs to the method's function definition.</div>
+
+    <div class="good">
+      <h3>✅ Fix</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>class PassengerService:
+
+    def add_note(self, note, notes=None):
+        if notes is None:
+            notes = []
+
+        notes.append(note)
+        return notes</code></pre>
+      </div>
+    </div>
+
+    <h3>Proper result</h3>
+    <pre><code>['Rose']
+['Jack']</code></pre>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Mutable default arguments are a function-definition problem, not just a standalone-function problem.</b> Methods can have the exact same bug.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Example 5</div>
+    <h2>Nested Mutable Data Makes It Worse</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="bad">
+      <h3>🚫 Bad version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def create_manifest(
+    name,
+    manifest={"passengers": []}
+):
+    manifest["passengers"].append(name)
+    return manifest</code></pre>
+      </div>
+    </div>
+
+    <h3>Test it</h3>
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>manifest1 = create_manifest("Rose")
+manifest2 = create_manifest("Jack")
+
+print(manifest1)
+print(manifest2)
+print(manifest1 is manifest2)</code></pre>
+    </div>
+
+    <div class="bad">
+      <h3>Bad result</h3>
+      <pre><code>{'passengers': ['Rose', 'Jack']}
+{'passengers': ['Rose', 'Jack']}
+True</code></pre>
+    </div>
+
+    <div class="tip"><b>Nested mutation:</b> the dictionary is shared, and the list inside that dictionary is shared too.</div>
+
+    <div class="good">
+      <h3>✅ Fix</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def create_manifest(name, manifest=None):
+    if manifest is None:
+        manifest = {
+            "passengers": []
+        }
+
+    manifest["passengers"].append(name)
+    return manifest</code></pre>
+      </div>
+    </div>
+
+    <h3>Proper result</h3>
+    <pre><code>{'passengers': ['Rose']}
+{'passengers': ['Jack']}
+False</code></pre>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">How to prove it</div>
+    <h2>Use <code>id()</code> to Catch the Shared Object</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="bad">
+      <h3>🚫 Bad default</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_passenger(name, passengers=[]):
+    print(id(passengers))
+    passengers.append(name)
+    return passengers
+
+add_passenger("Rose")
+add_passenger("Jack")
+add_passenger("Molly")</code></pre>
+      </div>
+    </div>
+
+    <p>You may see the same object ID three times:</p>
+    <pre><code>140312841284672
+140312841284672
+140312841284672</code></pre>
+
+    <div class="good">
+      <h3>✅ Fixed version</h3>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>def add_passenger(name, passengers=None):
+    if passengers is None:
+        passengers = []
+
+    print(id(passengers))
+    passengers.append(name)
+    return passengers</code></pre>
+      </div>
+    </div>
+
+    <p>Now separate calls normally create separate list objects:</p>
+    <pre><code>140312841284672
+140312840921216
+140312842034048</code></pre>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>id()</code> lets you inspect object identity.</b> Repeated identical IDs in the bad version demonstrate that the same mutable object is being reused.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Safe vs suspicious</div>
+    <h2>What Defaults Should Make You Nervous?</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Usually safe immutable defaults</h3>
+        <pre><code>def example(
+    count=0,
+    rate=0.5,
+    name="Rose",
+    active=True,
+    value=None
+):
+    ...</code></pre>
+      </div>
+
+      <div class="bad">
+        <h3>🚨 Suspicious mutable defaults</h3>
+        <pre><code>def example(
+    items=[],
+    details={},
+    flags=set()
+):
+    ...</code></pre>
+      </div>
+    </div>
+
+    <div class="rule">
+      Safe quiz answer: use <code>None</code>, then create the list/dict/set inside the function.
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Quick check</h3>
+      <p>Which default is the problem: <code>count=0</code>, <code>name="Rose"</code>, <code>notes=[]</code>, or <code>active=True</code>?</p>
+      <textarea placeholder="# Answer..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Quiz pattern recognized ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>notes=[]
+
+A list is mutable and can be reused across calls.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Final lab</div>
+    <h2>Spot, Test, Fix</h2>
+  </div>
+  <div class="module-body">
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Find the mutable default argument.</span></div>
+      <div class="check">2️⃣ <span>Call the function at least twice.</span></div>
+      <div class="check">3️⃣ <span>Write down the surprising result.</span></div>
+      <div class="check">4️⃣ <span>Use <code>is</code> or <code>id()</code> to prove object reuse.</span></div>
+      <div class="check">5️⃣ <span>Replace the mutable default with <code>None</code>.</span></div>
+      <div class="check">6️⃣ <span>Create a fresh mutable object inside the function.</span></div>
+      <div class="check">7️⃣ <span>Run the same test again.</span></div>
+      <div class="check">8️⃣ <span>Confirm the calls no longer share state.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Fix this function and show the before-and-after output:</p>
+      <div class="code-wrap">
+        <pre><code>def add_ticket(ticket, tickets=[]):
+    tickets.append(ticket)
+    return tickets</code></pre>
+      </div>
+      <textarea style="min-height:220px" placeholder="# Test the bad version
+# Show the bad result
+# Fix it
+# Show the correct result"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch mutable-default confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code># Bad result
+print(add_ticket("A123"))
+print(add_ticket("B456"))
+
+# ['A123']
+# ['A123', 'B456']
+
+
+# Fixed version
+def add_ticket(ticket, tickets=None):
+    if tickets is None:
+        tickets = []
+
+    tickets.append(ticket)
+    return tickets
+
+
+print(add_ticket("A123"))
+print(add_ticket("B456"))
+
+# ['A123']
+# ['B456']</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🚨 Mutable defaults remember more than you think.</h2>
+  <p>Lists, dictionaries, sets, method defaults, and nested mutable objects can all accidentally preserve state between calls because the default object is created once at function definition time. The standard safe pattern is simple: default to <code>None</code>, then create a fresh mutable object inside the function.</p>
+  <button class="fun" onclick="celebrate(this,90)">I survived Mutable Default Arguments! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+
+  const old=button.textContent;
+  button.textContent="✨ Mutable trap defeated! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+</script>
+</body>
+</html>

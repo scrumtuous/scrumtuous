@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Data Structures & File I/O — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:980px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:790px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .structure-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+  .structure{
+    border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff
+  }
+  .structure .icon{font-size:28px}
+  .structure b{display:block;font-size:18px;margin:5px 0}
+  .structure small{color:var(--muted)}
+  .list{background:#fff4f9}
+  .tuple{background:#f5f0ff}
+  .dict{background:#effcf8}
+  .set{background:#fff8e7}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .terminal{
+    background:#17141b;color:#f7eff9;border-radius:18px;padding:19px;
+    font-family:"SFMono-Regular",Consolas,monospace
+  }
+  .prompt{color:#f2a8d0}.out{color:#cbeee5}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .structure-grid{grid-template-columns:1fr 1fr}
+    .objective-grid,.compare{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .structure-grid{grid-template-columns:1fr}
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PYTHON DATA STRUCTURES & FILE I/O • TITANIC EDITION</div>
+  <h1>Lists, Dicts, Sets, Tuples & <span class="gradient">Passenger Files</span></h1>
+  <p class="subtitle">Learn how Python organizes data, reads passenger manifests, summarizes records, and writes results back to disk — without losing your luggage.</p>
+  <div class="chips">
+    <span class="chip">📚 Lists</span>
+    <span class="chip">🧩 Tuples</span>
+    <span class="chip">🔑 Dictionaries</span>
+    <span class="chip">✨ Sets</span>
+    <span class="chip">📄 CSV & Text</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>What you'll be able to do</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🧠 Choose the right structure</b>Know when a list, tuple, dictionary, or set best fits the job.</div>
+    <div class="objective"><b>📖 Read data safely</b>Use <code>with open(...)</code> and <code>csv.DictReader</code> to process CSV records.</div>
+    <div class="objective"><b>📝 Write summaries</b>Accumulate totals in dictionaries and write clean results to text files.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>list: Ordered & Changeable</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A list is an ordered collection that can grow, shrink, and change. Perfect for a passenger manifest where record order matters.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passengers = [
+    "Owen",
+    "Anna",
+    "Laina"
+]
+
+passengers[0] = "Mr. Owen Harris"
+passengers.append("John")
+
+print(passengers)</code></pre>
+    </div>
+
+    <div class="tip"><b>Think:</b> “a sequence of things I may need to add to, remove from, or edit.”</div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Create a list containing three embarkation ports: <code>"Southampton"</code>, <code>"Cherbourg"</code>, and <code>"Queenstown"</code>. Change the first value to <code>"S"</code> and append <code>"Unknown"</code>.</p>
+      <textarea placeholder="# Build and modify your list..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">List lovely ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>ports = [
+    "Southampton",
+    "Cherbourg",
+    "Queenstown"
+]
+
+ports[0] = "S"
+ports.append("Unknown")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>tuple: Ordered & Unchangeable</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A tuple is ordered like a list, but once created, its items should not be changed. Use it for values that belong together and should stay fixed.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passenger_class = (
+    1,
+    "First Class"
+)
+
+print(passenger_class[0])
+
+passenger_class[0] = 2
+# TypeError: tuple does not support item assignment</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Lists are mutable; tuples are immutable.</b> If you try to assign a new value into a tuple position, Python raises <code>TypeError</code>.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>💜 Your challenge</h3>
+      <p>Create a tuple containing <code>("Southampton", "England")</code>. Then write one line that would fail if you tried to replace <code>"Southampton"</code>.</p>
+      <textarea placeholder="# Create your tuple..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Tuple terrific 🎀</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>port = ("Southampton", "England")
+
+port[0] = "Cherbourg"
+# TypeError</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>dict: Lookup by Key</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A dictionary stores key-value pairs. Instead of asking for “item 3,” you ask for something by name, such as <code>"age"</code> or <code>"fare"</code>.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>passenger = {
+    "name": "Braund, Mr. Owen Harris",
+    "age": 22,
+    "fare": 7.25
+}
+
+print(passenger["age"])
+print(passenger["fare"])</code></pre>
+    </div>
+
+    <div class="tip"><b>Natural CSV shape:</b> one CSV row becomes one dictionary when you use <code>csv.DictReader</code>.</div>
+
+    <div class="challenge">
+      <h3>🔑 Your challenge</h3>
+      <p>Create a passenger dictionary with keys <code>name</code>, <code>pclass</code>, and <code>survived</code>. Print only the passenger's class.</p>
+      <textarea placeholder="# Build your dictionary..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Key conquered ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>passenger = {
+    "name": "Anna",
+    "pclass": 1,
+    "survived": 1
+}
+
+print(passenger["pclass"])</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>set: Unique Values Only</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A set removes duplicates and is excellent when you care about uniqueness or membership rather than order.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>ports = [
+    "Southampton",
+    "Cherbourg",
+    "Southampton",
+    "Queenstown"
+]
+
+distinct_ports = set(ports)
+
+print(distinct_ports)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>A set is for uniqueness, not order.</b> Converting a list to a set removes duplicates, but you should not rely on the original ordering.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✨ Your challenge</h3>
+      <p>Given <code>classes = [3, 1, 3, 2, 1]</code>, create a set of distinct passenger classes.</p>
+      <textarea placeholder="# Remove the duplicates..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Uniquely fabulous 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>classes = [3, 1, 3, 2, 1]
+
+distinct_classes = set(classes)
+
+print(distinct_classes)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Choose wisely</div>
+    <h2>Which Structure Should I Use?</h2>
+  </div>
+  <div class="module-body">
+    <div class="structure-grid">
+      <div class="structure list"><div class="icon">📚</div><b>list</b><small>Order matters and values can change.</small></div>
+      <div class="structure tuple"><div class="icon">🧩</div><b>tuple</b><small>Order matters but values should stay fixed.</small></div>
+      <div class="structure dict"><div class="icon">🔑</div><b>dict</b><small>Look up values by meaningful key names.</small></div>
+      <div class="structure set"><div class="icon">✨</div><b>set</b><small>Keep only unique values or test membership.</small></div>
+    </div>
+
+    <div class="challenge">
+      <h3>👑 Quick challenge</h3>
+      <p>Which structure would you use for: (1) all passengers in file order, (2) one passenger row keyed by column name, (3) unique embarkation ports, (4) a fixed pair of class number and class name?</p>
+      <textarea placeholder="# Answer: 1) ... 2) ... 3) ... 4) ..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Structure superstar 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>1) list
+2) dict
+3) set
+4) tuple</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Reading a CSV File</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain"><code>csv.DictReader</code> reads each row as a dictionary whose keys come from the CSV header.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import csv
+
+with open("titanic.csv") as f:
+    reader = csv.DictReader(f)
+    passengers = list(reader)
+
+print(passengers[0])</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>CSV header</span><span>➡️</span><span>dictionary keys</span>
+      <span>CSV row</span><span>➡️</span><span>dictionary values</span>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>csv.DictReader</code> returns CSV field values as strings.</b> If a CSV contains <code>22</code> or <code>7.25</code>, you still need <code>int(...)</code> or <code>float(...)</code> before numeric calculations.</div>
+    </div>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 String math</h3>
+        <pre><code>fare1 = "10"
+fare2 = "20"
+
+print(fare1 + fare2)
+# "1020"</code></pre>
+      </div>
+      <div class="good">
+        <h3>✅ Numeric math</h3>
+        <pre><code>fare1 = float("10")
+fare2 = float("20")
+
+print(fare1 + fare2)
+# 30.0</code></pre>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>📄 Your challenge</h3>
+      <p>Read <code>titanic.csv</code> with <code>csv.DictReader</code> and convert the first passenger's <code>Fare</code> to a float before printing it.</p>
+      <textarea placeholder="# Read and convert the value..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">CSV conquered! ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>import csv
+
+with open("titanic.csv") as f:
+    reader = csv.DictReader(f)
+    passengers = list(reader)
+
+fare = float(passengers[0]["Fare"])
+print(fare)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Why <code>with open(...)</code> Matters</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A context manager automatically closes the file when the block ends — even if an exception happens partway through.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>with open("titanic.csv") as f:
+    data = f.read()
+
+# file is closed here</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>with</code> is not just style.</b> It helps prevent resource leaks, ensures files close on exceptions, and matters for writing because buffered output may still be waiting to be flushed.</div>
+    </div>
+
+    <div class="tip"><b>Use it for both reading and writing.</b> The same safety benefit applies either way.</div>
+
+    <div class="challenge">
+      <h3>🛟 Your challenge</h3>
+      <p>Write a <code>with open(...)</code> block that opens <code>notes.txt</code> for reading and prints its contents.</p>
+      <textarea placeholder="# Use a context manager..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Safely opened 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>with open("notes.txt") as f:
+    print(f.read())</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2>Building a Summary Dictionary</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A common data-processing pattern is to accumulate a running total in a dictionary. The key identifies the group; the value stores the running total.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>fare_totals = {}
+
+for passenger in passengers:
+    pclass = passenger["Pclass"]
+    fare = float(passenger["Fare"])
+
+    fare_totals[pclass] = (
+        fare_totals.get(pclass, 0.0) + fare
+    )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>dict.get(key, default)</code> avoids a <code>KeyError</code> the first time a key appears.</b> This manual accumulation pattern is conceptually what pandas <code>groupby(...).sum()</code> will later replace.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Build a dictionary named <code>survivors_by_class</code> that counts survivors by passenger class. Use <code>.get(..., 0)</code>.</p>
+      <textarea placeholder="# Count survivors by class..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Summary sparkling ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>survivors_by_class = {}
+
+for passenger in passengers:
+    if passenger["Survived"] == "1":
+        pclass = passenger["Pclass"]
+
+        survivors_by_class[pclass] = (
+            survivors_by_class.get(pclass, 0) + 1
+        )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 8</div>
+    <h2>Writing to a File</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Writing is the mirror image of reading: open the file in write mode, write your output, and let the <code>with</code> block close it safely.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>with open("class_summary.txt", "w") as f:
+    for pclass, total in fare_totals.items():
+        f.write(
+            f"Class {pclass}: {total:.2f}\n"
+        )</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>with</code> is valuable for writing too.</b> Closing promptly helps make sure buffered writes are flushed instead of being left pending.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📝 Your challenge</h3>
+      <p>Write the names <code>Owen</code>, <code>Anna</code>, and <code>Laina</code> to <code>passengers.txt</code>, one name per line.</p>
+      <textarea placeholder="# Open for writing and write the names..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Written beautifully 🌸</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>names = ["Owen", "Anna", "Laina"]
+
+with open("passengers.txt", "w") as f:
+    for name in names:
+        f.write(f"{name}\n")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Mini Lab</div>
+    <h2>Titanic Passenger Summary from CSV</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Combine everything: read passenger rows, convert strings to numbers, build summaries, find unique values, and write the results back out.</p>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Using <code>titanic.csv</code>: read with <code>csv.DictReader</code> inside a <code>with</code> block, total fares by passenger class, build a set of distinct embarkation ports, print totals sorted by class, and write the same summary to <code>titanic_summary.txt</code>.</p>
+      <textarea style="min-height:210px" placeholder="# Build your full plain-Python Titanic summary..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,65)">Launch confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import csv
+
+with open("titanic.csv") as f:
+    reader = csv.DictReader(f)
+    passengers = list(reader)
+
+totals = {}
+ports = set()
+
+for passenger in passengers:
+    pclass = passenger["Pclass"]
+    fare = float(passenger["Fare"])
+
+    totals[pclass] = (
+        totals.get(pclass, 0.0) + fare
+    )
+
+    ports.add(passenger["Embarked"])
+
+for pclass in sorted(totals):
+    print(
+        f"Class {pclass}: "
+        f"{totals[pclass]:.2f}"
+    )
+
+print("Ports:", ports)
+
+with open("titanic_summary.txt", "w") as f:
+    for pclass in sorted(totals):
+        f.write(
+            f"Class {pclass}: "
+            f"{totals[pclass]:.2f}\n"
+        )</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🛳️ Your passenger data is officially organized.</h2>
+  <p>You now know how to choose between lists, tuples, dictionaries, and sets, safely read CSV files, convert string data before doing arithmetic, accumulate summaries, and write results back to disk.</p>
+  <button class="fun" onclick="celebrate(this,75)">I survived Data Structures & File I/O! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Gorgeous work! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

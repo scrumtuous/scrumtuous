@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titanic Python + Data + ML — Ultimate Course Launchpad</title>
+<style>
+:root {
+  --ink:#33283a;
+  --muted:#74677a;
+  --pink:#ff5fa9;
+  --pink2:#ff9ccb;
+  --lav:#a978ff;
+  --violet:#6f4ee8;
+  --mint:#bcefe1;
+  --peach:#ffc39e;
+  --gold:#ffc94f;
+  --line:#efd7e7;
+  --deep:#24182a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 10% 3%,rgba(255,95,169,.22),transparent 25%),
+    radial-gradient(circle at 92% 7%,rgba(169,120,255,.20),transparent 28%),
+    radial-gradient(circle at 75% 70%,rgba(188,239,225,.25),transparent 27%),
+    linear-gradient(180deg,#fff7fc 0%,#fff 38%,#fbf7ff 100%);
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.18;z-index:-1;
+  background-image:radial-gradient(#d977b5 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.hero{
+  min-height:92vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:70px 22px 50px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-inner{max-width:1080px}
+.badge{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:9px 15px;border-radius:999px;background:#fff;
+  border:1px solid var(--line);box-shadow:0 10px 26px rgba(75,42,72,.10);
+  font-weight:950;font-size:12px;letter-spacing:.09em;color:#96517f;
+}
+h1{
+  margin:20px auto 16px;
+  max-width:1050px;
+  font-size:clamp(54px,9vw,112px);
+  line-height:.88;
+  letter-spacing:-.07em;
+}
+.gradient{
+  background:linear-gradient(90deg,var(--pink),#da5dc4,var(--lav),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{
+  max-width:850px;margin:0 auto;color:var(--muted);
+  font-size:clamp(18px,2.2vw,24px);line-height:1.55;
+}
+.hype-line{
+  margin-top:18px;
+  font-size:clamp(19px,2.6vw,30px);
+  font-weight:950;
+  color:#5f3a61;
+}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{
+  text-decoration:none;border-radius:999px;padding:14px 20px;font-weight:950;
+  display:inline-flex;align-items:center;gap:9px;
+  transition:.22s ease;box-shadow:0 14px 28px rgba(121,68,116,.17);
+}
+.btn:hover{transform:translateY(-3px) scale(1.02)}
+.primary{color:#fff;background:linear-gradient(90deg,var(--pink),var(--lav))}
+.secondary{color:#6d526f;background:#fff;border:1px solid var(--line)}
+.stat-strip{
+  max-width:960px;margin:38px auto 0;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.stat{
+  padding:16px;background:rgba(255,255,255,.88);border:1px solid var(--line);
+  border-radius:20px;box-shadow:0 12px 28px rgba(94,49,89,.08);
+}
+.stat strong{display:block;font-size:29px;color:#865176}
+.stat span{font-size:13px;color:var(--muted);font-weight:800}
+.ship{position:absolute;font-size:74px;opacity:.13;animation:drift 8s ease-in-out infinite}
+.ship.one{left:4%;top:18%}
+.ship.two{right:5%;bottom:17%;animation-delay:-3s}
+@keyframes drift{50%{transform:translateY(-18px) rotate(4deg)}}
+
+main{max-width:1200px;margin:0 auto;padding:0 20px 85px}
+.section-heading{text-align:center;margin:15px auto 30px;max-width:850px}
+.section-heading .mini{font-size:12px;letter-spacing:.11em;font-weight:950;color:#a85d8c}
+.section-heading h2{font-size:clamp(36px,5vw,60px);line-height:.98;letter-spacing:-.045em;margin:8px 0 12px}
+.section-heading p{color:var(--muted);font-size:18px}
+
+.path{
+  background:linear-gradient(135deg,#2b1b31,#493153);
+  border-radius:30px;padding:26px;margin-bottom:32px;
+  box-shadow:0 20px 50px rgba(54,28,63,.20);color:#fff;
+}
+.path h3{font-size:25px;margin:0 0 14px}
+.path-row{display:flex;flex-wrap:wrap;gap:8px}
+.path-step{
+  padding:8px 11px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);
+  border-radius:999px;font-size:13px;font-weight:850;
+}
+.path-arrow{display:inline-flex;align-items:center;opacity:.5}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.course-card{
+  position:relative;
+  display:flex;flex-direction:column;
+  min-height:325px;
+  padding:22px;
+  text-decoration:none;
+  color:var(--ink);
+  background:rgba(255,255,255,.95);
+  border:1px solid var(--line);
+  border-radius:26px;
+  box-shadow:0 15px 38px rgba(88,42,82,.10);
+  transition:.22s ease;
+  overflow:hidden;
+}
+.course-card:before{
+  content:"";position:absolute;inset:0 0 auto 0;height:5px;
+  background:linear-gradient(90deg,var(--pink),var(--lav),var(--mint));
+}
+.course-card:hover{
+  transform:translateY(-7px) rotate(-.25deg);
+  box-shadow:0 24px 52px rgba(88,42,82,.18);
+  border-color:#e8b8d7;
+}
+.card-top{display:flex;align-items:center;gap:9px}
+.module-number{
+  display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;
+  border-radius:14px;background:#fff1f7;color:#a54e7f;font-weight:950;
+}
+.card-icon{font-size:32px}
+.card-tag{
+  margin-left:auto;padding:6px 9px;border-radius:999px;
+  background:#f5efff;color:#7952a2;font-size:11px;font-weight:950;letter-spacing:.05em;
+}
+.level{font-size:11px;font-weight:950;letter-spacing:.10em;color:#b16b98;margin-top:20px}
+.course-card h3{font-size:25px;line-height:1.05;margin:7px 0 9px;letter-spacing:-.025em}
+.course-card p{color:var(--muted);margin:0;font-size:15px}
+.launch{
+  margin-top:auto;padding-top:20px;font-weight:950;color:#8d4f7e;font-size:13px;letter-spacing:.04em;
+}
+.launch span{display:inline-block;transition:.2s ease}
+.course-card:hover .launch span{transform:translateX(5px)}
+
+.boss{
+  margin:38px 0;
+  border-radius:32px;padding:32px;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,95,169,.25),transparent 28%),
+    linear-gradient(135deg,#231728,#493154);
+  color:#fff;box-shadow:0 22px 52px rgba(55,30,64,.25);
+  display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+}
+.boss h2{font-size:clamp(35px,5vw,59px);margin:0 0 10px;line-height:.95}
+.boss p{color:#e7dce9;font-size:18px}
+.boss-card{
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);
+  border-radius:24px;padding:22px;text-align:center;
+}
+.boss-card .emoji{font-size:64px}
+.boss-card a{
+  display:inline-block;margin-top:12px;padding:12px 17px;border-radius:999px;
+  background:#fff;color:#56365d;text-decoration:none;font-weight:950;
+}
+
+footer{text-align:center;padding:35px 20px 55px;color:var(--muted)}
+footer strong{color:#7f4f77}
+
+.spark{
+  position:fixed;top:-12px;width:9px;height:9px;pointer-events:none;z-index:9999;
+  border-radius:3px;animation:fall 1.9s linear forwards;
+}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+
+@media(max-width:950px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .stat-strip{grid-template-columns:repeat(2,1fr)}
+  .boss{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .grid{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .hero{min-height:auto;padding-top:55px}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="ship one">🛳️</div>
+  <div class="ship two">⚓</div>
+  <div class="hero-inner">
+    <div class="badge">✨ 15-MODULE TITANIC PYTHON + DATA + ML EXPERIENCE ✨</div>
+    <h1>EVERYTHING I LEARNED ABOUT <span class="gradient">PYTHON & MACHINE LEARNING</span>, I LEARNED FROM THE TITANIC.</h1>
+    <p>From your first Python variable to pandas, statistics, APIs, ETL, predictive analytics, Logistic Regression, and the confusion matrix. One ship. One dataset. An unreasonable amount of learning.</p>
+    <div class="hype-line">🐍 → 🐼 → 
+	<a href="titanic.csv">📊</a> → 🧪 → 🤖 → 
+	<a href="titanic-rough.csv">🎯</a></div>
+    <div class="hero-actions">
+      <a class="btn primary" href="lessons/01-python-fundamentals.html" onclick="boom()">🚀 START THE VOYAGE</a>
+      <a class="btn secondary" href="#modules">🔥 SEE ALL 15 MODULES</a>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><strong>15</strong><span>FULL HTML LESSONS</span></div>
+      <div class="stat"><strong>1</strong><span>LEGENDARY DATASET</span></div>
+      <div class="stat"><strong>100%</strong><span>SELF-CONTAINED PAGES</span></div>
+      <div class="stat"><strong>∞</strong><span>CONFETTI ENERGY</span></div>
+    </div>
+  </div>
+</section>
+
+<main id="modules">
+  <div class="section-heading">
+    <div class="mini">THE COURSE MAP</div>
+    <h2>Board the ship. Level up. Don't let the bugs survive.</h2>
+    <p>Follow the modules in order for the full storyline, or jump directly to the topic you need.</p>
+  </div>
+
+  <div class="path">
+    <h3>⚓ The Voyage</h3>
+    <div class="path-row">
+      <span class="path-step">Python</span><span class="path-arrow">→</span>
+      <span class="path-step">Functions</span><span class="path-arrow">→</span>
+      <span class="path-step">Data Structures</span><span class="path-arrow">→</span>
+      <span class="path-step">Quiz Gotchas</span><span class="path-arrow">→</span>
+      <span class="path-step">pandas</span><span class="path-arrow">→</span>
+      <span class="path-step">Cleaning</span><span class="path-arrow">→</span>
+      <span class="path-step">EDA</span><span class="path-arrow">→</span>
+      <span class="path-step">Statistics</span><span class="path-arrow">→</span>
+      <span class="path-step">Visualization</span><span class="path-arrow">→</span>
+      <span class="path-step">APIs</span><span class="path-arrow">→</span>
+      <span class="path-step">ETL</span><span class="path-arrow">→</span>
+      <span class="path-step">Machine Learning</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    
+      <a class="course-card" href="lessons/01-python-fundamentals.html">
+        <div class="card-top">
+          <span class="module-number">01</span>
+          <span class="card-icon">🐍</span>
+          <span class="card-tag">DAY 1</span>
+        </div>
+        <div class="level">FOUNDATIONS</div>
+        <h3>Python Fundamentals</h3>
+        <p>Variables, types, conditionals, loops, scripts, and your first Titanic passenger logic.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/02-functions-modules-errors.html">
+        <div class="card-top">
+          <span class="module-number">02</span>
+          <span class="card-icon">🧩</span>
+          <span class="card-tag">BUILD</span>
+        </div>
+        <div class="level">FOUNDATIONS</div>
+        <h3>Functions, Modules & Errors</h3>
+        <p>Functions, type hints, defaults, keyword arguments, modules, custom exceptions, and error handling.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/03-data-structures-file-io.html">
+        <div class="card-top">
+          <span class="module-number">03</span>
+          <span class="card-icon">🗃️</span>
+          <span class="card-tag">DATA</span>
+        </div>
+        <div class="level">FOUNDATIONS</div>
+        <h3>Data Structures & File I/O</h3>
+        <p>Lists, tuples, dictionaries, sets, CSV files, DictReader, context managers, and summaries.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/04-mutable-default-arguments.html">
+        <div class="card-top">
+          <span class="module-number">04</span>
+          <span class="card-icon">🚨</span>
+          <span class="card-tag">QUIZ BOSS</span>
+        </div>
+        <div class="level">FOUNDATIONS</div>
+        <h3>Mutable Default Arguments</h3>
+        <p>Five ways mutable defaults go wrong, how to prove the bug, and the safe None pattern.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/05-fundamentals-consolidation-lab.html">
+        <div class="card-top">
+          <span class="module-number">05</span>
+          <span class="card-icon">🛟</span>
+          <span class="card-tag">MISSION</span>
+        </div>
+        <div class="level">LAB</div>
+        <h3>Python Fundamentals Lab</h3>
+        <p>Pull the fundamentals together in a Titanic passenger-checker consolidation mission.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/06-pandas-dataframes-series.html">
+        <div class="card-top">
+          <span class="module-number">06</span>
+          <span class="card-icon">🐼</span>
+          <span class="card-tag">DAY 2</span>
+        </div>
+        <div class="level">PANDAS</div>
+        <h3>pandas: DataFrames & Series</h3>
+        <p>Load Titanic data, inspect DataFrames, select rows and columns, filter safely, and use groupby.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/07-data-cleaning-preparation.html">
+        <div class="card-top">
+          <span class="module-number">07</span>
+          <span class="card-icon">🧹</span>
+          <span class="card-tag">CLEAN</span>
+        </div>
+        <div class="level">PANDAS</div>
+        <h3>Data Cleaning & Preparation</h3>
+        <p>Missing values, dates, categories, duplicates, outliers, and cleaning without inventing facts.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/08-exploratory-data-analysis.html">
+        <div class="card-top">
+          <span class="module-number">08</span>
+          <span class="card-icon">🔎</span>
+          <span class="card-tag">DETECTIVE</span>
+        </div>
+        <div class="level">ANALYTICS</div>
+        <h3>Exploratory Data Analysis</h3>
+        <p>Inspect, segment, notice anomalies, compare groups, glance at correlation, and form hypotheses.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/09-statistical-foundations.html">
+        <div class="card-top">
+          <span class="module-number">09</span>
+          <span class="card-icon">📈</span>
+          <span class="card-tag">EVIDENCE</span>
+        </div>
+        <div class="level">ANALYTICS</div>
+        <h3>Statistical Foundations</h3>
+        <p>Skew, distribution shape, Pearson correlation, p-values, t-tests, and healthy skepticism.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/10-pandas-deeper-dive.html">
+        <div class="card-top">
+          <span class="module-number">10</span>
+          <span class="card-icon">🧠</span>
+          <span class="card-tag">POWER UP</span>
+        </div>
+        <div class="level">PANDAS</div>
+        <h3>pandas Deeper Dive</h3>
+        <p>Multi-aggregation groupby, pivot tables, merges, datetime indexes, and resampling.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/11-data-visualization.html">
+        <div class="card-top">
+          <span class="module-number">11</span>
+          <span class="card-icon">📊</span>
+          <span class="card-tag">MAKE IT POP</span>
+        </div>
+        <div class="level">ANALYTICS</div>
+        <h3>Data Visualization</h3>
+        <p>Bar, line, and scatter plots, honest axes, strong titles, and chart critique.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/12-accessing-data-through-apis.html">
+        <div class="card-top">
+          <span class="module-number">12</span>
+          <span class="card-icon">🌐</span>
+          <span class="card-tag">CONNECT</span>
+        </div>
+        <div class="level">DATA ENGINEERING</div>
+        <h3>Accessing Data Through APIs</h3>
+        <p>Endpoints, API keys, pagination, 429 Retry-After behavior, and API vs batch extracts.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/13-etl-data-validation.html">
+        <div class="card-top">
+          <span class="module-number">13</span>
+          <span class="card-icon">🧪</span>
+          <span class="card-tag">TRUST</span>
+        </div>
+        <div class="level">DATA ENGINEERING</div>
+        <h3>ETL & Data Validation</h3>
+        <p>Extract-transform-load, pytest validation, uniqueness, categories, ranges, and .isin(...).all().</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/14-predictive-analytics-model-evaluation.html">
+        <div class="card-top">
+          <span class="module-number">14</span>
+          <span class="card-icon">🤖</span>
+          <span class="card-tag">ML START</span>
+        </div>
+        <div class="level">MACHINE LEARNING</div>
+        <h3>Predictive Analytics & Evaluation</h3>
+        <p>Regression, classification, forecasting, train/test split, MAE, RMSE, accuracy, and baselines.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+      <a class="course-card" href="lessons/15-classification-confusion-matrix.html">
+        <div class="card-top">
+          <span class="module-number">15</span>
+          <span class="card-icon">🎯</span>
+          <span class="card-tag">FINAL BOSS</span>
+        </div>
+        <div class="level">MACHINE LEARNING</div>
+        <h3>Classification → Confusion Matrix</h3>
+        <p>Build a Titanic survival classifier from features and target all the way to TN, FP, FN, and TP.</p>
+        <div class="launch">LAUNCH MODULE <span>→</span></div>
+      </a>
+    
+  </div>
+
+  <section class="boss">
+    <div>
+      <div class="mini" style="font-size:12px;letter-spacing:.1em;font-weight:950;color:#ffc9e4">FINAL MACHINE LEARNING MISSION</div>
+      <h2>Could we have predicted who survived?</h2>
+      <p>Finish the voyage by taking Titanic passenger features through preprocessing, train/test splitting, a DummyClassifier baseline, Logistic Regression, predictions, accuracy, and finally the four legendary boxes of the confusion matrix.</p>
+    </div>
+    <div class="boss-card">
+      <div class="emoji">🎯🧮</div>
+      <strong>THE CONFUSION MATRIX</strong>
+      <div style="margin-top:8px;color:#eadfea">TN • FP • FN • TP</div>
+      <a href="lessons/15-classification-confusion-matrix.html" onclick="boom()">FACE THE FINAL BOSS →</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Titanic Python + Data + ML Course</strong><br>
+  Open <code>index.html</code> to launch the course. No server required for the static lessons.
+</footer>
+
+<script>
+function boom(){
+  const colors=["#ff5fa9","#a978ff","#ffc39e","#ffc94f","#bcefe1","#ff9ccb"];
+  for(let i=0;i<45;i++){
+    const s=document.createElement("div");
+    s.className="spark";
+    s.style.left=Math.random()*100+"vw";
+    s.style.background=colors[Math.floor(Math.random()*colors.length)];
+    s.style.animationDuration=(1.1+Math.random()*1.3)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),2600);
+  }
+}
+</script>
+</body>
+</html>

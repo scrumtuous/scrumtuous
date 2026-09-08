@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exploratory Data Analysis — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:840px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .eda-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+  .step{
+    border:1px solid var(--line);border-radius:20px;background:#fff;padding:18px;text-align:center
+  }
+  .step .icon{font-size:30px}
+  .step b{display:block;margin:5px 0;font-size:17px}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+
+  .fake-table{
+    overflow:auto;border:1px solid var(--line);border-radius:18px;margin:16px 0;background:#fff
+  }
+  table{border-collapse:collapse;width:100%;min-width:680px}
+  th,td{padding:12px 14px;border-bottom:1px solid #f0e3ec;text-align:left}
+  th{background:#fff5fa;color:#72536d}
+  tr:last-child td{border-bottom:none}
+  .highlight{background:#fff3f9;font-weight:800}
+
+  .bars{display:grid;gap:10px;margin:18px 0}
+  .bar-row{display:grid;grid-template-columns:120px 1fr 55px;gap:12px;align-items:center}
+  .bar{height:16px;border-radius:999px;background:#f3e5ef;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--lav));border-radius:999px}
+
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.eda-flow,.compare,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+    .bar-row{grid-template-columns:90px 1fr 45px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🔎</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">DAY 2 • EXPLORATORY DATA ANALYSIS</div>
+  <h1>Become a <span class="gradient">Titanic Data Detective</span></h1>
+  <p class="subtitle">EDA is not a checklist. It is the habit of looking closely, segmenting carefully, noticing surprises, and turning observations into questions you can actually test.</p>
+  <div class="chips">
+    <span class="chip">🔎 Inspect</span>
+    <span class="chip">📊 Segment</span>
+    <span class="chip">🚩 Notice Anomalies</span>
+    <span class="chip">🧠 Form Hypotheses</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🔎 Explore before assuming</b>Use shape and summary statistics to understand what is actually in the dataset.</div>
+    <div class="objective"><b>📊 Segment the data</b>Use counts, proportions, crosstabs, and groupby to reveal patterns and anomalies.</div>
+    <div class="objective"><b>🧠 Form testable hypotheses</b>Turn “that looks interesting” into a specific statement that can later be tested statistically.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">The EDA mindset</div>
+    <h2>EDA Is a Process, Not a Function List</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The goal is not to run every pandas command you know. The goal is to understand the dataset well enough to ask better questions.</p>
+
+    <div class="eda-flow">
+      <div class="step"><div class="icon">1️⃣</div><b>Inspect</b><span>Shape, types, summary stats</span></div>
+      <div class="step"><div class="icon">2️⃣</div><b>Segment</b><span>Class, sex, port, survival</span></div>
+      <div class="step"><div class="icon">3️⃣</div><b>Notice</b><span>Patterns, gaps, anomalies</span></div>
+      <div class="step"><div class="icon">4️⃣</div><b>Hypothesize</b><span>Write something testable</span></div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>EDA surfaces what is worth investigating.</b> It does not prove why a pattern exists, and it does not automatically establish causation.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Shape & Summary Statistics</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Start by understanding how much data you have and what the numeric columns look like.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.shape
+
+df[
+    ["Age", "Fare", "SibSp", "Parch"]
+].describe()</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>describe()</code> focuses on numeric columns by default.</b> It summarizes count, mean, standard deviation, quartiles, minimum, and maximum — but it does not explain why the values vary.</div>
+    </div>
+
+    <div class="tip"><b>Read more than the mean.</b> Compare the mean, standard deviation, minimum, median, and maximum together. A very large spread or extreme maximum may point you toward skew or outliers.</div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Write pandas code that shows the shape of the Titanic DataFrame and summary statistics for only <code>Age</code> and <code>Fare</code>.</p>
+      <textarea placeholder="# Shape:
+# Summary stats:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">First clue found ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.shape
+
+df[["Age", "Fare"]].describe()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Segment with <code>value_counts()</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The quickest way to understand a categorical column is to count how often each value appears.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df["Pclass"].value_counts()
+
+df["Embarked"].value_counts()
+
+df["Sex"].value_counts()</code></pre>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row"><b>3rd Class</b><div class="bar"><div class="fill" style="width:72%"></div></div><span>most</span></div>
+      <div class="bar-row"><b>1st Class</b><div class="bar"><div class="fill" style="width:42%"></div></div><span>fewer</span></div>
+      <div class="bar-row"><b>2nd Class</b><div class="bar"><div class="fill" style="width:35%"></div></div><span>fewer</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>Use <code>value_counts()</code> to find how many passengers embarked from each port.</p>
+      <textarea placeholder="# Count embarkation ports..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Segmented beautifully 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df["Embarked"].value_counts()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Counts vs Proportions</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Counts answer “how many?” Proportions answer “how dominant?”</p>
+
+    <div class="compare">
+      <div class="neutral">
+        <h3>Counts</h3>
+        <pre><code>df["Pclass"].value_counts()</code></pre>
+        <p>Useful when you care about raw volume.</p>
+      </div>
+      <div class="good">
+        <h3>Proportions</h3>
+        <pre><code>(
+    df["Pclass"]
+      .value_counts(normalize=True)
+      .round(2)
+)</code></pre>
+        <p>Useful when comparing datasets of different sizes.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>normalize=True</code> turns counts into shares of the total.</b> Counts and proportions answer different questions.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Show the proportion of male vs female passengers, rounded to two decimal places.</p>
+      <textarea placeholder="# Use normalize=True..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Proportion perfection ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>(
+    df["Sex"]
+      .value_counts(normalize=True)
+      .round(2)
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Two-Way Segmentation with <code>crosstab()</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A crosstab asks how two categorical variables vary together.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>pd.crosstab(
+    df["Pclass"],
+    df["Survived"]
+)</code></pre>
+    </div>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>Pclass</th><th>Died (0)</th><th>Survived (1)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>...</td><td class="highlight">...</td></tr>
+          <tr><td>2</td><td>...</td><td>...</td></tr>
+          <tr><td>3</td><td class="highlight">...</td><td>...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Now you can ask a better question than simply “how many people were in each class?”</p>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>A crosstab is excellent for spotting suspiciously uniform rows or categories.</b> But a striking pattern in a small sample may still be coincidence.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🛳️ Your challenge</h3>
+      <p>Create a crosstab of <code>Sex</code> by <code>Survived</code>. What pattern would you look for?</p>
+      <textarea placeholder="# Code:
+# Pattern to inspect:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Two dimensions unlocked 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>pd.crosstab(
+    df["Sex"],
+    df["Survived"]
+)
+
+# Look for whether survival counts differ
+# noticeably between male and female passengers.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Segment with <code>groupby()</code></h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Counts tell you how many. <code>groupby()</code> lets you compare numeric outcomes across segments.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df.groupby("Pclass")["Fare"].agg(
+    ["count", "mean", "sum"]
+)</code></pre>
+    </div>
+
+    <div class="flow">
+      <span>Group by class</span><span>➡️</span>
+      <span>Count passengers</span><span>➡️</span>
+      <span>Average fare</span><span>➡️</span>
+      <span>Total fare</span>
+    </div>
+
+    <div class="challenge">
+      <h3>🌷 Your challenge</h3>
+      <p>Compare survival by passenger class by calculating the mean of <code>Survived</code> for each class. Since <code>Survived</code> is 0/1, what does the mean represent?</p>
+      <textarea placeholder="# Code:
+# Meaning of the mean:"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Segment sleuth ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>df.groupby("Pclass")["Survived"].mean()
+
+# Because Survived is 0 or 1, the mean is
+# the proportion of passengers who survived
+# within each class.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>A First Glance at Correlation</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Correlation measures how strongly numeric variables move together in a linear way, from -1 to +1.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>df[
+    ["Age", "Fare", "SibSp", "Parch"]
+].corr().round(2)</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Appropriate EDA reaction</h3>
+        <p>“Interesting. Fare and class-related variables may be related. Let's investigate more.”</p>
+      </div>
+      <div class="bad">
+        <h3>🚫 Overreach</h3>
+        <p>“This correlation proves one variable caused the other.”</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Correlation is not causation.</b> A weak coefficient should not be over-read, especially in a small sample. EDA notices the number; later statistics helps judge how meaningful it is.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔎 Your challenge</h3>
+      <p>You see a correlation of <code>r = 0.18</code> between Age and Fare. Write a cautious one-sentence EDA interpretation.</p>
+      <textarea placeholder="# Keep it cautious..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Cautious and clever 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Age and Fare show only a weak positive linear
+relationship in this dataset, so the result should
+not be over-interpreted.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Transfer Challenge</div>
+    <h2>Numbers Can Be Valid and Still Be Meaningless Together</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">EDA is also where you notice when a mathematically valid calculation is conceptually wrong.</p>
+
+    <div class="fake-table">
+      <table>
+        <thead>
+          <tr><th>Passenger</th><th>Fare</th><th>Currency</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Alice</td><td>50</td><td>USD</td></tr>
+          <tr><td>Bob</td><td>50</td><td>GBP</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bad">
+      <h3>🚫 Misleading</h3>
+      <pre><code>df["Fare"].sum()
+# 100</code></pre>
+      <p>Python can add the numbers, but <b>100 what?</b></p>
+    </div>
+
+    <div class="good" style="margin-top:16px">
+      <h3>✅ Better first step</h3>
+      <pre><code>df.groupby("Currency")["Fare"].sum()</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Mixed currencies or units should not be silently summed.</b> Group by currency first or convert to a common currency before cross-currency comparison.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>💱 Your challenge</h3>
+      <p>Why is a total of <code>100</code> misleading when one fare is USD and the other is GBP?</p>
+      <textarea placeholder="# Explain in one sentence..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Units respected ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The numeric values are not directly comparable
+because USD and GBP represent different units
+unless they are first converted or kept separate.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2>Good Hypotheses vs Vague Observations</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A hypothesis should be specific, measurable, and falsifiable.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Too vague</h3>
+        <p>“Some passengers had it better than others.”</p>
+        <p>“First-class passengers seem lucky.”</p>
+      </div>
+      <div class="good">
+        <h3>✅ Testable</h3>
+        <p>“First-class passengers had a higher survival rate than third-class passengers.”</p>
+        <p>“Female passengers had a higher survival rate than male passengers.”</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>“Some advisors seem busier” is an observation, not a strong hypothesis.</b> A hypothesis must define a measurable comparison such as mean value, count, rate, or proportion.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>Rewrite <code>"Rich passengers seemed to do better"</code> as a specific, checkable Titanic hypothesis.</p>
+      <textarea placeholder="# Make it measurable and falsifiable..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Hypothesis sharpened 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>Passengers in first class had a higher survival
+rate than passengers in third class.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Titanic EDA Detective Lab</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Your job is to leave the lab with one pattern, one anomaly, and one hypothesis worth testing later.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Check <code>df.shape</code> and run <code>describe()</code> on key numeric columns.</span></div>
+      <div class="check">2️⃣ <span>Use <code>value_counts()</code> on <code>Pclass</code>, <code>Sex</code>, and <code>Embarked</code>.</span></div>
+      <div class="check">3️⃣ <span>Use <code>normalize=True</code> for at least one categorical column.</span></div>
+      <div class="check">4️⃣ <span>Create a crosstab of <code>Sex</code> vs <code>Survived</code>.</span></div>
+      <div class="check">5️⃣ <span>Compare survival rate and average fare by class.</span></div>
+      <div class="check">6️⃣ <span>Look at a correlation matrix but do not over-interpret it.</span></div>
+      <div class="check">7️⃣ <span>Write one pattern and one anomaly.</span></div>
+      <div class="check">8️⃣ <span>Write one specific, checkable hypothesis for the statistics module.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact EDA script that calculates: class counts, class proportions, a <code>Sex</code> × <code>Survived</code> crosstab, mean survival by class, and a numeric correlation matrix.</p>
+      <textarea style="min-height:230px" placeholder="# Build your Titanic EDA script..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch detective confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import pandas as pd
+
+df = pd.read_csv("titanic.csv")
+
+print(df.shape)
+
+print(
+    df[["Age", "Fare"]].describe()
+)
+
+print(
+    df["Pclass"].value_counts()
+)
+
+print(
+    df["Pclass"]
+      .value_counts(normalize=True)
+      .round(2)
+)
+
+print(
+    pd.crosstab(
+        df["Sex"],
+        df["Survived"]
+    )
+)
+
+print(
+    df.groupby("Pclass")["Survived"]
+      .mean()
+)
+
+print(
+    df[["Age", "Fare", "SibSp", "Parch"]]
+      .corr()
+      .round(2)
+)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🔎 EDA turns “huh, interesting” into a real question.</h2>
+  <p>You can now inspect shape and summary statistics, segment with counts and proportions, use crosstabs and groupby for deeper comparisons, glance at correlation without over-reading it, recognize mixed-unit problems, and write hypotheses that are specific enough to test.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived Exploratory Data Analysis! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Mystery investigated! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>

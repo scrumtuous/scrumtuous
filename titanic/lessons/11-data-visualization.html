@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Visualization Principles & Practice — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --pink2:#ff9dcc;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{
+    max-width:1000px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);
+    line-height:.98;letter-spacing:-.055em
+  }
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:850px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .choice{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center
+  }
+  .choice .icon{font-size:32px}
+  .choice b{display:block;font-size:18px;margin:5px 0}
+  .choice small{color:var(--muted)}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad{
+    border:1px solid var(--line);border-radius:18px;padding:16px
+  }
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+
+  .chart-card{
+    margin:18px 0;
+    border:1px solid var(--line);
+    border-radius:22px;
+    background:#fff;
+    padding:18px;
+  }
+  .chart-title{font-weight:900;font-size:18px;margin-bottom:10px;text-align:center}
+  canvas{
+    width:100%;
+    max-width:100%;
+    height:320px;
+    display:block;
+    background:#fff;
+    border-radius:14px;
+  }
+  .chart-note{text-align:center;color:var(--muted);font-size:14px;margin-top:8px}
+
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:760px;margin:8px auto 20px;color:var(--muted)}
+
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+
+  @media(max-width:900px){
+    .objective-grid,.choice-grid,.compare,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>📊</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">DATA VISUALIZATION • TITANIC EDITION</div>
+  <h1>Make the Data <span class="gradient">Easy to See — and Hard to Misread</span></h1>
+  <p class="subtitle">Choose the right chart, label it clearly, keep the visual honest, and make sure a reader can understand the story without seeing the code.</p>
+  <div class="chips">
+    <span class="chip">📊 Bar Charts</span>
+    <span class="chip">📈 Line Charts</span>
+    <span class="chip">✨ Scatter Plots</span>
+    <span class="chip">🚨 Misleading Axes</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🎯 Match chart to question</b>Choose bar, line, or scatter based on what the audience needs to compare.</div>
+    <div class="objective"><b>🖼️ Build clear matplotlib charts</b>Use titles, axes, labels, and honest baselines.</div>
+    <div class="objective"><b>🔎 Critique a visualization</b>Spot misleading design choices even when the underlying numbers are technically correct.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Match the Chart to the Question</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">The first visualization decision is not color or style. It is choosing the right chart type for the question.</p>
+
+    <div class="choice-grid">
+      <div class="choice">
+        <div class="icon">📊</div>
+        <b>Bar chart</b>
+        <small>Compare amounts across categories.</small>
+      </div>
+      <div class="choice">
+        <div class="icon">📈</div>
+        <b>Line chart</b>
+        <small>Show a trend across ordered time.</small>
+      </div>
+      <div class="choice">
+        <div class="icon">✨</div>
+        <b>Scatter plot</b>
+        <small>Show the relationship between two numeric variables.</small>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Chart choice comes before styling.</b> Bars compare category magnitudes, lines show ordered trends, and scatter plots show relationships between two numeric variables. Pie charts become difficult to compare once they have many slices.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Pick the best chart for each: (1) average fare by passenger class, (2) ticket purchases per week, (3) age vs fare.</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Chart choice nailed ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) Bar chart
+2) Line chart
+3) Scatter plot</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Build an Honest Bar Chart</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Bars encode magnitude through length, so the baseline matters enormously.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>import matplotlib.pyplot as plt
+
+survival = (
+    df.groupby("Pclass")["Survived"]
+      .mean()
+)
+
+fig, ax = plt.subplots()
+
+ax.bar(
+    survival.index,
+    survival.values
+)
+
+ax.set_ylim(bottom=0)
+
+ax.set_title(
+    "Survival Rate by Passenger Class"
+)
+
+ax.set_xlabel("Passenger Class")
+ax.set_ylabel("Survival Rate")</code></pre>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Survival Rate by Passenger Class</div>
+      <canvas id="barChart" width="900" height="320"></canvas>
+      <div class="chart-note">Example mini-chart rendered in the page. The bar baseline begins at zero.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>For bar charts, the y-axis should start at zero.</b> Because bar length represents magnitude, truncating the baseline exaggerates differences visually.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎀 Your challenge</h3>
+      <p>Write matplotlib code for a bar chart of average <code>Fare</code> by <code>Pclass</code>. Include a zero baseline, a specific title, and axis labels.</p>
+      <textarea placeholder="# Build the bar chart..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Bar chart beautiful 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>avg_fare = (
+    df.groupby("Pclass")["Fare"]
+      .mean()
+)
+
+fig, ax = plt.subplots()
+
+ax.bar(
+    avg_fare.index,
+    avg_fare.values
+)
+
+ax.set_ylim(bottom=0)
+
+ax.set_title(
+    "Average Fare by Passenger Class"
+)
+
+ax.set_xlabel("Passenger Class")
+ax.set_ylabel("Average Fare")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Titles & Labels Should Explain the Chart</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A reader should not need your notebook or code to understand what a chart is showing.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Weak</h3>
+        <pre><code>ax.set_title("Chart 1")
+ax.set_xlabel("X")
+ax.set_ylabel("Y")</code></pre>
+      </div>
+      <div class="good">
+        <h3>✅ Clear</h3>
+        <pre><code>ax.set_title(
+    "Average Fare by Passenger Class"
+)
+
+ax.set_xlabel("Passenger Class")
+ax.set_ylabel("Average Fare")</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Titles and labels should be specific.</b> Include units where they matter, and make the finding understandable without requiring the code.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📝 Your challenge</h3>
+      <p>Improve this title: <code>"Titanic Chart"</code>. The chart shows weekly ticket-purchase counts.</p>
+      <textarea placeholder="# Write a specific title..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Title polished ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>"Titanic Ticket Purchases by Week"</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>Build a Line Chart for Time</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Line charts are for ordered sequences, especially time. The connecting line implies continuity.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>by_week = (
+    df.set_index("ticket_purchase_date")
+      ["Fare"]
+      .resample("W")
+      .sum()
+)
+
+fig, ax = plt.subplots()
+
+ax.plot(
+    by_week.index,
+    by_week.values,
+    marker="o"
+)
+
+ax.set_title(
+    "Total Titanic Fare by Ticket-Purchase Week"
+)
+
+ax.set_xlabel("Week")
+ax.set_ylabel("Total Fare")</code></pre>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Total Titanic Fare by Ticket-Purchase Week</div>
+      <canvas id="lineChart" width="900" height="320"></canvas>
+      <div class="chart-note">Markers make each weekly observation easier to read.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Line charts imply ordered continuity.</b> Use them when the x-axis has a meaningful order such as time. Do not connect unrelated categories merely because a line looks attractive.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📈 Your challenge</h3>
+      <p>Create a weekly line chart of passenger ticket counts using <code>ticket_purchase_date</code>. Add markers.</p>
+      <textarea placeholder="# Resample and plot..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Trend spotted 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>by_week = (
+    df.set_index("ticket_purchase_date")
+      ["Name"]
+      .resample("W")
+      .count()
+)
+
+fig, ax = plt.subplots()
+
+ax.plot(
+    by_week.index,
+    by_week.values,
+    marker="o"
+)
+
+ax.set_title(
+    "Titanic Ticket Purchases by Week"
+)
+
+ax.set_xlabel("Week")
+ax.set_ylabel("Ticket Count")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Scatter Plot: Two Numeric Variables</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Each point represents one observation. The shape of the cloud helps you see whether two numeric variables move together.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>first_class = df.loc[
+    df["Pclass"] == 1
+]
+
+fig, ax = plt.subplots()
+
+ax.scatter(
+    first_class["Age"],
+    first_class["Fare"]
+)
+
+ax.set_title(
+    "First-Class Passenger Age vs Fare"
+)
+
+ax.set_xlabel("Age")
+ax.set_ylabel("Fare")</code></pre>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">First-Class Passenger Age vs Fare</div>
+      <canvas id="scatterChart" width="900" height="320"></canvas>
+      <div class="chart-note">One dot per passenger. Filtering to one class avoids mixing very different fare regimes.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Filter before plotting when mixing segments would obscure the relationship.</b> A scatter plot should make the numeric relationship clearer, not blend unrelated subgroups into one confusing cloud.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✨ Your challenge</h3>
+      <p>Filter to third-class passengers, then plot <code>Age</code> vs <code>Fare</code>.</p>
+      <textarea placeholder="# Filter first, then scatter..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Scatter spectacular 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>third_class = df.loc[
+    df["Pclass"] == 3
+]
+
+fig, ax = plt.subplots()
+
+ax.scatter(
+    third_class["Age"],
+    third_class["Fare"]
+)
+
+ax.set_title(
+    "Third-Class Passenger Age vs Fare"
+)
+
+ax.set_xlabel("Age")
+ax.set_ylabel("Fare")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Build a Misleading Chart on Purpose</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A chart can contain completely accurate numbers and still give a dishonest visual impression.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>avg_fare = (
+    df.groupby("Pclass")["Fare"]
+      .mean()
+)
+
+fig, ax = plt.subplots()
+
+ax.bar(
+    avg_fare.index,
+    avg_fare.values
+)
+
+ax.set_ylim(bottom=10)
+# Misleading if the smallest bar
+# is only slightly above 10.</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Truncated baseline</h3>
+        <canvas id="badBar" width="500" height="300"></canvas>
+        <p>Differences appear much larger than they really are.</p>
+      </div>
+      <div class="good">
+        <h3>✅ Honest baseline</h3>
+        <canvas id="goodBar" width="500" height="300"></canvas>
+        <p>The same values, but bar length remains proportional to magnitude.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Technically correct axis labels can still create a misleading chart.</b> If the bar baseline is truncated, the visual language “length = value” is broken.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🚨 Your challenge</h3>
+      <p>In one sentence, explain why a bar chart starting at 70 instead of 0 can exaggerate a difference between values of 75 and 85.</p>
+      <textarea placeholder="# Explain the visual distortion..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Misleading chart exposed 👑</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The bars visually encode only the 5-unit and 15-unit
+heights above 70, making 85 look three times as large
+as 75 even though the actual values differ by only 10.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Critique Checklist</div>
+    <h2>Can Someone Read the Chart Honestly?</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Does the chart type match the question?</span></div>
+      <div class="check">2️⃣ <span>Does the axis honestly represent magnitude?</span></div>
+      <div class="check">3️⃣ <span>Are the title and axis labels specific?</span></div>
+      <div class="check">4️⃣ <span>Are units included where they matter?</span></div>
+      <div class="check">5️⃣ <span>Would a reader unfamiliar with the data reach the right conclusion?</span></div>
+      <div class="check">6️⃣ <span>Have different segments been mixed in a way that obscures the story?</span></div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>A visualization should be clear and honest, not merely technically valid.</b> Always critique the impression the chart creates, not just whether the numbers printed on it are correct.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔎 Your challenge</h3>
+      <p>A chart uses a line to connect First Class, Second Class, and Third Class. What is potentially misleading about that choice?</p>
+      <textarea placeholder="# Critique the chart choice..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Chart critic certified ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>A line suggests a continuous ordered trend between
+adjacent x-values. Passenger classes are categories,
+so a bar chart is usually the clearer choice.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Titanic Visualization Lab</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Build three honest charts and one intentionally misleading chart, then critique all four.</p>
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Bar chart: average or total Fare by <code>Pclass</code>, y-axis at 0.</span></div>
+      <div class="check">2️⃣ <span>Line chart: weekly ticket purchases or weekly total Fare.</span></div>
+      <div class="check">3️⃣ <span>Scatter plot: <code>Age</code> vs <code>Fare</code> for one passenger class only.</span></div>
+      <div class="check">4️⃣ <span>Create one deliberately misleading bar chart with a truncated y-axis.</span></div>
+      <div class="check">5️⃣ <span>Give each chart a specific title and labels.</span></div>
+      <div class="check">6️⃣ <span>Write one sentence explaining what each chart shows — and one thing it does not prove.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact matplotlib script that creates all three honest chart types using Titanic data.</p>
+      <textarea style="min-height:250px" placeholder="# Build bar, line, and scatter charts..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch visualization confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>import matplotlib.pyplot as plt
+
+# Bar chart
+avg_fare = (
+    df.groupby("Pclass")["Fare"]
+      .mean()
+)
+
+fig, ax = plt.subplots()
+ax.bar(avg_fare.index, avg_fare.values)
+ax.set_ylim(bottom=0)
+ax.set_title("Average Fare by Passenger Class")
+ax.set_xlabel("Passenger Class")
+ax.set_ylabel("Average Fare")
+
+# Line chart
+weekly = (
+    df.set_index("ticket_purchase_date")
+      ["Fare"]
+      .resample("W")
+      .sum()
+)
+
+fig, ax = plt.subplots()
+ax.plot(
+    weekly.index,
+    weekly.values,
+    marker="o"
+)
+ax.set_title(
+    "Total Titanic Fare by Ticket-Purchase Week"
+)
+ax.set_xlabel("Week")
+ax.set_ylabel("Total Fare")
+
+# Scatter plot
+first_class = df.loc[
+    df["Pclass"] == 1
+]
+
+fig, ax = plt.subplots()
+ax.scatter(
+    first_class["Age"],
+    first_class["Fare"]
+)
+ax.set_title(
+    "First-Class Passenger Age vs Fare"
+)
+ax.set_xlabel("Age")
+ax.set_ylabel("Fare")</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>📊 A chart is an argument made with shapes.</h2>
+  <p>You can now match chart type to question, build bar, line, and scatter plots, label them clearly, avoid dishonest bar baselines, filter segments before plotting relationships, and critique whether a chart communicates magnitude truthfully.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived Data Visualization! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Chart-tastic! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+
+function prep(canvas){
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.font="14px Arial";
+  ctx.strokeStyle="#d7c8d7";
+  ctx.fillStyle="#6e5d73";
+  return {ctx,w,h};
+}
+
+function drawAxes(ctx,w,h,left=60,bottom=45,top=25,right=20){
+  ctx.strokeStyle="#bca9bd";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(left,top);
+  ctx.lineTo(left,h-bottom);
+  ctx.lineTo(w-right,h-bottom);
+  ctx.stroke();
+  return {left,bottom,top,right};
+}
+
+function drawBarChart(){
+  const canvas=document.getElementById("barChart");
+  const {ctx,w,h}=prep(canvas);
+  const a=drawAxes(ctx,w,h);
+  const vals=[0.63,0.47,0.24];
+  const labels=["1st","2nd","3rd"];
+  const max=0.7;
+  const plotH=h-a.top-a.bottom;
+  const plotW=w-a.left-a.right;
+  const bw=plotW/6;
+  vals.forEach((v,i)=>{
+    const x=a.left+(i*2+0.7)*bw;
+    const bh=(v/max)*plotH;
+    const y=h-a.bottom-bh;
+    const grad=ctx.createLinearGradient(0,y,0,h-a.bottom);
+    grad.addColorStop(0,"#ff6fb5");
+    grad.addColorStop(1,"#b694ff");
+    ctx.fillStyle=grad;
+    ctx.fillRect(x,y,bw,bh);
+    ctx.fillStyle="#5b4d61";
+    ctx.textAlign="center";
+    ctx.fillText(labels[i],x+bw/2,h-a.bottom+22);
+    ctx.fillText(Math.round(v*100)+"%",x+bw/2,y-8);
+  });
+  ctx.textAlign="left";
+  ctx.fillStyle="#6e5d73";
+  ctx.fillText("0",28,h-a.bottom+4);
+}
+
+function drawLineChart(){
+  const canvas=document.getElementById("lineChart");
+  const {ctx,w,h}=prep(canvas);
+  const a=drawAxes(ctx,w,h);
+  const vals=[14,24,40,31,19,11];
+  const labels=["W1","W2","W3","W4","W5","W6"];
+  const max=45;
+  const plotH=h-a.top-a.bottom, plotW=w-a.left-a.right;
+  ctx.strokeStyle="#c271c6";
+  ctx.lineWidth=4;
+  ctx.beginPath();
+  vals.forEach((v,i)=>{
+    const x=a.left+(i/(vals.length-1))*plotW;
+    const y=h-a.bottom-(v/max)*plotH;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  vals.forEach((v,i)=>{
+    const x=a.left+(i/(vals.length-1))*plotW;
+    const y=h-a.bottom-(v/max)*plotH;
+    ctx.fillStyle="#ff6fb5";
+    ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#5b4d61";ctx.textAlign="center";
+    ctx.fillText(labels[i],x,h-a.bottom+22);
+  });
+}
+
+function drawScatter(){
+  const canvas=document.getElementById("scatterChart");
+  const {ctx,w,h}=prep(canvas);
+  const a=drawAxes(ctx,w,h);
+  const pts=[[18,30],[24,55],[31,42],[38,80],[45,64],[52,95],[61,88],[70,110],[28,72],[49,102]];
+  const maxX=80,maxY=120;
+  const plotH=h-a.top-a.bottom, plotW=w-a.left-a.right;
+  pts.forEach(([xv,yv])=>{
+    const x=a.left+(xv/maxX)*plotW;
+    const y=h-a.bottom-(yv/maxY)*plotH;
+    ctx.fillStyle="rgba(255,111,181,.78)";
+    ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();
+  });
+  ctx.fillStyle="#5b4d61";
+  ctx.fillText("Age →",w-85,h-12);
+}
+
+function drawBaselineBars(canvasId, minY){
+  const canvas=document.getElementById(canvasId);
+  const {ctx,w,h}=prep(canvas);
+  const a=drawAxes(ctx,w,h);
+  const vals=[75,80,85];
+  const labels=["1st","2nd","3rd"];
+  const max=90;
+  const plotH=h-a.top-a.bottom, plotW=w-a.left-a.right;
+  const bw=plotW/6;
+  vals.forEach((v,i)=>{
+    const x=a.left+(i*2+0.7)*bw;
+    const bh=((v-minY)/(max-minY))*plotH;
+    const y=h-a.bottom-bh;
+    const grad=ctx.createLinearGradient(0,y,0,h-a.bottom);
+    grad.addColorStop(0,"#ff6fb5");
+    grad.addColorStop(1,"#b694ff");
+    ctx.fillStyle=grad;
+    ctx.fillRect(x,y,bw,bh);
+    ctx.fillStyle="#5b4d61";ctx.textAlign="center";
+    ctx.fillText(labels[i],x+bw/2,h-a.bottom+22);
+    ctx.fillText(v,x+bw/2,y-8);
+  });
+  ctx.textAlign="left";
+  ctx.fillText(String(minY),22,h-a.bottom+4);
+}
+
+window.addEventListener("load",()=>{
+  drawBarChart();
+  drawLineChart();
+  drawScatter();
+  drawBaselineBars("badBar",70);
+  drawBaselineBars("goodBar",0);
+});
+</script>
+</body>
+</html>

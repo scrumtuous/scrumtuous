@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predictive Analytics, Forecasting & Model Evaluation — Titanic Edition ✨</title>
+<style>
+  :root{
+    --ink:#352c3a;
+    --muted:#75687b;
+    --pink:#ff6fb5;
+    --lav:#b694ff;
+    --mint:#c9eee6;
+    --peach:#ffc7a8;
+    --gold:#f4bd52;
+    --danger:#d94d78;
+    --line:#efd8e8;
+    --shadow:0 18px 44px rgba(100,52,94,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(circle at 12% 7%,rgba(255,157,204,.23),transparent 24%),
+      radial-gradient(circle at 87% 14%,rgba(182,148,255,.18),transparent 27%),
+      linear-gradient(180deg,#fff8fc,#fff 53%,#fff8fc);
+  }
+  .floaties{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .floaties span{position:absolute;opacity:.2;font-size:30px;animation:float 9s ease-in-out infinite}
+  .floaties span:nth-child(1){left:4%;top:9%}
+  .floaties span:nth-child(2){right:6%;top:17%;animation-delay:-2s}
+  .floaties span:nth-child(3){left:8%;top:68%;animation-delay:-5s}
+  .floaties span:nth-child(4){right:10%;top:76%;animation-delay:-7s}
+  @keyframes float{50%{transform:translateY(-17px) rotate(8deg)}}
+  header{text-align:center;padding:72px 22px 42px}
+  .eyebrow{
+    display:inline-block;padding:8px 14px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.07em;color:#8d527b;
+    box-shadow:0 8px 20px rgba(90,43,85,.08)
+  }
+  h1{max-width:1050px;margin:16px auto 12px;font-size:clamp(42px,7vw,82px);line-height:.98;letter-spacing:-.055em}
+  .gradient{
+    background:linear-gradient(90deg,var(--pink),#cf69c1,var(--lav));
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .subtitle{max-width:870px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2vw,21px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:800}
+  main{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+  .card,.module,.finale{
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);overflow:hidden;margin:26px 0
+  }
+  .card{padding:26px}
+  .objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .objective{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}
+  .objective b{display:block;margin-bottom:5px}
+  .module-head{padding:24px 26px;background:linear-gradient(135deg,#fff3fa,#f7f1ff);border-bottom:1px solid var(--line)}
+  .module-body{padding:26px}
+  .kicker{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:900;color:#a85d8c}
+  h2{font-size:clamp(29px,4vw,43px);line-height:1.05;margin:4px 0 8px}
+  h3{margin:0 0 8px}
+  .explain{font-size:18px;color:#504356}
+  .quiz-alert{
+    margin:18px 0;border:2px solid #efb2c9;background:linear-gradient(135deg,#fff0f7,#fffafd);
+    border-radius:20px;padding:17px 18px
+  }
+  .quiz-alert .badge{
+    display:inline-block;background:var(--danger);color:#fff;font-weight:900;border-radius:999px;
+    padding:5px 10px;font-size:12px;letter-spacing:.05em;margin-bottom:8px
+  }
+  .quiz-alert b{color:#813851}
+  .tip{margin:16px 0;padding:14px 16px;background:#fff6d7;border:1px solid #efdda7;border-radius:16px}
+  .code-wrap{position:relative;margin:17px 0}
+  pre{
+    margin:0;background:#2e2534;color:#fff8fd;border-radius:20px;padding:22px;overflow:auto;
+    font-size:14px;line-height:1.62;border:1px solid #513e59
+  }
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .copy{
+    position:absolute;right:12px;top:12px;border:none;border-radius:999px;background:#fff;
+    color:#654d6d;font-weight:850;padding:8px 12px;cursor:pointer
+  }
+  .challenge{
+    margin-top:22px;padding:20px;border:1px solid #e9d4ed;border-radius:22px;
+    background:linear-gradient(135deg,#fff0f7,#f7f1ff)
+  }
+  .challenge p{color:#604f67}
+  textarea{
+    width:100%;min-height:125px;resize:vertical;background:#fff;border:1px solid #dbc4e2;
+    border-radius:16px;padding:14px;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+  }
+  textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,181,.14)}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.fun{
+    border:none;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;
+    background:linear-gradient(90deg,var(--pink),var(--lav));color:#fff;
+    box-shadow:0 8px 17px rgba(156,79,153,.23)
+  }
+  button.secondary{background:#fff;color:#705977;border:1px solid var(--line);box-shadow:none}
+  .solution{display:none;margin-top:14px;animation:pop .3s ease}
+  .solution.show{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .concept{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center}
+  .concept .icon{font-size:32px}
+  .concept b{display:block;font-size:19px;margin:5px 0}
+  .concept small{color:var(--muted)}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .good,.bad,.neutral{border:1px solid var(--line);border-radius:18px;padding:16px}
+  .good{background:#effcf7}
+  .bad{background:#fff1f5}
+  .neutral{background:#f5f1ff}
+  .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .metric{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center}
+  .metric strong{display:block;font-size:31px;color:#92527e}
+  .metric span{color:var(--muted)}
+  .flow{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+  .flow span{padding:10px 13px;border-radius:15px;background:#fff;border:1px solid var(--line);font-weight:850}
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .check{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:10px;align-items:flex-start
+  }
+  .finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff1f7,#f5efff,#fff9eb)}
+  .finale p{max-width:790px;margin:8px auto 20px;color:var(--muted)}
+  .confetti{
+    position:fixed;top:-12px;width:10px;height:10px;z-index:9999;pointer-events:none;
+    border-radius:3px;animation:fall 1.8s linear forwards
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.25}}
+  @media(max-width:900px){
+    .objective-grid,.concept-grid,.compare,.metric-grid,.checklist{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .module-head,.module-body,.card{padding:20px}
+    header{padding-top:50px}
+  }
+</style>
+</head>
+<body>
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>🤖</span><span>🛳️</span><span>💖</span>
+</div>
+
+<header>
+  <div class="eyebrow">PREDICTIVE ANALYTICS • TITANIC EDITION</div>
+  <h1>Can a Model Predict <span class="gradient">Who Survives?</span></h1>
+  <p class="subtitle">Meet regression, classification, forecasting, train/test splits, evaluation metrics, and the humbling realization that a “smart” model can perform worse than a deliberately dumb baseline.</p>
+  <div class="chips">
+    <span class="chip">📈 Regression</span>
+    <span class="chip">🎯 Classification</span>
+    <span class="chip">🕰️ Forecasting</span>
+    <span class="chip">✂️ Train/Test Split</span>
+    <span class="chip">📏 MAE & RMSE</span>
+    <span class="chip">✅ Accuracy</span>
+    <span class="chip">📝 Quiz Alerts</span>
+  </div>
+</header>
+
+<main>
+
+<section class="card">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you'll be able to...</h2>
+  <div class="objective-grid">
+    <div class="objective"><b>🧠 Recognize the problem type</b>Know whether a problem is regression, classification, or time-series forecasting.</div>
+    <div class="objective"><b>✂️ Split data correctly</b>Train on one portion and evaluate on genuinely unseen test data.</div>
+    <div class="objective"><b>📏 Evaluate honestly</b>Use MAE, RMSE, and accuracy together with a naive baseline.</div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 1</div>
+    <h2>Three Prediction Problems</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">All three learn from known examples and try to predict something unknown, but the thing being predicted has a different shape.</p>
+
+    <div class="concept-grid">
+      <div class="concept">
+        <div class="icon">📈</div>
+        <b>Regression</b>
+        <small>Predicts a number.<br>Example: predict Fare.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🎯</div>
+        <b>Classification</b>
+        <small>Predicts a category.<br>Example: Survived = 0 or 1.</small>
+      </div>
+      <div class="concept">
+        <div class="icon">🕰️</div>
+        <b>Forecasting</b>
+        <small>Predicts a future point in an ordered timeline.</small>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Regression predicts numeric values; classification predicts categories; forecasting predicts future values along time.</b> Choosing the wrong problem type means choosing the wrong model and metrics.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Classify each problem: (1) predict Fare, (2) predict Survived, (3) predict next week's ticket-purchase count.</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Problem type nailed ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) Regression
+2) Classification
+3) Time-series forecasting</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Forecasting reality check</div>
+    <h2>Two Weeks Is Not a Forecasting Dataset</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">You already created weekly totals with <code>resample("W")</code>. That gives the right <em>shape</em> for forecasting, but not enough history to forecast responsibly.</p>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>🚫 Two weekly points</h3>
+        <p>Not enough history to identify trend, seasonality, or normal variation.</p>
+      </div>
+      <div class="good">
+        <h3>✅ Many historical periods</h3>
+        <p>Now the model has repeated evidence from which to learn temporal structure.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Having a datetime index does not automatically make forecasting responsible.</b> Forecasting needs enough historical observations to learn something repeatable.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 2</div>
+    <h2>Train/Test Split: Keep the Exam Questions Secret</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">If the model learns from the same rows you use to evaluate it, the score can look artificially good because the model has already seen the answers.</p>
+
+    <div class="flow">
+      <span>All known passengers</span><span>➡️</span>
+      <span>70% training</span><span>+</span>
+      <span>30% test</span><span>➡️</span>
+      <span>evaluate on unseen rows</span>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.model_selection import (
+    train_test_split
+)
+
+X_train, X_test, y_train, y_test = (
+    train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=42
+    )
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>test_size=0.3</code> holds back 30% for evaluation.</b> <code>random_state=42</code> makes the split reproducible so the same rows land in train and test each run.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✂️ Your challenge</h3>
+      <p>Why is evaluating only on the training set misleading?</p>
+      <textarea placeholder="# Explain in plain English..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Leakage avoided 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because the model has already learned from those rows.
+
+The test set gives a better estimate of how the model
+performs on data it has not seen before.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 3</div>
+    <h2>Build a First Regression Model</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">For a simple regression example, predict a passenger's <code>Fare</code> from numeric features such as <code>Age</code> and <code>Pclass</code>.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.linear_model import (
+    LinearRegression
+)
+
+X = df[["Age", "Pclass"]]
+y = df["Fare"]
+
+model = LinearRegression().fit(
+    X_train,
+    y_train
+)
+
+preds = model.predict(
+    X_test
+)</code></pre>
+    </div>
+
+    <div class="tip"><b><code>fit()</code></b> learns from the training set. <b><code>predict()</code></b> generates predictions for rows the model did not train on.</div>
+
+    <div class="challenge">
+      <h3>📈 Your challenge</h3>
+      <p>What is the target <code>y</code> in this regression example?</p>
+      <textarea placeholder="# Name the target..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Target spotted ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Fare
+
+Regression is predicting a numeric value.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 4</div>
+    <h2>MAE & RMSE: Two Ways to Measure Regression Error</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="metric-grid">
+      <div class="metric">
+        <strong>MAE</strong>
+        <span>Average absolute error in the original units.</span>
+      </div>
+      <div class="metric">
+        <strong>RMSE</strong>
+        <span>Also in original units, but punishes large misses more heavily.</span>
+      </div>
+      <div class="metric">
+        <strong>RMSE ≥ MAE</strong>
+        <span>For the same prediction set.</span>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error
+)
+
+mae = mean_absolute_error(
+    y_test,
+    preds
+)
+
+rmse = mean_squared_error(
+    y_test,
+    preds
+) ** 0.5</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>MAE is easier to explain as the typical error size.</b> <b>RMSE penalizes large errors more heavily.</b> For the same predictions, RMSE will be at least as large as MAE.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>📏 Your challenge</h3>
+      <p>If MAE = 12 and RMSE = 28, what does the much larger RMSE suggest?</p>
+      <textarea placeholder="# Interpret the gap..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Metrics interpreted 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>There are likely some relatively large prediction errors.
+
+RMSE gives those large misses extra weight, so it rises
+more than MAE.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Quiz Connection</div>
+    <h2>Every Metric Needs a Baseline</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A model score is not meaningful in isolation. You need to compare it to something simple.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.dummy import (
+    DummyRegressor
+)
+
+baseline = DummyRegressor(
+    strategy="mean"
+).fit(
+    X_train,
+    y_train
+)
+
+baseline_preds = baseline.predict(
+    X_test
+)
+
+baseline_mae = mean_absolute_error(
+    y_test,
+    baseline_preds
+)</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="good">
+        <h3>✅ Useful model</h3>
+        <p>Model MAE = 18<br>Baseline MAE = 31</p>
+        <p>The trained model clearly improves on the naive strategy.</p>
+      </div>
+      <div class="bad">
+        <h3>🚫 “Smart” but useless</h3>
+        <p>Model MAE = 31<br>Baseline MAE = 30</p>
+        <p>The trained model is worse than always predicting the training mean.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b><code>LinearRegression</code> should be evaluated against a naive baseline such as <code>DummyRegressor(strategy="mean")</code>.</b> A model that does not beat the baseline is not adding useful predictive value.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>👑 Your challenge</h3>
+      <p>Your regression model has MAE 20. The DummyRegressor baseline has MAE 17. Which model is better?</p>
+      <textarea placeholder="# Choose and explain..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Baseline respected ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The DummyRegressor baseline is better.
+
+Lower MAE is better because it means smaller average
+prediction errors.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 5</div>
+    <h2>Build a Classification Model</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">Classification predicts categories. For Titanic, the natural target is <code>Survived</code>: 0 or 1.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.linear_model import (
+    LogisticRegression
+)
+
+X = df[[
+    "Pclass",
+    "Age",
+    "Fare"
+]]
+
+y = df["Survived"]
+
+clf = LogisticRegression().fit(
+    X_train,
+    y_train
+)
+
+preds = clf.predict(
+    X_test
+)</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Logistic regression is a classification model despite the word “regression” in its name.</b> Here it predicts the category <code>Survived = 0/1</code>.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎯 Your challenge</h3>
+      <p>Why is predicting <code>Survived</code> a classification problem rather than regression?</p>
+      <textarea placeholder="# Explain the target shape..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Classification clear 💖</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because the target represents categories:
+did not survive (0) or survived (1).
+
+The goal is not to predict an arbitrary continuous number.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 6</div>
+    <h2>Accuracy Can Be Humbling</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>from sklearn.metrics import (
+    accuracy_score
+)
+
+from sklearn.dummy import (
+    DummyClassifier
+)
+
+base_clf = DummyClassifier(
+    strategy="most_frequent"
+).fit(
+    X_train,
+    y_train
+)
+
+model_accuracy = accuracy_score(
+    y_test,
+    clf.predict(X_test)
+)
+
+baseline_accuracy = accuracy_score(
+    y_test,
+    base_clf.predict(X_test)
+)</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="bad">
+        <h3>Model</h3>
+        <p><b>Accuracy: 0.50</b></p>
+        <p>Sounds okay until you compare it.</p>
+      </div>
+      <div class="good">
+        <h3>Majority-class baseline</h3>
+        <p><b>Accuracy: 0.67</b></p>
+        <p>Always guessing the most common class wins.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>Accuracy only becomes meaningful next to a baseline.</b> A model scoring 50% can be worse than a classifier that always predicts the majority class.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>✅ Your challenge</h3>
+      <p>A model has 82% accuracy. The majority-class baseline is 85%. Is 82% a good result?</p>
+      <textarea placeholder="# Explain relative to baseline..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Accuracy contextualized ✨</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+
+The trained model is worse than the naive baseline,
+so 82% is not impressive in this context.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Operation 7</div>
+    <h2>Investigate Why a Model Misses</h2>
+  </div>
+  <div class="module-body">
+    <p class="explain">A weak model is not necessarily a coding failure. The chosen features may simply not contain enough predictive signal.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>results = X_test.copy()
+
+results["actual"] = y_test
+results["predicted"] = preds
+
+print(results)</code></pre>
+    </div>
+
+    <div class="tip"><b>Look row by row.</b> Are errors clustered in one passenger class? Are extreme fares causing misses? Is there a subgroup with different behavior?</div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>If one subgroup follows a different relationship, a single global model may struggle.</b> Poor baseline improvement can signal weak features, subgroup-specific logic, or missing information — not merely “bad machine learning code.”</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔎 Your challenge</h3>
+      <p>Your regression model works well for first- and second-class passengers but badly for third class. Name one plausible next investigation.</p>
+      <textarea placeholder="# What would you inspect?"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Model detective activated 🕵️</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>Check whether the relationship between the features and
+Fare is different for third-class passengers.
+
+A subgroup-specific pattern could explain why one global
+model performs poorly there.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">One Pattern, Three Metrics</div>
+    <h2>What Each Evaluation Number Is For</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="metric-grid">
+      <div class="metric">
+        <strong>MAE</strong>
+        <span>Regression: average absolute error. Easy stakeholder explanation.</span>
+      </div>
+      <div class="metric">
+        <strong>RMSE</strong>
+        <span>Regression: emphasizes larger misses more heavily.</span>
+      </div>
+      <div class="metric">
+        <strong>Accuracy</strong>
+        <span>Classification: fraction of predictions that are correct.</span>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <span class="badge">QUIZ ALERT</span>
+      <div><b>MAE and RMSE are regression metrics; accuracy is a classification metric.</b> None is inherently “good” or “bad” without scale, context, and a baseline.</div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Your challenge</h3>
+      <p>Match the metric to the question: (1) “How far off are our Fare predictions on average?” (2) “We especially care about huge misses.” (3) “What fraction of survival predictions were correct?”</p>
+      <textarea placeholder="# 1)
+# 2)
+# 3)"></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this)">Metric matched perfectly 🌷</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>1) MAE
+2) RMSE
+3) Accuracy</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Main Lab</div>
+    <h2>Build, Evaluate & Investigate a Titanic Model</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="checklist">
+      <div class="check">1️⃣ <span>Build a regression model predicting <code>Fare</code> from numeric features.</span></div>
+      <div class="check">2️⃣ <span>Use <code>train_test_split(test_size=0.3, random_state=42)</code>.</span></div>
+      <div class="check">3️⃣ <span>Evaluate with both MAE and RMSE.</span></div>
+      <div class="check">4️⃣ <span>Compare against <code>DummyRegressor(strategy="mean")</code>.</span></div>
+      <div class="check">5️⃣ <span>Inspect prediction errors row by row.</span></div>
+      <div class="check">6️⃣ <span>Build a survival classifier and compare its accuracy to <code>DummyClassifier</code>.</span></div>
+      <div class="check">7️⃣ <span>Explain whether either trained model truly adds value over the baseline.</span></div>
+      <div class="check">8️⃣ <span>State one limitation before calling the result useful.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Write a compact regression workflow that splits the data, trains <code>LinearRegression</code>, calculates MAE and RMSE, and compares against a mean-predicting baseline.</p>
+      <textarea style="min-height:290px" placeholder="# Build the regression workflow..."></textarea>
+      <div class="actions">
+        <button class="fun" onclick="celebrate(this,70)">Launch ML confetti 🎊</button>
+        <button class="fun secondary" onclick="toggleSolution(this)">Show one possible solution</button>
+      </div>
+      <div class="solution"><pre><code>from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.dummy import DummyRegressor
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error
+)
+
+data = df[[
+    "Age",
+    "Pclass",
+    "Fare"
+]].dropna()
+
+X = data[[
+    "Age",
+    "Pclass"
+]]
+
+y = data["Fare"]
+
+X_train, X_test, y_train, y_test = (
+    train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=42
+    )
+)
+
+model = LinearRegression().fit(
+    X_train,
+    y_train
+)
+
+preds = model.predict(X_test)
+
+mae = mean_absolute_error(
+    y_test,
+    preds
+)
+
+rmse = mean_squared_error(
+    y_test,
+    preds
+) ** 0.5
+
+baseline = DummyRegressor(
+    strategy="mean"
+).fit(
+    X_train,
+    y_train
+)
+
+baseline_preds = baseline.predict(
+    X_test
+)
+
+baseline_mae = mean_absolute_error(
+    y_test,
+    baseline_preds
+)
+
+print("Model MAE:", mae)
+print("Model RMSE:", rmse)
+print("Baseline MAE:", baseline_mae)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>🤖 A model is only impressive if it beats something dumb.</h2>
+  <p>You can now distinguish regression, classification, and forecasting, keep test data genuinely unseen, evaluate regression with MAE and RMSE, evaluate classification with accuracy, and compare every model against a naive baseline before claiming it adds predictive value.</p>
+  <button class="fun" onclick="celebrate(this,80)">I survived Predictive Analytics! 🛟✨</button>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide solution" : "Show solution";
+}
+
+function celebrate(button, amount=28){
+  const colors=["#ff6fb5","#b694ff","#ffc7a8","#f4bd52","#c9eee6","#ff9dcc"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*10)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+  const old=button.textContent;
+  button.textContent="✨ Model evaluated! ✨";
+  setTimeout(()=>button.textContent=old,1300);
+}
+</script>
+</body>
+</html>
