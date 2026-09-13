@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | JUnit</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --pink:#ff5fae;
+  --pink2:#ff9dce;
+  --lav:#a57dff;
+  --lav2:#e9dfff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.15), transparent 21%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+
+.floaties{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floaties span{position:absolute;opacity:.16;animation:floaty 8s ease-in-out infinite}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{
+  display:flex;align-items:center;gap:8px;font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea;font-size:14px;font-weight:850}
+
+.hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+.hero-shell{
+  min-height:225px;border-radius:32px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 84% 20%,rgba(255,255,255,.23),transparent 17%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;box-shadow:0 24px 62px rgba(86,43,112,.21)
+}
+.hero-grid{min-height:225px;display:grid;grid-template-columns:1.42fr .58fr;align-items:center}
+.hero-copy{padding:22px 34px;position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:1000
+}
+h1{
+  margin:11px 0 8px;font-size:clamp(36px,5vw,52px);line-height:.96;letter-spacing:-.05em;font-weight:1000
+}
+.hero-copy p{max-width:820px;font-size:18px;color:#fff5fb;margin:0}
+.hero-note{display:inline-block;margin-top:9px;font-size:16px;font-weight:900;transform:rotate(-1deg)}
+.hero-chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px}
+.hero-chip{
+  padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(7px);font-weight:900;font-size:14px
+}
+.hero-art{position:relative;height:100%}
+.hero-orb{
+  position:absolute;width:150px;height:150px;border-radius:50%;right:34px;top:32px;
+  background:radial-gradient(circle at 35% 32%,#fff 0 7%,#ffe4f2 8% 31%,#ecd5ff 60%,#ccb4ff 100%);
+  box-shadow:0 20px 45px rgba(70,29,94,.20);animation:bloop 4s ease-in-out infinite
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute;font-size:39px;animation:spin 9s linear infinite;filter:drop-shadow(0 10px 8px rgba(59,18,82,.16))
+}
+.hero-art .shape.s1{right:14px;bottom:14px}
+.hero-art .shape.s2{right:162px;top:24px;animation-direction:reverse}
+.hero-art .shape.s3{right:121px;bottom:8px;font-size:34px}
+.hero-art .shape.s4{right:69px;top:88px;font-size:34px;animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;margin:28px 0
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:1000;color:#a35587
+}
+h2{
+  margin:5px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:1000
+}
+h3{margin:0 0 8px;font-size:22px;font-weight:950}
+.leadish{font-size:18px;color:#55475c}
+.module-head{
+  padding:24px 28px;background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);position:relative
+}
+.module-head::after{
+  content:"";position:absolute;width:84px;height:84px;border-radius:50%;
+  right:24px;top:-20px;background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);opacity:.22
+}
+.module-body{padding:28px}
+
+.objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:165px;background:#fff;transition:.24s ease
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block;font-size:36px;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);box-shadow:0 10px 24px rgba(151,68,111,.08)
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";display:inline-block;margin-bottom:8px;color:#fff;
+  background:linear-gradient(90deg,#d94f7d,#ff56ad);padding:5px 10px;border-radius:999px;
+  font-size:12px;font-weight:1000;letter-spacing:.07em
+}
+.quiz-alert strong{color:#813850}
+
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.feature-card{
+  border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff;min-height:205px
+}
+.feature-card:nth-child(1){background:#fff5fb}
+.feature-card:nth-child(2){background:#f5f0ff}
+.feature-card:nth-child(3){background:#effcf7}
+.feature-card:nth-child(4){background:#fff9df}
+.feature-card:nth-child(5){background:#edf8ff}
+.feature-card:nth-child(6){background:#fff2ec}
+.feature-card .big{font-size:34px;display:block;margin-bottom:6px}
+.feature-card b{display:block;font-size:18px;margin-bottom:5px}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f
+}
+.copy{
+  position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+  background:#fff;color:#624c6c;padding:8px 12px;font-weight:950;cursor:pointer
+}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.cardish{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+.cardish.pink{background:#fff4fa}
+.cardish.lav{background:#f5f0ff}
+.cardish.mint{background:#effcf7}
+.cardish.gold{background:#fff9df}
+
+.report-box{
+  border:1px solid var(--line);border-radius:20px;background:#fff;padding:18px;margin-top:16px
+}
+.report-line{
+  padding:11px 13px;border-radius:12px;margin:7px 0;background:#f8f3fb;border:1px solid #eadcec;font-family:"SFMono-Regular",Consolas,monospace
+}
+.report-line.pass{background:#effcf7;border-color:#cdebd9}
+.report-line.fail{background:#fff0f4;border-color:#efc3ce}
+
+.param-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.param-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff}
+.param-card:nth-child(1){background:#fff5fb}
+.param-card:nth-child(2){background:#f5f0ff}
+
+.mock-flow{
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0
+}
+.mock-box{
+  min-width:180px;text-align:center;padding:18px;border-radius:20px;border:1px solid var(--line);background:#fff;font-weight:900
+}
+.mock-box.sut{background:#f5f0ff}
+.mock-box.fake{background:#effcf7}
+.mock-box.real{background:#fff4fa}
+.mock-arrow{font-size:26px;color:#a57dff;font-weight:1000}
+
+.mockito-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.mockito-card{
+  border:1px solid var(--line);border-radius:20px;padding:16px;background:#fff;min-height:210px
+}
+.mockito-card:nth-child(1){background:#fff5fb}
+.mockito-card:nth-child(2){background:#f5f0ff}
+.mockito-card:nth-child(3){background:#effcf7}
+.mockito-card:nth-child(4){background:#fff9df}
+.mockito-card .big{font-size:32px;display:block;margin-bottom:6px}
+.mockito-card b{display:block;font-size:18px;margin-bottom:5px}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff)
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,95,174,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;cursor:pointer;color:#fff;font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));box-shadow:0 9px 18px rgba(157,75,158,.24)
+}
+.fun-btn.secondary{background:#fff;color:#705978;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.checklist-box{
+  border:1px solid var(--line);border-radius:22px;padding:20px;background:linear-gradient(135deg,#fff9fc,#fff);margin-top:18px
+}
+.check-row{
+  display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #f0e3ed
+}
+.check-row:last-child{border-bottom:none}
+.check-row input{width:20px;height:20px;margin-top:3px;accent-color:var(--pink)}
+.check-row b{display:block}
+.score{
+  display:none;margin-top:14px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line)
+}
+
+.boundary{
+  margin-top:18px;border:1px solid var(--line);border-radius:22px;padding:20px;background:linear-gradient(135deg,#fff9df,#fff)
+}
+.number-line{position:relative;height:105px;margin:16px 0 4px}
+.number-line:before{
+  content:"";position:absolute;left:6%;right:6%;top:48px;height:4px;background:#d9c5dc;border-radius:999px
+}
+.tick{
+  position:absolute;top:33px;width:3px;height:32px;background:#805e8a
+}
+.tick span{
+  position:absolute;top:36px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:900;white-space:nowrap
+}
+.tick.a{left:26%}
+.tick.b{left:50%}
+.tick.c{left:74%}
+.dot{
+  position:absolute;top:40px;width:19px;height:19px;border-radius:50%;transform:translateX(-50%)
+}
+.dot.a{left:26%;background:#ff9dce}
+.dot.b{left:50%;background:#f6c654}
+.dot.c{left:74%;background:#a57dff}
+
+.sticker{
+  margin:18px 0;display:flex;align-items:center;gap:16px;padding:14px 16px;
+  border-radius:20px;border:1px dashed #e7c7df;background:linear-gradient(135deg,#fff9fc,#fff)
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+
+.small-note{
+  margin:18px 0;padding:17px 18px;border-radius:20px;background:linear-gradient(135deg,#fff6d8,#fffdf7);border:1px solid #eddb9d
+}
+.small-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em;color:#8a6216;margin-bottom:4px
+}
+.small-note b{color:#5e4716}
+
+.lab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.lab-card{
+  border:1px solid var(--line);border-radius:22px;padding:20px;background:#fff;min-height:245px
+}
+.lab-card:nth-child(1){background:#fff5fb}
+.lab-card:nth-child(2){background:#f5f0ff}
+.lab-card:nth-child(3){background:#effcf7}
+.lab-card .num{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(135deg,var(--pink),var(--lav));font-weight:1000;margin-bottom:10px
+}
+.acceptance{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.accept{
+  display:flex;gap:10px;align-items:flex-start;padding:14px 15px;border-radius:16px;border:1px solid var(--line);background:#fff
+}
+
+.finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df)}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:115px}
+  .feature-grid,.lab-grid{grid-template-columns:1fr 1fr}
+  .mockito-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  .objective-grid,.split,.param-grid,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:26px 22px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:44px}
+  .feature-grid,.lab-grid,.mockito-grid{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center;text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-flask"></i> Sprint 5 • Module 11</div>
+        <h1>JUnit</h1>
+        <p>Organize tests, cover many inputs, verify exceptions, isolate collaborators with Mockito, and make assertions read like requirements.</p>
+        <div class="hero-note">Better tests explain behavior and fail for one clear reason. ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">@BeforeEach</span>
+          <span class="hero-chip">@ParameterizedTest</span>
+          <span class="hero-chip">@Nested</span>
+          <span class="hero-chip">Mockito</span>
+          <span class="hero-chip">Hamcrest</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">🧪</span>
+      <b>Organize a JUnit 5 suite</b>
+      Use <code>@BeforeEach</code>, <code>@Nested</code>, and <code>@DisplayName</code>.
+    </div>
+    <div class="objective">
+      <span class="icon">📊</span>
+      <b>Test many cases efficiently</b>
+      Use <code>@ParameterizedTest</code>, <code>@ValueSource</code>, and <code>@CsvSource</code>.
+    </div>
+    <div class="objective">
+      <span class="icon">🎭</span>
+      <b>Test in isolation</b>
+      Use Mockito and Hamcrest when real collaborators would make failures ambiguous.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Important quiz nuance:</strong> <code>assertThrows</code>, <code>@Nested</code>/<code>@DisplayName</code>, and <code>@ParameterizedTest</code>/<code>@CsvSource</code> are all legitimate JUnit 5 techniques for the testing situations in this module. Also, not every class needs Mockito.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Big picture</div>
+    <h2>You Have Only Used a Fraction of JUnit So Far</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Basic assertions prove behavior. JUnit 5 also helps you organize setup, document intent, test many inputs, and express exception behavior cleanly.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card"><span class="big">🔁</span><b>@BeforeEach</b>Fresh setup before every test.</div>
+      <div class="feature-card"><span class="big">💥</span><b>assertThrows</b>Formal exception testing.</div>
+      <div class="feature-card"><span class="big">🧺</span><b>assertAll</b>Run several related assertions together.</div>
+      <div class="feature-card"><span class="big">🧮</span><b>@ParameterizedTest</b>One test body, many inputs.</div>
+      <div class="feature-card"><span class="big">🗂️</span><b>@Nested</b>Group behavior into readable contexts.</div>
+      <div class="feature-card"><span class="big">🏷️</span><b>@DisplayName</b>Make the report read like documentation.</div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Feature 1</div>
+    <h2>@BeforeEach Gives Every Test Fresh State</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Shared setup is useful, but shared mutable state between tests is dangerous. <code>@BeforeEach</code> rebuilds the test fixture every time.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>private Rectangle rectangle;
+
+@BeforeEach
+void setUp() {
+    rectangle = new Rectangle(10, 4);
+}
+
+@Test
+void areaStartsAtForty() {
+    assertEquals(40.0, rectangle.calcArea());
+}
+
+@Test
+void anotherTestGetsAFreshRectangle() {
+    assertEquals(40.0, rectangle.calcArea());
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why it matters</div>
+      <b>No test sees another test's leftovers.</b>
+      Tests should pass in any order.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Test design habit:</strong> order-dependent tests are a smell. Fresh setup helps each test stand on its own.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Feature 2</div>
+    <h2>assertThrows Tests Exceptions Directly</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Test
+void negativeSquareSideThrows() {
+    var exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> new Square(-2)
+    );
+
+    assertEquals(
+        "Side must be positive",
+        exception.getMessage()
+    );
+}</code></pre>
+    </div>
+
+    <div class="split">
+      <div class="cardish pink">
+        <h3>Manual try/catch risk</h3>
+        <p>A poorly written manual test can accidentally pass when no exception is thrown.</p>
+      </div>
+      <div class="cardish mint">
+        <h3>assertThrows</h3>
+        <p>Fails automatically if the expected exception never happens, and gives you the exception object back.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct quiz connection:</strong> <code>assertThrows</code> is the right formal tool when the required behavior is "this call must throw this exception type."
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Feature 3</div>
+    <h2>assertAll Reports Multiple Related Failures Together</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Test
+void circleReportsRadiusAndAreaTogether() {
+    Circle circle = new Circle(5);
+
+    assertAll(
+        "circle properties",
+        () -> assertEquals(5, circle.getRadius()),
+        () -> assertEquals(
+            Math.PI * 25,
+            circle.calcArea(),
+            0.0001
+        )
+    );
+}</code></pre>
+    </div>
+
+    <div class="report-box">
+      <div class="report-line pass">✓ radius equals 5</div>
+      <div class="report-line pass">✓ area equals 78.5398 within tolerance</div>
+      <p style="margin:12px 0 0">If both fail, JUnit reports both failures instead of stopping after the first one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Feature 4</div>
+    <h2>@ParameterizedTest: One Test Body, Many Inputs</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="param-grid">
+      <div class="param-card">
+        <h3>@ValueSource</h3>
+        <p>Use when each run changes one input but keeps the same expected rule.</p>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>@ParameterizedTest
+@ValueSource(doubles = {
+    1.0, 5.0, 20.0
+})
+void positiveSidesCreateValidSquares(
+        double side) {
+
+    assertTrue(
+        new Square(side).calcArea() > 0
+    );
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="param-card">
+        <h3>@CsvSource</h3>
+        <p>Use when each input has its own expected output.</p>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>@ParameterizedTest
+@CsvSource({
+    "2, 4",
+    "3, 9",
+    "10, 100"
+})
+void squareAreaMatchesExpected(
+        double side,
+        double expectedArea) {
+
+    assertEquals(
+        expectedArea,
+        new Square(side).calcArea()
+    );
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Exact boundary connection:</strong> <code>@CsvSource</code> is especially useful when each row includes input plus expected output, including boundary cases that may differ from nearby values.
+    </div>
+
+    <div class="challenge">
+      <h3>🧮 Choose the source</h3>
+      <p>You need to test <code>RiskLimitChecker</code> with several triples of values, each with a different expected true/false result. Which source is the better fit?</p>
+      <textarea placeholder="// ValueSource or CsvSource? Why?"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Parameterized wisdom ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>@CsvSource
+
+Each row can provide:
+currentPortfolioValue, orderValue, riskLimit, expectedResult</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Feature 5</div>
+    <h2>@Nested and @DisplayName Turn the Report Into Documentation</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Nested
+@DisplayName("when the shape dimensions are invalid")
+class InvalidDimensions {
+
+    @Test
+    @DisplayName("a negative square side throws")
+    void negativeSquareSideThrows() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new Square(-1)
+        );
+    }
+}</code></pre>
+    </div>
+
+    <div class="report-box">
+      <div class="report-line pass">when the shape dimensions are invalid</div>
+      <div class="report-line pass" style="margin-left:24px">✓ a negative square side throws</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> <code>@Nested</code> groups related behaviors, while <code>@DisplayName</code> makes the generated report understandable without opening the source code.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Isolation</div>
+    <h2>What Is a Test Actually Testing?</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A test can involve several real classes. When it fails, you may not know which one is responsible.</p>
+
+    <div class="mock-flow">
+      <div class="mock-box real">Real Shape<br><small>area formula can fail</small></div>
+      <div class="mock-arrow">→</div>
+      <div class="mock-box sut">ExperimentRunner<br><small>system under test</small></div>
+      <div class="mock-arrow">→</div>
+      <div class="mock-box real">Real ResultWriter<br><small>storage can fail</small></div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Problem</div>
+      <b>One red result, three possible causes.</b>
+      A failure may come from the class under test or from either real collaborator.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct quiz connection:</strong> real collaborators test a broader integrated behavior, while mocks isolate the class under test so a failure points more directly to its coordination logic.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Mockito</div>
+    <h2>A Mock Is a Collaborator You Fully Control</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="mock-flow">
+      <div class="mock-box fake">Mock AreaSource<br><small>controlled by test</small></div>
+      <div class="mock-arrow">→</div>
+      <div class="mock-box sut">ExperimentRunner</div>
+      <div class="mock-arrow">→</div>
+      <div class="mock-box fake">Mock ResultWriter<br><small>records calls</small></div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@ExtendWith(MockitoExtension.class)
+class ExperimentRunnerTest {
+
+    @Mock
+    private AreaSource mockAreaSource;
+
+    @Mock
+    private ResultWriter mockWriter;
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Mock behavior</div>
+      <b>A mock does nothing useful until the test tells it what to do.</b>
+      It also remembers how it was called so the test can verify interactions.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Mockito toolkit</div>
+    <h2>Stub, Verify, Count, Capture</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="mockito-grid">
+      <div class="mockito-card">
+        <span class="big">🎛️</span>
+        <b>when(...).thenReturn(...)</b>
+        Control what the collaborator gives back.
+      </div>
+      <div class="mockito-card">
+        <span class="big">✅</span>
+        <b>verify(...)</b>
+        Prove an interaction happened.
+      </div>
+      <div class="mockito-card">
+        <span class="big">🔢</span>
+        <b>times(n)</b>
+        Prove it happened exactly n times.
+      </div>
+      <div class="mockito-card">
+        <span class="big">🎣</span>
+        <b>ArgumentCaptor</b>
+        Capture the actual value, then inspect it flexibly.
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Test
+void runnerUsesWhateverAreaItIsGiven() {
+    when(mockAreaSource.areaFor("circle"))
+        .thenReturn(42.0);
+
+    double area =
+        new ExperimentRunner(mockWriter)
+            .run("circle", mockAreaSource);
+
+    assertEquals(42.0, area);
+
+    verify(mockWriter)
+        .write("circle: 42.0");
+
+    verify(mockAreaSource, times(1))
+        .areaFor("circle");
+}</code></pre>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>ArgumentCaptor&lt;String&gt; captor =
+    ArgumentCaptor.forClass(String.class);
+
+verify(mockWriter)
+    .write(captor.capture());
+
+assertThat(
+    captor.getValue(),
+    allOf(
+        containsString("circle"),
+        containsString("42.0")
+    )
+);</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Interaction testing:</strong> Mockito adds a new kind of assertion. You can verify that a collaborator was called, called exactly once, or never touched at all.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Hamcrest</div>
+    <h2>Readable, Composable Assertions</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>assertThat(area, is(42.0));
+assertThat(area, greaterThan(0.0));
+
+assertThat(
+    report,
+    containsString("circle")
+);
+
+assertThat(
+    labels,
+    hasSize(3)
+);
+
+assertThat(
+    area,
+    allOf(
+        greaterThan(0.0),
+        lessThan(100.0)
+    )
+);</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why people like it</div>
+      Hamcrest matchers often read closer to the requirement and compose naturally for strings, collections, and ranges.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Do not overuse mocks</div>
+    <h2>Not Every Class Needs Mockito</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="split">
+      <div class="cardish mint">
+        <h3>No collaborators</h3>
+        <p><code>RiskLimitChecker</code> accepts primitive values and returns a boolean.</p>
+        <p><b>Nothing to mock.</b></p>
+      </div>
+      <div class="cardish lav">
+        <h3>Has collaborators</h3>
+        <p><code>OrderExecutor</code> coordinates an <code>Instrument</code> and a <code>ReportWriter</code>.</p>
+        <p><b>Mocking may help isolate it.</b></p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct exam connection:</strong> not every class needs a mock. A primitive-only checker has no collaborator whose real behavior can leak into the test.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator testing rule</b>
+        Mock collaborators when isolation helps. Do not mock a number simply because Mockito exists.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Boundary testing</div>
+    <h2>The Exact Boundary Is Often the Most Valuable Row</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="boundary">
+      <h3>Risk limit example</h3>
+      <p>If the rule is <code>currentPortfolioValue + orderValue &lt;= riskLimit</code>, the exact boundary matters.</p>
+
+      <div class="number-line">
+        <div class="tick a"><span>under limit</span></div>
+        <div class="dot a"></div>
+        <div class="tick b"><span>exactly at limit</span></div>
+        <div class="dot b"></div>
+        <div class="tick c"><span>over limit</span></div>
+        <div class="dot c"></div>
+      </div>
+
+      <p><b>The middle case catches the classic <code>&lt;</code> versus <code>&lt;=</code> bug.</b></p>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Exam and lab alignment:</strong> include the exact boundary in <code>@CsvSource</code>. It is one of the most important cases in the entire suite.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>Module 11 Lab: A Comprehensive RiskLimitChecker Suite</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The class is already implemented. Your task is to demonstrate its behavior clearly and thoroughly using JUnit 5 features.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="num">1</div>
+        <h3>Setup and organization</h3>
+        <ul>
+          <li><code>@BeforeEach</code></li>
+          <li>At least two <code>@Nested</code> groups</li>
+          <li><code>@DisplayName</code> on every test and nested class</li>
+        </ul>
+      </div>
+
+      <div class="lab-card">
+        <div class="num">2</div>
+        <h3>Parameterized coverage</h3>
+        <ul>
+          <li><code>@ValueSource</code> for several rejected order values</li>
+          <li><code>@CsvSource</code> for input triples plus expected result</li>
+          <li>Include the exact boundary</li>
+        </ul>
+      </div>
+
+      <div class="lab-card">
+        <div class="num">3</div>
+        <h3>Assertions</h3>
+        <ul>
+          <li><code>assertThrows</code> for invalid order value</li>
+          <li><code>assertThrows</code> for negative risk limit</li>
+          <li><code>assertAll</code> for related checks</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public boolean canAcceptOrder(
+        double currentPortfolioValue,
+        double orderValue,
+        double riskLimit) {
+
+    // given implementation
+}</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>One supplied quiz item appears to under-count valid choices.</strong> For the situations taught here, <code>assertThrows</code>, <code>@Nested</code>/<code>@DisplayName</code>, and <code>@ParameterizedTest</code>/<code>@CsvSource</code> are all appropriate JUnit features. Learn the reasoning, not just a fixed count.
+    </div>
+
+    <div class="checklist-box">
+      <h3>Interactive lab checklist</h3>
+
+      <div class="check-row"><input type="checkbox" id="c1"><label for="c1"><b>@BeforeEach</b> creates a fresh <code>RiskLimitChecker</code>.</label></div>
+      <div class="check-row"><input type="checkbox" id="c2"><label for="c2"><b>@ValueSource</b> covers several rejected order values.</label></div>
+      <div class="check-row"><input type="checkbox" id="c3"><label for="c3"><b>@CsvSource</b> covers several combinations including exact boundary.</label></div>
+      <div class="check-row"><input type="checkbox" id="c4"><label for="c4"><b>assertThrows</b> covers both invalid-input rules.</label></div>
+      <div class="check-row"><input type="checkbox" id="c5"><label for="c5"><b>assertAll</b> groups related assertions.</label></div>
+      <div class="check-row"><input type="checkbox" id="c6"><label for="c6"><b>@Nested and @DisplayName</b> make the report understandable.</label></div>
+
+      <div class="actions">
+        <button class="fun-btn" onclick="scoreChecklist(this)">Score my suite</button>
+      </div>
+      <div id="score" class="score"></div>
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span><code>mvn test</code> passes with 0 failures and 0 errors.</span></div>
+      <div class="accept">✅ <span>Every required JUnit feature is used correctly at least once.</span></div>
+      <div class="accept">✅ <span>Every test and nested class has a readable <code>@DisplayName</code>.</span></div>
+      <div class="accept">✅ <span>No test method is missing an assertion.</span></div>
+      <div class="accept">✅ <span>The exact risk-limit boundary is tested explicitly.</span></div>
+      <div class="accept">✅ <span>No Mockito is used for <code>RiskLimitChecker</code>, because it has no collaborators.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>A test uses a real BondInstrument and a real InMemoryReportWriter while testing OrderExecutor. Another test mocks both collaborators. What is the main difference?</p>
+      <textarea placeholder="// Explain integrated behavior vs isolation..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">JUnit mastered 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The real-collaborator test exercises several classes together, so a failure could come from any of them.
+
+The mock-based test isolates OrderExecutor's coordination logic. If it fails, the cause points much more directly at OrderExecutor itself.</code></pre></div>
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James testing update</b>
+        Jimbo James of the Columbian cartel tried to mock <code>double</code>. The test framework declined the request and suggested he revisit the phrase "mock collaborators."
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>JUnit helps tests communicate behavior, not just detect failure.</h2>
+  <p>You learned richer JUnit 5 organization, parameterized tests, grouped and exception assertions, Mockito for isolation, and Hamcrest for readable matcher-based assertions.</p>
+
+  <div class="pills">
+    <span class="pill">@BeforeEach</span>
+    <span class="pill">assertThrows</span>
+    <span class="pill">assertAll</span>
+    <span class="pill">@ParameterizedTest</span>
+    <span class="pill">@Nested</span>
+    <span class="pill">Mockito + Hamcrest</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived JUnit 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> TDD in Practice</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm prefers readable test reports. ROFLGator verifies interactions exactly once. Jimbo James, Columbian cartel member and enthusiastic mocker of primitives, has been asked to stop.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+
+function scoreChecklist(button){
+  const ids=["c1","c2","c3","c4","c5","c6"];
+  const checked=ids.filter(id=>document.getElementById(id).checked).length;
+  const out=document.getElementById("score");
+  out.style.display="block";
+
+  if(checked===6){
+    out.innerHTML="<b>6/6 complete.</b> Your suite covers the required JUnit features and documents behavior clearly.";
+    celebrate(button,35);
+  }else if(checked>=4){
+    out.innerHTML="<b>"+checked+"/6 complete.</b> Strong progress. Finish the missing features before calling the suite comprehensive.";
+  }else{
+    out.innerHTML="<b>"+checked+"/6 complete.</b> Keep going. The lab is intentionally about breadth of JUnit usage, not only raw test count.";
+  }
+}
+
+function celebrate(button,amount=30){
+  const colors=["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  if(button){
+    const old=button.textContent;
+    button.textContent="✨ MadShapes approved! ✨";
+    setTimeout(()=>button.textContent=old,1400);
+  }
+}
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=bits[Math.floor(Math.random()*bits.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

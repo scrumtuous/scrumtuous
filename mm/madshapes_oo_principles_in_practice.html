@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | Object-Oriented Principles in Practice</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#76657c;
+  --pink:#ff5fae;
+  --pink-soft:#ffd1e7;
+  --lav:#a57dff;
+  --lav-soft:#ebe2ff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.16), transparent 22%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+.floaties{
+  position:fixed; inset:0; z-index:-3; pointer-events:none; overflow:hidden;
+}
+.floaties span{
+  position:absolute; opacity:.16; animation:floaty 8s ease-in-out infinite;
+}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{
+  50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}
+}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;
+  padding:11px 20px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.masthead-inner{
+  max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.logo{
+  display:flex; align-items:center; gap:8px; font-size:clamp(28px,3vw,40px); font-weight:1000; letter-spacing:-.05em;
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea; font-size:14px; font-weight:850}
+
+.hero{
+  max-width:1160px; margin:18px auto 0; padding:0 20px;
+}
+.hero-shell{
+  min-height:310px;
+  border-radius:34px;
+  overflow:hidden;
+  position:relative;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,.22), transparent 18%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;
+  box-shadow:0 26px 70px rgba(86,43,112,.22);
+}
+.hero-grid{
+  min-height:310px;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  align-items:center;
+}
+.hero-copy{
+  padding:34px 38px;
+  position:relative; z-index:2;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 14px; border-radius:999px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);
+  text-transform:uppercase; letter-spacing:.1em; font-size:12px; font-weight:1000;
+}
+h1{
+  margin:16px 0 12px; font-size:clamp(38px,5vw,70px); line-height:.95; letter-spacing:-.05em; font-weight:1000;
+}
+.hero-copy p{
+  max-width:720px; font-size:18px; color:#fff5fb; margin:0;
+}
+.hero-note{
+  display:inline-block; margin-top:12px; font-size:16px; font-weight:900; transform:rotate(-1deg);
+}
+.hero-chips{
+  margin-top:20px; display:flex; flex-wrap:wrap; gap:9px;
+}
+.hero-chip{
+  padding:8px 12px; border-radius:999px;
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(7px);
+  font-weight:900; font-size:14px;
+}
+.hero-art{
+  position:relative; height:100%;
+}
+.hero-orb{
+  position:absolute; width:220px; height:220px; border-radius:50%;
+  right:56px; top:44px;
+  background:radial-gradient(circle at 35% 32%, #fff 0 7%, #ffe4f2 8% 31%, #ecd5ff 60%, #ccb4ff 100%);
+  box-shadow:0 20px 50px rgba(70,29,94,.20);
+  animation:bloop 4s ease-in-out infinite;
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute; font-size:60px; animation:spin 9s linear infinite; filter:drop-shadow(0 10px 8px rgba(59,18,82,.16));
+}
+.hero-art .shape.s1{right:44px; bottom:36px}
+.hero-art .shape.s2{right:230px; top:34px; animation-direction:reverse}
+.hero-art .shape.s3{right:180px; bottom:24px; font-size:48px}
+.hero-art .shape.s4{right:108px; top:144px; font-size:50px; animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{
+  max-width:1120px; margin:0 auto; padding:10px 20px 80px;
+}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);
+  border:1px solid var(--line);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin:28px 0;
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase; letter-spacing:.11em; font-size:12px; font-weight:1000; color:#a35587;
+}
+h2{
+  margin:5px 0 10px; font-size:clamp(30px,4vw,48px); line-height:1.04; letter-spacing:-.035em; font-weight:1000;
+}
+h3{
+  margin:0 0 8px; font-size:22px; font-weight:950;
+}
+.leadish{
+  font-size:18px; color:#55475c;
+}
+.module-head{
+  padding:24px 28px;
+  background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.module-head::after{
+  content:"";
+  position:absolute;
+  width:84px; height:84px; border-radius:50%;
+  right:24px; top:-20px;
+  background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);
+  opacity:.22;
+}
+.module-body{padding:28px}
+
+.objective-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px;
+}
+.objective{
+  border:1px solid var(--line); border-radius:22px; padding:20px; min-height:165px; background:#fff; transition:.24s ease;
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block; font-size:36px; margin-bottom:8px}
+.objective b{display:block; font-size:18px; margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0; padding:18px 18px 18px 20px;
+  border-radius:22px; border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);
+  box-shadow:0 10px 24px rgba(151,68,111,.08);
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";
+  display:inline-block; margin-bottom:8px;
+  color:#fff; background:linear-gradient(90deg,#d94f7d,#ff56ad);
+  padding:5px 10px; border-radius:999px; font-size:12px; font-weight:1000; letter-spacing:.07em;
+}
+.quiz-alert strong{color:#813850}
+
+.story-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:18px;
+}
+.story-card{
+  border:1px solid var(--line); border-radius:18px; padding:16px; min-height:130px; text-align:center; background:#fff;
+}
+.story-card .num{
+  width:34px; height:34px; border-radius:50%; display:grid; place-items:center; margin:0 auto 8px;
+  color:#fff; background:linear-gradient(135deg,var(--pink),var(--lav)); font-weight:1000;
+}
+.story-card b{display:block; margin-bottom:5px; font-size:17px}
+
+.compare{
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0;
+}
+.compare-card{
+  border:1px solid var(--line); border-radius:20px; padding:18px;
+}
+.bad{background:#fff1f7}
+.good{background:#effcf7}
+.soft{background:#f5f0ff}
+.warn{background:#fff9df}
+
+.code-wrap{position:relative; margin:18px 0}
+pre{
+  margin:0; background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd; border-radius:20px; padding:22px; overflow:auto;
+  font-size:14px; line-height:1.62; border:1px solid #56405f;
+}
+.copy{
+  position:absolute; right:12px; top:12px;
+  border:none; border-radius:999px;
+  background:#fff; color:#624c6c;
+  padding:8px 12px; font-weight:950; cursor:pointer;
+}
+.diagram-row{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:18px 0;
+}
+.diagram{
+  border:1px solid var(--line); border-radius:22px; padding:18px; background:#fff;
+}
+.diagram .tag{
+  display:inline-block; margin-bottom:8px;
+  padding:5px 10px; border-radius:999px; background:#fff; border:1px solid var(--line);
+  font-size:12px; font-weight:1000; color:#7d5d88;
+}
+.flow{
+  display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  margin-top:8px;
+}
+.flow .bubble{
+  min-width:120px; text-align:center;
+  padding:14px; border-radius:18px; background:linear-gradient(145deg,#fff4fa,#fff); border:1px solid var(--line);
+  font-weight:900;
+}
+.flow .arrow{
+  font-size:24px; color:#a57dff; font-weight:1000;
+}
+.tool-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px;
+}
+.tool{
+  border:1px solid var(--line); border-radius:22px; padding:18px; background:#fff; min-height:205px;
+}
+.tool:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.tool:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.tool:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.tool:nth-child(4){background:linear-gradient(145deg,#fff9df,#fff)}
+.tool .big{font-size:36px; display:block; margin-bottom:8px}
+.tool b{display:block; font-size:18px; margin-bottom:5px}
+
+.challenge{
+  margin-top:24px; padding:20px;
+  border:1px solid #e5d1ee; border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff);
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%; min-height:122px; resize:vertical;
+  padding:14px; border-radius:16px; border:1px solid #dcc4e3;
+  background:#fff; color:var(--ink); font:14px "SFMono-Regular",Consolas,monospace; outline:none;
+}
+textarea:focus{
+  border-color:var(--pink); box-shadow:0 0 0 4px rgba(255,95,174,.14);
+}
+.actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+.fun-btn{
+  border:none; border-radius:999px; padding:10px 15px; cursor:pointer;
+  color:#fff; font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));
+  box-shadow:0 9px 18px rgba(157,75,158,.24);
+}
+.fun-btn.secondary{
+  background:#fff; color:#705978; border:1px solid var(--line); box-shadow:none;
+}
+.solution{display:none; margin-top:14px; animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.lab-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px;
+}
+.lab-card{
+  border:1px solid var(--line); border-radius:22px; padding:18px; background:#fff; min-height:230px;
+}
+.lab-card:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.lab-card:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.lab-card:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.lab-card:nth-child(4){background:linear-gradient(145deg,#fff9df,#fff)}
+.lab-card .lab-num{
+  width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-bottom:10px;
+  color:#fff; background:linear-gradient(135deg,var(--pink),var(--lav)); font-weight:1000;
+}
+.acceptance{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px;
+}
+.accept{
+  display:flex; gap:10px; align-items:flex-start;
+  padding:14px 15px; border-radius:16px; border:1px solid var(--line); background:#fff;
+}
+.sticker{
+  margin:18px 0;
+  display:flex; align-items:center; gap:16px;
+  padding:14px 16px; border-radius:20px;
+  border:1px dashed #e7c7df; background:linear-gradient(135deg,#fff9fc,#fff);
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+.small-note{
+  margin:18px 0; padding:17px 18px; border-radius:20px;
+  background:linear-gradient(135deg,#fff6d8,#fffdf7); border:1px solid #eddb9d;
+}
+.small-note .label{
+  display:inline-block; font-size:11px; font-weight:1000; text-transform:uppercase; letter-spacing:.09em; color:#8a6216; margin-bottom:4px;
+}
+.small-note b{color:#5e4716}
+
+.finale{
+  text-align:center; padding:34px;
+  background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df);
+}
+.finale p{max-width:820px; margin:10px auto 20px; color:var(--muted)}
+.pills{
+  display:flex; justify-content:center; gap:9px; flex-wrap:wrap; margin-top:16px;
+}
+.pill{
+  padding:8px 12px; border-radius:999px; background:#fff; border:1px solid var(--line); font-weight:850;
+}
+
+.video-card{
+  padding:22px; background:linear-gradient(135deg,#2d2035,#3b2850); color:#fff;
+}
+.video-card p{color:#eadcf3}
+.video-frame{
+  position:relative; width:100%; padding-top:56.25%; border-radius:22px; overflow:hidden; background:#000;
+}
+.video-frame iframe{
+  position:absolute; inset:0; width:100%; height:100%; border:0;
+}
+
+.confetti{
+  position:fixed; top:-14px; width:10px; height:10px; border-radius:3px; z-index:9999; pointer-events:none;
+  animation:confettiFall 1.9s linear forwards;
+}
+@keyframes confettiFall{
+  to{transform:translateY(112vh) rotate(780deg); opacity:.18}
+}
+.wiggle{animation:wiggle 1.8s ease-in-out infinite}
+@keyframes wiggle{50%{transform:rotate(3deg) translateY(-2px)}}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:180px}
+  .story-grid,.tool-grid{grid-template-columns:1fr 1fr}
+  .lab-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:800px){
+  .objective-grid,.compare,.diagram-row,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:30px 24px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:48px}
+  .story-grid,.tool-grid,.lab-grid{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center; text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-code-1"></i> Sprint 5 • Module 2</div>
+        <h1>Object-Oriented<br>Principles in Practice</h1>
+        <p>This lesson uses the MadShapes psychology experiment to make classes, objects, encapsulation, inheritance, interfaces, polymorphism, and composition feel concrete and beginner-friendly.</p>
+        <div class="hero-note">We are moving from Java syntax to Java design. ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">🔺 Shapes</span>
+          <span class="hero-chip">📦 Objects</span>
+          <span class="hero-chip">🛡️ Encapsulation</span>
+          <span class="hero-chip">🧩 Interfaces</span>
+          <span class="hero-chip">📝 Quiz Alerts</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">🏗️</span>
+      <b>Explain class vs object</b>
+      Understand the difference between a blueprint and the real instance built from it.
+    </div>
+    <div class="objective">
+      <span class="icon">🛡️</span>
+      <b>Protect an invariant</b>
+      See encapsulation as a design decision that prevents bad state.
+    </div>
+    <div class="objective">
+      <span class="icon">🧩</span>
+      <b>Pick the right OO tool</b>
+      Distinguish inheritance, abstract classes, interfaces, and composition.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>High-value quiz territory:</strong> expect questions that ask what a class is, why a field should be private, when inheritance makes sense, and why composition often beats extending a collection class.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 1</div>
+    <h2>What Is a Class? What Is an Object?</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A class is a definition. An object is a real instance created from that definition. Same blueprint, separate objects, separate state.</p>
+
+    <div class="diagram-row">
+      <div class="diagram">
+        <div class="tag">Think visually</div>
+        <div class="flow">
+          <div class="bubble">Class<br><small>Blueprint</small></div>
+          <div class="arrow">→</div>
+          <div class="bubble">new</div>
+          <div class="arrow">→</div>
+          <div class="bubble">Object<br><small>Real instance</small></div>
+        </div>
+      </div>
+      <div class="diagram">
+        <div class="tag">MadShapes example</div>
+        <div class="flow">
+          <div class="bubble">Circle class</div>
+          <div class="arrow">→</div>
+          <div class="bubble">circleOne</div>
+          <div class="bubble">circleTwo</div>
+        </div>
+        <div style="text-align:center;margin-top:10px;color:var(--muted)">Same class. Two separate objects.</div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>Circle circleOne = new Circle(5);
+Circle circleTwo = new Circle(5);
+
+circleOne.getClass() == circleTwo.getClass();  // true
+circleOne == circleTwo;                        // false
+
+// Same class, different objects.
+// Changing one object does not change the other.</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> a class is not the same thing as an object. The class defines the structure and behavior. The object is the actual instance created with <code>new</code>.
+    </div>
+
+    <div class="sticker">
+      <svg width="90" height="90" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">JIMBO</text>
+      </svg>
+      <div>
+        <b>Jimbo James update</b>
+        Jimbo James, member of the Columbian cartel, confirms that a blueprint for a hideout is not the hideout itself. The OO lesson somehow still survives the metaphor.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>If you write <code>Square first = new Square(4);</code> and <code>Square second = new Square(4);</code>, what is true: same class, same object, or both?</p>
+      <textarea placeholder="// Write a short answer..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Object wisdom ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>They are built from the same class, but they are different objects.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 2</div>
+    <h2>Encapsulation Protects a Real Rule</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A private field is not decoration. It protects a rule that must always stay true. That rule is called an invariant.</p>
+
+    <div class="compare">
+      <div class="compare-card bad">
+        <h3>🚫 Bad version</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public class Square {
+    public double side;
+}
+
+Square s = new Square();
+s.side = -10;   // nobody stopped this</code></pre>
+        </div>
+        <p>The object can drift into nonsense because any caller can write any value.</p>
+      </div>
+
+      <div class="compare-card good">
+        <h3>✅ Better version</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public class Square {
+    private double side;
+
+    public Square(double side) {
+        if (side <= 0) {
+            throw new IllegalArgumentException(
+                "Side must be positive"
+            );
+        }
+        this.side = side;
+    }
+
+    public double getSide() {
+        return side;
+    }
+
+    public void resize(double delta) {
+        double newSide = side + delta;
+        if (newSide <= 0) {
+            throw new IllegalArgumentException(
+                "Side must stay positive"
+            );
+        }
+        side = newSide;
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why this matters</div>
+      <b>The rule is enforced in one place only.</b>
+      Callers do not need to remember to check for invalid state. The object protects itself every time.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> encapsulation is not only about hiding data. It is about protecting a rule such as "quantity cannot go negative" or "a square side length must stay positive."
+    </div>
+
+    <div class="challenge">
+      <h3>🛡️ Your challenge</h3>
+      <p>Why is <code>private</code> useful here? Give the practical reason, not the vocabulary-only reason.</p>
+      <textarea placeholder="// Explain the design benefit..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Invariant secured 🎀</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>It forces all changes to go through methods that can validate the rule.
+That makes invalid state much harder or impossible to create.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 3</div>
+    <h2>Inheritance: Reuse With an "Is-A" Relationship</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Inheritance uses <code>extends</code>. The subclass gets fields and methods from the superclass, and can override behavior that must differ.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>class ShapeV1 {
+    String getLabel() {
+        return "shape";
+    }
+
+    double calcArea() {
+        return 0.0;   // default area
+    }
+}
+
+class PointV1 extends ShapeV1 {
+    // calcArea() is inherited unchanged
+}
+
+class CircleV1 extends ShapeV1 {
+    private double radius;
+
+    CircleV1(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    double calcArea() {
+        return Math.PI * radius * radius;
+    }
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">What inheritance is doing</div>
+      <b>Inherit what you do not need to change. Override what you do.</b>
+      That is the healthy version of inheritance.
+    </div>
+
+    <div class="sticker">
+      <svg width="110" height="86" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+        <text x="247" y="112" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">ROFL</text>
+      </svg>
+      <div>
+        <b>ROFLGator reminder</b>
+        A Circle is a Shape. A Rectangle is a Shape. Those sound like natural sentences, which is a good sign that inheritance may fit.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🔺 Quick check</h3>
+      <p>If a method from the parent class already works for the child class, should you rewrite it anyway?</p>
+      <textarea placeholder="// Yes or no, and why?"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Inheritance achieved ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+If the inherited behavior is already correct, keep it and only override what must differ.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 4</div>
+    <h2>The Silent Bug: Forgetting to Override</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A concrete superclass can hide a mistake. If the subclass forgets to override a method, the code still compiles and may quietly do the wrong thing.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>class ShapeV1 {
+    double calcArea() {
+        return 0.0;
+    }
+}
+
+class PointV1 extends ShapeV1 {
+    // area 0.0 is fine here, by coincidence
+}
+
+class CircleBuggy extends ShapeV1 {
+    private double radius;
+
+    CircleBuggy(double radius) {
+        this.radius = radius;
+    }
+
+    // forgot to override calcArea()
+    // compiles fine, but returns 0.0
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why it is dangerous</div>
+      <b>The compiler sees valid Java.</b>
+      It does not know you forgot shape-specific logic. The wrong result appears later when someone notices a strange area.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> concrete inheritance can hide missing overrides. That is one reason abstract classes exist.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 5</div>
+    <h2>Abstract Classes Turn the Silent Bug Into a Compile Error</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">An abstract class cannot be instantiated directly. It can also force subclasses to provide behavior.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public abstract class Shape {
+    private final String label;
+
+    protected Shape(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public abstract double calcArea();
+}
+
+class BrokenCircle extends Shape {
+    BrokenCircle() {
+        super("circle");
+    }
+}
+
+// Compile error:
+// BrokenCircle must implement calcArea()</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card soft">
+        <h3>Concrete class</h3>
+        <p>Can be instantiated. Can provide a default implementation.</p>
+      </div>
+      <div class="compare-card good">
+        <h3>Abstract class</h3>
+        <p>Cannot be instantiated. Can force subclasses to implement key behavior.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Common exam angle:</strong> an abstract class is useful when there is a real parent-child relationship and every subclass must supply certain behavior.
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Quick check</h3>
+      <p>Why is <code>abstract double calcArea();</code> safer than a default <code>return 0.0;</code> for many shapes?</p>
+      <textarea placeholder="// Explain the benefit..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Abstract power 💖</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>Because every subclass is forced to provide its own area logic.
+A missing override becomes a compile error instead of a quiet bug.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 6</div>
+    <h2>Interfaces: A Capability, Not a Family Tree</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Use an interface when unrelated classes need to share a capability. The interface says what something can do, not what it is.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public interface Displayable {
+    void render();
+}
+
+public class CircleShape extends Shape
+        implements Displayable {
+
+    private final double radius;
+
+    public CircleShape(double radius) {
+        super("circle");
+        this.radius = radius;
+    }
+
+    @Override
+    public double calcArea() {
+        return Math.PI * radius * radius;
+    }
+
+    @Override
+    public void render() {
+        System.out.println("Draw a circle");
+    }
+}
+
+public class InstructionBanner
+        implements Displayable {
+
+    @Override
+    public void render() {
+        System.out.println("Choose the larger area");
+    }
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why this matters</div>
+      <b>A banner is not a Shape.</b>
+      But both a shape and a banner can be displayable. The shared capability is what matters.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> interfaces are for capabilities shared across classes that may not belong in the same inheritance hierarchy.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 7</div>
+    <h2>Polymorphism: One Call, Different Behavior</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Polymorphism means you can write calling code once against a general type, and the right method runs based on the actual object.</p>
+
+    <div class="compare">
+      <div class="compare-card good">
+        <h3>Across an abstract class</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>List&lt;Shape&gt; shapes = List.of(
+    new CircleShape(3),
+    new RectangleShape(4, 5),
+    new TriangleShape(6, 2)
+);
+
+double totalArea = 0.0;
+
+for (Shape shape : shapes) {
+    totalArea += shape.calcArea();
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="compare-card soft">
+        <h3>Across an interface</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>List&lt;Displayable&gt; screenItems = List.of(
+    new CircleShape(3),
+    new InstructionBanner()
+);
+
+for (Displayable item : screenItems) {
+    item.render();
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Exam-ready idea:</strong> the calling code does not need an if/else for every concrete class. That is the payoff of polymorphism.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator says hello</b>
+        One loop. Many forms. Much cleaner than writing a branch for Circle, Rectangle, Triangle, and every future shape.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Quick challenge</h3>
+      <p>Why is a <code>List&lt;Shape&gt;</code> usually better than separate loops for circles, rectangles, and triangles?</p>
+      <textarea placeholder="// Explain the design benefit..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Polymorphism party 🎉</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>Because one loop can call the same method on every shape.
+The behavior changes based on the actual object, so the calling code stays simpler.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 8</div>
+    <h2>Recognizing Bad Inheritance</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Do not extend a class just because you want its storage or utility methods. The relationship still needs to make sense.</p>
+
+    <div class="compare">
+      <div class="compare-card bad">
+        <h3>🚫 Bad idea</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public class BadShapeRegistry
+        extends ArrayList&lt;String&gt; {
+}
+
+BadShapeRegistry registry =
+        new BadShapeRegistry();
+
+registry.add("Circle");
+registry.add("Circle");   // duplicate allowed</code></pre>
+        </div>
+        <p>A registry is not an ArrayList. This leaks a huge API and gives you poor control over rules.</p>
+      </div>
+
+      <div class="compare-card good">
+        <h3>✅ Better: composition</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public class GoodShapeRegistry {
+    private final List&lt;String&gt; shapeIds =
+            new ArrayList&lt;&gt;();
+
+    public void addShape(String id) {
+        if (shapeIds.contains(id)) {
+            throw new IllegalArgumentException(
+                "Duplicate shape id"
+            );
+        }
+        shapeIds.add(id);
+    }
+
+    public boolean contains(String id) {
+        return shapeIds.contains(id);
+    }
+
+    public int size() {
+        return shapeIds.size();
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Composition in plain English</div>
+      <b>The registry has a List.</b>
+      It is not a List. That gives the class control over its own public interface.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Likely quiz theme:</strong> composition is the better choice when you want reuse without pretending an "is-a" relationship exists.
+    </div>
+
+    <div class="sticker">
+      <svg width="90" height="90" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James object model advice</b>
+        Jimbo James of the Columbian cartel wanted <code>CartelRegistry extends ArrayList&lt;String&gt;</code>. This is why we ask the tests, not Jimbo, to review our design choices.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 9</div>
+    <h2>Four Tools, Four Situations</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Java gives you multiple OO tools. The trick is matching the tool to the problem.</p>
+
+    <div class="tool-grid">
+      <div class="tool">
+        <span class="big">🏠</span>
+        <b>Concrete class</b>
+        A real, instantiable thing with working behavior right now.
+      </div>
+      <div class="tool">
+        <span class="big">🧱</span>
+        <b>Abstract class</b>
+        A real parent-child relationship where subclasses must provide key behavior.
+      </div>
+      <div class="tool">
+        <span class="big">🧩</span>
+        <b>Interface</b>
+        A shared capability across classes that may not otherwise belong together.
+      </div>
+      <div class="tool">
+        <span class="big">🧺</span>
+        <b>Composition</b>
+        Reuse another class internally without pretending you are that class.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>Module 2 Lab: Same Ideas, Different Class Names</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">This lesson used shape examples. The official lab checks the same OO thinking in a finance-flavored codebase. Transfer the idea, not just the variable names.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="lab-num">A</div>
+        <h3>Holding</h3>
+        <p><b>Focus:</b> encapsulation as a design decision.</p>
+        <p>Make the quantity field private. Reject negative values in the constructor and in <code>adjust()</code>.</p>
+      </div>
+      <div class="lab-card">
+        <div class="lab-num">B</div>
+        <h3>BondInstrument and CryptoInstrument</h3>
+        <p><b>Focus:</b> inheritance from an abstract class.</p>
+        <p>Each class extends <code>Instrument</code> and provides fee logic correctly.</p>
+      </div>
+      <div class="lab-card">
+        <div class="lab-num">C</div>
+        <h3>GoodClientRegistry</h3>
+        <p><b>Focus:</b> fixing bad inheritance with composition.</p>
+        <p>Use a private internal list. Do not extend or implement a collection type.</p>
+      </div>
+      <div class="lab-card">
+        <div class="lab-num">D</div>
+        <h3>AnnualServiceFee</h3>
+        <p><b>Focus:</b> interfaces as capabilities.</p>
+        <p>Implement <code>Feeable</code> directly, with no relationship to <code>Instrument</code>.</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Setup and testing</div>
+      <b>Use Java 21 and Maven, and run <code>mvn test</code> frequently.</b>
+      There are 16 tests in total, and 2 of them inspect your class hierarchy using reflection.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Lab-meets-quiz insight:</strong> the lab is not only checking syntax. It checks the design choice itself. Reflection-based tests verify whether you truly used privacy, composition, and direct interface implementation.
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span><code>mvn test</code> should finish with 0 failures and 0 errors.</span></div>
+      <div class="accept">✅ <span><code>Holding</code> must keep its field private.</span></div>
+      <div class="accept">✅ <span><code>GoodClientRegistry</code> must not extend or implement any <code>Collection</code> type.</span></div>
+      <div class="accept">✅ <span><code>AnnualServiceFee</code> must implement <code>Feeable</code> directly.</span></div>
+      <div class="accept">✅ <span>Do not modify <code>HoldingStarter.java</code> or <code>BadClientRegistry.java</code>.</span></div>
+      <div class="accept">✅ <span>The "before" files exist to show the bad design, not to be edited.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Transfer challenge</h3>
+      <p>Match each lesson idea to the lab kata that uses it: encapsulation, abstract class, composition, interface.</p>
+      <textarea placeholder="Encapsulation -> ?
+Abstract class -> ?
+Composition -> ?
+Interface -> ?"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">Transfer complete 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show mapping</button>
+      </div>
+      <div class="solution"><pre><code>Encapsulation -> Holding
+Abstract class -> BondInstrument and CryptoInstrument
+Composition -> GoodClientRegistry
+Interface -> AnnualServiceFee</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>Object-oriented design is about choosing the right relationship.</h2>
+  <p>You learned the difference between a class and an object, used encapsulation to guard a rule, saw how abstract classes prevent silent override mistakes, used interfaces for shared capabilities, and fixed bad inheritance with composition.</p>
+
+  <div class="pills">
+    <span class="pill">🏗️ Class vs object</span>
+    <span class="pill">🛡️ Encapsulation</span>
+    <span class="pill">🧱 Abstract class</span>
+    <span class="pill">🧩 Interface</span>
+    <span class="pill">🧺 Composition</span>
+    <span class="pill wiggle">✨ Polymorphism</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived OO Principles 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> OOAD from Requirements to Objects</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm has arrived to gently lower the post-polymorphism stress level. ROFLGator remains supportive. Jimbo James remains under non-voting review due to his Columbian cartel affiliations.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text = button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old = button.textContent;
+    button.textContent = "Copied ✨";
+    setTimeout(()=>button.textContent = old, 1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge = button.closest(".challenge");
+  const solution = challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent = solution.classList.contains("show")
+    ? "Hide answer"
+    : "Reveal answer";
+}
+
+function celebrate(button, amount=30){
+  const colors = ["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random()*100 + "vw";
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.width = (6 + Math.random()*8) + "px";
+    c.style.height = (6 + Math.random()*11) + "px";
+    c.style.animationDuration = (1.2 + Math.random()*1.6) + "s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 3200);
+  }
+  const old = button.textContent;
+  button.textContent = "✨ MadShapes approved! ✨";
+  setTimeout(()=>button.textContent = old, 1400);
+}
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits = ["■","●","▲","◆"];
+  const x = document.createElement("div");
+  x.textContent = bits[Math.floor(Math.random()*bits.length)];
+  x.style.position = "fixed";
+  x.style.left = (4 + Math.random()*92) + "vw";
+  x.style.bottom = "-35px";
+  x.style.fontSize = (22 + Math.random()*28) + "px";
+  x.style.fontWeight = "1000";
+  x.style.color = Math.random() > .5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity = ".15";
+  x.style.pointerEvents = "none";
+  x.style.zIndex = "0";
+  x.style.transition = "transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform = `translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity = "0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

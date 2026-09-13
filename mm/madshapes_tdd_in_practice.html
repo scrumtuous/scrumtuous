@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | TDD in Practice</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --pink:#ff5fae;
+  --pink2:#ff9dce;
+  --lav:#a57dff;
+  --lav2:#e9dfff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --red:#ff607a;
+  --green:#58ca8d;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.15), transparent 21%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+
+.floaties{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floaties span{position:absolute;opacity:.16;animation:floaty 8s ease-in-out infinite}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{
+  display:flex;align-items:center;gap:8px;font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea;font-size:14px;font-weight:850}
+
+.hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+.hero-shell{
+  min-height:225px;border-radius:32px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 84% 20%,rgba(255,255,255,.23),transparent 17%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;box-shadow:0 24px 62px rgba(86,43,112,.21)
+}
+.hero-grid{min-height:225px;display:grid;grid-template-columns:1.43fr .57fr;align-items:center}
+.hero-copy{padding:22px 34px;position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:1000
+}
+h1{
+  margin:11px 0 8px;font-size:clamp(36px,5vw,52px);line-height:.96;letter-spacing:-.05em;font-weight:1000
+}
+.hero-copy p{max-width:830px;font-size:18px;color:#fff5fb;margin:0}
+.hero-note{display:inline-block;margin-top:9px;font-size:16px;font-weight:900;transform:rotate(-1deg)}
+.hero-chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px}
+.hero-chip{
+  padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(7px);font-weight:900;font-size:14px
+}
+.hero-art{position:relative;height:100%}
+.hero-orb{
+  position:absolute;width:150px;height:150px;border-radius:50%;right:34px;top:32px;
+  background:radial-gradient(circle at 35% 32%,#fff 0 7%,#ffe4f2 8% 31%,#ecd5ff 60%,#ccb4ff 100%);
+  box-shadow:0 20px 45px rgba(70,29,94,.20);animation:bloop 4s ease-in-out infinite
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute;font-size:39px;animation:spin 9s linear infinite;filter:drop-shadow(0 10px 8px rgba(59,18,82,.16))
+}
+.hero-art .shape.s1{right:14px;bottom:14px}
+.hero-art .shape.s2{right:162px;top:24px;animation-direction:reverse}
+.hero-art .shape.s3{right:121px;bottom:8px;font-size:34px}
+.hero-art .shape.s4{right:69px;top:88px;font-size:34px;animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;margin:28px 0
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:1000;color:#a35587
+}
+h2{
+  margin:5px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:1000
+}
+h3{margin:0 0 8px;font-size:22px;font-weight:950}
+.leadish{font-size:18px;color:#55475c}
+.module-head{
+  padding:24px 28px;background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);position:relative
+}
+.module-head::after{
+  content:"";position:absolute;width:84px;height:84px;border-radius:50%;
+  right:24px;top:-20px;background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);opacity:.22
+}
+.module-body{padding:28px}
+
+.objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:165px;background:#fff;transition:.24s ease
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block;font-size:36px;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);box-shadow:0 10px 24px rgba(151,68,111,.08)
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";display:inline-block;margin-bottom:8px;color:#fff;
+  background:linear-gradient(90deg,#d94f7d,#ff56ad);padding:5px 10px;border-radius:999px;
+  font-size:12px;font-weight:1000;letter-spacing:.07em
+}
+.quiz-alert strong{color:#813850}
+
+.converge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.converge{
+  border:1px solid var(--line);border-radius:20px;padding:17px;background:#fff;min-height:180px;text-align:center
+}
+.converge:nth-child(1){background:#fff5fb}
+.converge:nth-child(2){background:#f5f0ff}
+.converge:nth-child(3){background:#effcf7}
+.converge:nth-child(4){background:#fff9df}
+.converge .big{font-size:34px;display:block;margin-bottom:6px}
+.converge b{display:block;font-size:18px;margin-bottom:5px}
+
+.requirement{
+  padding:22px;border-radius:22px;background:linear-gradient(135deg,#fff7df,#fffdf7);
+  border:1px solid #ead79a;margin:18px 0;font-size:18px
+}
+.requirement b{color:#735718}
+.req-list{margin:12px 0 0;padding-left:20px}
+.req-list li{margin:7px 0}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f
+}
+.copy{
+  position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+  background:#fff;color:#624c6c;padding:8px 12px;font-weight:950;cursor:pointer
+}
+
+.step-card{
+  border:1px solid var(--line);border-radius:22px;padding:20px;background:#fff;margin:18px 0
+}
+.step-card.red{background:#fff3f7;border-color:#efc2ce}
+.step-card.green{background:#effcf7;border-color:#c5e7d2}
+.step-card.refactor{background:#f7f2ff;border-color:#d8c9f3}
+.step-label{
+  display:inline-block;padding:6px 11px;border-radius:999px;font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px
+}
+.step-card.red .step-label{background:#ffdfe7;color:#a33f5a}
+.step-card.green .step-label{background:#dff6e8;color:#2f7350}
+.step-card.refactor .step-label{background:#eadfff;color:#654595}
+
+.design-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.design-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff}
+.design-card:nth-child(1){background:#fff5fb}
+.design-card:nth-child(2){background:#effcf7}
+
+.trace-table-wrap{overflow:auto;margin-top:16px}
+.trace-table{width:100%;border-collapse:separate;border-spacing:0 8px;min-width:800px}
+.trace-table th{padding:10px 12px;text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#8a6c90}
+.trace-table td{padding:12px 14px;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trace-table td:first-child{border-left:1px solid var(--line);border-radius:12px 0 0 12px}
+.trace-table td:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+
+.cycle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.cycle{
+  border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff;min-height:220px
+}
+.cycle:nth-child(1){background:#fff5fb}
+.cycle:nth-child(2){background:#f5f0ff}
+.cycle:nth-child(3){background:#effcf7}
+.cycle:nth-child(4){background:#fff9df}
+.cycle .n{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--pink),var(--lav));color:#fff;font-weight:1000;margin-bottom:9px
+}
+.cycle b{display:block;font-size:18px;margin-bottom:5px}
+
+.tdd-sim{
+  border:1px solid var(--line);border-radius:22px;padding:20px;background:linear-gradient(135deg,#fff9fc,#fff);margin-top:18px
+}
+.sim-status{
+  min-height:110px;padding:16px;border-radius:18px;background:#fff;border:1px solid var(--line);font-weight:850
+}
+.sim-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sim-btn{
+  border:none;border-radius:999px;padding:10px 15px;font-weight:1000;cursor:pointer
+}
+.sim-btn.red{background:#ffe4eb;color:#9c3655;border:1px solid #f0b9c9}
+.sim-btn.green{background:#e5f8eb;color:#2f7450;border:1px solid #bce3ca}
+.sim-btn.refactor{background:#eee5ff;color:#66479b;border:1px solid #d5c4f6}
+.sim-progress{margin-top:14px;height:12px;border-radius:999px;background:#f2eaf2;overflow:hidden}
+.sim-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--green),var(--lav));transition:.35s}
+
+.dup-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.dup-card{border:1px solid var(--line);border-radius:22px;padding:19px;background:#fff}
+.dup-card:nth-child(1){background:#fff5fb}
+.dup-card:nth-child(2){background:#effcf7}
+.flow{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0
+}
+.flow-box{
+  min-width:160px;text-align:center;padding:14px;border-radius:18px;border:1px solid var(--line);background:#fff;font-weight:900
+}
+.flow-arrow{font-size:26px;color:#a57dff;font-weight:1000}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff)
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,95,174,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;cursor:pointer;color:#fff;font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));box-shadow:0 9px 18px rgba(157,75,158,.24)
+}
+.fun-btn.secondary{background:#fff;color:#705978;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.log-table-wrap{overflow:auto;margin-top:16px}
+.log-table{width:100%;border-collapse:separate;border-spacing:0 8px;min-width:850px}
+.log-table th{padding:10px 12px;text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#8a6c90}
+.log-table td{padding:10px 12px;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.log-table td:first-child{border-left:1px solid var(--line);border-radius:12px 0 0 12px}
+.log-table td:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+.log-input{width:100%;border:1px solid #e1cfdf;border-radius:9px;padding:8px;background:#fff}
+
+.sticker{
+  margin:18px 0;display:flex;align-items:center;gap:16px;padding:14px 16px;
+  border-radius:20px;border:1px dashed #e7c7df;background:linear-gradient(135deg,#fff9fc,#fff)
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+
+.small-note{
+  margin:18px 0;padding:17px 18px;border-radius:20px;background:linear-gradient(135deg,#fff6d8,#fffdf7);border:1px solid #eddb9d
+}
+.small-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em;color:#8a6216;margin-bottom:4px
+}
+.small-note b{color:#5e4716}
+
+.nested-preview{
+  padding:18px;border-radius:22px;border:1px solid var(--line);background:#fff;margin-top:18px
+}
+.nest{
+  padding:11px 14px;border-radius:14px;margin:8px 0;background:#f7f0ff;border:1px solid #e2d3f0
+}
+.nest .child{margin:8px 0 0 20px;padding:9px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+
+.acceptance{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.accept{
+  display:flex;gap:10px;align-items:flex-start;padding:14px 15px;border-radius:16px;border:1px solid var(--line);background:#fff
+}
+
+.finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df)}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:115px}
+  .converge-grid,.cycle-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  .objective-grid,.design-grid,.dup-grid,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:26px 22px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:44px}
+  .converge-grid,.cycle-grid{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center;text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-flask"></i> Sprint 5 • Module 12</div>
+        <h1>TDD in Practice</h1>
+        <p>Build a real mission component test-first, directly from a written requirement, while applying SOLID, Clean Code, TDD discipline, and JUnit organization together.</p>
+        <div class="hero-note">This is where the sprint stops being separate topics. ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">📜 Requirement first</span>
+          <span class="hero-chip">🔴 Red</span>
+          <span class="hero-chip">🟢 Green</span>
+          <span class="hero-chip">🟣 Refactor</span>
+          <span class="hero-chip">@Nested</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">📜</span>
+      <b>Build from a requirement</b>
+      Turn plain-language business rules into tests before implementation exists.
+    </div>
+    <div class="objective">
+      <span class="icon">🧠</span>
+      <b>Let tests influence design</b>
+      Notice when a test forces a new class or result type into existence.
+    </div>
+    <div class="objective">
+      <span class="icon">🧩</span>
+      <b>Combine the sprint</b>
+      Apply SOLID, Clean Code, TDD, and JUnit organization together.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Core exam idea:</strong> TDD is not just checking finished code. A test can force a design decision, such as introducing a result object because the requirement needs both validity and a rejection reason.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Everything converges</div>
+    <h2>The Earlier Modules Were Building Toward This</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="converge-grid">
+      <div class="converge">
+        <span class="big">🧠</span>
+        <b>OOAD + UML</b>
+        Requirements became objects, responsibilities, relationships, and workflows.
+      </div>
+      <div class="converge">
+        <span class="big">🔎</span>
+        <b>Peer Review</b>
+        The design was challenged before implementation.
+      </div>
+      <div class="converge">
+        <span class="big">🧱</span>
+        <b>SOLID + Clean Code</b>
+        Responsibilities and dependencies became more focused.
+      </div>
+      <div class="converge">
+        <span class="big">🧪</span>
+        <b>TDD + JUnit</b>
+        Behavior became executable, organized evidence.
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Today</div>
+      <b>Build a real piece of the mission from the original written requirement.</b>
+      The code is no longer the starting point. The requirement is.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Start here</div>
+    <h2>Read the Requirement Before Writing a Test</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="requirement">
+      <b>Mission requirement 3:</b>
+      <ul class="req-list">
+        <li>Before an order can be processed, it must be validated.</li>
+        <li>The quantity must be positive.</li>
+        <li>The price must be positive.</li>
+        <li>A sell order cannot reduce a holding below zero.</li>
+        <li>A buy order cannot exceed the risk limit.</li>
+      </ul>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why this matters</div>
+      The requirement gives us candidate test cases. Each clause can become one or more cycles.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Mission invariant:</strong> an invalid order should be rejected before execution. That means portfolio or holding state must remain unchanged on the rejected path.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Cycle 1</div>
+    <h2>The First Test Might Not Even Compile</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="step-card red">
+      <div class="step-label">RED</div>
+      <h3>Simplest valid buy</h3>
+
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>@Test
+void acceptsAValidBuyOrder() {
+    var request =
+        new OrderRequest(10, 100, true);
+
+    var result = validator.validate(
+        request,
+        0,
+        0,
+        5000
+    );
+
+    assertTrue(result.isValid());
+}</code></pre>
+      </div>
+
+      <p>The test may fail before it even runs because <code>OrderRequest</code> or <code>ValidationResult</code> does not exist yet.</p>
+    </div>
+
+    <div class="step-card green">
+      <div class="step-label">GREEN</div>
+      <h3>Create the smallest types that satisfy the behavior</h3>
+      <p>Do not build the whole validator in one jump. Make the test compile, then make the one demonstrated behavior pass.</p>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>TDD allows compile failures:</strong> red can mean a failing assertion, missing method, or missing class. The point is that the new behavior is not yet supported.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Design emerges</div>
+    <h2>The Requirement Forces a ValidationResult</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A boolean could answer "valid or invalid", but the mission also says a rejected order needs a reason. That makes a plain boolean too weak.</p>
+
+    <div class="design-grid">
+      <div class="design-card">
+        <h3>Too little information</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>boolean validate(OrderRequest request)</code></pre>
+        </div>
+        <p>A caller learns only yes or no.</p>
+      </div>
+
+      <div class="design-card">
+        <h3>Requirement-shaped result</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public class ValidationResult {
+    public static ValidationResult valid()
+
+    public static ValidationResult invalid(
+        String reason)
+
+    public boolean isValid()
+
+    public String getReason()
+}</code></pre>
+        </div>
+        <p>Now rejection can carry the reason required by the workflow.</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">The lesson</div>
+      <b>The test surfaced a design need that the implementation must support.</b>
+      TDD can shape APIs and object boundaries, not just method internals.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Important reasoning:</strong> the result object exists because the requirement needs more than a yes/no answer. That is a design decision driven by behavior.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator architecture note</b>
+        Do not invent a pattern because it has a fancy name. Let the requirement show when the richer type is needed.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Traceability</div>
+    <h2>Each Cycle Maps Back to One Clause</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="trace-table-wrap">
+      <table class="trace-table">
+        <thead>
+          <tr>
+            <th>Cycle</th>
+            <th>Requirement clause</th>
+            <th>Test pressure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1</b></td>
+            <td>A valid order can proceed</td>
+            <td>Create the minimum request, validator, and result API.</td>
+          </tr>
+          <tr>
+            <td><b>2</b></td>
+            <td>Quantity must be positive</td>
+            <td>Reject quantity of zero or less with a reason.</td>
+          </tr>
+          <tr>
+            <td><b>3</b></td>
+            <td>Price must be positive</td>
+            <td>Add price validation only when this test arrives.</td>
+          </tr>
+          <tr>
+            <td><b>4</b></td>
+            <td>Sell cannot reduce holding below zero</td>
+            <td>Current holding quantity becomes relevant.</td>
+          </tr>
+          <tr>
+            <td><b>5</b></td>
+            <td>Buy cannot exceed risk limit</td>
+            <td>Portfolio value and risk limit become relevant.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Subtle TDD point</div>
+      <b>Some parameters can exist before a test needs them.</b>
+      The holding quantity may be present in Cycle 1, but it should not gain behavior until Cycle 4 actually demands it.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">The lab</div>
+    <h2>HoldingUpdater Is the Complementary Half</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish"><code>OrderValidator</code> decides whether an order should proceed. <code>HoldingUpdater</code> applies an order that has already passed validation.</p>
+
+    <div class="flow">
+      <div class="flow-box">Order arrives</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">OrderValidator</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">valid only</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">HoldingUpdater</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Holding.adjust()</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Workflow connection:</strong> if validation fails, the updater should never run. A rejected order should leave the holding unchanged.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab cycle map</div>
+    <h2>Four Red-Green Cycles, Then Refactor</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="cycle-grid">
+      <div class="cycle">
+        <div class="n">1</div>
+        <b>Buy increases</b>
+        <p>Holding starts at 100. Buy 10. Expect 110.</p>
+        <p><b>Green:</b> the minimum implementation can handle buying only.</p>
+      </div>
+
+      <div class="cycle">
+        <div class="n">2</div>
+        <b>Sell decreases</b>
+        <p>Holding starts at 100. Sell 10. Expect 90.</p>
+        <p><b>Green:</b> now <code>isBuy</code> must force a branch.</p>
+      </div>
+
+      <div class="cycle">
+        <div class="n">3</div>
+        <b>Invalid quantity</b>
+        <p>Buy of -5 should throw <code>IllegalArgumentException</code>.</p>
+        <p><b>Green:</b> add a guard clause.</p>
+      </div>
+
+      <div class="cycle">
+        <div class="n">4</div>
+        <b>Over-large sell</b>
+        <p>Holding 100, sell 200, expect exception.</p>
+        <p><b>Green:</b> may already pass because <code>Holding.adjust()</code> protects its invariant.</p>
+      </div>
+    </div>
+
+    <div class="tdd-sim">
+      <h3>Interactive HoldingUpdater cycle</h3>
+      <p>Pick the next lab cycle, then progress through red, green, and log/refactor.</p>
+
+      <select id="cycleSelect" style="width:100%;padding:12px 13px;border-radius:14px;border:1px solid #dcc4e3;background:#fff;color:var(--ink);font-weight:850">
+        <option value="1">Cycle 1: buy 10 turns 100 into 110</option>
+        <option value="2">Cycle 2: sell 10 turns 100 into 90</option>
+        <option value="3">Cycle 3: buy -5 throws</option>
+        <option value="4">Cycle 4: sell 200 from 100 throws</option>
+      </select>
+
+      <div id="simStatus" class="sim-status" style="margin-top:14px">Start with RED. Write the test before changing HoldingUpdater.</div>
+
+      <div class="sim-buttons">
+        <button class="sim-btn red" onclick="practiceStep('red', this)">🔴 RED</button>
+        <button class="sim-btn green" onclick="practiceStep('green', this)">🟢 GREEN</button>
+        <button class="sim-btn refactor" onclick="practiceStep('refactor', this)">🟣 LOG / REFACTOR</button>
+        <button class="sim-btn" onclick="resetPractice()" style="background:#fff;border:1px solid var(--line);color:#705978">Reset</button>
+      </div>
+
+      <div class="sim-progress"><span id="simProgress"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Cycle examples</div>
+    <h2>Let Each Test Earn the Next Implementation Change</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="step-card red">
+      <div class="step-label">Cycle 1 RED</div>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>@Test
+void buyIncreasesHoldingQuantity() {
+    Holding holding = new Holding(100);
+
+    updater.applyOrder(
+        holding,
+        true,
+        10
+    );
+
+    assertEquals(
+        110,
+        holding.getQuantity()
+    );
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="step-card green">
+      <div class="step-label">Cycle 1 GREEN</div>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>public void applyOrder(
+        Holding holding,
+        boolean isBuy,
+        double quantity) {
+
+    holding.adjust(quantity);
+}</code></pre>
+      </div>
+      <p>This does not handle selling yet. That is fine. No sell test has earned that branch yet.</p>
+    </div>
+
+    <div class="step-card red">
+      <div class="step-label">Cycle 2 RED</div>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>@Test
+void sellDecreasesHoldingQuantity() {
+    Holding holding = new Holding(100);
+
+    updater.applyOrder(
+        holding,
+        false,
+        10
+    );
+
+    assertEquals(
+        90,
+        holding.getQuantity()
+    );
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="step-card green">
+      <div class="step-label">Cycle 2 GREEN</div>
+      <div class="code-wrap">
+        <button class="copy" onclick="copyCode(this)">Copy</button>
+        <pre><code>public void applyOrder(
+        Holding holding,
+        boolean isBuy,
+        double quantity) {
+
+    if (isBuy) {
+        holding.adjust(quantity);
+        return;
+    }
+
+    holding.adjust(-quantity);
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Strict TDD reminder:</strong> the first implementation may look incomplete because it is incomplete. The missing behavior should arrive through the next failing test, not prediction.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Delegation</div>
+    <h2>An Over-Large Sell May Already Be Green</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Test
+void sellingMoreThanTheHoldingThrows() {
+    Holding holding = new Holding(100);
+
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> updater.applyOrder(
+            holding,
+            false,
+            200
+        )
+    );
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">What if it passes immediately?</div>
+      <b>That test still matters.</b>
+      It confirms that <code>HoldingUpdater</code> delegates to <code>Holding.adjust()</code>, and that the Holding still protects its own non-negative invariant.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Evidence matters:</strong> a test does not need to force new code to be useful. It can confirm that an existing collaborator already enforces the required boundary.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Apparent duplication</div>
+    <h2>Two Classes Checking a Similar Rule Can Still Be Correct</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="dup-grid">
+      <div class="dup-card">
+        <h3>OrderValidator</h3>
+        <p><b>Purpose:</b> decide whether the order should proceed before execution.</p>
+        <p>It compares a sell quantity to a plain current holding quantity.</p>
+      </div>
+
+      <div class="dup-card">
+        <h3>Holding</h3>
+        <p><b>Purpose:</b> protect its own state during mutation.</p>
+        <p><code>adjust()</code> refuses any change that would make quantity negative.</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Clean Code nuance</div>
+      <b>Similar logic is not automatically duplicated responsibility.</b>
+      Ask whether the checks protect different boundaries at different points in the workflow.
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Design question</h3>
+      <p>Is it necessarily wrong that both validation and Holding can reject an over-large sell?</p>
+      <textarea placeholder="// Explain the two responsibilities..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Boundary reasoning complete ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show one defensible answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+
+OrderValidator protects the workflow before execution.
+Holding protects its own invariant during mutation.
+
+The rules look similar, but the classes are guarding different boundaries for different reasons.</code></pre></div>
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James duplication audit</b>
+        Jimbo James of the Columbian cartel tried to remove the Holding invariant because validation already checked it. The domain object has formally objected.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">JUnit organization</div>
+    <h2>Refactor the Test Suite Around Behavior</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">After the behavior is green, organize the test class using the JUnit techniques from Module 11.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>@Nested
+@DisplayName("when buying")
+class WhenBuying {
+
+    @Test
+    @DisplayName("a valid quantity increases the holding")
+    void validBuyIncreasesHolding() {
+        // ...
+    }
+
+    @Test
+    @DisplayName("a non-positive quantity is rejected")
+    void invalidBuyQuantityThrows() {
+        // ...
+    }
+}
+
+@Nested
+@DisplayName("when selling")
+class WhenSelling {
+
+    @Test
+    @DisplayName("a valid quantity decreases the holding")
+    void validSellDecreasesHolding() {
+        // ...
+    }
+
+    @Test
+    @DisplayName("selling more than the holding is rejected")
+    void oversizedSellThrows() {
+        // ...
+    }
+}</code></pre>
+    </div>
+
+    <div class="nested-preview">
+      <div class="nest">
+        <b>when buying</b>
+        <div class="child">✓ a valid quantity increases the holding</div>
+        <div class="child">✓ a non-positive quantity is rejected</div>
+      </div>
+      <div class="nest">
+        <b>when selling</b>
+        <div class="child">✓ a valid quantity decreases the holding</div>
+        <div class="child">✓ selling more than the holding is rejected</div>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>JUnit carries forward:</strong> <code>@Nested</code> and <code>@DisplayName</code> are not decoration. They make the suite mirror the business behavior and produce readable test reports.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab log</div>
+    <h2>Record the Cycles While They Happen</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The log is part of the exercise. Fill it in live so you can see how the design grew rather than reconstructing the story afterward.</p>
+
+    <div class="log-table-wrap">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Cycle</th>
+            <th>Test written while red</th>
+            <th>Minimal change to green</th>
+            <th>Notes / refactor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><input class="log-input" placeholder="buy 10: 100 -> 110"></td>
+            <td><input class="log-input" placeholder="holding.adjust(quantity)"></td>
+            <td><input class="log-input" placeholder="buy only so far"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><input class="log-input" placeholder="sell 10: 100 -> 90"></td>
+            <td><input class="log-input" placeholder="branch on isBuy"></td>
+            <td><input class="log-input" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><input class="log-input" placeholder="buy -5 throws"></td>
+            <td><input class="log-input" placeholder="guard clause"></td>
+            <td><input class="log-input" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><input class="log-input" placeholder="sell 200 from 100 throws"></td>
+            <td><input class="log-input" placeholder="may already pass via Holding"></td>
+            <td><input class="log-input" placeholder="delegation confirmed"></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Refactor only</td>
+            <td>Refactor only</td>
+            <td><input class="log-input" placeholder="@Nested + @DisplayName"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Reflection prompt</div>
+      Is the over-large-sell check duplication, or are two different classes correctly protecting two different boundaries? Record your reasoning.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Acceptance</div>
+    <h2>Module 12 Lab Checklist</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="acceptance">
+      <div class="accept">✅ <span><code>mvn test</code> passes with 0 failures and 0 errors.</span></div>
+      <div class="accept">✅ <span>At least 4 tests match the four required red-green cycles.</span></div>
+      <div class="accept">✅ <span>Buy increases quantity correctly.</span></div>
+      <div class="accept">✅ <span>Sell decreases quantity correctly.</span></div>
+      <div class="accept">✅ <span>Non-positive quantity throws <code>IllegalArgumentException</code>.</span></div>
+      <div class="accept">✅ <span>Over-large sell fails, preferably by delegating to <code>Holding.adjust()</code>.</span></div>
+      <div class="accept">✅ <span>Tests use at least two <code>@Nested</code> groups with <code>@DisplayName</code>.</span></div>
+      <div class="accept">✅ <span>The TDD log has one entry per cycle.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Cycle 4's over-large-sell test passes immediately because <code>Holding.adjust()</code> already throws. Did the cycle fail to teach anything?</p>
+      <textarea placeholder="// Explain why the test still matters..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">TDD in Practice complete 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+
+The passing test is evidence that HoldingUpdater delegates to Holding correctly and that Holding still protects its own non-negative invariant.
+
+The test documents and protects that collaboration even though no new implementation was needed.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>TDD in practice means the requirement, test suite, object design, and implementation grow together.</h2>
+  <p>You built from a written requirement, saw a test force a result-object design decision, used existing domain invariants instead of duplicating them, and organized the finished tests around behavior.</p>
+
+  <div class="pills">
+    <span class="pill">📜 Requirement first</span>
+    <span class="pill">🔴 Red</span>
+    <span class="pill">🟢 Green</span>
+    <span class="pill">🟣 Refactor</span>
+    <span class="pill">🧩 Emergent design</span>
+    <span class="pill">🧪 JUnit organization</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived TDD in Practice 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> Mission Build</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm says the requirement should come first. ROFLGator refuses to write the sell branch before the sell test exists. Jimbo James, Columbian cartel member and speculative implementation enthusiast, has been asked to return to red.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+
+let practiceState=0;
+
+function practiceStep(step, button){
+  const cycle=document.getElementById("cycleSelect").value;
+  const status=document.getElementById("simStatus");
+  const progress=document.getElementById("simProgress");
+
+  const descriptions={
+    "1":{
+      red:"Write a test showing that buy 10 changes a Holding from 100 to 110. Run it before implementing the behavior.",
+      green:"Make only the smallest change required. At this point, handling buys alone is enough.",
+      refactor:"Record what changed in the log. There may be nothing worth refactoring yet."
+    },
+    "2":{
+      red:"Write a test showing that sell 10 changes a Holding from 100 to 90. The buy-only implementation should fail.",
+      green:"Add the smallest branch on isBuy that makes both buy and sell pass.",
+      refactor:"Log the new branch. Clean up only if the passing tests remain green."
+    },
+    "3":{
+      red:"Write assertThrows for a buy quantity of -5. Run it before adding validation.",
+      green:"Add the smallest guard clause that rejects non-positive quantity.",
+      refactor:"Log why this is a programming error in HoldingUpdater, since normal validation should already have happened."
+    },
+    "4":{
+      red:"Write assertThrows for selling 200 from a Holding of 100.",
+      green:"If it is already green, do not add duplicate logic. Holding.adjust() already protects the invariant.",
+      refactor:"Log that no production-code change was required because delegation already satisfied the requirement."
+    }
+  };
+
+  if(step==="red"){
+    if(practiceState!==0){
+      status.innerHTML="Finish or reset the current cycle before starting RED again.";
+      return;
+    }
+    practiceState=1;
+    status.innerHTML="<b>RED, Cycle "+cycle+":</b> "+descriptions[cycle].red;
+    progress.style.width="33%";
+  }
+
+  if(step==="green"){
+    if(practiceState!==1){
+      status.innerHTML="GREEN comes after a failing test. Write and run RED first.";
+      return;
+    }
+    practiceState=2;
+    status.innerHTML="<b>GREEN, Cycle "+cycle+":</b> "+descriptions[cycle].green;
+    progress.style.width="66%";
+  }
+
+  if(step==="refactor"){
+    if(practiceState!==2){
+      status.innerHTML="Log or refactor only after the cycle is green.";
+      return;
+    }
+    practiceState=3;
+    status.innerHTML="<b>LOG / REFACTOR, Cycle "+cycle+":</b> "+descriptions[cycle].refactor;
+    progress.style.width="100%";
+    celebrate(button,30);
+  }
+}
+
+function resetPractice(){
+  practiceState=0;
+  document.getElementById("simStatus").innerHTML="Start with RED. Write the test before changing HoldingUpdater.";
+  document.getElementById("simProgress").style.width="0";
+}
+
+function celebrate(button,amount=30){
+  const colors=["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  if(button){
+    const old=button.textContent;
+    button.textContent="✨ MadShapes approved! ✨";
+    setTimeout(()=>button.textContent=old,1400);
+  }
+}
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=bits[Math.floor(Math.random()*bits.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

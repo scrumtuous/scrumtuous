@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | SOLID Principles, Part 2</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --pink:#ff5fae;
+  --pink2:#ff9dce;
+  --lav:#a57dff;
+  --lav2:#e9dfff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.15), transparent 21%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+
+.floaties{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floaties span{position:absolute;opacity:.16;animation:floaty 8s ease-in-out infinite}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{
+  display:flex;align-items:center;gap:8px;font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea;font-size:14px;font-weight:850}
+
+.hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+.hero-shell{
+  min-height:245px;border-radius:32px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 84% 20%,rgba(255,255,255,.23),transparent 17%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;box-shadow:0 24px 62px rgba(86,43,112,.21)
+}
+.hero-grid{min-height:245px;display:grid;grid-template-columns:1.38fr .62fr;align-items:center}
+.hero-copy{padding:24px 34px;position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:1000
+}
+h1{
+  margin:12px 0 8px;font-size:clamp(36px,5vw,56px);line-height:.96;letter-spacing:-.05em;font-weight:1000
+}
+.hero-copy p{max-width:800px;font-size:18px;color:#fff5fb;margin:0}
+.hero-note{display:inline-block;margin-top:9px;font-size:16px;font-weight:900;transform:rotate(-1deg)}
+.hero-chips{margin-top:15px;display:flex;flex-wrap:wrap;gap:9px}
+.hero-chip{
+  padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(7px);font-weight:900;font-size:14px
+}
+.hero-art{position:relative;height:100%}
+.hero-orb{
+  position:absolute;width:164px;height:164px;border-radius:50%;right:38px;top:35px;
+  background:radial-gradient(circle at 35% 32%,#fff 0 7%,#ffe4f2 8% 31%,#ecd5ff 60%,#ccb4ff 100%);
+  box-shadow:0 20px 45px rgba(70,29,94,.20);animation:bloop 4s ease-in-out infinite
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute;font-size:42px;animation:spin 9s linear infinite;filter:drop-shadow(0 10px 8px rgba(59,18,82,.16))
+}
+.hero-art .shape.s1{right:18px;bottom:18px}
+.hero-art .shape.s2{right:176px;top:28px;animation-direction:reverse}
+.hero-art .shape.s3{right:132px;bottom:10px;font-size:36px}
+.hero-art .shape.s4{right:76px;top:98px;font-size:36px;animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;margin:28px 0
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:1000;color:#a35587
+}
+h2{
+  margin:5px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:1000
+}
+h3{margin:0 0 8px;font-size:22px;font-weight:950}
+.leadish{font-size:18px;color:#55475c}
+.module-head{
+  padding:24px 28px;background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);position:relative
+}
+.module-head::after{
+  content:"";position:absolute;width:84px;height:84px;border-radius:50%;
+  right:24px;top:-20px;background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);opacity:.22
+}
+.module-body{padding:28px}
+
+.objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:165px;background:#fff;transition:.24s ease
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block;font-size:36px;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);box-shadow:0 10px 24px rgba(151,68,111,.08)
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";display:inline-block;margin-bottom:8px;color:#fff;
+  background:linear-gradient(90deg,#d94f7d,#ff56ad);padding:5px 10px;border-radius:999px;
+  font-size:12px;font-weight:1000;letter-spacing:.07em
+}
+.quiz-alert strong{color:#813850}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.cardish{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+.cardish.pink{background:#fff4fa}
+.cardish.lav{background:#f5f0ff}
+.cardish.mint{background:#effcf7}
+.cardish.gold{background:#fff9df}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f
+}
+.copy{
+  position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+  background:#fff;color:#624c6c;padding:8px 12px;font-weight:950;cursor:pointer
+}
+
+.smell-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+.smell{
+  border:1px solid var(--line);border-radius:22px;padding:19px;background:#fff
+}
+.smell.bad{background:#fff1f7}
+.smell.good{background:#effcf7}
+.smell .big{font-size:34px;display:block;margin-bottom:7px}
+.smell b{display:block;font-size:18px;margin-bottom:5px}
+
+.interface-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.interface-card{
+  border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff;min-height:210px
+}
+.interface-card:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.interface-card:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.interface-card:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+
+.dependency-flow{
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0
+}
+.dep-box{
+  min-width:190px;padding:18px;border-radius:20px;border:1px solid var(--line);background:#fff;text-align:center;font-weight:900
+}
+.dep-box.high{background:#f5f0ff}
+.dep-box.abs{background:#fff9df}
+.dep-box.low{background:#effcf7}
+.dep-arrow{font-size:26px;color:#a57dff;font-weight:1000}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff)
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,95,174,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;cursor:pointer;color:#fff;font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));box-shadow:0 9px 18px rgba(157,75,158,.24)
+}
+.fun-btn.secondary{background:#fff;color:#705978;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.sticker{
+  margin:18px 0;display:flex;align-items:center;gap:16px;padding:14px 16px;
+  border-radius:20px;border:1px dashed #e7c7df;background:linear-gradient(135deg,#fff9fc,#fff)
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+
+.small-note{
+  margin:18px 0;padding:17px 18px;border-radius:20px;background:linear-gradient(135deg,#fff6d8,#fffdf7);border:1px solid #eddb9d
+}
+.small-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em;color:#8a6216;margin-bottom:4px
+}
+.small-note b{color:#5e4716}
+
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.lab-card{
+  border:1px solid var(--line);border-radius:22px;padding:20px;background:#fff;min-height:250px
+}
+.lab-card:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.lab-card:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.lab-card .num{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(135deg,var(--pink),var(--lav));font-weight:1000;margin-bottom:10px
+}
+.acceptance{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.accept{
+  display:flex;gap:10px;align-items:flex-start;padding:14px 15px;border-radius:16px;border:1px solid var(--line);background:#fff
+}
+
+.solid-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.solid-letter{
+  padding:18px 10px;border-radius:18px;text-align:center;border:1px solid var(--line);background:#fff
+}
+.solid-letter .letter{font-size:32px;font-weight:1000;display:block}
+.solid-letter:nth-child(1){background:#fff5fb}
+.solid-letter:nth-child(2){background:#f5f0ff}
+.solid-letter:nth-child(3){background:#effcf7}
+.solid-letter:nth-child(4){background:#fff9df}
+.solid-letter:nth-child(5){background:#edf8ff}
+
+.finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df)}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:130px}
+}
+@media(max-width:820px){
+  .objective-grid,.split,.smell-grid,.interface-grid,.lab-grid,.acceptance{grid-template-columns:1fr}
+  .solid-strip{grid-template-columns:1fr 1fr}
+  .hero-copy{padding:26px 22px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:44px}
+  .solid-strip{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center;text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-layers-1"></i> Sprint 5 • Module 8</div>
+        <h1>SOLID Principles, Part 2</h1>
+        <p>Finish SOLID with Interface Segregation and Dependency Inversion. These two often hide as awkward stubs, rigid dependencies, and classes that are painful to test.</p>
+        <div class="hero-note">Less friction. Smaller contracts. Better testability. ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">I: Interface Segregation</span>
+          <span class="hero-chip">D: Dependency Inversion</span>
+          <span class="hero-chip">🧩 Focused interfaces</span>
+          <span class="hero-chip">🧪 Testability</span>
+          <span class="hero-chip">📝 Quiz Alerts</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">🧩</span>
+      <b>Spot a fat interface</b>
+      Recognize when a class is forced to depend on methods it does not need.
+    </div>
+    <div class="objective">
+      <span class="icon">🔌</span>
+      <b>Invert a dependency</b>
+      Make high-level code depend on an abstraction instead of constructing a concrete detail.
+    </div>
+    <div class="objective">
+      <span class="icon">🧪</span>
+      <b>Improve testability</b>
+      Use constructor injection so a lightweight in-memory implementation can replace a real output mechanism.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Direct exam territory:</strong> one quiz asks why a class should not implement extra interfaces "just in case", and another asks why constructor injection of <code>ReportWriter</code> is both test-friendly and an example of Dependency Inversion.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Big picture</div>
+    <h2>The Two Hardest SOLID Principles to Spot</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">S, O, and L often look obviously wrong in one file. I and D often feel like normal friction until you learn to recognize the pattern.</p>
+
+    <div class="smell-grid">
+      <div class="smell bad">
+        <span class="big">🧩</span>
+        <b>ISP smell</b>
+        "Why am I implementing methods I never use?"
+      </div>
+      <div class="smell bad">
+        <span class="big">🔌</span>
+        <b>DIP smell</b>
+        "Why can I only test this class by writing to the real console, file, or service?"
+      </div>
+      <div class="smell good">
+        <span class="big">✂️</span>
+        <b>ISP fix</b>
+        Split a broad contract into focused capabilities.
+      </div>
+      <div class="smell good">
+        <span class="big">🔄</span>
+        <b>DIP fix</b>
+        Supply an abstraction from outside instead of building a concrete dependency inside.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">I: The problem</div>
+    <h2>A Fat Interface Forces Irrelevant Methods on Classes</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">For MadShapes, imagine bundling every output style into one giant interface.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public interface ShapeOutputBad {
+    String toConsole(Shape shape);
+    String toCsv(Shape shape);
+    String toSvg(Shape shape);
+}
+
+public class CsvShapeExporterBad
+        implements ShapeOutputBad {
+
+    @Override
+    public String toCsv(Shape shape) {
+        return shape.getLabel() + "," +
+               shape.calcArea();
+    }
+
+    @Override
+    public String toConsole(Shape shape) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toSvg(Shape shape) {
+        throw new UnsupportedOperationException();
+    }
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">The smell</div>
+      <b>The type promises capabilities the class cannot actually provide.</b>
+      Callers can legally call <code>toSvg()</code>, yet the method explodes at runtime.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz hint:</strong> being forced to implement methods you do not need is a classic Interface Segregation violation.
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>Why is throwing <code>UnsupportedOperationException</code> from an interface method a warning sign here?</p>
+      <textarea placeholder="// Explain the design smell..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Smell detected ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The interface says the class can perform the operation, but the implementation cannot.
+That means the contract is broader than the class actually needs or supports.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">I: The principle</div>
+    <h2>Interface Segregation: Depend Only on What You Need</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Split a large contract into smaller capabilities, then implement only the ones that fit.</p>
+
+    <div class="interface-grid">
+      <div class="interface-card">
+        <h3>CsvExportable</h3>
+        <p>One capability: export a shape as CSV.</p>
+        <code>String toCsv(Shape shape);</code>
+      </div>
+      <div class="interface-card">
+        <h3>ConsolePrintable</h3>
+        <p>One capability: render a readable console representation.</p>
+        <code>String toConsole(Shape shape);</code>
+      </div>
+      <div class="interface-card">
+        <h3>SvgRenderable</h3>
+        <p>One capability: produce SVG output.</p>
+        <code>String toSvg(Shape shape);</code>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public interface CsvExportable {
+    String toCsv(Shape shape);
+}
+
+public class CsvShapeExporter
+        implements CsvExportable {
+
+    @Override
+    public String toCsv(Shape shape) {
+        return shape.getLabel() + "," +
+               shape.calcArea();
+    }
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Payoff</div>
+      <b>There is no unused method left to stub.</b>
+      The compiler removes the invalid capability from the type entirely.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct exam connection:</strong> if a CSV-only class implements <code>ConsoleReportable</code> "for future flexibility", that adds unnecessary coupling and violates Interface Segregation.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator contract advice</b>
+        If the class only needs CSV, give it CSV. Do not hand it a buffet of unrelated methods and then complain about the leftovers.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">D: The problem</div>
+    <h2>High-Level Code Wired Directly to a Concrete Detail</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Now imagine the MadShapes experiment always constructs a console writer internally.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public class BadExperimentRunner {
+
+    private final ConsoleResultWriter writer =
+        new ConsoleResultWriter();
+
+    public boolean run(
+            Shape first,
+            Shape second) {
+
+        boolean same =
+            first.calcArea() == second.calcArea();
+
+        writer.write(
+            same ? "SAME" : "DIFFERENT"
+        );
+
+        return same;
+    }
+}</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">The friction</div>
+      <b>The high-level class decides both what to do and exactly how output happens.</b>
+      Testing it means touching the real console. Switching to a file or in-memory writer means editing the class.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz clue:</strong> directly constructing <code>new ConsoleReportWriter()</code> inside <code>OrderExecutor</code> is the problem. The high-level policy is coupled to one low-level detail.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">D: The principle</div>
+    <h2>Dependency Inversion: Both Sides Depend on an Abstraction</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="dependency-flow">
+      <div class="dep-box high">High-level policy<br><b>ExperimentRunner</b></div>
+      <div class="dep-arrow">→</div>
+      <div class="dep-box abs">Abstraction<br><b>ResultWriter</b></div>
+      <div class="dep-arrow">←</div>
+      <div class="dep-box low">Low-level details<br><b>Console / InMemory</b></div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public interface ResultWriter {
+    void write(String result);
+}
+
+public class ExperimentRunner {
+    private final ResultWriter writer;
+
+    public ExperimentRunner(
+            ResultWriter writer) {
+        this.writer = writer;
+    }
+
+    public boolean run(
+            Shape first,
+            Shape second) {
+
+        boolean same =
+            first.calcArea() == second.calcArea();
+
+        writer.write(
+            same ? "SAME" : "DIFFERENT"
+        );
+
+        return same;
+    }
+}</code></pre>
+    </div>
+
+    <div class="split">
+      <div class="cardish mint">
+        <h3>Real use</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>new ExperimentRunner(
+    new ConsoleResultWriter()
+);</code></pre>
+        </div>
+      </div>
+      <div class="cardish lav">
+        <h3>Unit test</h3>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>new ExperimentRunner(
+    new InMemoryResultWriter()
+);</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">The important distinction</div>
+      <b>Constructor injection is the mechanism. Dependency Inversion is the design principle.</b>
+      The high-level class no longer reaches down to choose a concrete writer.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct exam connection:</strong> constructor injection of <code>ReportWriter</code> enables an in-memory test writer and demonstrates Dependency Inversion because the high-level class depends on the abstraction.
+    </div>
+
+    <div class="challenge">
+      <h3>🔌 Quick check</h3>
+      <p>What is the strongest reason to accept <code>ResultWriter</code> in the constructor instead of constructing <code>ConsoleResultWriter</code> internally?</p>
+      <textarea placeholder="// Explain the design benefit..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Dependency inverted 🎀</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>The high-level class depends on an abstraction instead of one concrete output mechanism.
+That makes the class easier to test and lets different writers be supplied without changing the class.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Why the name feels weird</div>
+    <h2>"Dependency Inversion" Is Bigger Than "Dependency Injection"</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="split">
+      <div class="cardish pink">
+        <h3>Without inversion</h3>
+        <p><b>ExperimentRunner</b> reaches downward and creates <b>ConsoleResultWriter</b>.</p>
+        <p>The policy knows the concrete detail.</p>
+      </div>
+      <div class="cardish mint">
+        <h3>With inversion</h3>
+        <p><b>ExperimentRunner</b> and <b>ConsoleResultWriter</b> both rely on <b>ResultWriter</b>.</p>
+        <p>The detail satisfies the abstraction expected by the policy.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Remember the phrase:</strong> high-level policy should not depend directly on low-level detail. Both depend on an abstraction.
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James wiring strategy</b>
+        Jimbo James of the Columbian cartel proposed hard-coding every concrete dependency because "we know what we want today." The testing team has requested changes.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Testability payoff</div>
+    <h2>Why an In-Memory Writer Matters</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">An in-memory implementation is not fake architecture. It demonstrates that the high-level class is decoupled from side effects.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public class InMemoryResultWriter
+        implements ResultWriter {
+
+    private String lastResult;
+
+    @Override
+    public void write(String result) {
+        lastResult = result;
+    }
+
+    public String getLastResult() {
+        return lastResult;
+    }
+}</code></pre>
+    </div>
+
+    <div class="split">
+      <div class="cardish gold">
+        <h3>Without DIP</h3>
+        <p>Unit tests may have to capture console output, touch a file, or hit a real service.</p>
+      </div>
+      <div class="cardish mint">
+        <h3>With DIP</h3>
+        <p>The test supplies a tiny in-memory collaborator and inspects what was written.</p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Coming soon:</strong> TDD, JUnit, and Mockito all benefit from the same design move. Testability is often a side effect of good dependency boundaries.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>Module 8 Lab: Two SOLID Katas</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The lesson uses MadShapes. The official lab applies the same two principles to settlement reports and order execution.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="num">A</div>
+        <h3>CsvSettlementReport</h3>
+        <p><b>Principle:</b> Interface Segregation.</p>
+        <p>Implement <code>CsvReportable</code> only. Do not also implement <code>ConsoleReportable</code> as speculative future-proofing.</p>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>clientId,fee
+C001,5.0
+C002,12.5</code></pre>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <div class="num">B</div>
+        <h3>OrderExecutor</h3>
+        <p><b>Principle:</b> Dependency Inversion.</p>
+        <p>The constructor must accept <code>ReportWriter</code>. It must never construct a concrete writer internally.</p>
+        <div class="code-wrap">
+          <button class="copy" onclick="copyCode(this)">Copy</button>
+          <pre><code>public OrderExecutor(
+        ReportWriter writer) {
+    this.writer = writer;
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Testing detail</div>
+      <b>All 6 tests should pass.</b>
+      Reflection checks that <code>OrderExecutor</code> accepts the abstraction and that <code>CsvSettlementReport</code> does not implement the unrelated console interface.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Lab-meets-quiz insight:</strong> the tests verify design structure, not only output. Passing behavior is not enough if the class depends on the wrong type.
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span><code>mvn test</code> finishes with 0 failures and 0 errors.</span></div>
+      <div class="accept">✅ <span><code>CsvSettlementReport</code> implements only <code>CsvReportable</code>.</span></div>
+      <div class="accept">✅ <span><code>OrderExecutor</code> takes a <code>ReportWriter</code> in its constructor.</span></div>
+      <div class="accept">✅ <span><code>OrderExecutor</code> never constructs a concrete writer itself.</span></div>
+      <div class="accept">✅ <span><code>InMemoryReportWriter</code> can be used in tests without console output.</span></div>
+      <div class="accept">✅ <span>Do not modify the provided domain and interface classes.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Transfer challenge</h3>
+      <p>Match each problem to the principle.</p>
+      <textarea placeholder="CsvShapeExporter is forced to implement toPdf() and toConsole(): ?
+
+ExperimentRunner creates new ConsoleResultWriter() internally: ?"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">SOLID transfer complete 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>CsvShapeExporter forced to implement unrelated methods:
+Interface Segregation Principle
+
+ExperimentRunner creates ConsoleResultWriter internally:
+Dependency Inversion Principle</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">All five together</div>
+    <h2>SOLID Is Now Complete</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="solid-strip">
+      <div class="solid-letter"><span class="letter">S</span><b>Single Responsibility</b><br>One focused reason to change.</div>
+      <div class="solid-letter"><span class="letter">O</span><b>Open/Closed</b><br>Extend behavior without rewriting stable code.</div>
+      <div class="solid-letter"><span class="letter">L</span><b>Liskov Substitution</b><br>Subtypes behave like valid replacements.</div>
+      <div class="solid-letter"><span class="letter">I</span><b>Interface Segregation</b><br>Small focused contracts.</div>
+      <div class="solid-letter"><span class="letter">D</span><b>Dependency Inversion</b><br>Depend on abstractions.</div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>ISP removes capabilities you never needed. DIP removes concrete details you should never have owned.</h2>
+  <p>You learned to split fat interfaces into focused contracts and to supply dependencies through abstractions so high-level code remains flexible and testable.</p>
+
+  <div class="pills">
+    <span class="pill">🧩 Focused interfaces</span>
+    <span class="pill">✂️ Interface Segregation</span>
+    <span class="pill">🔌 Constructor injection</span>
+    <span class="pill">🔄 Dependency Inversion</span>
+    <span class="pill">🧪 In-memory testing</span>
+    <span class="pill">✨ SOLID complete</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived SOLID Part 2 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> Clean Code</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm approves of smaller interfaces. ROFLGator appreciates constructor injection. Jimbo James, Columbian cartel member and dedicated concrete-dependency enthusiast, has been asked to stop constructing writers inside high-level policy classes.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+
+function celebrate(button,amount=30){
+  const colors=["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  const old=button.textContent;
+  button.textContent="✨ MadShapes approved! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=bits[Math.floor(Math.random()*bits.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

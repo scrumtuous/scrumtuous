@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | Core Java Refresher</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --plum:#2e163f;
+  --pink:#ff56ad;
+  --pink2:#ff9dce;
+  --lav:#a77cff;
+  --lav2:#dac8ff;
+  --peach:#ffc3a0;
+  --mint:#c8f1df;
+  --aqua:#bfeef7;
+  --gold:#f7c852;
+  --cream:#fff9ed;
+  --line:#ecd7e8;
+  --paper:#fffdfd;
+  --shadow:0 20px 55px rgba(95,49,90,.15);
+  --code:#2f2436;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  line-height:1.58;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 7% 9%,rgba(255,86,173,.19),transparent 21%),
+    radial-gradient(circle at 91% 11%,rgba(167,124,255,.19),transparent 25%),
+    radial-gradient(circle at 74% 72%,rgba(200,241,223,.25),transparent 22%),
+    linear-gradient(180deg,#fff8fc 0%,#fff 50%,#fff8fc 100%);
+  overflow-x:hidden;
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+.floating-bg{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floating-bg span{position:absolute;opacity:.18;animation:float 8s ease-in-out infinite}
+.floating-bg span:nth-child(1){left:3%;top:9%;font-size:34px}
+.floating-bg span:nth-child(2){right:5%;top:14%;font-size:38px;animation-delay:-2s}
+.floating-bg span:nth-child(3){left:7%;top:63%;font-size:31px;animation-delay:-4s}
+.floating-bg span:nth-child(4){right:8%;top:76%;font-size:35px;animation-delay:-6s}
+.floating-bg span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floating-bg span:nth-child(6){right:28%;top:44%;font-size:32px;animation-delay:-5s}
+@keyframes float{50%{transform:translateY(-20px) rotate(8deg) scale(1.06)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;
+  padding:11px 20px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.logo{
+  display:flex;align-items:center;gap:8px;
+  font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em;
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4e9;font-size:14px;font-weight:850}
+
+.hero{max-width:1180px;margin:22px auto 0;padding:0 20px}
+.hero-shell{
+  position:relative;overflow:hidden;
+  border-radius:36px;
+  min-height:500px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 84% 22%,rgba(255,255,255,.28),transparent 17%),
+    linear-gradient(135deg,#7040ed 0%,#a34bd6 35%,#f34ea6 72%,#ff91c6 100%);
+  box-shadow:0 28px 76px rgba(85,39,112,.23);
+}
+.hero-grid{display:grid;grid-template-columns:1.14fr .86fr;min-height:500px}
+.hero-copy{padding:48px 48px 42px;position:relative;z-index:3}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);
+  font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.1em;
+  backdrop-filter:blur(8px);
+}
+h1{
+  font-size:clamp(48px,7vw,92px);
+  line-height:.9;letter-spacing:-.065em;
+  margin:18px 0 12px;font-weight:1000;
+}
+.hero-sub{font-size:clamp(18px,2vw,23px);max-width:720px;color:#fff5fb}
+.hero-note{
+  display:inline-block;margin-top:13px;
+  font-size:18px;font-weight:950;transform:rotate(-1deg);
+}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.chip{
+  padding:9px 13px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.15);font-weight:900;backdrop-filter:blur(7px);
+}
+.hero-art{position:relative;min-height:500px}
+.hero-sun{
+  position:absolute;width:310px;height:310px;border-radius:50%;
+  right:42px;top:50px;
+  background:radial-gradient(circle at 35% 30%,#fff 0 6%,#ffe0f0 7% 30%,#eccdff 62%,#cbb6ff 100%);
+  box-shadow:0 24px 50px rgba(72,29,99,.22);
+  animation:pulseBlob 4s ease-in-out infinite;
+}
+@keyframes pulseBlob{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-shape{
+  position:absolute;font-size:60px;filter:drop-shadow(0 12px 10px rgba(65,27,84,.16));
+  animation:spin 9s linear infinite;
+}
+.hero-shape.sq{left:3%;bottom:8%}
+.hero-shape.tri{right:4%;top:8%;animation-direction:reverse}
+.hero-shape.circ{left:11%;top:12%;font-size:48px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.roflgator{
+  position:absolute;
+  right:86px;
+  bottom:18px;
+  width:min(345px,88%);
+  height:auto;
+  filter:drop-shadow(0 24px 24px rgba(74,30,87,.20));
+  animation:heroBob 4.2s ease-in-out infinite;
+}
+.jimbo{
+  position:absolute;
+  left:28px;
+  bottom:26px;
+  width:170px;
+  height:auto;
+  filter:drop-shadow(0 18px 20px rgba(74,30,87,.18));
+  animation:heroBob 3.7s ease-in-out infinite;
+  animation-delay:-1.2s;
+}
+.badge-bubble{
+  position:absolute;
+  background:rgba(255,255,255,.9);
+  color:#5a2a6d;
+  border-radius:18px;
+  padding:10px 12px;
+  font-weight:950;
+  font-size:14px;
+  box-shadow:0 12px 28px rgba(60,23,81,.16);
+}
+.rofl-bubble{right:20px;top:108px;transform:rotate(5deg)}
+.jimbo-bubble{left:18px;top:84px;transform:rotate(-5deg)}
+@keyframes heroBob{50%{transform:translateY(-8px) rotate(-.5deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);
+  border:1px solid var(--line);
+  border-radius:29px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin:28px 0;
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;
+  font-size:12px;font-weight:1000;color:#a35587;
+}
+h2{
+  font-size:clamp(30px,4vw,48px);
+  line-height:1.04;letter-spacing:-.035em;font-weight:1000;
+  margin:5px 0 10px;
+}
+h3{font-size:22px;font-weight:950;margin:0 0 8px}
+.leadish{font-size:18px;color:#55465c}
+.objectives{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:160px;
+  transition:.25s ease;background:#fff;position:relative;overflow:hidden;
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff4fa,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f4efff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-6px) rotate(-.4deg)}
+.objective .icon{font-size:36px;display:block;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.module-head{
+  padding:25px 28px;
+  background:linear-gradient(135deg,#fff1f8,#f7f1ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.module-head:after{
+  content:"";
+  position:absolute;right:24px;top:-19px;width:82px;height:82px;border-radius:50%;
+  background:radial-gradient(circle,#ff9dce 0 29%,transparent 30%);
+  opacity:.24;
+}
+.module-body{padding:28px}
+
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.time-card{
+  border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;background:#fff;min-height:128px;
+}
+.time-card .n{
+  width:34px;height:34px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;
+  color:#fff;font-weight:1000;background:linear-gradient(135deg,var(--pink),var(--lav));
+}
+.time-card b{display:block;font-size:17px;margin-bottom:5px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;
+  border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);
+  box-shadow:0 10px 24px rgba(151,68,111,.08);
+}
+.quiz-alert:before{
+  content:"QUIZ ALERT";
+  display:inline-block;margin-bottom:8px;
+  color:#fff;background:linear-gradient(90deg,#d94f7d,#ff56ad);
+  padding:5px 10px;border-radius:999px;font-size:12px;font-weight:1000;letter-spacing:.07em;
+}
+.quiz-alert strong{color:#813850}
+
+.cartel-note{
+  margin:18px 0;
+  padding:17px 18px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#fff6d8,#fffdf7);
+  border:1px solid #eddb9d;
+  position:relative;
+}
+.cartel-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;letter-spacing:.09em;text-transform:uppercase;
+  color:#8a6216;margin-bottom:4px;
+}
+.cartel-note b{color:#5e4716}
+
+.shape-note{
+  margin:18px 0;padding:18px;border-radius:20px;
+  background:linear-gradient(135deg,#f5f0ff,#fff);
+  border:1px solid #e3d5ff;
+}
+.shape-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;letter-spacing:.09em;text-transform:uppercase;
+  color:#6946a1;margin-bottom:5px;
+}
+
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.compare-card{border:1px solid var(--line);border-radius:20px;padding:18px}
+.python{background:#fff1f7}
+.java{background:#f4efff}
+.good{background:#effcf7}
+.warn{background:#fff8dd}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#312637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f;
+}
+.copy{
+  position:absolute;right:12px;top:12px;z-index:2;
+  border:none;border-radius:999px;background:#fff;color:#624c6c;
+  padding:8px 12px;font-weight:950;cursor:pointer;
+}
+
+.mapping{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.map-card{
+  border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center;background:#fff;
+  transition:.22s ease;
+}
+.map-card:hover{transform:translateY(-5px) rotate(.5deg)}
+.map-card .emoji{font-size:38px}
+.map-card b{display:block;font-size:18px;margin:5px 0}
+.arrow{font-size:28px;color:#8b64d7}
+
+.exception-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.exception{
+  border:1px solid var(--line);border-radius:22px;padding:20px;
+}
+.exception.badge-a{background:#fff2f6}
+.exception.badge-b{background:#f5f0ff}
+.exception .tiny{
+  display:inline-block;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  font-size:12px;font-weight:1000;
+}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff);
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);
+  font:14px "SFMono-Regular",Consolas,monospace;outline:none;
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,86,173,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;font-weight:950;cursor:pointer;
+  color:#fff;background:linear-gradient(90deg,var(--pink),var(--lav));
+  box-shadow:0 9px 18px rgba(157,75,158,.24);
+}
+.fun-btn.secondary{color:#705978;background:#fff;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.lab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.lab-card{border:1px solid var(--line);border-radius:22px;padding:20px;background:#fff}
+.lab-card:nth-child(1){background:linear-gradient(145deg,#fff2f7,#fff)}
+.lab-card:nth-child(2){background:linear-gradient(145deg,#f3efff,#fff)}
+.lab-card:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.lab-card .num{
+  width:38px;height:38px;display:grid;place-items:center;border-radius:50%;
+  color:#fff;font-weight:1000;background:linear-gradient(135deg,var(--pink),var(--lav));margin-bottom:10px;
+}
+.acceptance{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;
+}
+.accept{
+  padding:14px 15px;border:1px solid var(--line);border-radius:16px;background:#fff;
+  display:flex;gap:10px;align-items:flex-start;
+}
+
+.finale{
+  text-align:center;padding:34px;
+  background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df);
+}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards;
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+.wiggle{animation:wiggle 1.8s ease-in-out infinite}
+@keyframes wiggle{50%{transform:rotate(3deg) translateY(-2px)}}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:370px}
+  .timeline{grid-template-columns:1fr 1fr}
+}
+@media(max-width:800px){
+  .objectives,.mapping,.lab-grid,.compare,.exception-grid,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:36px 28px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:560px){
+  .timeline{grid-template-columns:1fr}
+  .hero-art{min-height:330px}
+  h1{font-size:54px}
+  .masthead-inner{justify-content:center;text-align:center}
+  .jimbo{width:115px;left:10px;bottom:15px}
+  .roflgator{width:260px;right:22px}
+  .badge-bubble{font-size:12px;padding:8px 10px}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+
+<body>
+<div class="floating-bg" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>☕</span><span>🌸</span><span>🔺</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-java"></i> Sprint 5 • Module 1</div>
+        <h1>Core Java<br>Refresher</h1>
+        <p class="hero-sub">We are leaving Python syntax behind and translating familiar ideas into Java. The MadShapes psychology experiment will be our running example whenever it fits.</p>
+        <div class="hero-note">Same logic. New punctuation. Bigger object-model dreams. ✨</div>
+        <div class="chips">
+          <span class="chip">☕ Java</span>
+          <span class="chip">🔺 MadShapes</span>
+          <span class="chip">📦 Collections</span>
+          <span class="chip">⚠️ Exceptions</span>
+          <span class="chip">📝 Quiz Alerts</span>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-sun"></div>
+        <div class="hero-shape circ">🟣</div>
+        <div class="hero-shape sq">🟪</div>
+        <div class="hero-shape tri">🔺</div>
+
+        <div class="badge-bubble jimbo-bubble">Jimbo James<br>Cartel review mode</div>
+        <div class="badge-bubble rofl-bubble">ROFLGator says:<br>"Java with braces!"</div>
+
+        <svg class="jimbo" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="110" cy="180" rx="58" ry="18" fill="rgba(80,36,95,.12)"/>
+          <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+          <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+          <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+          <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+          <circle cx="82" cy="69" r="10" fill="#fff"/>
+          <circle cx="138" cy="69" r="10" fill="#fff"/>
+          <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+          <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+          <ellipse cx="93" cy="114" rx="6" ry="8" fill="#2f2335"/>
+          <ellipse cx="127" cy="114" rx="6" ry="8" fill="#2f2335"/>
+          <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="89" cy="128" r="6" fill="#ff8fbf" opacity=".7"/>
+          <circle cx="131" cy="128" r="6" fill="#ff8fbf" opacity=".7"/>
+          <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+          <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+          <path d="M74 161 C62 150 52 148 46 148" stroke="#66cf57" stroke-width="15" stroke-linecap="round"/>
+          <path d="M146 161 C158 150 168 148 174 148" stroke="#66cf57" stroke-width="15" stroke-linecap="round"/>
+          <path d="M89 171 C83 186 79 195 79 204" stroke="#66cf57" stroke-width="16" stroke-linecap="round"/>
+          <path d="M131 171 C137 186 141 195 141 204" stroke="#66cf57" stroke-width="16" stroke-linecap="round"/>
+          <path d="M147 22 L156 7 L168 19" fill="none" stroke="#f7c852" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <svg class="roflgator" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+          <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+          <path d="M70 146 C78 117 103 96 140 88 C157 83 179 81 220 82 C173 91 138 110 112 142 Z" fill="#45c96c"/>
+          <path d="M198 122 C226 70 286 58 334 87 C349 96 356 108 358 121 C336 117 304 116 261 124 Z" fill="#57d878"/>
+          <path d="M215 129 C242 88 291 77 329 98 C338 103 344 111 346 120 C320 117 285 118 245 126 Z" fill="#bff5c7"/>
+          <path d="M164 136 C151 101 121 86 94 84 C69 83 53 93 43 111 C55 111 66 116 81 126 C98 137 114 145 164 136 Z" fill="#57d878"/>
+          <circle cx="101" cy="95" r="22" fill="#57d878"/>
+          <circle cx="138" cy="86" r="22" fill="#57d878"/>
+          <circle cx="101" cy="95" r="11" fill="#fff"/>
+          <circle cx="138" cy="86" r="11" fill="#fff"/>
+          <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+          <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+          <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+          <path d="M177 156 C208 153 247 147 296 135 C324 128 343 127 355 132 C345 153 328 167 299 180 C251 201 182 214 123 210 C105 209 89 206 76 202 Z" fill="#d8ffd3"/>
+          <path d="M178 155 C212 151 260 144 334 131" fill="none" stroke="#2f2335" stroke-width="7" stroke-linecap="round"/>
+          <line x1="199" y1="154" x2="199" y2="189" stroke="#2f2335" stroke-width="3"/>
+          <line x1="221" y1="151" x2="221" y2="184" stroke="#2f2335" stroke-width="3"/>
+          <line x1="243" y1="148" x2="243" y2="180" stroke="#2f2335" stroke-width="3"/>
+          <line x1="265" y1="145" x2="265" y2="176" stroke="#2f2335" stroke-width="3"/>
+          <line x1="287" y1="141" x2="287" y2="172" stroke="#2f2335" stroke-width="3"/>
+          <ellipse cx="117" cy="142" rx="8" ry="6" fill="#ff8fbf" opacity=".7"/>
+          <ellipse cx="151" cy="137" rx="8" ry="6" fill="#ff8fbf" opacity=".7"/>
+          <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+          <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+          <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+          <path d="M179 225 C192 250 195 278 190 301" stroke="#57d878" stroke-width="15" stroke-linecap="round"/>
+          <path d="M226 224 C236 248 237 271 232 296" stroke="#57d878" stroke-width="15" stroke-linecap="round"/>
+          <path d="M89 226 C76 242 72 257 75 273" stroke="#57d878" stroke-width="14" stroke-linecap="round"/>
+          <path d="M118 239 C111 254 110 268 114 283" stroke="#57d878" stroke-width="14" stroke-linecap="round"/>
+          <path d="M52 187 C28 195 12 213 10 238 C31 226 53 220 78 218" fill="none" stroke="#57d878" stroke-width="18" stroke-linecap="round"/>
+          <text x="255" y="110" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">ROFL</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Welcome to Sprint 5</div>
+  <h2>How we got here</h2>
+  <div class="timeline">
+    <div class="time-card"><div class="n">1</div><b>Sprints 1-2</b>Tooling and engineering practices</div>
+    <div class="time-card"><div class="n">2</div><b>Sprint 3</b>Data systems and modelling</div>
+    <div class="time-card"><div class="n">3</div><b>Sprint 4</b>Python, pandas, and analytics</div>
+    <div class="time-card"><div class="n">4</div><b>Sprint 5</b>Java, OOAD, UML, SOLID, and TDD</div>
+    <div class="time-card"><div class="n">5</div><b>This module</b>A Python-to-Java translation guide</div>
+  </div>
+
+  <div class="shape-note">
+    <div class="label">MadShapes running scenario</div>
+    <b>The psychology class wants to compare the perceived areas of shapes.</b>
+    Across the course we will work toward an object model for Square, Rectangle, Circle, Triangle, Line, and Point. For now, we use the domain only to practice Java basics.
+  </div>
+
+  <div class="cartel-note">
+    <div class="label">Dispatch from Jimbo James</div>
+    <b>Jimbo James, a member of the Columbian cartel, has been advised that Sprint 5 contains significantly more braces than Sprint 4.</b>
+    He has declined to comment on whether the cartel has a formal semicolon policy.
+  </div>
+</section>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objectives">
+    <div class="objective">
+      <span class="icon">☕</span>
+      <b>Read core Java</b>
+      Understand syntax, types, variables, and control flow.
+    </div>
+    <div class="objective">
+      <span class="icon">📦</span>
+      <b>Use collections</b>
+      Work with List, Map, and Set at a practical level.
+    </div>
+    <div class="objective">
+      <span class="icon">⚠️</span>
+      <b>Understand exceptions</b>
+      Distinguish checked from unchecked exceptions and handle them appropriately.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Exam direction:</strong> Java is not a completely different mental model from Python. Most core ideas transfer. The big shift is Java's compile-time strictness, especially static typing.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 1</div>
+    <h2>Why Java Looks So Different</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The logic is usually familiar. Java asks you to state more information up front so the compiler can check it.</p>
+
+    <div class="compare">
+      <div class="compare-card python">
+        <h3>🐍 Python</h3>
+        <ul>
+          <li>Dynamically typed</li>
+          <li>Type problems may surface at runtime</li>
+          <li>Indentation marks code blocks</li>
+          <li>Less syntax around each statement</li>
+        </ul>
+      </div>
+      <div class="compare-card java">
+        <h3>☕ Java</h3>
+        <ul>
+          <li>Statically typed</li>
+          <li>Types are checked by the compiler</li>
+          <li>Braces mark code blocks</li>
+          <li>Semicolons end most statements</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Three exam-ready truths:</strong> looking for a Java concept's Python equivalent is often useful, core ideas such as collections and control flow transfer, and Java can catch some type mismatches before the program runs.
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>Why can Java reject some bad assignments before execution?</p>
+      <textarea placeholder="// Explain in one or two sentences..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Compiler confidence ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>Because Java is statically typed.
+The compiler knows each variable's declared type and can reject incompatible assignments.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 2</div>
+    <h2>Types: Declared, Not Inferred Away</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Once a Java variable is declared with a type, that variable keeps that type.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>String shapeName = "Triangle";
+int base = 12;
+double area = 30.5;
+boolean visible = true;
+
+// Python might look like:
+// shape_name = "Triangle"
+// base = 12
+// area = 30.5
+// visible = True</code></pre>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card warn">
+        <h3>Python can rebind the name</h3>
+        <pre><code>size = 10
+size = "ten"</code></pre>
+      </div>
+      <div class="compare-card good">
+        <h3>Java rejects the mismatch</h3>
+        <pre><code>int size = 10;
+size = "ten";  // compile error</code></pre>
+      </div>
+    </div>
+
+    <div class="shape-note">
+      <div class="label">MadShapes connection</div>
+      When we eventually build classes such as <code>Circle</code> and <code>Rectangle</code>, Java's type system gives the compiler useful information about what each variable can refer to.
+    </div>
+
+    <div class="challenge">
+      <h3>💖 Your challenge</h3>
+      <p>Declare Java variables for a shape label, a width, and whether the shape is currently selected.</p>
+      <textarea placeholder="// String ...
+// double ...
+// boolean ..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Types declared 🎀</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show example</button>
+      </div>
+      <div class="solution"><pre><code>String label = "Rectangle";
+double width = 14.25;
+boolean selected = false;</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 3</div>
+    <h2>Control Flow: Same Logic, Different Punctuation</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Java <code>if</code>/<code>else</code> uses the same reasoning as Python. Parentheses, braces, and semicolons are the visible differences.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>double firstArea = 48.0;
+double secondArea = 48.0;
+
+String judgement;
+
+if (firstArea == secondArea) {
+    judgement = "SAME";
+} else {
+    judgement = "DIFFERENT";
+}</code></pre>
+    </div>
+
+    <div class="shape-note">
+      <div class="label">Scope note</div>
+      The future psychology feature about perceptual thresholds is not part of this iteration. For this refresher, an exact area comparison keeps the example simple.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Remember:</strong> Python uses indentation to define blocks. Java uses braces. The underlying decision logic is still the same.
+    </div>
+
+    <div class="challenge">
+      <h3>🔺 Your challenge</h3>
+      <p>Write Java that stores <code>"LARGE"</code> when <code>area &gt; 100</code>, otherwise <code>"SMALL"</code>.</p>
+      <textarea placeholder="// Write the Java if/else here..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Logic translated ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show solution</button>
+      </div>
+      <div class="solution"><pre><code>if (area > 100) {
+    sizeCategory = "LARGE";
+} else {
+    sizeCategory = "SMALL";
+}</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 4</div>
+    <h2>The Collections Framework: Direct Mapping</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The collection ideas transfer almost one-for-one from Python. The names and compiler rules change.</p>
+
+    <div class="mapping">
+      <div class="map-card"><div class="emoji">📋</div><b>Python list</b><div class="arrow">→</div><strong>Java List</strong><div>Usually <code>ArrayList</code></div></div>
+      <div class="map-card"><div class="emoji">🗂️</div><b>Python dict</b><div class="arrow">→</div><strong>Java Map</strong><div>Usually <code>HashMap</code></div></div>
+      <div class="map-card"><div class="emoji">🧺</div><b>Python set</b><div class="arrow">→</div><strong>Java Set</strong><div>Usually <code>HashSet</code></div></div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Exam connection:</strong> the concepts transfer directly. What changes most is the API syntax and the extra information Java's compiler can enforce.
+    </div>
+
+    <div class="cartel-note">
+      <div class="label">Jimbo James field memo</div>
+      <b>Jimbo James, Columbian cartel member and self-appointed collections consultant, insists that duplicate cartel aliases belong in a Set.</b>
+      Java agrees about the no-duplicates part. The rest of his architecture is under review.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 5</div>
+    <h2><code>List&lt;String&gt;</code>: Generic and Compiler-Enforced</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Instead of using the course's trade example, MadShapes can keep a typed list of shape names.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>List&lt;String&gt; shapeNames = new ArrayList&lt;&gt;();
+
+shapeNames.add("Circle");
+shapeNames.add("Triangle");
+shapeNames.add("Rectangle");
+
+for (String shapeName : shapeNames) {
+    System.out.println(shapeName);
+}</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Why the angle brackets matter:</strong> <code>List&lt;String&gt;</code> gives the compiler a rule it can enforce. An Integer cannot casually wander into this list.
+    </div>
+
+    <div class="challenge">
+      <h3>🧁 Quick challenge</h3>
+      <p>Declare a Java list that stores only <code>Double</code> area values, then add 25.0 and 50.0.</p>
+      <textarea placeholder="// Declare the list and add two values..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Generic goodness 🌷</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>List&lt;Double&gt; areas = new ArrayList&lt;&gt;();
+
+areas.add(25.0);
+areas.add(50.0);</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 6</div>
+    <h2>Map and Set: Accumulate and Deduplicate</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A Map can accumulate total area by shape type. A Set can keep the distinct shape types used in an experiment.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>Map&lt;String, Double&gt; totalAreaByType
+        = new HashMap&lt;&gt;();
+
+String type = "Triangle";
+double newArea = 24.0;
+
+double currentTotal = totalAreaByType
+        .getOrDefault(type, 0.0);
+
+totalAreaByType.put(
+        type,
+        currentTotal + newArea
+);
+
+Set&lt;String&gt; observedTypes = new HashSet&lt;&gt;();
+observedTypes.add("Triangle");
+observedTypes.add("Circle");
+observedTypes.add("Triangle");  // duplicate ignored</code></pre>
+    </div>
+
+    <div class="shape-note">
+      <div class="label">Python translation</div>
+      Java's <code>getOrDefault(key, 0.0)</code> is the same basic idea as Python's <code>dict.get(key, 0.0)</code>. The accumulation pattern is familiar even though the spelling changes.
+    </div>
+
+    <div class="challenge">
+      <h3>📦 Quick check</h3>
+      <p>What Java method in the example provides a fallback value when the key does not exist?</p>
+      <textarea placeholder="// Answer..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Map mastered ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>getOrDefault(key, defaultValue)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 7</div>
+    <h2>Two Categories of Exception</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">This is the one idea in the refresher that does not map neatly to Python's compiler model: Java divides exceptions into checked and unchecked categories.</p>
+
+    <div class="exception-grid">
+      <div class="exception badge-a">
+        <span class="tiny">Unchecked</span>
+        <h3 style="margin-top:10px">Extends <code>RuntimeException</code></h3>
+        <ul>
+          <li>The compiler does not force handling</li>
+          <li>You may catch it or let it propagate</li>
+          <li>Example: <code>NumberFormatException</code></li>
+        </ul>
+      </div>
+      <div class="exception badge-b">
+        <span class="tiny">Checked</span>
+        <h3 style="margin-top:10px">Extends <code>Exception</code></h3>
+        <ul>
+          <li>The compiler requires catch or declaration</li>
+          <li>Callers must acknowledge the possibility</li>
+          <li>No direct Python compiler equivalent</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Watch the trap:</strong> Java absolutely has exception handling. The special Java concept here is the compiler-enforced checked vs. unchecked distinction.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 8</div>
+    <h2>Unchecked Exception: Bad Shape Input</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Suppose a text field supplies a radius. If the text is not numeric, Java's parser throws an unchecked <code>NumberFormatException</code>.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>String radiusText = "banana";
+
+try {
+    double radius =
+        Double.parseDouble(radiusText);
+} catch (NumberFormatException e) {
+    System.out.println(
+        "Radius must be numeric"
+    );
+}
+
+// The compiler did not force this catch.
+// NumberFormatException is unchecked.</code></pre>
+    </div>
+
+    <div class="shape-note">
+      <div class="label">MadShapes thinking</div>
+      The syntax parser and the business rule are different concerns. "banana" is not numeric at all. A numeric value such as <code>-5</code> can be parsed, but may still violate a dimension rule.
+    </div>
+
+    <div class="challenge">
+      <h3>⚠️ Quick check</h3>
+      <p>Does Java force you to catch <code>NumberFormatException</code>?</p>
+      <textarea placeholder="// Yes or no, and why?"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Unchecked understood 💖</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>No.
+
+NumberFormatException extends RuntimeException, so it is unchecked.
+The compiler does not require a catch or throws declaration.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 9</div>
+    <h2>Checked Exception: Invalid Dimension</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Now use a checked exception for a value that is numeric but violates a rule we want callers to acknowledge.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>public class InvalidDimensionException
+        extends Exception {
+
+    public InvalidDimensionException(
+            String message) {
+        super(message);
+    }
+}
+
+static double parsePositiveDimension(
+        String text)
+        throws InvalidDimensionException {
+
+    double value = Double.parseDouble(text);
+
+    if (value &lt;= 0) {
+        throw new InvalidDimensionException(
+            "Dimension must be positive: " + value
+        );
+    }
+
+    return value;
+}</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Key distinction:</strong> <code>Double.parseDouble()</code> can throw unchecked <code>NumberFormatException</code>. Our explicit <code>InvalidDimensionException</code> is checked, so callers must catch or declare it.
+    </div>
+
+    <div class="challenge">
+      <h3>🧠 Quick check</h3>
+      <p>If a method calls <code>parsePositiveDimension()</code> and does not catch <code>InvalidDimensionException</code>, what must it do?</p>
+      <textarea placeholder="// Explain..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Checked exception conquered ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>It must declare InvalidDimensionException in its own throws clause.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>The Official Lab Uses the Same Ideas in a Different Domain</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The lesson uses MadShapes so the teaching examples stay distinct from the lab. The official Module 1 lab then checks whether you can transfer the same Java ideas to its trade-processing classes.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="num">1</div>
+        <h3>TradeClassifier</h3>
+        <p><b>Focus:</b> Java types and control flow.</p>
+        <p>Implement size and side classification from the pre-written tests.</p>
+      </div>
+      <div class="lab-card">
+        <div class="num">2</div>
+        <h3>TradeBook</h3>
+        <p><b>Focus:</b> List, Map, and Set.</p>
+        <p>Calculate totals, aggregate by instrument, and return distinct clients.</p>
+      </div>
+      <div class="lab-card">
+        <div class="num">3</div>
+        <h3>TradeParser</h3>
+        <p><b>Focus:</b> checked vs. unchecked exceptions.</p>
+        <p>Let bad numeric text produce <code>NumberFormatException</code>, while non-positive numeric values produce the checked <code>MalformedTradeException</code>.</p>
+      </div>
+    </div>
+
+    <div class="shape-note">
+      <div class="label">What to notice</div>
+      The domain changes, but the skills do not. The same reasoning you used for shape variables, shape collections, and dimension parsing is what the lab asks you to apply to trades.
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span>Java 21 and Maven are expected.</span></div>
+      <div class="accept">✅ <span>Run <code>mvn test</code> often, not only at the end.</span></div>
+      <div class="accept">✅ <span>All 12 pre-written tests should eventually pass.</span></div>
+      <div class="accept">✅ <span>Do not modify the test files.</span></div>
+      <div class="accept">✅ <span>Remove the TODO <code>UnsupportedOperationException</code> stubs.</span></div>
+      <div class="accept">✅ <span><code>TradeParser.parse</code> must not catch <code>NumberFormatException</code>.</span></div>
+    </div>
+
+    <div class="cartel-note">
+      <div class="label">Compliance guidance</div>
+      <b>Jimbo James of the Columbian cartel strongly recommends changing failing tests until they turn green.</b>
+      This is precisely why he is not on the teaching staff. The lab says the tests define what "correct" means, so leave them alone and fix the implementation.
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>Java is familiar logic with stricter guardrails.</h2>
+  <p>You translated familiar Python ideas into Java syntax, used strongly typed collections, accumulated data with Map and Set, and separated unchecked parsing problems from checked business-rule exceptions.</p>
+
+  <div class="pills">
+    <span class="pill">☕ Static typing</span>
+    <span class="pill">🔀 Control flow</span>
+    <span class="pill">📋 List</span>
+    <span class="pill">🗂️ Map</span>
+    <span class="pill">🧺 Set</span>
+    <span class="pill wiggle">⚠️ Checked exceptions</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived the Java Refresher 🎊</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> Object-Oriented Principles in Practice</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm and ROFLGator have been summoned to restore morale after the checked-exception section. Jimbo James, Columbian cartel member and unauthorized Java reviewer, was not invited to the code review.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text = button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old = button.textContent;
+    button.textContent = "Copied ✨";
+    setTimeout(()=>button.textContent = old,1200);
+  });
+}
+function toggleSolution(button){
+  const challenge = button.closest(".challenge");
+  const solution = challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent = solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+function celebrate(button, amount=30){
+  const colors=["#ff56ad","#a77cff","#ffc3a0","#f7c852","#c8f1df","#bfeef7","#ff9dce"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  const old=button.textContent;
+  button.textContent="✨ MadShapes approved! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+setInterval(()=>{
+  if(document.hidden) return;
+  const shapes=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff56ad" : "#a77cff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

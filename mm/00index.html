@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MadExaminations</title>
+<style>
+  :root {
+    --pink: #ff4fb3;
+    --hotpink: #ff1493;
+    --lavender: #b57cff;
+    --purple: #7b2cff;
+    --peach: #ffb38a;
+    --aqua: #57e7e2;
+    --yellow: #ffe66d;
+    --ink: #3a214b;
+    --white: #fffafd;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    overflow-x: hidden;
+    color: var(--ink);
+  }
+
+  body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,255,255,.85) 0 4%, transparent 4.2%),
+      radial-gradient(circle at 84% 18%, rgba(255,230,109,.75) 0 5%, transparent 5.2%),
+      radial-gradient(circle at 16% 82%, rgba(87,231,226,.65) 0 6%, transparent 6.2%),
+      linear-gradient(135deg, #ffd9ef 0%, #d9c6ff 42%, #bff8f0 100%);
+    position: relative;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: .35;
+    z-index: -1;
+    animation: drift 8s ease-in-out infinite alternate;
+  }
+
+  body::before {
+    background: #ff4fb3;
+    top: -90px;
+    left: -70px;
+  }
+
+  body::after {
+    background: #8a5cff;
+    right: -70px;
+    bottom: -90px;
+    animation-delay: 1.2s;
+  }
+
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to { transform: translate(40px, 24px) scale(1.16); }
+  }
+
+  .app {
+    width: min(940px, 100%);
+    position: relative;
+  }
+
+  .sparkle {
+    position: fixed;
+    font-size: clamp(18px, 2vw, 32px);
+    opacity: .65;
+    animation: bob 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .s1 { left: 4%; top: 12%; }
+  .s2 { right: 6%; top: 19%; animation-delay: .6s; }
+  .s3 { left: 8%; bottom: 14%; animation-delay: 1.1s; }
+  .s4 { right: 9%; bottom: 10%; animation-delay: 1.6s; }
+
+  @keyframes bob {
+    0%,100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-14px) rotate(8deg); }
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .brand {
+    margin: 0;
+    font-size: clamp(2.1rem, 6vw, 4.8rem);
+    line-height: .9;
+    font-weight: 1000;
+    letter-spacing: -3px;
+    background: linear-gradient(90deg, #ff1493, #8a2be2, #ff7f50, #00bfa6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 4px 0 rgba(255,255,255,.8));
+    animation: titleWiggle 3s ease-in-out infinite;
+  }
+
+  @keyframes titleWiggle {
+    0%,100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg) scale(1.015); }
+  }
+
+  .subtitle {
+    margin: 7px 0 0;
+    font-weight: 800;
+    color: #714283;
+  }
+
+  .counter {
+    flex: 0 0 auto;
+    background: rgba(255,255,255,.72);
+    border: 3px solid white;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: 900;
+    box-shadow: 0 8px 20px rgba(71, 38, 82, .14);
+  }
+
+  .card {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 250, 253, .92);
+    border: 4px solid rgba(255,255,255,.96);
+    border-radius: 34px;
+    padding: clamp(24px, 5vw, 54px);
+    box-shadow:
+      0 24px 60px rgba(89, 48, 102, .22),
+      inset 0 0 0 2px rgba(255, 79, 179, .08);
+    backdrop-filter: blur(12px);
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 35%, rgba(255,255,255,.55) 42%, transparent 49%),
+      radial-gradient(circle at 92% 10%, rgba(255,79,179,.11) 0 90px, transparent 92px);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: #ffe4f4;
+    color: #a52a75;
+    font-size: .83rem;
+    font-weight: 1000;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .question {
+    position: relative;
+    margin: 26px 0 18px;
+    font-size: clamp(1.55rem, 3.4vw, 2.45rem);
+    line-height: 1.16;
+    font-weight: 950;
+    letter-spacing: -.035em;
+  }
+
+  .answerBox {
+    display: none;
+    margin: 26px 0 0;
+    padding: 20px 22px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #fff0fa, #f0e8ff 55%, #e8fffb);
+    border: 3px dashed #ff70bd;
+    box-shadow: inset 0 0 24px rgba(255,255,255,.75);
+  }
+
+  .answerBox.show {
+    display: block;
+    animation: answerPop .65s cubic-bezier(.15, 1.35, .3, 1);
+  }
+
+  @keyframes answerPop {
+    0% { transform: translateY(35px) scale(.72) rotate(-3deg); opacity: 0; }
+    65% { transform: translateY(-8px) scale(1.05) rotate(1deg); opacity: 1; }
+    100% { transform: translateY(0) scale(1) rotate(0); }
+  }
+
+  .answerTitle {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    font-weight: 1000;
+    color: #8a2be2;
+    margin-bottom: 12px;
+  }
+
+  .answerList {
+    margin: 0;
+    padding-left: 1.3em;
+    font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+    font-weight: 900;
+    line-height: 1.5;
+  }
+
+  .answerList li::marker {
+    content: "💖  ";
+  }
+
+  .buttonRow {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  button {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    min-width: 220px;
+    padding: 16px 26px;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 1000;
+    color: white;
+    background: linear-gradient(90deg, #ff2aa1, #8f3dff, #21cbbd);
+    box-shadow:
+      0 10px 0 #6a2ca4,
+      0 16px 28px rgba(123,44,255,.28);
+    transition: transform .12s ease, box-shadow .12s ease, filter .2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button::after {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 160%;
+    top: -30%;
+    left: -100px;
+    background: rgba(255,255,255,.35);
+    transform: rotate(20deg);
+    transition: left .55s ease;
+  }
+
+  button:hover {
+    transform: translateY(-3px) scale(1.02);
+    filter: saturate(1.15);
+    box-shadow:
+      0 13px 0 #6a2ca4,
+      0 20px 30px rgba(123,44,255,.3);
+  }
+
+  button:hover::after { left: 110%; }
+
+  button:active {
+    transform: translateY(6px);
+    box-shadow:
+      0 4px 0 #6a2ca4,
+      0 9px 16px rgba(123,44,255,.2);
+  }
+
+  .progress {
+    width: 100%;
+    height: 13px;
+    margin-top: 16px;
+    background: rgba(255,255,255,.6);
+    border: 2px solid rgba(255,255,255,.9);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progressFill {
+    height: 100%;
+    width: 5%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #ff3fa7, #a768ff, #57e7e2, #ffe66d);
+    transition: width .45s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .tinyNote {
+    text-align: center;
+    margin: 11px 0 0;
+    font-size: .85rem;
+    font-weight: 800;
+    color: #76567d;
+  }
+
+  .confetti {
+    position: fixed;
+    width: 12px;
+    height: 18px;
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall var(--fall) linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% {
+      transform: translate3d(0,-15vh,0) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(var(--drift),115vh,0) rotate(var(--spin)) scale(.7);
+      opacity: .9;
+    }
+  }
+
+  .burst {
+    position: fixed;
+    left: 50%;
+    top: 48%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    background: currentColor;
+    animation: burstOut 900ms ease-out forwards;
+  }
+
+  @keyframes burstOut {
+    from {
+      transform: translate(-50%,-50%) rotate(var(--angle)) translateX(0) scale(1.3);
+      opacity: 1;
+    }
+    to {
+      transform: translate(-50%,-50%) rotate(var(--angle)) translateX(var(--distance)) scale(.2);
+      opacity: 0;
+    }
+  }
+
+  .emojiBoom {
+    position: fixed;
+    left: 50%;
+    top: 48%;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 10000;
+    animation: emojiBlast 1.25s cubic-bezier(.12,.8,.25,1) forwards;
+  }
+
+  @keyframes emojiBlast {
+    from {
+      transform: translate(-50%,-50%) rotate(0) scale(.6);
+      opacity: 1;
+    }
+    to {
+      transform: translate(
+        calc(-50% + var(--x)),
+        calc(-50% + var(--y))
+      ) rotate(var(--r)) scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  .shake {
+    animation: shakeCard .55s ease;
+  }
+
+  @keyframes shakeCard {
+    0%,100% { transform: rotate(0); }
+    20% { transform: rotate(-1.2deg) scale(1.01); }
+    40% { transform: rotate(1.2deg) scale(1.015); }
+    60% { transform: rotate(-.8deg) scale(1.01); }
+    80% { transform: rotate(.8deg); }
+  }
+
+  .final {
+    text-align: center;
+  }
+
+  .final .question {
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+
+  code {
+    background: #f7eaff;
+    padding: .08em .3em;
+    border-radius: .35em;
+  }
+
+  @media (max-width: 680px) {
+    body { padding: 16px; }
+    .topbar { align-items: flex-start; flex-direction: column; }
+    .brand { letter-spacing: -2px; }
+    .card { border-radius: 26px; padding: 24px; }
+    button { width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="sparkle s1">✨</div>
+  <div class="sparkle s2">💗</div>
+  <div class="sparkle s3">🌸</div>
+  <div class="sparkle s4">🦄</div>
+
+  <main class="app">
+    <div class="topbar">
+      <div>
+        <h1 class="brand">MadExaminations</h1>
+        <p class="subtitle">Serious questions. Unreasonably dramatic answers. 💅</p>
+      </div>
+      <div class="counter" id="counter">1 / 20</div>
+    </div>
+
+    <section class="card" id="card">
+      <div class="eyebrow" id="eyebrow">✨ Question 1</div>
+      <div class="question" id="question"></div>
+
+      <div class="answerBox" id="answerBox">
+        <div class="answerTitle">💥 Correct Answer</div>
+        <ul class="answerList" id="answerList"></ul>
+      </div>
+
+      <div class="buttonRow">
+        <button id="nextBtn">Reveal the Answer ✨</button>
+      </div>
+    </section>
+
+    <div class="progress">
+      <div class="progressFill" id="progressFill"></div>
+    </div>
+    <p class="tinyNote">Click once for truth. Click again for chaos.</p>
+  </main>
+
+<script>
+const questions = [{"q": "A customer report must include every client, even if they have no account. Which join should be used?", "a": ["LEFT JOIN from clients to accounts"]}, {"q": "A query changes from LEFT JOIN to INNER JOIN, and clients without accounts disappear. Why?", "a": ["INNER JOIN requires a match in both tables."]}, {"q": "In your SQL for your advisors table, you need advisors with at least three clients. Which SQL pattern is correct?", "a": ["GROUP BY advisor_id HAVING COUNT(*) >= 3"]}, {"q": "You are asked to provide a report that shows each account and the date of its latest transaction regardless of the number of transactions associated with the account. A query finds each account's latest transaction using a correlated subquery. Which statements are true?", "a": ["It can reference values from the outer query.", "It is conceptually evaluated for each outer row.", "A non-correlated scalar subquery may be evaluated once."]}, {"q": "What is a chief reason for using a CTE over a derived table subquery?", "a": ["It is often easier to read and maintain."]}, {"q": "A team lead suggests using a GenAI-generated query replacing a CTE query handwritten by the team. What should the team do?", "a": ["Confirm the results are still correct.", "Use it only if it provides a real benefit.", "Compare readability and maintainability."]}, {"q": "A flat file repeats advisor names and portfolio weights for instruments across many rows. What is the main risk?", "a": ["Conflicting values for the same fact"]}, {"q": "You are asked to normalize a flat fit report that is using the following composite key (portfolio_id, instrument_id). In reviewing the table you find a property called sector that is only tied to instrument_id. Which statements properly describe the problem and the fix?", "a": ["Fixing it helps achieve 2NF.", "Move it to a table keyed by instrument."]}, {"q": "You are reviewing the model portfolio schema and find it has an advisor_name that is dependent on advisor_id rather than the client_id. Which statements describe the issue and the steps that should be taken?", "a": ["The change supports 3NF.", "It creates a transitive dependency.", "Moving region to the advisor table removes it."]}, {"q": "A holdings table stores client_id, instrument_id, quantity, and as_of_date. Why use (client_id, instrument_id, as_of_date) as the key?", "a": ["It represents the natural identity of a holding snapshot."]}, {"q": "An instrument table has a primary key on instrument_id and a UNIQUE constraint on ticker. Why keep both?", "a": ["The primary key provides stable database identity.", "UNIQUE prevents duplicate ticker values.", "They enforce different kinds of uniqueness."]}, {"q": "A CHECK constraint requires target_weight_pct to be between 0 and 100. What happens if 150 is inserted?", "a": ["The insert is rejected."]}, {"q": "An audit table is write-heavy and rarely queried by a foreign key. Why might you skip an index on that column? Assume PostgreSQL is being used.", "a": ["Indexes add write-maintenance cost."]}, {"q": "A stakeholder asks for a report showing clients who have \"drifted significantly,\" but gives no definition. What should you do first?", "a": ["Identify existing data that could support the report.", "Record your assumptions.", "List questions that need clarification."]}, {"q": "Before coding the client DRIFT report, the team writes: \"Does drift mean being more than X percentage points above target?\" Why?", "a": ["To validate the interpretation first"]}, {"q": "A session service needs fast token lookups and automatic expiration. Why might a key-value store fit?", "a": ["Fast single-key access", "Built-in expiration support", "No need for joins or aggregation"]}, {"q": "Different financial goal types need different fields, and new types are added regularly. Which storage model fits best?", "a": ["Document"]}, {"q": "Reporting moves from a live PostgreSQL database to an OLAP-based warehouse. What trade-offs should you expect?", "a": ["Warehouse data may be slightly delayed.", "Near-real-time reports may be less suitable.", "Analytics can avoid loading the transactional database."]}, {"q": "What is a benefit of separating storage and compute in a cloud warehouse?", "a": ["Storage and compute can scale independently."]}, {"q": "Who has the world record for the most stage wins in the Tour de France?", "a": ["Mark Cavendish"]}];
+
+let index = 0;
+let showingAnswer = false;
+
+const questionEl = document.getElementById("question");
+const answerBox = document.getElementById("answerBox");
+const answerList = document.getElementById("answerList");
+const nextBtn = document.getElementById("nextBtn");
+const counter = document.getElementById("counter");
+const eyebrow = document.getElementById("eyebrow");
+const progressFill = document.getElementById("progressFill");
+const card = document.getElementById("card");
+
+function renderQuestion() {
+  const item = questions[index];
+  showingAnswer = false;
+
+  questionEl.textContent = item.q;
+  answerList.innerHTML = "";
+  answerBox.classList.remove("show");
+  nextBtn.textContent = "Reveal the Answer ✨";
+  counter.textContent = `${index + 1} / ${questions.length}`;
+  eyebrow.textContent = `✨ Question ${index + 1}`;
+  progressFill.style.width = `${((index + 1) / questions.length) * 100}%`;
+
+  card.classList.remove("final");
+  card.animate(
+    [
+      { opacity: 0, transform: "translateY(20px) scale(.98)" },
+      { opacity: 1, transform: "translateY(0) scale(1)" }
+    ],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+
+function revealAnswer() {
+  showingAnswer = true;
+  answerList.innerHTML = "";
+
+  questions[index].a.forEach(answer => {
+    const li = document.createElement("li");
+    li.textContent = answer;
+    answerList.appendChild(li);
+  });
+
+  answerBox.classList.add("show");
+  nextBtn.textContent = index === questions.length - 1
+    ? "Finish in Fabulous Style 🌈"
+    : "Next Question ➜";
+
+  card.classList.remove("shake");
+  void card.offsetWidth;
+  card.classList.add("shake");
+
+  partyExplosion();
+}
+
+function finishQuiz() {
+  eyebrow.textContent = "🏆 COMPLETE";
+  counter.textContent = `${questions.length} / ${questions.length}`;
+  questionEl.innerHTML = "You survived <em>MadExaminations</em>! 🎉";
+  answerBox.classList.add("show");
+  answerList.innerHTML = `
+    <li>You reviewed all ${questions.length} questions.</li>
+    <li>Your SQL aura is immaculate.</li>
+    <li>Your database normalization energy is now dangerously powerful.</li>
+  `;
+  nextBtn.textContent = "Start Over 💖";
+  card.classList.add("final");
+  progressFill.style.width = "100%";
+  partyExplosion(2.2);
+}
+
+nextBtn.addEventListener("click", () => {
+  if (card.classList.contains("final")) {
+    index = 0;
+    renderQuestion();
+    return;
+  }
+
+  if (!showingAnswer) {
+    revealAnswer();
+  } else {
+    if (index < questions.length - 1) {
+      index++;
+      renderQuestion();
+    } else {
+      finishQuiz();
+    }
+  }
+});
+
+function partyExplosion(multiplier = 1) {
+  launchConfetti(Math.floor(130 * multiplier));
+  launchFirework(Math.floor(42 * multiplier));
+  launchEmojiChaos(Math.floor(20 * multiplier));
+}
+
+function launchConfetti(count = 120) {
+  const palette = ["#ff1493", "#ff69b4", "#8a2be2", "#57e7e2", "#ffe66d", "#ff8c69", "#ffffff"];
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti";
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.background = palette[Math.floor(Math.random() * palette.length)];
+    piece.style.setProperty("--drift", (Math.random() * 240 - 120) + "px");
+    piece.style.setProperty("--spin", (Math.random() * 1200 - 600) + "deg");
+    piece.style.setProperty("--fall", (1.8 + Math.random() * 2.1) + "s");
+    piece.style.width = (7 + Math.random() * 8) + "px";
+    piece.style.height = (9 + Math.random() * 15) + "px";
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4300);
+  }
+}
+
+function launchFirework(count = 44) {
+  const palette = ["#ff2aa1", "#9a4dff", "#00cdb8", "#ffd84d", "#ff7a59"];
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement("div");
+    particle.className = "burst";
+    particle.style.color = palette[Math.floor(Math.random() * palette.length)];
+    particle.style.setProperty("--angle", (Math.random() * 360) + "deg");
+    particle.style.setProperty("--distance", (90 + Math.random() * 260) + "px");
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+  }
+}
+
+function launchEmojiChaos(count = 18) {
+  const emojis = ["💖","✨","🌸","🦄","💅","🎀","🌈","⭐","💜","🍭","🪩","🎉"];
+  for (let i = 0; i < count; i++) {
+    const e = document.createElement("div");
+    e.className = "emojiBoom";
+    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.setProperty("--x", (Math.random() * 760 - 380) + "px");
+    e.style.setProperty("--y", (Math.random() * 540 - 270) + "px");
+    e.style.setProperty("--r", (Math.random() * 720 - 360) + "deg");
+    document.body.appendChild(e);
+    setTimeout(() => e.remove(), 1400);
+  }
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

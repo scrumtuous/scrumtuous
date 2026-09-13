@@ -1,595 +1,1183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MadExaminations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | Sprint 5 Course Hub</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
 <style>
-  :root {
-    --pink: #ff4fb3;
-    --hotpink: #ff1493;
-    --lavender: #b57cff;
-    --purple: #7b2cff;
-    --peach: #ffb38a;
-    --aqua: #57e7e2;
-    --yellow: #ffe66d;
-    --ink: #3a214b;
-    --white: #fffafd;
-  }
+:root {
+  --navy:#17133c;
+  --navy2:#231653;
+  --ink:#1f2858;
+  --pink:#ff4fba;
+  --pink2:#ff9fd6;
+  --lav:#8f6cff;
+  --lav2:#d8c8ff;
+  --mint:#68e0c0;
+  --sky:#7fd8ff;
+  --peach:#ffb680;
+  --gold:#ffd95d;
+  --white:#fff;
+  --paper:#fffafd;
+  --border:#e8d8ef;
+  --shadow:0 14px 35px rgba(47,31,92,.16);
+}
 
-  * { box-sizing: border-box; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 8% 16%, rgba(255,79,186,.12), transparent 24%),
+    radial-gradient(circle at 92% 11%, rgba(143,108,255,.14), transparent 25%),
+    linear-gradient(180deg,#fff8fd 0%,#ffffff 42%,#fff9fc 100%);
+  overflow-x:hidden;
+}
 
-  html, body {
-    margin: 0;
-    min-height: 100%;
-    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
-    overflow-x: hidden;
-    color: var(--ink);
-  }
+a{text-decoration:none}
+button{font:inherit}
 
-  body {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 28px;
-    background:
-      radial-gradient(circle at 10% 15%, rgba(255,255,255,.85) 0 4%, transparent 4.2%),
-      radial-gradient(circle at 84% 18%, rgba(255,230,109,.75) 0 5%, transparent 5.2%),
-      radial-gradient(circle at 16% 82%, rgba(87,231,226,.65) 0 6%, transparent 6.2%),
-      linear-gradient(135deg, #ffd9ef 0%, #d9c6ff 42%, #bff8f0 100%);
-    position: relative;
-  }
+.navbar{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d);
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1000;
+}
+.navbar-brand{
+  font-size:clamp(28px,3vw,44px);
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+}
+.brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand-shapes{color:#fff}
+.navbar .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+}
+.navbar .nav-link:hover,.navbar .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.dropdown-item:hover{background:#fff0f8;color:#9b2d72}
+.keep-going{
+  display:inline-flex;align-items:center;gap:8px;color:#8ff9e2;
+  font-weight:1000;transform:rotate(-4deg);animation:keepWiggle 2.8s ease-in-out infinite;
+}
+@keyframes keepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
 
-  body::before,
-  body::after {
-    content: "";
-    position: fixed;
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    filter: blur(20px);
-    opacity: .35;
-    z-index: -1;
-    animation: drift 8s ease-in-out infinite alternate;
-  }
+.hero{
+  position:relative;
+  min-height:360px;
+  background:
+    radial-gradient(circle at 82% 20%,rgba(255,255,255,.75),transparent 18%),
+    linear-gradient(110deg,#fff8fe 0%,#ffdff1 38%,#f6e7ff 68%,#fff 100%);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.hero-inner{
+  max-width:1460px;
+  margin:0 auto;
+  min-height:360px;
+  display:grid;
+  grid-template-columns:370px 1fr 360px;
+  align-items:center;
+  gap:22px;
+  padding:26px 28px 18px;
+  position:relative;
+  z-index:4;
+}
+.girl-wrap{
+  height:320px;
+  position:relative;
+  display:grid;
+  place-items:end center;
+}
+.girl-svg{
+  width:330px;
+  max-width:100%;
+  filter:drop-shadow(0 20px 18px rgba(71,35,91,.18));
+  animation:girlBounce 3.8s ease-in-out infinite;
+  transform-origin:50% 100%;
+}
+@keyframes girlBounce{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-9px) rotate(1deg)}
+}
+.speech{
+  position:absolute;
+  left:0;top:36px;
+  width:145px;
+  padding:13px 14px;
+  border:3px solid #1e1740;
+  border-radius:50%;
+  background:#fff;
+  color:#1e1740;
+  font-size:18px;
+  line-height:1.02;
+  font-weight:1000;
+  text-align:center;
+  transform:rotate(-8deg);
+  box-shadow:0 8px 0 rgba(37,22,72,.08);
+}
+.speech:after{
+  content:"";
+  position:absolute;
+  right:5px;bottom:-22px;
+  width:26px;height:26px;
+  background:#fff;
+  border-right:3px solid #1e1740;
+  border-bottom:3px solid #1e1740;
+  transform:rotate(30deg);
+}
 
-  body::before {
-    background: #ff4fb3;
-    top: -90px;
-    left: -70px;
-  }
+.hero-copy{text-align:center;align-self:center;padding-bottom:18px}
+.module-ribbon{
+  display:inline-block;
+  padding:8px 28px;
+  border-radius:13px 13px 8px 8px;
+  background:linear-gradient(90deg,#ff60bf,#ff8bd0);
+  color:#fff;
+  font-size:26px;
+  font-weight:1000;
+  transform:rotate(-1.5deg);
+  box-shadow:0 8px 0 rgba(190,54,140,.12);
+}
+.hero h1{
+  margin:16px 0 3px;
+  color:#0e1957;
+  font-size:clamp(48px,6vw,90px);
+  line-height:.88;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  font-family:"Trebuchet MS","Arial Rounded MT Bold",sans-serif;
+  transform:rotate(-1deg);
+  text-shadow:0 3px 0 #fff;
+}
+.hero-subtitle{
+  font-size:clamp(19px,2.2vw,28px);
+  font-weight:1000;
+  font-style:italic;
+  color:#1b1b5f;
+  transform:rotate(-1deg);
+}
+.hero-blurb{
+  max-width:760px;margin:12px auto 0;color:#534777;font-weight:750;font-size:16px
+}
+.hero-underline{
+  width:110px;height:9px;border-radius:999px;background:#8c61ff;
+  margin:12px auto 0;transform:rotate(-5deg);
+}
 
-  body::after {
-    background: #8a5cff;
-    right: -70px;
-    bottom: -90px;
-    animation-delay: 1.2s;
-  }
+.shape-stage{
+  height:320px;
+  position:relative;
+}
+.mascot{
+  position:absolute;
+  display:grid;
+  place-items:center;
+  filter:drop-shadow(0 14px 11px rgba(59,31,95,.18));
+}
+.mascot.square{
+  width:125px;height:125px;
+  right:86px;top:42px;
+  border-radius:22px;
+  background:linear-gradient(145deg,#ff9ed5,#ff48b8);
+  border:4px solid rgba(89,36,117,.28);
+  animation:squareJump 2.2s ease-in-out infinite;
+}
+@keyframes squareJump{
+  0%,100%{transform:translateY(0) rotate(5deg)}
+  45%{transform:translateY(-34px) rotate(-6deg)}
+  60%{transform:translateY(-30px) rotate(-2deg)}
+}
+.face-eye{position:absolute;width:15px;height:23px;background:#20153f;border-radius:50%;top:42px}
+.face-eye.e1{left:34px} .face-eye.e2{right:34px}
+.smile{
+  position:absolute;width:56px;height:28px;border-bottom:8px solid #20153f;
+  border-radius:0 0 60px 60px;top:66px
+}
+.arm{position:absolute;width:54px;height:8px;border-radius:999px;background:#3a2464;top:57px}
+.arm.a1{left:-42px;transform:rotate(-22deg)} .arm.a2{right:-42px;transform:rotate(24deg)}
+.leg{position:absolute;width:9px;height:50px;border-radius:999px;background:#3a2464;bottom:-37px}
+.leg.l1{left:38px;transform:rotate(8deg)} .leg.l2{right:38px;transform:rotate(-9deg)}
+.sunglass{
+  position:absolute;top:28px;width:46px;height:28px;background:#261a4b;border:5px solid #181333;border-radius:10px
+}
+.sunglass.g1{left:15px;transform:rotate(5deg)} .sunglass.g2{right:15px;transform:rotate(-5deg)}
+.sunglass-bridge{position:absolute;top:39px;width:28px;height:6px;background:#181333}
 
-  @keyframes drift {
-    from { transform: translate(0,0) scale(1); }
-    to { transform: translate(40px, 24px) scale(1.16); }
-  }
+.mascot.triangle{
+  right:8px;bottom:20px;width:0;height:0;
+  border-left:76px solid transparent;border-right:76px solid transparent;border-bottom:145px solid #8c72ff;
+  animation:triangleHop 2.9s ease-in-out infinite;
+}
+@keyframes triangleHop{
+  0%,100%{transform:translateY(0) rotate(8deg)}
+  50%{transform:translateY(-22px) rotate(-5deg)}
+}
+.triangle-face{
+  position:absolute;left:-43px;top:72px;width:86px;height:58px
+}
+.triangle-face:before,.triangle-face:after{
+  content:"";position:absolute;width:14px;height:20px;background:#211746;border-radius:50%;top:0
+}
+.triangle-face:before{left:13px} .triangle-face:after{right:13px}
+.tri-smile{
+  position:absolute;left:21px;top:24px;width:43px;height:22px;border-bottom:7px solid #211746;border-radius:0 0 50px 50px
+}
 
-  .app {
-    width: min(940px, 100%);
-    position: relative;
-  }
+.sticky{
+  position:absolute;right:185px;bottom:44px;
+  width:104px;height:104px;padding:20px 10px;
+  background:#ffe45a;color:#151341;font-weight:1000;font-size:22px;line-height:.95;
+  text-align:center;transform:rotate(10deg);box-shadow:0 11px 22px rgba(110,80,20,.16);
+  animation:stickyFloat 3.4s ease-in-out infinite;
+}
+@keyframes stickyFloat{50%{transform:translateY(-8px) rotate(5deg)}}
 
-  .sparkle {
-    position: fixed;
-    font-size: clamp(18px, 2vw, 32px);
-    opacity: .65;
-    animation: bob 3s ease-in-out infinite;
-    pointer-events: none;
-  }
+.confetti-piece{
+  position:absolute;width:11px;height:27px;border-radius:6px;opacity:.95;
+  animation:heroConfetti 3.8s ease-in-out infinite;
+}
+@keyframes heroConfetti{
+  50%{transform:translateY(-14px) rotate(110deg) scale(1.08)}
+}
+.hero-confetti{position:absolute;inset:0;pointer-events:none;z-index:2}
 
-  .s1 { left: 4%; top: 12%; }
-  .s2 { right: 6%; top: 19%; animation-delay: .6s; }
-  .s3 { left: 8%; bottom: 14%; animation-delay: 1.1s; }
-  .s4 { right: 9%; bottom: 10%; animation-delay: 1.6s; }
+.course-shell{
+  max-width:1460px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:18px;
+  padding:16px 18px 70px;
+}
+.sidebar{
+  position:sticky;top:92px;align-self:start;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:linear-gradient(180deg,#faf6ff,#fff);
+  box-shadow:var(--shadow);
+  padding:10px;
+  max-height:calc(100vh - 110px);
+  overflow:auto;
+}
+.side-title{
+  padding:10px 13px;
+  border-radius:13px;
+  background:linear-gradient(90deg,#e654c2,#ee53b0);
+  color:#fff;font-weight:1000;margin-bottom:8px
+}
+.side-link{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:12px;color:#283064;font-size:13px;font-weight:760;
+  transition:.2s ease;
+}
+.side-link:hover{background:#f0e9ff;transform:translateX(4px);color:#9d347f}
+.side-num{
+  flex:0 0 auto;display:grid;place-items:center;width:24px;height:24px;border-radius:8px;
+  background:#ede7ff;color:#7254d1;font-size:12px;font-weight:1000;
+}
+.sidebar-sticker{
+  margin-top:12px;padding:14px;border-radius:16px;background:#fff5d9;border:1px solid #f0dfa2;
+  font-size:13px;font-weight:760;transform:rotate(-1deg)
+}
 
-  @keyframes bob {
-    0%,100% { transform: translateY(0) rotate(-8deg); }
-    50% { transform: translateY(-14px) rotate(8deg); }
-  }
+.content-area{min-width:0}
+.toolbar{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;
+  padding:12px 4px 4px
+}
+.toolbar h2{margin:0;color:#17215b;font-weight:1000;font-size:30px}
+.search-wrap{position:relative;min-width:min(100%,330px)}
+.search-wrap input{
+  width:100%;border:1px solid var(--border);border-radius:999px;padding:11px 42px 11px 16px;
+  background:#fff;box-shadow:0 8px 22px rgba(48,34,85,.08);outline:none;color:#29305f;font-weight:700
+}
+.search-wrap input:focus{border-color:#ff71c4;box-shadow:0 0 0 4px rgba(255,79,186,.12)}
+.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%)}
 
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+.progress-banner{
+  margin:14px 0 18px;
+  padding:14px 18px;border-radius:18px;border:1px solid #bae6d8;
+  background:linear-gradient(90deg,#eefff8,#f9fffd);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap
+}
+.progress-banner b{color:#235f50}
+.progress-track{flex:1;min-width:190px;height:12px;background:#dff2eb;border-radius:999px;overflow:hidden}
+.progress-track span{display:block;width:92%;height:100%;background:linear-gradient(90deg,#65dcb7,#8d6cff);border-radius:999px;animation:progressGlow 2.3s ease-in-out infinite}
+@keyframes progressGlow{50%{filter:brightness(1.14)}}
 
-  .brand {
-    margin: 0;
-    font-size: clamp(2.1rem, 6vw, 4.8rem);
-    line-height: .9;
-    font-weight: 1000;
-    letter-spacing: -3px;
-    background: linear-gradient(90deg, #ff1493, #8a2be2, #ff7f50, #00bfa6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 4px 0 rgba(255,255,255,.8));
-    animation: titleWiggle 3s ease-in-out infinite;
-  }
+.modules-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.module-card{
+  position:relative;overflow:hidden;
+  min-height:285px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:#fff;
+  padding:17px;
+  box-shadow:0 10px 26px rgba(52,37,88,.09);
+  transition:.24s cubic-bezier(.2,.9,.3,1.3);
+}
+.module-card:before{
+  content:"";position:absolute;left:0;right:0;top:0;height:10px;background:var(--accent,#ff72c1);
+}
+.module-card:hover{
+  transform:translateY(-8px) rotate(-.7deg) scale(1.01);
+  box-shadow:0 20px 42px rgba(52,37,88,.16);
+}
+.theme-pink{--accent:#ff64bd;background:linear-gradient(180deg,#fff6fb,#fff)}
+.theme-mint{--accent:#62dcb3;background:linear-gradient(180deg,#f1fff9,#fff)}
+.theme-lav{--accent:#9a78ff;background:linear-gradient(180deg,#f7f3ff,#fff)}
+.theme-sky{--accent:#70d2ff;background:linear-gradient(180deg,#f1fbff,#fff)}
+.theme-peach{--accent:#ffad75;background:linear-gradient(180deg,#fff7f1,#fff)}
+.theme-gold{--accent:#ffd456;background:linear-gradient(180deg,#fffbea,#fff)}
+.module-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.module-badge{
+  display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.88);
+  border:1px solid var(--border);font-weight:1000;color:#563e78;font-size:12px
+}
+.module-icon{font-size:35px;animation:iconBob 3s ease-in-out infinite}
+@keyframes iconBob{50%{transform:translateY(-7px) rotate(7deg)}}
+.module-card h3{font-size:20px;font-weight:1000;color:#19225a;line-height:1.04}
+.module-card p{color:#59618b;font-size:14px;min-height:66px}
+.tag-row{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 14px}
+.tag{padding:5px 8px;border-radius:999px;background:#fff;border:1px solid #eadceb;font-size:11px;font-weight:900;color:#755983}
+.launch-btn{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 13px;border-radius:13px;background:linear-gradient(90deg,#201852,#3b2877);
+  color:#fff;font-weight:1000;transition:.2s ease;
+}
+.launch-btn:hover{color:#fff;transform:translateX(3px);background:linear-gradient(90deg,#ef4bb0,#8d65ff)}
+.launch-arrow{font-size:20px}
 
-  @keyframes titleWiggle {
-    0%,100% { transform: rotate(-1deg); }
-    50% { transform: rotate(1deg) scale(1.015); }
-  }
+.missing-card{
+  border-style:dashed;
+  background:linear-gradient(145deg,#fffdf4,#fff);
+}
+.missing-card .launch-btn{background:#ede7f0;color:#867a8e;pointer-events:none}
 
-  .subtitle {
-    margin: 7px 0 0;
-    font-weight: 800;
-    color: #714283;
-  }
+.quiz-section{
+  margin-top:24px;border-radius:24px;padding:22px;
+  background:linear-gradient(135deg,#23174e,#47216e 60%,#982f8f);
+  color:#fff;position:relative;overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.quiz-section h2{font-weight:1000}
+.quiz-box{
+  margin-top:14px;padding:18px;border-radius:18px;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(7px)
+}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.quiz-option{
+  border:none;border-radius:14px;padding:12px 14px;background:#fff;color:#34275f;font-weight:900;text-align:left;cursor:pointer;
+  transition:.2s ease
+}
+.quiz-option:hover{transform:translateY(-2px);background:#fff0fa}
+.quiz-result{margin-top:12px;font-weight:900;min-height:28px}
 
-  .counter {
-    flex: 0 0 auto;
-    background: rgba(255,255,255,.72);
-    border: 3px solid white;
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-weight: 900;
-    box-shadow: 0 8px 20px rgba(71, 38, 82, .14);
-  }
+.footer{
+  margin-top:26px;padding:26px;border-radius:24px;text-align:center;
+  background:linear-gradient(135deg,#fff1f8,#f5f0ff,#effcf7);
+  border:1px solid var(--border)
+}
+.footer h2{font-weight:1000;color:#17215b}
+.footer p{color:#675c80}
+.cartel-note{
+  display:inline-block;margin-top:8px;padding:8px 12px;border-radius:999px;
+  background:#fff;border:1px solid #e8d7ee;color:#6c5877;font-size:12px;font-weight:800
+}
 
-  .card {
-    position: relative;
-    overflow: hidden;
-    background: rgba(255, 250, 253, .92);
-    border: 4px solid rgba(255,255,255,.96);
-    border-radius: 34px;
-    padding: clamp(24px, 5vw, 54px);
-    box-shadow:
-      0 24px 60px rgba(89, 48, 102, .22),
-      inset 0 0 0 2px rgba(255, 79, 179, .08);
-    backdrop-filter: blur(12px);
-  }
+.cursor-shape{
+  position:fixed;z-index:9998;pointer-events:none;
+  width:24px;height:24px;display:grid;place-items:center;
+  font-size:20px;filter:drop-shadow(0 5px 4px rgba(38,20,70,.15));
+  transition:opacity .2s ease;
+}
+.firework-particle{
+  position:fixed;z-index:9999;width:7px;height:7px;border-radius:50%;
+  pointer-events:none;animation:boom .85s ease-out forwards;
+}
+@keyframes boom{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}
+}
+.fall-confetti{
+  position:fixed;z-index:9997;top:-20px;pointer-events:none;border-radius:4px;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(900deg);opacity:.15}
+}
 
-  .card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(120deg, transparent 0 35%, rgba(255,255,255,.55) 42%, transparent 49%),
-      radial-gradient(circle at 92% 10%, rgba(255,79,179,.11) 0 90px, transparent 92px);
-    pointer-events: none;
-  }
+@media(max-width:1150px){
+  .hero-inner{grid-template-columns:300px 1fr 290px}
+  .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:18px}
+  .girl-wrap,.shape-stage{display:none}
+  .hero{min-height:auto}
+  .hero-inner{min-height:auto}
+  .course-shell{grid-template-columns:1fr}
+  .sidebar{position:relative;top:auto;max-height:none}
+}
+@media(max-width:650px){
+  .modules-grid{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .hero h1{font-size:50px}
+}
+</style>
+<style>
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 13px;
-    border-radius: 999px;
-    background: #ffe4f4;
-    color: #a52a75;
-    font-size: .83rem;
-    font-weight: 1000;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
 
-  .question {
-    position: relative;
-    margin: 26px 0 18px;
-    font-size: clamp(1.55rem, 3.4vw, 2.45rem);
-    line-height: 1.16;
-    font-weight: 950;
-    letter-spacing: -.035em;
-  }
+</style>
+<style>
 
-  .answerBox {
-    display: none;
-    margin: 26px 0 0;
-    padding: 20px 22px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #fff0fa, #f0e8ff 55%, #e8fffb);
-    border: 3px dashed #ff70bd;
-    box-shadow: inset 0 0 24px rgba(255,255,255,.75);
-  }
+/* Landing page mascot images */
+.gator-page-sticker{
+  position:fixed;
+  right:-24px;
+  bottom:18px;
+  width:152px;
+  height:auto;
+  z-index:720;
+  pointer-events:none;
+  filter:drop-shadow(0 14px 12px rgba(53,27,83,.18));
+  animation:gatorPeek 3.2s ease-in-out infinite;
+  transform-origin:100% 100%;
+}
+@keyframes gatorPeek{
+  0%,100%{transform:translateX(7px) rotate(-9deg)}
+  50%{transform:translateX(-8px) translateY(-8px) rotate(-3deg)}
+}
+.frog-cursor-follower{
+  position:fixed;
+  left:0;top:0;
+  width:82px;
+  height:82px;
+  z-index:9998;
+  pointer-events:none;
+  filter:drop-shadow(0 10px 8px rgba(53,27,83,.17));
+  will-change:transform;
+}
+.frog-cursor-follower svg{
+  width:100%;height:100%;
+  animation:frogBob .95s ease-in-out infinite alternate;
+}
+@keyframes frogBob{to{transform:rotate(7deg) translateY(-5px)}}
+@media(max-width:850px), (pointer:coarse){
+  .frog-cursor-follower{display:none}
+  .gator-page-sticker{width:105px;opacity:.82;right:-28px}
+}
 
-  .answerBox.show {
-    display: block;
-    animation: answerPop .65s cubic-bezier(.15, 1.35, .3, 1);
-  }
-
-  @keyframes answerPop {
-    0% { transform: translateY(35px) scale(.72) rotate(-3deg); opacity: 0; }
-    65% { transform: translateY(-8px) scale(1.05) rotate(1deg); opacity: 1; }
-    100% { transform: translateY(0) scale(1) rotate(0); }
-  }
-
-  .answerTitle {
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: .13em;
-    font-weight: 1000;
-    color: #8a2be2;
-    margin-bottom: 12px;
-  }
-
-  .answerList {
-    margin: 0;
-    padding-left: 1.3em;
-    font-size: clamp(1.2rem, 2.2vw, 1.55rem);
-    font-weight: 900;
-    line-height: 1.5;
-  }
-
-  .answerList li::marker {
-    content: "💖  ";
-  }
-
-  .buttonRow {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  button {
-    appearance: none;
-    border: 0;
-    cursor: pointer;
-    min-width: 220px;
-    padding: 16px 26px;
-    border-radius: 999px;
-    font: inherit;
-    font-size: 1.1rem;
-    font-weight: 1000;
-    color: white;
-    background: linear-gradient(90deg, #ff2aa1, #8f3dff, #21cbbd);
-    box-shadow:
-      0 10px 0 #6a2ca4,
-      0 16px 28px rgba(123,44,255,.28);
-    transition: transform .12s ease, box-shadow .12s ease, filter .2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  button::after {
-    content: "";
-    position: absolute;
-    width: 70px;
-    height: 160%;
-    top: -30%;
-    left: -100px;
-    background: rgba(255,255,255,.35);
-    transform: rotate(20deg);
-    transition: left .55s ease;
-  }
-
-  button:hover {
-    transform: translateY(-3px) scale(1.02);
-    filter: saturate(1.15);
-    box-shadow:
-      0 13px 0 #6a2ca4,
-      0 20px 30px rgba(123,44,255,.3);
-  }
-
-  button:hover::after { left: 110%; }
-
-  button:active {
-    transform: translateY(6px);
-    box-shadow:
-      0 4px 0 #6a2ca4,
-      0 9px 16px rgba(123,44,255,.2);
-  }
-
-  .progress {
-    width: 100%;
-    height: 13px;
-    margin-top: 16px;
-    background: rgba(255,255,255,.6);
-    border: 2px solid rgba(255,255,255,.9);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  .progressFill {
-    height: 100%;
-    width: 5%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #ff3fa7, #a768ff, #57e7e2, #ffe66d);
-    transition: width .45s cubic-bezier(.2,.8,.2,1);
-  }
-
-  .tinyNote {
-    text-align: center;
-    margin: 11px 0 0;
-    font-size: .85rem;
-    font-weight: 800;
-    color: #76567d;
-  }
-
-  .confetti {
-    position: fixed;
-    width: 12px;
-    height: 18px;
-    border-radius: 3px;
-    pointer-events: none;
-    z-index: 9999;
-    animation: confettiFall var(--fall) linear forwards;
-  }
-
-  @keyframes confettiFall {
-    0% {
-      transform: translate3d(0,-15vh,0) rotate(0deg) scale(1);
-      opacity: 1;
-    }
-    100% {
-      transform: translate3d(var(--drift),115vh,0) rotate(var(--spin)) scale(.7);
-      opacity: .9;
-    }
-  }
-
-  .burst {
-    position: fixed;
-    left: 50%;
-    top: 48%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    background: currentColor;
-    animation: burstOut 900ms ease-out forwards;
-  }
-
-  @keyframes burstOut {
-    from {
-      transform: translate(-50%,-50%) rotate(var(--angle)) translateX(0) scale(1.3);
-      opacity: 1;
-    }
-    to {
-      transform: translate(-50%,-50%) rotate(var(--angle)) translateX(var(--distance)) scale(.2);
-      opacity: 0;
-    }
-  }
-
-  .emojiBoom {
-    position: fixed;
-    left: 50%;
-    top: 48%;
-    font-size: 2rem;
-    pointer-events: none;
-    z-index: 10000;
-    animation: emojiBlast 1.25s cubic-bezier(.12,.8,.25,1) forwards;
-  }
-
-  @keyframes emojiBlast {
-    from {
-      transform: translate(-50%,-50%) rotate(0) scale(.6);
-      opacity: 1;
-    }
-    to {
-      transform: translate(
-        calc(-50% + var(--x)),
-        calc(-50% + var(--y))
-      ) rotate(var(--r)) scale(1.45);
-      opacity: 0;
-    }
-  }
-
-  .shake {
-    animation: shakeCard .55s ease;
-  }
-
-  @keyframes shakeCard {
-    0%,100% { transform: rotate(0); }
-    20% { transform: rotate(-1.2deg) scale(1.01); }
-    40% { transform: rotate(1.2deg) scale(1.015); }
-    60% { transform: rotate(-.8deg) scale(1.01); }
-    80% { transform: rotate(.8deg); }
-  }
-
-  .final {
-    text-align: center;
-  }
-
-  .final .question {
-    font-size: clamp(2rem, 5vw, 4rem);
-  }
-
-  code {
-    background: #f7eaff;
-    padding: .08em .3em;
-    border-radius: .35em;
-  }
-
-  @media (max-width: 680px) {
-    body { padding: 16px; }
-    .topbar { align-items: flex-start; flex-direction: column; }
-    .brand { letter-spacing: -2px; }
-    .card { border-radius: 26px; padding: 24px; }
-    button { width: 100%; }
-  }
 </style>
 </head>
 <body>
-  <div class="sparkle s1">✨</div>
-  <div class="sparkle s2">💗</div>
-  <div class="sparkle s3">🌸</div>
-  <div class="sparkle s4">🦄</div>
 
-  <main class="app">
-    <div class="topbar">
-      <div>
-        <h1 class="brand">MadExaminations</h1>
-        <p class="subtitle">Serious questions. Unreasonably dramatic answers. 💅</p>
-      </div>
-      <div class="counter" id="counter">1 / 20</div>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
     </div>
 
-    <section class="card" id="card">
-      <div class="eyebrow" id="eyebrow">✨ Question 1</div>
-      <div class="question" id="question"></div>
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
 
-      <div class="answerBox" id="answerBox">
-        <div class="answerTitle">💥 Correct Answer</div>
-        <ul class="answerList" id="answerList"></ul>
+<header class="hero" id="home">
+  <div class="hero-confetti" id="heroConfetti"></div>
+
+  <div class="hero-inner">
+    <div class="girl-wrap">
+      <div class="speech">Java is just Python with braces!</div>
+
+      <svg class="girl-svg" viewBox="0 0 430 430" aria-label="Cartoon student in pink hoodie raising her fist" role="img">
+        <defs>
+          <linearGradient id="hoodie" x1="0" x2="1">
+            <stop offset="0" stop-color="#ff58b9"/>
+            <stop offset="1" stop-color="#e83091"/>
+          </linearGradient>
+          <linearGradient id="hair" x1="0" x2="1">
+            <stop offset="0" stop-color="#1f100d"/>
+            <stop offset=".5" stop-color="#4a2017"/>
+            <stop offset="1" stop-color="#1b0d0a"/>
+          </linearGradient>
+          <linearGradient id="skin" x1="0" x2="1">
+            <stop offset="0" stop-color="#ffc197"/>
+            <stop offset="1" stop-color="#f29c78"/>
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="215" cy="407" rx="128" ry="18" fill="rgba(50,25,80,.10)"/>
+
+        <!-- Raised arm -->
+        <path d="M288 189 C323 159 326 117 329 82 L361 87 C361 143 347 190 317 222 Z" fill="url(#hoodie)" stroke="#7d235b" stroke-width="5"/>
+        <path d="M331 92 C322 76 324 58 337 50 C345 46 349 53 348 61 C354 44 363 43 367 50 C371 57 366 68 362 76 C371 67 379 70 381 77 C383 87 368 101 355 105 Z" fill="url(#skin)" stroke="#8f4f40" stroke-width="4"/>
+
+        <!-- Hair -->
+        <path d="M111 199 C67 155 77 74 136 46 C192 18 284 42 309 112 C331 174 300 237 274 266 C244 296 145 286 106 236 C94 220 93 211 111 199 Z" fill="url(#hair)" stroke="#160b09" stroke-width="6"/>
+        <path d="M111 109 C96 69 129 31 168 42 C183 15 225 12 246 38 C282 28 318 57 314 94 C333 111 325 143 306 151 C307 93 266 62 216 58 C169 56 127 75 111 109 Z" fill="#2b120d"/>
+
+        <!-- Hoodie body -->
+        <path d="M120 234 C143 209 177 199 216 199 C260 200 296 214 317 245 L327 390 L97 390 L107 270 C110 253 113 243 120 234 Z" fill="url(#hoodie)" stroke="#7d235b" stroke-width="6"/>
+        <path d="M165 220 C181 244 251 244 266 220" fill="none" stroke="#ffacd9" stroke-width="8" stroke-linecap="round"/>
+        <path d="M185 234 L176 285 M245 234 L252 285" stroke="#fff0f8" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="176" cy="289" r="7" fill="#fff0f8"/><circle cx="252" cy="289" r="7" fill="#fff0f8"/>
+
+        <!-- Other arm -->
+        <path d="M116 254 C78 271 55 297 44 332 L76 342 C90 316 105 298 127 289 Z" fill="url(#hoodie)" stroke="#7d235b" stroke-width="5"/>
+        <path d="M41 330 C32 337 28 348 34 357 C42 369 61 361 72 345 L62 333 Z" fill="url(#skin)" stroke="#8f4f40" stroke-width="4"/>
+
+        <!-- Face -->
+        <ellipse cx="211" cy="145" rx="74" ry="80" fill="url(#skin)" stroke="#8f4f40" stroke-width="5"/>
+        <path d="M151 123 C166 99 188 89 213 91 C245 91 274 108 286 137 C275 93 246 68 207 68 C171 68 145 90 136 120 Z" fill="#2a110d"/>
+
+        <!-- Sunglasses -->
+        <rect x="144" y="111" width="67" height="42" rx="14" fill="#ff55b7" stroke="#6d1d5b" stroke-width="6" transform="rotate(-5 177 132)"/>
+        <rect x="216" y="110" width="67" height="42" rx="14" fill="#ff55b7" stroke="#6d1d5b" stroke-width="6" transform="rotate(5 249 131)"/>
+        <rect x="151" y="117" width="54" height="30" rx="10" fill="#382061"/>
+        <rect x="223" y="117" width="54" height="30" rx="10" fill="#382061"/>
+        <path d="M210 130 C214 126 217 126 221 130" stroke="#6d1d5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+        <!-- Smile -->
+        <path d="M177 164 Q211 198 247 164 Q239 215 211 217 Q185 214 177 164 Z" fill="#5c1a2f" stroke="#802840" stroke-width="4"/>
+        <path d="M184 170 Q212 186 240 170" fill="#fff" stroke="#fff" stroke-width="3"/>
+        <path d="M197 204 Q212 195 227 204" fill="#ff6f9f"/>
+
+        <!-- hair curls -->
+        <path d="M118 166 Q72 187 112 231 Q69 235 92 277 Q62 285 93 318" fill="none" stroke="#32140e" stroke-width="20" stroke-linecap="round"/>
+        <path d="M295 164 Q340 190 301 232 Q342 243 316 280 Q350 292 321 327" fill="none" stroke="#32140e" stroke-width="20" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="hero-copy">
+      <div class="module-ribbon">Sprint 5 Course Hub</div>
+      <h1>Build Better Java</h1>
+      <div class="hero-subtitle">Same Shapes. Bigger Dreams.</div>
+      <div class="hero-underline"></div>
+      <p class="hero-blurb">
+        Java foundations, object-oriented design, UML, peer review, SOLID, clean code, TDD, JUnit, and a very large amount of cheerful pink confetti.
+      </p>
+    </div>
+
+    <div class="shape-stage" aria-hidden="true">
+      <div class="sticky">YOU<br>GOT<br>THIS!</div>
+
+      <div class="mascot square">
+        <span class="sunglass g1"></span><span class="sunglass g2"></span><span class="sunglass-bridge"></span>
+        <span class="face-eye e1"></span><span class="face-eye e2"></span><span class="smile"></span>
+        <span class="arm a1"></span><span class="arm a2"></span><span class="leg l1"></span><span class="leg l2"></span>
       </div>
 
-      <div class="buttonRow">
-        <button id="nextBtn">Reveal the Answer ✨</button>
+      <div class="mascot triangle">
+        <div class="triangle-face"><div class="tri-smile"></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="course-shell">
+  <aside class="sidebar">
+    <div class="side-title">🏠 Course Modules</div>
+    <a class="side-link" href="madshapes_core_java_refresher_roflgator_jimbo.html">
+        <span class="side-num">1</span>
+        <span>Core Java Refresher</span>
+      </a>
+<a class="side-link" href="madshapes_oo_principles_in_practice.html">
+        <span class="side-num">2</span>
+        <span>Object-Oriented Principles in Practice</span>
+      </a>
+<a class="side-link" href="madshapes_ooad_requirements_to_objects.html">
+        <span class="side-num">3</span>
+        <span>OOAD: Requirements to Objects</span>
+      </a>
+<a class="side-link" href="madshapes_uml_class_diagrams.html">
+        <span class="side-num">4</span>
+        <span>UML Class Diagrams</span>
+      </a>
+<a class="side-link" href="madshapes_uml_sequence_diagrams.html">
+        <span class="side-num">5</span>
+        <span>UML Sequence Diagrams</span>
+      </a>
+<a class="side-link" href="madshapes_peer_review.html">
+        <span class="side-num">6</span>
+        <span>Peer Review</span>
+      </a>
+<a class="side-link" href="madshapes_solid_principles_part2.html">
+        <span class="side-num">8</span>
+        <span>SOLID Principles, Part 2</span>
+      </a>
+<a class="side-link" href="madshapes_clean_code.html">
+        <span class="side-num">9</span>
+        <span>Clean Code</span>
+      </a>
+<a class="side-link" href="madshapes_tdd_fundamentals.html">
+        <span class="side-num">10</span>
+        <span>TDD Fundamentals</span>
+      </a>
+<a class="side-link" href="madshapes_junit.html">
+        <span class="side-num">11</span>
+        <span>JUnit</span>
+      </a>
+<a class="side-link" href="madshapes_tdd_in_practice.html">
+        <span class="side-num">12</span>
+        <span>TDD in Practice</span>
+      </a>
+
+    <div class="sidebar-sticker">
+      <b>Module 7 note:</b><br>
+      SOLID Principles Part 1 source material is part of the course, but there is not a Module 7 HTML lesson in this bundle yet.
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <div class="toolbar">
+      <h2>🚀 Choose Your Next Adventure</h2>
+      <div class="search-wrap">
+        <input id="moduleSearch" type="search" placeholder="Search modules..." oninput="filterModules()">
+        <span class="search-icon">🔎</span>
+      </div>
+    </div>
+
+    <div class="progress-banner">
+      <b>✨ 11 interactive lessons ready</b>
+      <div class="progress-track"><span></span></div>
+      <span>Keep building!</span>
+    </div>
+
+    <section class="modules-grid" id="modules">
+      
+    <article class="module-card theme-pink" data-title="core java refresher java types collections">
+      <div class="module-card-top">
+        <div class="module-badge">Module 1</div>
+        <div class="module-icon">☕</div>
+      </div>
+      <h3>Core Java Refresher</h3>
+      <p>Java syntax, static typing, control flow, collections, generics, maps, sets, and exceptions.</p>
+      <div class="tag-row">
+        <span class="tag">Java</span><span class="tag">Types</span><span class="tag">Collections</span>
+      </div>
+      <a class="launch-btn" href="madshapes_core_java_refresher_roflgator_jimbo.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-mint" data-title="object-oriented principles in practice oop encapsulation composition">
+      <div class="module-card-top">
+        <div class="module-badge">Module 2</div>
+        <div class="module-icon">🧱</div>
+      </div>
+      <h3>Object-Oriented Principles in Practice</h3>
+      <p>Encapsulation, inheritance, interfaces, composition, and fixing bad inheritance.</p>
+      <div class="tag-row">
+        <span class="tag">OOP</span><span class="tag">Encapsulation</span><span class="tag">Composition</span>
+      </div>
+      <a class="launch-btn" href="madshapes_oo_principles_in_practice.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-lav" data-title="ooad: requirements to objects ooad nouns verbs">
+      <div class="module-card-top">
+        <div class="module-badge">Module 3</div>
+        <div class="module-icon">🧠</div>
+      </div>
+      <h3>OOAD: Requirements to Objects</h3>
+      <p>Turn requirements into candidate classes, attributes, responsibilities, and relationships.</p>
+      <div class="tag-row">
+        <span class="tag">OOAD</span><span class="tag">Nouns</span><span class="tag">Verbs</span>
+      </div>
+      <a class="launch-btn" href="madshapes_ooad_requirements_to_objects.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-sky" data-title="uml class diagrams uml classes mermaid">
+      <div class="module-card-top">
+        <div class="module-badge">Module 4</div>
+        <div class="module-icon">🔗</div>
+      </div>
+      <h3>UML Class Diagrams</h3>
+      <p>Association, aggregation, composition, inheritance, interfaces, dependencies, and Mermaid.</p>
+      <div class="tag-row">
+        <span class="tag">UML</span><span class="tag">Classes</span><span class="tag">Mermaid</span>
+      </div>
+      <a class="launch-btn" href="madshapes_uml_class_diagrams.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-peach" data-title="uml sequence diagrams uml sequence behavior">
+      <div class="module-card-top">
+        <div class="module-badge">Module 5</div>
+        <div class="module-icon">🎬</div>
+      </div>
+      <h3>UML Sequence Diagrams</h3>
+      <p>Participants, messages, returns, activation bars, and conditional alt fragments.</p>
+      <div class="tag-row">
+        <span class="tag">UML</span><span class="tag">Sequence</span><span class="tag">Behavior</span>
+      </div>
+      <a class="launch-btn" href="madshapes_uml_sequence_diagrams.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-gold" data-title="peer review review feedback checklist">
+      <div class="module-card-top">
+        <div class="module-badge">Module 6</div>
+        <div class="module-icon">💬</div>
+      </div>
+      <h3>Peer Review</h3>
+      <p>Structured review, actionable comments, approve vs request changes, and feedback etiquette.</p>
+      <div class="tag-row">
+        <span class="tag">Review</span><span class="tag">Feedback</span><span class="tag">Checklist</span>
+      </div>
+      <a class="launch-btn" href="madshapes_peer_review.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-mint" data-title="solid principles, part 2 isp dip solid">
+      <div class="module-card-top">
+        <div class="module-badge">Module 8</div>
+        <div class="module-icon">🧩</div>
+      </div>
+      <h3>SOLID Principles, Part 2</h3>
+      <p>Interface Segregation and Dependency Inversion with focused interfaces and constructor injection.</p>
+      <div class="tag-row">
+        <span class="tag">ISP</span><span class="tag">DIP</span><span class="tag">SOLID</span>
+      </div>
+      <a class="launch-btn" href="madshapes_solid_principles_part2.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-pink" data-title="clean code refactor readability copilot">
+      <div class="module-card-top">
+        <div class="module-badge">Module 9</div>
+        <div class="module-icon">🧼</div>
+      </div>
+      <h3>Clean Code</h3>
+      <p>Meaningful names, small methods, named constants, guard clauses, comments, and AI review.</p>
+      <div class="tag-row">
+        <span class="tag">Refactor</span><span class="tag">Readability</span><span class="tag">Copilot</span>
+      </div>
+      <a class="launch-btn" href="madshapes_clean_code.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-lav" data-title="tdd fundamentals tdd red green boundaries">
+      <div class="module-card-top">
+        <div class="module-badge">Module 10</div>
+        <div class="module-icon">🔴</div>
+      </div>
+      <h3>TDD Fundamentals</h3>
+      <p>Red, green, refactor, minimum implementations, boundary tests, and a live TDD log.</p>
+      <div class="tag-row">
+        <span class="tag">TDD</span><span class="tag">Red Green</span><span class="tag">Boundaries</span>
+      </div>
+      <a class="launch-btn" href="madshapes_tdd_fundamentals.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-sky" data-title="junit junit mockito hamcrest">
+      <div class="module-card-top">
+        <div class="module-badge">Module 11</div>
+        <div class="module-icon">🧪</div>
+      </div>
+      <h3>JUnit</h3>
+      <p>JUnit 5 organization, parameterized tests, exceptions, Mockito, Hamcrest, and boundaries.</p>
+      <div class="tag-row">
+        <span class="tag">JUnit</span><span class="tag">Mockito</span><span class="tag">Hamcrest</span>
+      </div>
+      <a class="launch-btn" href="madshapes_junit.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+    <article class="module-card theme-peach" data-title="tdd in practice tdd mission integration">
+      <div class="module-card-top">
+        <div class="module-badge">Module 12</div>
+        <div class="module-icon">🚀</div>
+      </div>
+      <h3>TDD in Practice</h3>
+      <p>Build a mission component from requirements using TDD, JUnit organization, and domain invariants.</p>
+      <div class="tag-row">
+        <span class="tag">TDD</span><span class="tag">Mission</span><span class="tag">Integration</span>
+      </div>
+      <a class="launch-btn" href="madshapes_tdd_in_practice.html" onclick="launchModule(event, this)">
+        <span>Launch lesson</span><span class="launch-arrow">→</span>
+      </a>
+    </article>
+
+      <article class="module-card missing-card" data-title="solid principles part 1 srp ocp lsp">
+        <div class="module-card-top">
+          <div class="module-badge">Module 7</div>
+          <div class="module-icon">🧱</div>
+        </div>
+        <h3>SOLID Principles, Part 1</h3>
+        <p>SRP, OCP, and LSP belong here in the course sequence. The source material exists, but this HTML lesson is not currently in the landing-page bundle.</p>
+        <div class="tag-row">
+          <span class="tag">SRP</span><span class="tag">OCP</span><span class="tag">LSP</span>
+        </div>
+        <div class="launch-btn"><span>HTML page not in bundle</span><span>♡</span></div>
+      </article>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+      <h2>🏆 Tiny MadShapes Quiz</h2>
+      <p>One fast question before you disappear into another module.</p>
+
+      <div class="quiz-box">
+        <div id="quizQuestion"><b>Which UML relationship means the part cannot meaningfully exist without the whole?</b></div>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="answerQuiz(this,false)">Association</button>
+          <button class="quiz-option" onclick="answerQuiz(this,false)">Aggregation</button>
+          <button class="quiz-option" onclick="answerQuiz(this,true)">Composition</button>
+          <button class="quiz-option" onclick="answerQuiz(this,false)">Dependency</button>
+        </div>
+        <div class="quiz-result" id="quizResult"></div>
       </div>
     </section>
 
-    <div class="progress">
-      <div class="progressFill" id="progressFill"></div>
-    </div>
-    <p class="tinyNote">Click once for truth. Click again for chaos.</p>
+    <footer class="footer">
+      <h2>Keep Going! ♡</h2>
+      <p>Start with Java, keep moving through design and testing, and let the same MadShapes example get smarter as the course goes on.</p>
+      <button class="fun-btn btn btn-dark rounded-pill px-4 fw-bold" onclick="megaCelebration(this)">🎉 Fire the ridiculous celebration cannon</button>
+      <div class="cartel-note">Jimbo James, a member of the Columbian cartel, has been informed that every module link has been checked. ROFLGator requested more confetti.</div>
+    </footer>
   </main>
+</div>
 
+<div id="cursorFollowers" aria-hidden="true">
+  <div class="cursor-shape">💖</div>
+  <div class="cursor-shape">🔺</div>
+  <div class="cursor-shape">✨</div>
+  <div class="cursor-shape">🟪</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const questions = [{"q": "A customer report must include every client, even if they have no account. Which join should be used?", "a": ["LEFT JOIN from clients to accounts"]}, {"q": "A query changes from LEFT JOIN to INNER JOIN, and clients without accounts disappear. Why?", "a": ["INNER JOIN requires a match in both tables."]}, {"q": "In your SQL for your advisors table, you need advisors with at least three clients. Which SQL pattern is correct?", "a": ["GROUP BY advisor_id HAVING COUNT(*) >= 3"]}, {"q": "You are asked to provide a report that shows each account and the date of its latest transaction regardless of the number of transactions associated with the account. A query finds each account's latest transaction using a correlated subquery. Which statements are true?", "a": ["It can reference values from the outer query.", "It is conceptually evaluated for each outer row.", "A non-correlated scalar subquery may be evaluated once."]}, {"q": "What is a chief reason for using a CTE over a derived table subquery?", "a": ["It is often easier to read and maintain."]}, {"q": "A team lead suggests using a GenAI-generated query replacing a CTE query handwritten by the team. What should the team do?", "a": ["Confirm the results are still correct.", "Use it only if it provides a real benefit.", "Compare readability and maintainability."]}, {"q": "A flat file repeats advisor names and portfolio weights for instruments across many rows. What is the main risk?", "a": ["Conflicting values for the same fact"]}, {"q": "You are asked to normalize a flat fit report that is using the following composite key (portfolio_id, instrument_id). In reviewing the table you find a property called sector that is only tied to instrument_id. Which statements properly describe the problem and the fix?", "a": ["Fixing it helps achieve 2NF.", "Move it to a table keyed by instrument."]}, {"q": "You are reviewing the model portfolio schema and find it has an advisor_name that is dependent on advisor_id rather than the client_id. Which statements describe the issue and the steps that should be taken?", "a": ["The change supports 3NF.", "It creates a transitive dependency.", "Moving region to the advisor table removes it."]}, {"q": "A holdings table stores client_id, instrument_id, quantity, and as_of_date. Why use (client_id, instrument_id, as_of_date) as the key?", "a": ["It represents the natural identity of a holding snapshot."]}, {"q": "An instrument table has a primary key on instrument_id and a UNIQUE constraint on ticker. Why keep both?", "a": ["The primary key provides stable database identity.", "UNIQUE prevents duplicate ticker values.", "They enforce different kinds of uniqueness."]}, {"q": "A CHECK constraint requires target_weight_pct to be between 0 and 100. What happens if 150 is inserted?", "a": ["The insert is rejected."]}, {"q": "An audit table is write-heavy and rarely queried by a foreign key. Why might you skip an index on that column? Assume PostgreSQL is being used.", "a": ["Indexes add write-maintenance cost."]}, {"q": "A stakeholder asks for a report showing clients who have \"drifted significantly,\" but gives no definition. What should you do first?", "a": ["Identify existing data that could support the report.", "Record your assumptions.", "List questions that need clarification."]}, {"q": "Before coding the client DRIFT report, the team writes: \"Does drift mean being more than X percentage points above target?\" Why?", "a": ["To validate the interpretation first"]}, {"q": "A session service needs fast token lookups and automatic expiration. Why might a key-value store fit?", "a": ["Fast single-key access", "Built-in expiration support", "No need for joins or aggregation"]}, {"q": "Different financial goal types need different fields, and new types are added regularly. Which storage model fits best?", "a": ["Document"]}, {"q": "Reporting moves from a live PostgreSQL database to an OLAP-based warehouse. What trade-offs should you expect?", "a": ["Warehouse data may be slightly delayed.", "Near-real-time reports may be less suitable.", "Analytics can avoid loading the transactional database."]}, {"q": "What is a benefit of separating storage and compute in a cloud warehouse?", "a": ["Storage and compute can scale independently."]}, {"q": "Who has the world record for the most stage wins in the Tour de France?", "a": ["Mark Cavendish"]}];
+const colors = ["#ff4fba","#8f6cff","#68e0c0","#7fd8ff","#ffd95d","#ff9b75","#ff7fb7"];
 
-let index = 0;
-let showingAnswer = false;
-
-const questionEl = document.getElementById("question");
-const answerBox = document.getElementById("answerBox");
-const answerList = document.getElementById("answerList");
-const nextBtn = document.getElementById("nextBtn");
-const counter = document.getElementById("counter");
-const eyebrow = document.getElementById("eyebrow");
-const progressFill = document.getElementById("progressFill");
-const card = document.getElementById("card");
-
-function renderQuestion() {
-  const item = questions[index];
-  showingAnswer = false;
-
-  questionEl.textContent = item.q;
-  answerList.innerHTML = "";
-  answerBox.classList.remove("show");
-  nextBtn.textContent = "Reveal the Answer ✨";
-  counter.textContent = `${index + 1} / ${questions.length}`;
-  eyebrow.textContent = `✨ Question ${index + 1}`;
-  progressFill.style.width = `${((index + 1) / questions.length) * 100}%`;
-
-  card.classList.remove("final");
-  card.animate(
-    [
-      { opacity: 0, transform: "translateY(20px) scale(.98)" },
-      { opacity: 1, transform: "translateY(0) scale(1)" }
-    ],
-    { duration: 380, easing: "ease-out" }
-  );
-}
-
-function revealAnswer() {
-  showingAnswer = true;
-  answerList.innerHTML = "";
-
-  questions[index].a.forEach(answer => {
-    const li = document.createElement("li");
-    li.textContent = answer;
-    answerList.appendChild(li);
+function filterModules(){
+  const q = document.getElementById("moduleSearch").value.toLowerCase().trim();
+  document.querySelectorAll(".module-card").forEach(card => {
+    const hay = card.dataset.title || "";
+    card.style.display = hay.includes(q) ? "" : "none";
   });
-
-  answerBox.classList.add("show");
-  nextBtn.textContent = index === questions.length - 1
-    ? "Finish in Fabulous Style 🌈"
-    : "Next Question ➜";
-
-  card.classList.remove("shake");
-  void card.offsetWidth;
-  card.classList.add("shake");
-
-  partyExplosion();
 }
 
-function finishQuiz() {
-  eyebrow.textContent = "🏆 COMPLETE";
-  counter.textContent = `${questions.length} / ${questions.length}`;
-  questionEl.innerHTML = "You survived <em>MadExaminations</em>! 🎉";
-  answerBox.classList.add("show");
-  answerList.innerHTML = `
-    <li>You reviewed all ${questions.length} questions.</li>
-    <li>Your SQL aura is immaculate.</li>
-    <li>Your database normalization energy is now dangerously powerful.</li>
-  `;
-  nextBtn.textContent = "Start Over 💖";
-  card.classList.add("final");
-  progressFill.style.width = "100%";
-  partyExplosion(2.2);
-}
-
-nextBtn.addEventListener("click", () => {
-  if (card.classList.contains("final")) {
-    index = 0;
-    renderQuestion();
-    return;
+function confettiBurst(count = 70){
+  for(let i=0;i<count;i++){
+    const c = document.createElement("div");
+    c.className = "fall-confetti";
+    c.style.left = Math.random()*100 + "vw";
+    c.style.width = (6+Math.random()*9)+"px";
+    c.style.height = (8+Math.random()*14)+"px";
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration = (1.8+Math.random()*2.4)+"s";
+    c.style.transform = "rotate("+Math.random()*360+"deg)";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4700);
   }
+}
 
-  if (!showingAnswer) {
-    revealAnswer();
+function firework(x = Math.random()*innerWidth, y = 90 + Math.random()*(innerHeight*0.55), count = 22){
+  for(let i=0;i<count;i++){
+    const p = document.createElement("div");
+    p.className = "firework-particle";
+    p.style.left = x+"px";
+    p.style.top = y+"px";
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    const angle = Math.PI*2*i/count + Math.random()*.18;
+    const dist = 55 + Math.random()*95;
+    p.style.setProperty("--dx", Math.cos(angle)*dist+"px");
+    p.style.setProperty("--dy", Math.sin(angle)*dist+"px");
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1000);
+  }
+}
+
+function launchModule(event, link){
+  event.preventDefault();
+  const href = link.getAttribute("href");
+  const r = link.getBoundingClientRect();
+  firework(r.left+r.width/2, r.top+r.height/2, 18);
+  confettiBurst(28);
+  setTimeout(()=>window.location.href=href, 260);
+}
+
+function answerQuiz(button, correct){
+  const out = document.getElementById("quizResult");
+  if(correct){
+    out.textContent = "Correct! Filled diamond, strong ownership. 🎉";
+    firework(innerWidth*.50, innerHeight*.45, 36);
+    confettiBurst(90);
   } else {
-    if (index < questions.length - 1) {
-      index++;
-      renderQuestion();
-    } else {
-      finishQuiz();
+    out.textContent = "Not quite. Ask: if the whole disappears, can the part still make sense?";
+    button.animate(
+      [{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],
+      {duration:280}
+    );
+  }
+}
+
+function megaCelebration(button){
+  confettiBurst(180);
+  for(let i=0;i<6;i++){
+    setTimeout(()=>firework(
+      innerWidth*(.15 + Math.random()*.7),
+      innerHeight*(.18 + Math.random()*.5),
+      30
+    ), i*220);
+  }
+  const old = button.textContent;
+  button.textContent = "💥 TOO MUCH CELEBRATION 💥";
+  setTimeout(()=>button.textContent=old,1800);
+}
+
+function createHeroConfetti(){
+  const host = document.getElementById("heroConfetti");
+  for(let i=0;i<42;i++){
+    const p=document.createElement("span");
+    p.className="confetti-piece";
+    p.style.left=Math.random()*100+"%";
+    p.style.top=Math.random()*88+"%";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.transform="rotate("+Math.random()*180+"deg)";
+    p.style.animationDelay=(-Math.random()*4)+"s";
+    p.style.animationDuration=(2.4+Math.random()*3.2)+"s";
+    host.appendChild(p);
+  }
+}
+
+const followers = [...document.querySelectorAll(".cursor-shape")];
+const points = followers.map(()=>({x:innerWidth/2,y:innerHeight/2}));
+let target = {x:innerWidth/2,y:innerHeight/2};
+window.addEventListener("mousemove", e=>{ target.x=e.clientX; target.y=e.clientY; });
+
+function animateFollowers(){
+  points[0].x += (target.x-points[0].x)*.20;
+  points[0].y += (target.y-points[0].y)*.20;
+  for(let i=1;i<points.length;i++){
+    points[i].x += (points[i-1].x-points[i].x)*(.15-i*.015);
+    points[i].y += (points[i-1].y-points[i].y)*(.15-i*.015);
+  }
+  followers.forEach((f,i)=>{
+    f.style.transform=`translate(${points[i].x + 14 + i*7}px, ${points[i].y + 12 + i*8}px) rotate(${i*24}deg)`;
+    f.style.opacity = target.x ? (0.88-i*.12) : 0;
+  });
+  requestAnimationFrame(animateFollowers);
+}
+
+window.addEventListener("load",()=>{
+  createHeroConfetti();
+  confettiBurst(65);
+  setTimeout(()=>firework(innerWidth*.18, 180, 24),350);
+  setTimeout(()=>firework(innerWidth*.82, 205, 24),700);
+  animateFollowers();
+
+  setInterval(()=>{
+    if(!document.hidden && Math.random()>.45){
+      firework(
+        innerWidth*(.10+Math.random()*.80),
+        100+Math.random()*Math.min(innerHeight*.55,420),
+        18
+      );
     }
-  }
+  },6500);
 });
-
-function partyExplosion(multiplier = 1) {
-  launchConfetti(Math.floor(130 * multiplier));
-  launchFirework(Math.floor(42 * multiplier));
-  launchEmojiChaos(Math.floor(20 * multiplier));
-}
-
-function launchConfetti(count = 120) {
-  const palette = ["#ff1493", "#ff69b4", "#8a2be2", "#57e7e2", "#ffe66d", "#ff8c69", "#ffffff"];
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement("div");
-    piece.className = "confetti";
-    piece.style.left = Math.random() * 100 + "vw";
-    piece.style.background = palette[Math.floor(Math.random() * palette.length)];
-    piece.style.setProperty("--drift", (Math.random() * 240 - 120) + "px");
-    piece.style.setProperty("--spin", (Math.random() * 1200 - 600) + "deg");
-    piece.style.setProperty("--fall", (1.8 + Math.random() * 2.1) + "s");
-    piece.style.width = (7 + Math.random() * 8) + "px";
-    piece.style.height = (9 + Math.random() * 15) + "px";
-    document.body.appendChild(piece);
-    setTimeout(() => piece.remove(), 4300);
-  }
-}
-
-function launchFirework(count = 44) {
-  const palette = ["#ff2aa1", "#9a4dff", "#00cdb8", "#ffd84d", "#ff7a59"];
-  for (let i = 0; i < count; i++) {
-    const particle = document.createElement("div");
-    particle.className = "burst";
-    particle.style.color = palette[Math.floor(Math.random() * palette.length)];
-    particle.style.setProperty("--angle", (Math.random() * 360) + "deg");
-    particle.style.setProperty("--distance", (90 + Math.random() * 260) + "px");
-    document.body.appendChild(particle);
-    setTimeout(() => particle.remove(), 1000);
-  }
-}
-
-function launchEmojiChaos(count = 18) {
-  const emojis = ["💖","✨","🌸","🦄","💅","🎀","🌈","⭐","💜","🍭","🪩","🎉"];
-  for (let i = 0; i < count; i++) {
-    const e = document.createElement("div");
-    e.className = "emojiBoom";
-    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    e.style.setProperty("--x", (Math.random() * 760 - 380) + "px");
-    e.style.setProperty("--y", (Math.random() * 540 - 270) + "px");
-    e.style.setProperty("--r", (Math.random() * 720 - 360) + "deg");
-    document.body.appendChild(e);
-    setTimeout(() => e.remove(), 1400);
-  }
-}
-
-renderQuestion();
 </script>
+
+<div class="gator-page-sticker" aria-hidden="true">
+  <svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+    <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878" stroke="#268e49" stroke-width="6"/>
+    <path d="M311 159 C347 155 363 163 373 180 C350 185 332 184 312 178 Z" fill="#57d878" stroke="#268e49" stroke-width="6"/>
+    <circle cx="101" cy="95" r="22" fill="#57d878"/>
+    <circle cx="138" cy="86" r="22" fill="#57d878"/>
+    <circle cx="101" cy="95" r="11" fill="#fff"/>
+    <circle cx="138" cy="86" r="11" fill="#fff"/>
+    <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+    <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+    <path d="M82 134 Q126 166 191 151 Q143 207 92 168 Z" fill="#fff" stroke="#2f2335" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M105 149 L111 170 M134 155 L138 177 M161 154 L165 173" stroke="#2f2335" stroke-width="4"/>
+    <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+    <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+    <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+    <path d="M91 232 C84 259 77 274 60 287" stroke="#268e49" stroke-width="17" stroke-linecap="round"/>
+    <path d="M241 246 C259 268 275 278 297 283" stroke="#268e49" stroke-width="17" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<div class="frog-cursor-follower" id="frogCursorFollower" aria-hidden="true">
+  <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="110" cy="184" rx="58" ry="16" fill="rgba(80,36,95,.10)"/>
+    <circle cx="110" cy="113" r="55" fill="#66cf57" stroke="#278c3e" stroke-width="6"/>
+    <ellipse cx="110" cy="135" rx="60" ry="40" fill="#7ad965"/>
+    <circle cx="82" cy="72" r="19" fill="#66cf57" stroke="#278c3e" stroke-width="5"/>
+    <circle cx="138" cy="72" r="19" fill="#66cf57" stroke="#278c3e" stroke-width="5"/>
+    <circle cx="82" cy="69" r="10" fill="#fff"/>
+    <circle cx="138" cy="69" r="10" fill="#fff"/>
+    <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+    <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+    <path d="M80 141 Q110 166 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+    <path d="M58 122 C36 126 32 145 49 154" fill="none" stroke="#278c3e" stroke-width="12" stroke-linecap="round"/>
+    <path d="M162 122 C184 126 188 145 171 154" fill="none" stroke="#278c3e" stroke-width="12" stroke-linecap="round"/>
+    <path d="M80 166 L67 193" stroke="#278c3e" stroke-width="13" stroke-linecap="round"/>
+    <path d="M140 166 L153 193" stroke="#278c3e" stroke-width="13" stroke-linecap="round"/>
+  </svg>
+</div>
+
+
+<script id="frog-follow-script">
+(() => {
+  const frog = document.getElementById('frogCursorFollower');
+  if (!frog || window.matchMedia('(pointer: coarse)').matches) return;
+  let tx = window.innerWidth * .72;
+  let ty = window.innerHeight * .34;
+  let x = tx, y = ty;
+  let angle = -8;
+  window.addEventListener('mousemove', (e) => {
+    tx = e.clientX + 28;
+    ty = e.clientY + 26;
+  }, {passive:true});
+  function animate(){
+    const px = x;
+    x += (tx - x) * .115;
+    y += (ty - y) * .115;
+    angle += ((((x - px) * 1.6) - angle) * .09);
+    frog.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${Math.max(-18, Math.min(18, angle))}deg)`;
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+
 </body>
 </html>

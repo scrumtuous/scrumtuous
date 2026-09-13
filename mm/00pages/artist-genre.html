@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist &ndash; Genre Associations - MadMusic</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f7;
+      color: #222;
+    }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header strong {
+      font-size: 18px;
+      white-space: nowrap;
+    }
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .top-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .top-nav a:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .top-nav a.active {
+      background: rgba(255,255,255,0.25);
+      font-weight: bold;
+    }
+    .page-layout {
+      display: flex;
+      width: 96%;
+      max-width: 1600px;
+      margin: 24px auto;
+      gap: 24px;
+      padding: 0 16px;
+      align-items: flex-start;
+    }
+    .left-col {
+      flex: 5;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .erd-col {
+      flex: 7;
+      min-width: 420px;
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 24px;
+    }
+    .form-panel {
+      min-width: 0;
+    }
+    .list-panel {
+      min-width: 0;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #fff;
+    }
+    #genre-checkboxes {
+      margin-top: 8px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      padding: 8px 12px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    #genre-checkboxes label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    #genre-checkboxes input {
+      margin: 0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #2980b9;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #216a94;
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #27ae60;
+      min-height: 18px;
+    }
+    #warning {
+      font-size: 13px;
+      color: #c0392b;
+      display: none;
+    }
+    ul#artist-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    ul#artist-list li {
+      border-bottom: 1px solid #eee;
+    }
+    ul#artist-list li:last-child {
+      border-bottom: none;
+    }
+    ul#artist-list a {
+      display: block;
+      padding: 10px 4px;
+      color: #2980b9;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    ul#artist-list a:hover,
+    ul#artist-list a.active {
+      background: #f0f6fb;
+      font-weight: bold;
+    }
+    #empty-message {
+      font-size: 13px;
+      color: #888;
+    }
+    #details-panel {
+      margin-top: 24px;
+      border-top: 1px solid #eee;
+      padding-top: 16px;
+      display: none;
+    }
+    #details-panel ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      font-size: 14px;
+    }
+    #details-panel p.no-genres {
+      font-size: 13px;
+      color: #888;
+      margin-top: 8px;
+    }
+    .erd-panel {
+      flex: 1;
+    }
+    .erd-hint {
+      font-size: 13px;
+      color: #666;
+      margin: 4px 0 0;
+    }
+    #erd-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fafbfc;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+    #erd-panel {
+      position: relative;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+      background: #34495e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .fullscreen-btn:hover {
+      background: #2c3e50;
+    }
+    #erd-canvas-wrap {
+      width: 100%;
+    }
+    #erd-panel:fullscreen,
+    #erd-panel:-webkit-full-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    .code-output {
+      background: #1e272e;
+      color: #d2f8d2;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 8px 0 0;
+    }
+    .db-dump-wrap {
+      width: 96%;
+      max-width: 1600px;
+      margin: 0 auto 32px;
+      padding: 0 16px;
+    }
+    .db-dump-panel pre {
+      max-height: 500px;
+    }
+    .db-dump-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .db-dump-header h2 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>MadMusic</strong>
+    <nav class="top-nav">
+      <a href="../index.html">Home</a>
+      <a href="artist.html">Artists</a>
+      <a href="add-artist.html">Add Artist (Genre)</a>
+      <a href="genre.html">Genres</a>
+      <a href="artist-genre.html" class="active">Associate</a>
+      <a href="add-album.html">Add Album</a>
+    </nav>
+  </header>
+
+  <div class="page-layout">
+    <div class="left-col">
+      <section class="panel form-panel">
+        <h2>Associate Artist with Genres</h2>
+        <p id="warning">You need at least one artist and one genre before you can create an association. Please add them first.</p>
+
+        <form id="association-form">
+          <label for="artist-select">Artist</label>
+          <select id="artist-select"></select>
+
+          <label>Genres</label>
+          <div id="genre-checkboxes"></div>
+
+          <button type="submit">Save Associations</button>
+          <div id="status"></div>
+        </form>
+      </section>
+
+      <aside class="panel list-panel">
+        <h2>Artists</h2>
+        <ul id="artist-list"></ul>
+        <p id="empty-message">No artists saved yet.</p>
+
+        <div id="details-panel">
+          <h2>Genres for this Artist</h2>
+          <ul id="detail-genre-list"></ul>
+          <p class="no-genres" id="no-genres-message">No genres associated yet.</p>
+        </div>
+      </aside>
+
+      <section class="panel json-panel">
+        <h2>Record JSON</h2>
+        <p class="erd-hint">Shows the association most recently saved or selected.</p>
+        <pre id="json-output" class="code-output">// Save or select an artist to see its associations here.</pre>
+      </section>
+    </div>
+
+    <div class="erd-col">
+      <section class="panel erd-panel" id="erd-panel">
+        <h2>Data Model (ERD)</h2>
+        <button type="button" class="fullscreen-btn" id="erd-fullscreen-btn">Full Screen</button>
+        <p class="erd-hint">Select an artist, check some genres, and save to see the many-to-many relationship animate through ARTIST_GENRE.</p>
+        <div class="erd-canvas-wrap" id="erd-canvas-wrap">
+          <canvas id="erd-canvas" width="660" height="340"></canvas>
+        </div>
+      </section>
+
+      <section class="panel sql-panel">
+        <h2>Equivalent SQL</h2>
+        <p class="erd-hint">The SQL that would run against a relational database for this action.</p>
+        <pre id="sql-output" class="code-output">-- Save or select an artist to see the generated SQL here.</pre>
+      </section>
+    </div>
+  </div>
+
+  <div class="db-dump-wrap">
+    <section class="panel db-dump-panel">
+      <div class="db-dump-header">
+        <h2>Full Database Dump (JSON)</h2>
+        <button type="button" class="fullscreen-btn" id="db-dump-refresh-btn">Refresh</button>
+      </div>
+      <p class="erd-hint">A live snapshot of everything currently stored in localStorage, across every page.</p>
+      <pre id="db-dump-output" class="code-output">// Loading...</pre>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const DB_KEYS = ['madmusic.artists', 'madmusic.genres', 'madmusic.artistGenres', 'madmusic.albums'];
+
+      function dumpDatabase() {
+        const dump = {};
+        DB_KEYS.forEach((key) => {
+          const raw = localStorage.getItem(key);
+          let parsed = [];
+          if (raw) {
+            try {
+              parsed = JSON.parse(raw);
+            } catch (e) {
+              parsed = [];
+            }
+          }
+          dump[key.replace('madmusic.', '')] = parsed;
+        });
+        const output = document.getElementById('db-dump-output');
+        if (output) {
+          output.textContent = JSON.stringify(dump, null, 2);
+        }
+      }
+
+      const refreshBtn = document.getElementById('db-dump-refresh-btn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', dumpDatabase);
+      }
+      window.addEventListener('storage', dumpDatabase);
+      window.dumpDatabase = dumpDatabase;
+
+      dumpDatabase();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('erd-canvas');
+      const ctx = canvas.getContext('2d');
+      const BASE_W = 660;
+      const BASE_H = 340;
+
+      const entities = {
+        ARTIST_DETAILS: { x: 20, y: 20, w: 170, fields: ['artist_id (FK)', 'dob', 'favorite_color', 'instrument'], color: '#16a085' },
+        ARTIST: { x: 20, y: 140, w: 170, fields: ['id (PK)', 'name'], color: '#2980b9' },
+        ALBUM: { x: 20, y: 230, w: 170, fields: ['id (PK)', 'artist_id (FK)', 'title'], color: '#8e44ad' },
+        ARTIST_GENRE: { x: 250, y: 140, w: 170, fields: ['artist_id (FK)', 'genre_id (FK)'], color: '#e67e22' },
+        GENRE: { x: 460, y: 132, w: 170, fields: ['id (PK)', 'name', 'description'], color: '#27ae60' }
+      };
+
+      Object.keys(entities).forEach((name) => {
+        const entity = entities[name];
+        entity.h = 24 + entity.fields.length * 16 + 10;
+      });
+
+      const relationships = [
+        { from: 'ARTIST_DETAILS', fromSide: 'bottom', to: 'ARTIST', toSide: 'top', label: '1 : 1' },
+        { from: 'ARTIST', fromSide: 'bottom', to: 'ALBUM', toSide: 'top', label: '1 : N' },
+        { from: 'ARTIST', fromSide: 'right', to: 'ARTIST_GENRE', toSide: 'left', label: '1 : N' },
+        { from: 'ARTIST_GENRE', fromSide: 'right', to: 'GENRE', toSide: 'left', label: 'N : 1' }
+      ];
+
+      const highlightedEntities = {};
+      const highlightedRelationships = {};
+      let tokens = [];
+
+      function edgePoint(entity, side) {
+        switch (side) {
+          case 'top': return { x: entity.x + entity.w / 2, y: entity.y };
+          case 'bottom': return { x: entity.x + entity.w / 2, y: entity.y + entity.h };
+          case 'left': return { x: entity.x, y: entity.y + entity.h / 2 };
+          case 'right': return { x: entity.x + entity.w, y: entity.y + entity.h / 2 };
+        }
+      }
+
+      function centerOf(entity) {
+        return { x: entity.x + entity.w / 2, y: entity.y + entity.h / 2 };
+      }
+
+      function relKey(from, to) {
+        return from + '|' + to;
+      }
+
+      function drawEntity(name) {
+        const entity = entities[name];
+        const now = Date.now();
+        const until = highlightedEntities[name] || 0;
+
+        if (now < until) {
+          const pulse = Math.abs(Math.sin((until - now) / 90));
+          ctx.save();
+          ctx.shadowColor = '#f39c12';
+          ctx.shadowBlur = 14 + pulse * 10;
+          ctx.strokeStyle = '#f39c12';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(entity.x - 3, entity.y - 3, entity.w + 6, entity.h + 6);
+          ctx.restore();
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(entity.x, entity.y, entity.w, entity.h);
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(entity.x, entity.y, entity.w, entity.h);
+
+        ctx.fillStyle = entity.color;
+        ctx.fillRect(entity.x, entity.y, entity.w, 24);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(name, entity.x + entity.w / 2, entity.y + 12);
+
+        ctx.fillStyle = '#333';
+        ctx.font = '11px Arial';
+        ctx.textAlign = 'left';
+        entity.fields.forEach((field, i) => {
+          ctx.fillText(field, entity.x + 8, entity.y + 40 + i * 16);
+        });
+      }
+
+      function drawRelationship(rel) {
+        const from = edgePoint(entities[rel.from], rel.fromSide);
+        const to = edgePoint(entities[rel.to], rel.toSide);
+        const now = Date.now();
+        const key = relKey(rel.from, rel.to);
+        const until = highlightedRelationships[key] || 0;
+        const active = now < until;
+
+        ctx.save();
+        if (active) {
+          const pulse = Math.abs(Math.sin((until - now) / 90));
+          ctx.strokeStyle = '#f39c12';
+          ctx.lineWidth = 3 + pulse * 2;
+          ctx.shadowColor = '#f39c12';
+          ctx.shadowBlur = 10;
+        } else {
+          ctx.strokeStyle = '#999';
+          ctx.lineWidth = 1.5;
+        }
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+        ctx.restore();
+
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(midX - 16, midY - 8, 32, 16);
+        ctx.fillStyle = '#555';
+        ctx.font = 'bold 11px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(rel.label, midX, midY);
+      }
+
+      function drawTokens() {
+        const now = Date.now();
+        tokens = tokens.filter((t) => now < t.start + t.duration);
+        tokens.forEach((t) => {
+          if (now < t.start) return;
+          const progress = Math.min(1, (now - t.start) / t.duration);
+          const segCount = t.points.length - 1;
+          const segProgress = progress * segCount;
+          const segIndex = Math.min(segCount - 1, Math.floor(segProgress));
+          const localProgress = segProgress - segIndex;
+          const p0 = t.points[segIndex];
+          const p1 = t.points[segIndex + 1];
+          const x = p0.x + (p1.x - p0.x) * localProgress;
+          const y = p0.y + (p1.y - p0.y) * localProgress;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.fillStyle = t.color;
+          ctx.shadowColor = t.color;
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      const wrapEl = document.getElementById('erd-canvas-wrap');
+      const erdPanel = document.getElementById('erd-panel');
+      const fullscreenBtn = document.getElementById('erd-fullscreen-btn');
+
+      function getDisplaySize() {
+        const isFullscreen = document.fullscreenElement === erdPanel;
+        if (isFullscreen) {
+          const maxW = window.innerWidth * 0.92;
+          const maxH = window.innerHeight * 0.8;
+          let width = maxW;
+          let height = width * (BASE_H / BASE_W);
+          if (height > maxH) {
+            height = maxH;
+            width = height * (BASE_W / BASE_H);
+          }
+          return { width, height };
+        }
+        const width = wrapEl.clientWidth;
+        const height = width * (BASE_H / BASE_W);
+        return { width, height };
+      }
+
+      function resizeCanvasForDisplay() {
+        const dpr = window.devicePixelRatio || 1;
+        const { width, height } = getDisplaySize();
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        const neededWidth = Math.max(1, Math.round(width * dpr));
+        const neededHeight = Math.max(1, Math.round(height * dpr));
+        if (canvas.width !== neededWidth || canvas.height !== neededHeight) {
+          canvas.width = neededWidth;
+          canvas.height = neededHeight;
+        }
+      }
+
+      function render() {
+        resizeCanvasForDisplay();
+        const scaleX = canvas.width / BASE_W;
+        const scaleY = canvas.height / BASE_H;
+        ctx.save();
+        ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
+        ctx.clearRect(0, 0, BASE_W, BASE_H);
+        relationships.forEach(drawRelationship);
+        Object.keys(entities).forEach(drawEntity);
+        drawTokens();
+        ctx.restore();
+        requestAnimationFrame(render);
+      }
+
+      function highlightEntity(name, duration) {
+        if (!entities[name]) return;
+        highlightedEntities[name] = Date.now() + (duration || 900);
+      }
+
+      function highlightRelationship(from, to, duration) {
+        highlightedRelationships[relKey(from, to)] = Date.now() + (duration || 900);
+      }
+
+      function addTokenPath(names, color, duration, delay) {
+        const points = names.map((name) => centerOf(entities[name]));
+        tokens.push({ points, start: Date.now() + (delay || 0), duration: duration || 900, color: color || '#e74c3c' });
+      }
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (document.fullscreenElement === erdPanel) {
+            document.exitFullscreen();
+          } else if (erdPanel.requestFullscreen) {
+            erdPanel.requestFullscreen();
+          }
+        });
+        document.addEventListener('fullscreenchange', () => {
+          const isFullscreen = document.fullscreenElement === erdPanel;
+          fullscreenBtn.textContent = isFullscreen ? 'Exit Full Screen' : 'Full Screen';
+        });
+      }
+
+      requestAnimationFrame(render);
+
+      window.erd = { highlightEntity, highlightRelationship, addTokenPath };
+    })();
+  </script>
+
+  <script>
+    const ARTISTS_KEY = 'madmusic.artists';
+    const GENRES_KEY = 'madmusic.genres';
+    const ASSOCIATIONS_KEY = 'madmusic.artistGenres';
+
+    const warningEl = document.getElementById('warning');
+    const form = document.getElementById('association-form');
+    const artistSelect = document.getElementById('artist-select');
+    const genreCheckboxesEl = document.getElementById('genre-checkboxes');
+    const statusEl = document.getElementById('status');
+
+    const artistListEl = document.getElementById('artist-list');
+    const emptyMessageEl = document.getElementById('empty-message');
+    const detailsPanel = document.getElementById('details-panel');
+    const detailGenreListEl = document.getElementById('detail-genre-list');
+    const noGenresMessageEl = document.getElementById('no-genres-message');
+
+    function getArtists() {
+      const raw = localStorage.getItem(ARTISTS_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function getGenres() {
+      const raw = localStorage.getItem(GENRES_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function getAssociations() {
+      const raw = localStorage.getItem(ASSOCIATIONS_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveAssociations(associations) {
+      localStorage.setItem(ASSOCIATIONS_KEY, JSON.stringify(associations));
+    }
+
+    function sqlString(value) {
+      return "'" + String(value).replace(/'/g, "''") + "'";
+    }
+
+    function getArtistId(artistName) {
+      return getArtists().findIndex((a) => a.name === artistName) + 1;
+    }
+
+    function getGenreId(genreName) {
+      return getGenres().findIndex((g) => g.name === genreName) + 1;
+    }
+
+    function renderRecord(artistName, genreNames) {
+      const artistId = getArtistId(artistName);
+      document.getElementById('json-output').textContent = JSON.stringify(
+        { artist: artistName, genres: genreNames },
+        null,
+        2
+      );
+
+      let sql = `DELETE FROM ARTIST_GENRE WHERE artist_id = ${artistId};\n`;
+      if (genreNames.length === 0) {
+        sql += '-- No genres selected, so no rows are inserted.';
+      } else {
+        sql += genreNames
+          .map((genreName) => `INSERT INTO ARTIST_GENRE (artist_id, genre_id) VALUES (${artistId}, ${getGenreId(genreName)});`)
+          .join('\n');
+      }
+      document.getElementById('sql-output').textContent = sql;
+    }
+
+    function genresForArtist(artistName) {
+      return getAssociations()
+        .filter((a) => a.artist === artistName)
+        .map((a) => a.genre);
+    }
+
+    function populateArtistSelect() {
+      const artists = getArtists();
+      artistSelect.innerHTML = '';
+      artists.forEach((artist) => {
+        const option = document.createElement('option');
+        option.value = artist.name;
+        option.textContent = artist.name;
+        artistSelect.appendChild(option);
+      });
+    }
+
+    function populateGenreCheckboxes(selectedArtistName) {
+      const genres = getGenres();
+      const associatedGenres = selectedArtistName ? genresForArtist(selectedArtistName) : [];
+      genreCheckboxesEl.innerHTML = '';
+
+      genres.forEach((genre) => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = genre.name;
+        checkbox.checked = associatedGenres.includes(genre.name);
+        checkbox.addEventListener('change', () => {
+          window.erd.highlightEntity('GENRE', 1000);
+          window.erd.highlightEntity('ARTIST_GENRE', 1000);
+          window.erd.highlightRelationship('ARTIST_GENRE', 'GENRE', 1000);
+        });
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(genre.name));
+        genreCheckboxesEl.appendChild(label);
+      });
+    }
+
+    function renderArtistList(selectedArtistName) {
+      const artists = getArtists();
+      artistListEl.innerHTML = '';
+
+      emptyMessageEl.style.display = artists.length === 0 ? 'block' : 'none';
+
+      artists.forEach((artist) => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = artist.name;
+        if (artist.name === selectedArtistName) {
+          link.classList.add('active');
+        }
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showArtistGenres(artist.name);
+        });
+        li.appendChild(link);
+        artistListEl.appendChild(li);
+      });
+    }
+
+    function showArtistGenres(artistName) {
+      const genres = genresForArtist(artistName);
+      detailGenreListEl.innerHTML = '';
+
+      if (genres.length === 0) {
+        noGenresMessageEl.style.display = 'block';
+      } else {
+        noGenresMessageEl.style.display = 'none';
+        genres.forEach((genreName) => {
+          const li = document.createElement('li');
+          li.textContent = genreName;
+          detailGenreListEl.appendChild(li);
+        });
+      }
+
+      detailsPanel.style.display = 'block';
+      renderRecord(artistName, genres);
+      renderArtistList(artistName);
+    }
+
+    function refreshAll() {
+      const artists = getArtists();
+      const genres = getGenres();
+
+      if (artists.length === 0 || genres.length === 0) {
+        warningEl.style.display = 'block';
+        form.style.display = 'none';
+      } else {
+        warningEl.style.display = 'none';
+        form.style.display = 'block';
+      }
+
+      populateArtistSelect();
+      populateGenreCheckboxes(artistSelect.value);
+      renderArtistList();
+    }
+
+    artistSelect.addEventListener('change', () => {
+      populateGenreCheckboxes(artistSelect.value);
+      window.erd.highlightEntity('ARTIST', 1000);
+      window.erd.highlightEntity('ARTIST_GENRE', 1000);
+      window.erd.highlightRelationship('ARTIST', 'ARTIST_GENRE', 1000);
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const artistName = artistSelect.value;
+      if (!artistName) {
+        statusEl.style.color = '#c0392b';
+        statusEl.textContent = 'Please select an artist.';
+        return;
+      }
+
+      const checkedGenres = Array.from(
+        genreCheckboxesEl.querySelectorAll('input[type="checkbox"]:checked')
+      ).map((checkbox) => checkbox.value);
+
+      let associations = getAssociations();
+      // Remove existing associations for this artist, then add the new set.
+      associations = associations.filter((a) => a.artist !== artistName);
+      checkedGenres.forEach((genreName) => {
+        associations.push({ artist: artistName, genre: genreName });
+      });
+      saveAssociations(associations);
+
+      renderRecord(artistName, checkedGenres);
+      if (window.dumpDatabase) window.dumpDatabase();
+
+      window.erd.highlightEntity('ARTIST', 1200);
+      window.erd.highlightEntity('ARTIST_GENRE', 1200);
+      window.erd.highlightEntity('GENRE', 1200);
+      window.erd.highlightRelationship('ARTIST', 'ARTIST_GENRE', 1200);
+      window.erd.highlightRelationship('ARTIST_GENRE', 'GENRE', 1200);
+      checkedGenres.forEach((genreName, i) => {
+        window.erd.addTokenPath(['ARTIST', 'ARTIST_GENRE', 'GENRE'], '#e74c3c', 1000, i * 250);
+      });
+
+      statusEl.style.color = '#27ae60';
+      statusEl.textContent = `Saved associations for "${artistName}".`;
+
+      renderArtistList(artistName);
+      showArtistGenres(artistName);
+    });
+
+    refreshAll();
+  </script>
+</body>
+</html>

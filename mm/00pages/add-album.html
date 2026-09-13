@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Album - MadMusic</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f7;
+      color: #222;
+    }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header strong {
+      font-size: 18px;
+      white-space: nowrap;
+    }
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .top-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .top-nav a:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .top-nav a.active {
+      background: rgba(255,255,255,0.25);
+      font-weight: bold;
+    }
+    .page-layout {
+      display: flex;
+      width: 96%;
+      max-width: 1600px;
+      margin: 24px auto;
+      gap: 24px;
+      padding: 0 16px;
+      align-items: flex-start;
+    }
+    .left-col {
+      flex: 5;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .erd-col {
+      flex: 7;
+      min-width: 420px;
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 24px;
+    }
+    .form-panel {
+      min-width: 0;
+    }
+    .list-panel {
+      min-width: 0;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #2980b9;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #216a94;
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #27ae60;
+      min-height: 18px;
+    }
+    #warning {
+      font-size: 13px;
+      color: #c0392b;
+      display: none;
+    }
+    ul#album-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    ul#album-list li {
+      border-bottom: 1px solid #eee;
+    }
+    ul#album-list li:last-child {
+      border-bottom: none;
+    }
+    ul#album-list a {
+      display: block;
+      padding: 10px 4px;
+      color: #2980b9;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    ul#album-list a small {
+      display: block;
+      color: #888;
+      font-weight: normal;
+      font-size: 12px;
+    }
+    ul#album-list a:hover,
+    ul#album-list a.active {
+      background: #f0f6fb;
+      font-weight: bold;
+    }
+    #empty-message {
+      font-size: 13px;
+      color: #888;
+    }
+    #details-panel {
+      margin-top: 24px;
+      border-top: 1px solid #eee;
+      padding-top: 16px;
+      display: none;
+    }
+    #details-panel dl {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      row-gap: 8px;
+      column-gap: 8px;
+      margin: 0;
+      font-size: 14px;
+    }
+    #details-panel dt {
+      font-weight: bold;
+      color: #555;
+    }
+    .erd-hint {
+      font-size: 13px;
+      color: #666;
+      margin: 4px 0 0;
+    }
+    #erd-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fafbfc;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+    #erd-panel {
+      position: relative;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+      background: #34495e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .fullscreen-btn:hover {
+      background: #2c3e50;
+    }
+    #erd-canvas-wrap {
+      width: 100%;
+    }
+    #erd-panel:fullscreen,
+    #erd-panel:-webkit-full-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    .code-output {
+      background: #1e272e;
+      color: #d2f8d2;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 8px 0 0;
+    }
+    .db-dump-wrap {
+      width: 96%;
+      max-width: 1600px;
+      margin: 0 auto 32px;
+      padding: 0 16px;
+    }
+    .db-dump-panel pre {
+      max-height: 500px;
+    }
+    .db-dump-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .db-dump-header h2 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>MadMusic</strong>
+    <nav class="top-nav">
+      <a href="../index.html">Home</a>
+      <a href="artist.html">Artists</a>
+      <a href="add-artist.html">Add Artist (Genre)</a>
+      <a href="genre.html">Genres</a>
+      <a href="artist-genre.html">Associate</a>
+      <a href="add-album.html" class="active">Add Album</a>
+    </nav>
+  </header>
+
+  <div class="page-layout">
+    <div class="left-col">
+      <section class="panel form-panel">
+        <h2>Add Album</h2>
+        <p id="warning">You need at least one artist before you can add an album. Please <a href="artist.html">add an artist</a> first.</p>
+
+        <form id="album-form">
+          <label for="title">Album Title</label>
+          <input type="text" id="title" name="title" placeholder="e.g. Greatest Hits" required>
+
+          <label for="artist-select">Artist</label>
+          <select id="artist-select" required></select>
+
+          <button type="submit">Save Album</button>
+          <div id="status"></div>
+        </form>
+
+        <div id="details-panel">
+          <h2>Album Details</h2>
+          <dl>
+            <dt>Title</dt><dd id="detail-title"></dd>
+            <dt>Artist</dt><dd id="detail-artist"></dd>
+          </dl>
+        </div>
+      </section>
+
+      <aside class="panel list-panel">
+        <h2>All Albums</h2>
+        <ul id="album-list"></ul>
+        <p id="empty-message">No albums saved yet.</p>
+      </aside>
+
+      <section class="panel json-panel">
+        <h2>Record JSON</h2>
+        <p class="erd-hint">Shows the record most recently saved or selected.</p>
+        <pre id="json-output" class="code-output">// Save or select an album to see its JSON here.</pre>
+      </section>
+    </div>
+
+    <div class="erd-col">
+      <section class="panel erd-panel" id="erd-panel">
+        <h2>Data Model (ERD)</h2>
+        <button type="button" class="fullscreen-btn" id="erd-fullscreen-btn">Full Screen</button>
+        <p class="erd-hint">Select an artist or save the form to see the ARTIST &rarr; ALBUM one-to-many relationship animate.</p>
+        <div class="erd-canvas-wrap" id="erd-canvas-wrap">
+          <canvas id="erd-canvas" width="660" height="340"></canvas>
+        </div>
+      </section>
+
+      <section class="panel sql-panel">
+        <h2>Equivalent SQL</h2>
+        <p class="erd-hint">The SQL that would run against a relational database for this action.</p>
+        <pre id="sql-output" class="code-output">-- Save or select an album to see the generated SQL here.</pre>
+      </section>
+    </div>
+  </div>
+
+  <div class="db-dump-wrap">
+    <section class="panel db-dump-panel">
+      <div class="db-dump-header">
+        <h2>Full Database Dump (JSON)</h2>
+        <button type="button" class="fullscreen-btn" id="db-dump-refresh-btn">Refresh</button>
+      </div>
+      <p class="erd-hint">A live snapshot of everything currently stored in localStorage, across every page.</p>
+      <pre id="db-dump-output" class="code-output">// Loading...</pre>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const DB_KEYS = ['madmusic.artists', 'madmusic.genres', 'madmusic.artistGenres', 'madmusic.albums'];
+
+      function dumpDatabase() {
+        const dump = {};
+        DB_KEYS.forEach((key) => {
+          const raw = localStorage.getItem(key);
+          let parsed = [];
+          if (raw) {
+            try {
+              parsed = JSON.parse(raw);
+            } catch (e) {
+              parsed = [];
+            }
+          }
+          dump[key.replace('madmusic.', '')] = parsed;
+        });
+        const output = document.getElementById('db-dump-output');
+        if (output) {
+          output.textContent = JSON.stringify(dump, null, 2);
+        }
+      }
+
+      const refreshBtn = document.getElementById('db-dump-refresh-btn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', dumpDatabase);
+      }
+      window.addEventListener('storage', dumpDatabase);
+      window.dumpDatabase = dumpDatabase;
+
+      dumpDatabase();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('erd-canvas');
+      const ctx = canvas.getContext('2d');
+      const BASE_W = 660;
+      const BASE_H = 340;
+
+      const entities = {
+        ARTIST_DETAILS: { x: 20, y: 20, w: 170, fields: ['artist_id (FK)', 'dob', 'favorite_color', 'instrument'], color: '#16a085' },
+        ARTIST: { x: 20, y: 140, w: 170, fields: ['id (PK)', 'name'], color: '#2980b9' },
+        ALBUM: { x: 20, y: 230, w: 170, fields: ['id (PK)', 'artist_id (FK)', 'title'], color: '#8e44ad' },
+        ARTIST_GENRE: { x: 250, y: 140, w: 170, fields: ['artist_id (FK)', 'genre_id (FK)'], color: '#e67e22' },
+        GENRE: { x: 460, y: 132, w: 170, fields: ['id (PK)', 'name', 'description'], color: '#27ae60' }
+      };
+
+      Object.keys(entities).forEach((name) => {
+        const entity = entities[name];
+        entity.h = 24 + entity.fields.length * 16 + 10;
+      });
+
+      const relationships = [
+        { from: 'ARTIST_DETAILS', fromSide: 'bottom', to: 'ARTIST', toSide: 'top', label: '1 : 1' },
+        { from: 'ARTIST', fromSide: 'bottom', to: 'ALBUM', toSide: 'top', label: '1 : N' },
+        { from: 'ARTIST', fromSide: 'right', to: 'ARTIST_GENRE', toSide: 'left', label: '1 : N' },
+        { from: 'ARTIST_GENRE', fromSide: 'right', to: 'GENRE', toSide: 'left', label: 'N : 1' }
+      ];
+
+      const highlightedEntities = {};
+      const highlightedRelationships = {};
+      let tokens = [];
+
+      function edgePoint(entity, side) {
+        switch (side) {
+          case 'top': return { x: entity.x + entity.w / 2, y: entity.y };
+          case 'bottom': return { x: entity.x + entity.w / 2, y: entity.y + entity.h };
+          case 'left': return { x: entity.x, y: entity.y + entity.h / 2 };
+          case 'right': return { x: entity.x + entity.w, y: entity.y + entity.h / 2 };
+        }
+      }
+
+      function centerOf(entity) {
+        return { x: entity.x + entity.w / 2, y: entity.y + entity.h / 2 };
+      }
+
+      function relKey(from, to) {
+        return from + '|' + to;
+      }
+
+      function drawEntity(name) {
+        const entity = entities[name];
+        const now = Date.now();
+        const until = highlightedEntities[name] || 0;
+
+        if (now < until) {
+          const pulse = Math.abs(Math.sin((until - now) / 90));
+          ctx.save();
+          ctx.shadowColor = '#f39c12';
+          ctx.shadowBlur = 14 + pulse * 10;
+          ctx.strokeStyle = '#f39c12';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(entity.x - 3, entity.y - 3, entity.w + 6, entity.h + 6);
+          ctx.restore();
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(entity.x, entity.y, entity.w, entity.h);
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(entity.x, entity.y, entity.w, entity.h);
+
+        ctx.fillStyle = entity.color;
+        ctx.fillRect(entity.x, entity.y, entity.w, 24);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(name, entity.x + entity.w / 2, entity.y + 12);
+
+        ctx.fillStyle = '#333';
+        ctx.font = '11px Arial';
+        ctx.textAlign = 'left';
+        entity.fields.forEach((field, i) => {
+          ctx.fillText(field, entity.x + 8, entity.y + 40 + i * 16);
+        });
+      }
+
+      function drawRelationship(rel) {
+        const from = edgePoint(entities[rel.from], rel.fromSide);
+        const to = edgePoint(entities[rel.to], rel.toSide);
+        const now = Date.now();
+        const key = relKey(rel.from, rel.to);
+        const until = highlightedRelationships[key] || 0;
+        const active = now < until;
+
+        ctx.save();
+        if (active) {
+          const pulse = Math.abs(Math.sin((until - now) / 90));
+          ctx.strokeStyle = '#f39c12';
+          ctx.lineWidth = 3 + pulse * 2;
+          ctx.shadowColor = '#f39c12';
+          ctx.shadowBlur = 10;
+        } else {
+          ctx.strokeStyle = '#999';
+          ctx.lineWidth = 1.5;
+        }
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+        ctx.restore();
+
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(midX - 16, midY - 8, 32, 16);
+        ctx.fillStyle = '#555';
+        ctx.font = 'bold 11px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(rel.label, midX, midY);
+      }
+
+      function drawTokens() {
+        const now = Date.now();
+        tokens = tokens.filter((t) => now < t.start + t.duration);
+        tokens.forEach((t) => {
+          if (now < t.start) return;
+          const progress = Math.min(1, (now - t.start) / t.duration);
+          const segCount = t.points.length - 1;
+          const segProgress = progress * segCount;
+          const segIndex = Math.min(segCount - 1, Math.floor(segProgress));
+          const localProgress = segProgress - segIndex;
+          const p0 = t.points[segIndex];
+          const p1 = t.points[segIndex + 1];
+          const x = p0.x + (p1.x - p0.x) * localProgress;
+          const y = p0.y + (p1.y - p0.y) * localProgress;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.fillStyle = t.color;
+          ctx.shadowColor = t.color;
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      const wrapEl = document.getElementById('erd-canvas-wrap');
+      const erdPanel = document.getElementById('erd-panel');
+      const fullscreenBtn = document.getElementById('erd-fullscreen-btn');
+
+      function getDisplaySize() {
+        const isFullscreen = document.fullscreenElement === erdPanel;
+        if (isFullscreen) {
+          const maxW = window.innerWidth * 0.92;
+          const maxH = window.innerHeight * 0.8;
+          let width = maxW;
+          let height = width * (BASE_H / BASE_W);
+          if (height > maxH) {
+            height = maxH;
+            width = height * (BASE_W / BASE_H);
+          }
+          return { width, height };
+        }
+        const width = wrapEl.clientWidth;
+        const height = width * (BASE_H / BASE_W);
+        return { width, height };
+      }
+
+      function resizeCanvasForDisplay() {
+        const dpr = window.devicePixelRatio || 1;
+        const { width, height } = getDisplaySize();
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        const neededWidth = Math.max(1, Math.round(width * dpr));
+        const neededHeight = Math.max(1, Math.round(height * dpr));
+        if (canvas.width !== neededWidth || canvas.height !== neededHeight) {
+          canvas.width = neededWidth;
+          canvas.height = neededHeight;
+        }
+      }
+
+      function render() {
+        resizeCanvasForDisplay();
+        const scaleX = canvas.width / BASE_W;
+        const scaleY = canvas.height / BASE_H;
+        ctx.save();
+        ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
+        ctx.clearRect(0, 0, BASE_W, BASE_H);
+        relationships.forEach(drawRelationship);
+        Object.keys(entities).forEach(drawEntity);
+        drawTokens();
+        ctx.restore();
+        requestAnimationFrame(render);
+      }
+
+      function highlightEntity(name, duration) {
+        if (!entities[name]) return;
+        highlightedEntities[name] = Date.now() + (duration || 900);
+      }
+
+      function highlightRelationship(from, to, duration) {
+        highlightedRelationships[relKey(from, to)] = Date.now() + (duration || 900);
+      }
+
+      function addTokenPath(names, color, duration, delay) {
+        const points = names.map((name) => centerOf(entities[name]));
+        tokens.push({ points, start: Date.now() + (delay || 0), duration: duration || 900, color: color || '#e74c3c' });
+      }
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (document.fullscreenElement === erdPanel) {
+            document.exitFullscreen();
+          } else if (erdPanel.requestFullscreen) {
+            erdPanel.requestFullscreen();
+          }
+        });
+        document.addEventListener('fullscreenchange', () => {
+          const isFullscreen = document.fullscreenElement === erdPanel;
+          fullscreenBtn.textContent = isFullscreen ? 'Exit Full Screen' : 'Full Screen';
+        });
+      }
+
+      requestAnimationFrame(render);
+
+      window.erd = { highlightEntity, highlightRelationship, addTokenPath };
+    })();
+  </script>
+
+  <script>
+    const ALBUMS_KEY = 'madmusic.albums';
+    const ARTISTS_KEY = 'madmusic.artists';
+
+    const warningEl = document.getElementById('warning');
+    const form = document.getElementById('album-form');
+    const statusEl = document.getElementById('status');
+    const listEl = document.getElementById('album-list');
+    const emptyMessageEl = document.getElementById('empty-message');
+    const detailsPanel = document.getElementById('details-panel');
+    const artistSelect = document.getElementById('artist-select');
+    const titleInput = document.getElementById('title');
+
+    function getArtists() {
+      const raw = localStorage.getItem(ARTISTS_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function getAlbums() {
+      const raw = localStorage.getItem(ALBUMS_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveAlbums(albums) {
+      localStorage.setItem(ALBUMS_KEY, JSON.stringify(albums));
+    }
+
+    function sqlString(value) {
+      return "'" + String(value).replace(/'/g, "''") + "'";
+    }
+
+    function getArtistId(artistName) {
+      return getArtists().findIndex((a) => a.name === artistName) + 1;
+    }
+
+    function renderRecord(album, id) {
+      document.getElementById('json-output').textContent = JSON.stringify(album, null, 2);
+      document.getElementById('sql-output').textContent =
+        `INSERT INTO ALBUM (id, artist_id, title)\nVALUES (${id}, ${getArtistId(album.artist)}, ${sqlString(album.title)});`;
+    }
+
+    function populateArtistSelect() {
+      const artists = getArtists();
+      artistSelect.innerHTML = '';
+      artists.forEach((artist) => {
+        const option = document.createElement('option');
+        option.value = artist.name;
+        option.textContent = artist.name;
+        artistSelect.appendChild(option);
+      });
+    }
+
+    function renderList(selectedIndex) {
+      const albums = getAlbums();
+      listEl.innerHTML = '';
+
+      emptyMessageEl.style.display = albums.length === 0 ? 'block' : 'none';
+
+      albums.forEach((album, index) => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.innerHTML = album.title + '<small>' + album.artist + '</small>';
+        if (index === selectedIndex) {
+          link.classList.add('active');
+        }
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showDetails(index);
+        });
+        li.appendChild(link);
+        listEl.appendChild(li);
+      });
+    }
+
+    function showDetails(index) {
+      const albums = getAlbums();
+      const album = albums[index];
+      if (!album) return;
+
+      document.getElementById('detail-title').textContent = album.title;
+      document.getElementById('detail-artist').textContent = album.artist;
+
+      detailsPanel.style.display = 'block';
+      renderRecord(album, index + 1);
+      renderList(index);
+    }
+
+    function refresh() {
+      const artists = getArtists();
+      if (artists.length === 0) {
+        warningEl.style.display = 'block';
+        form.style.display = 'none';
+      } else {
+        warningEl.style.display = 'none';
+        form.style.display = 'block';
+      }
+      populateArtistSelect();
+      renderList();
+    }
+
+    titleInput.addEventListener('focus', () => {
+      window.erd.highlightEntity('ALBUM', 1000);
+    });
+    artistSelect.addEventListener('focus', () => {
+      window.erd.highlightEntity('ARTIST', 1000);
+      window.erd.highlightEntity('ALBUM', 1000);
+      window.erd.highlightRelationship('ARTIST', 'ALBUM', 1000);
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const album = {
+        title: titleInput.value.trim(),
+        artist: artistSelect.value
+      };
+
+      if (!album.title || !album.artist) {
+        statusEl.style.color = '#c0392b';
+        statusEl.textContent = 'Please enter a title and select an artist.';
+        return;
+      }
+
+      const albums = getAlbums();
+      albums.push(album);
+      saveAlbums(albums);
+
+      renderRecord(album, albums.length);
+      if (window.dumpDatabase) window.dumpDatabase();
+
+      window.erd.highlightEntity('ARTIST', 1200);
+      window.erd.highlightEntity('ALBUM', 1200);
+      window.erd.highlightRelationship('ARTIST', 'ALBUM', 1200);
+      window.erd.addTokenPath(['ARTIST', 'ALBUM'], '#e74c3c', 900);
+
+      form.reset();
+      statusEl.style.color = '#27ae60';
+      statusEl.textContent = `Saved "${album.title}".`;
+
+      refresh();
+    });
+
+    refresh();
+  </script>
+</body>
+</html>

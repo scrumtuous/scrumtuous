@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | UML Sequence Diagrams</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --pink:#ff5fae;
+  --pink2:#ff9dce;
+  --lav:#a57dff;
+  --lav2:#e9dfff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.15), transparent 21%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+
+.floaties{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floaties span{position:absolute;opacity:.16;animation:floaty 8s ease-in-out infinite}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{
+  display:flex;align-items:center;gap:8px;font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea;font-size:14px;font-weight:850}
+
+.hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+.hero-shell{
+  min-height:260px;border-radius:32px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 84% 20%,rgba(255,255,255,.23),transparent 17%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;box-shadow:0 24px 62px rgba(86,43,112,.21)
+}
+.hero-grid{min-height:260px;display:grid;grid-template-columns:1.34fr .66fr;align-items:center}
+.hero-copy{padding:26px 34px;position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:1000
+}
+h1{
+  margin:13px 0 9px;font-size:clamp(36px,5vw,60px);line-height:.96;letter-spacing:-.05em;font-weight:1000
+}
+.hero-copy p{max-width:770px;font-size:18px;color:#fff5fb;margin:0}
+.hero-note{display:inline-block;margin-top:10px;font-size:16px;font-weight:900;transform:rotate(-1deg)}
+.hero-chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:9px}
+.hero-chip{
+  padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(7px);font-weight:900;font-size:14px
+}
+.hero-art{position:relative;height:100%}
+.hero-orb{
+  position:absolute;width:180px;height:180px;border-radius:50%;right:42px;top:36px;
+  background:radial-gradient(circle at 35% 32%,#fff 0 7%,#ffe4f2 8% 31%,#ecd5ff 60%,#ccb4ff 100%);
+  box-shadow:0 20px 45px rgba(70,29,94,.20);animation:bloop 4s ease-in-out infinite
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute;font-size:46px;animation:spin 9s linear infinite;filter:drop-shadow(0 10px 8px rgba(59,18,82,.16))
+}
+.hero-art .shape.s1{right:22px;bottom:22px}
+.hero-art .shape.s2{right:192px;top:32px;animation-direction:reverse}
+.hero-art .shape.s3{right:145px;bottom:14px;font-size:39px}
+.hero-art .shape.s4{right:83px;top:106px;font-size:40px;animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;margin:28px 0
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:1000;color:#a35587
+}
+h2{
+  margin:5px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:1000
+}
+h3{margin:0 0 8px;font-size:22px;font-weight:950}
+.leadish{font-size:18px;color:#55475c}
+.module-head{
+  padding:24px 28px;background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);position:relative
+}
+.module-head::after{
+  content:"";position:absolute;width:84px;height:84px;border-radius:50%;
+  right:24px;top:-20px;background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);opacity:.22
+}
+.module-body{padding:28px}
+
+.objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:165px;background:#fff;transition:.24s ease
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block;font-size:36px;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);box-shadow:0 10px 24px rgba(151,68,111,.08)
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";display:inline-block;margin-bottom:8px;color:#fff;
+  background:linear-gradient(90deg,#d94f7d,#ff56ad);padding:5px 10px;border-radius:999px;
+  font-size:12px;font-weight:1000;letter-spacing:.07em
+}
+.quiz-alert strong{color:#813850}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.cardish{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+.cardish.pink{background:#fff4fa}
+.cardish.lav{background:#f5f0ff}
+.cardish.mint{background:#effcf7}
+.cardish.gold{background:#fff9df}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f
+}
+.copy{
+  position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+  background:#fff;color:#624c6c;padding:8px 12px;font-weight:950;cursor:pointer
+}
+
+.canvas-card{
+  border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff;margin:18px 0
+}
+.canvas-title{font-weight:1000;font-size:18px;margin-bottom:10px;text-align:center}
+.sequence-canvas{
+  display:block;width:100%;height:auto;min-height:320px;
+  border-radius:16px;background:linear-gradient(180deg,#fff,#fffafe);
+  border:1px solid #eee1ec
+}
+.canvas-note{text-align:center;color:var(--muted);font-size:14px;margin-top:8px}
+
+.timeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.timeline-card{
+  border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff;min-height:195px
+}
+.timeline-card:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.timeline-card:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.timeline-card:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.timeline-card .big{font-size:34px;display:block;margin-bottom:6px}
+.timeline-card b{display:block;font-size:18px;margin-bottom:5px}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff)
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,95,174,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;cursor:pointer;color:#fff;font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));box-shadow:0 9px 18px rgba(157,75,158,.24)
+}
+.fun-btn.secondary{background:#fff;color:#705978;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.critical-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.critical{padding:15px 16px;border:1px solid var(--line);border-radius:16px;background:#fff}
+
+.lab-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:18px}
+.lab-step{
+  border:1px solid var(--line);border-radius:20px;padding:16px;background:#fff;min-height:210px
+}
+.lab-step .step{
+  display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  color:#fff;background:linear-gradient(135deg,var(--pink),var(--lav));font-weight:1000;margin-bottom:8px
+}
+.acceptance{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.accept{
+  display:flex;gap:10px;align-items:flex-start;padding:14px 15px;border-radius:16px;border:1px solid var(--line);background:#fff
+}
+
+.sticker{
+  margin:18px 0;display:flex;align-items:center;gap:16px;padding:14px 16px;
+  border-radius:20px;border:1px dashed #e7c7df;background:linear-gradient(135deg,#fff9fc,#fff)
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+
+.small-note{
+  margin:18px 0;padding:17px 18px;border-radius:20px;background:linear-gradient(135deg,#fff6d8,#fffdf7);border:1px solid #eddb9d
+}
+.small-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em;color:#8a6216;margin-bottom:4px
+}
+.small-note b{color:#5e4716}
+
+.finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df)}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:140px}
+  .lab-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  .objective-grid,.split,.timeline-grid,.critical-grid,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:26px 22px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:44px}
+  .lab-grid{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center;text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-timer"></i> Sprint 5 • Module 5</div>
+        <h1>UML Sequence Diagrams</h1>
+        <p>Follow a scenario from top to bottom and show which object calls which method, what comes back, who is active, and where the workflow branches.</p>
+        <div class="hero-note">Structure answered "what exists?" Now we ask "what happens next?" ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">👥 Participants</span>
+          <span class="hero-chip">➡️ Messages</span>
+          <span class="hero-chip">📶 Activation</span>
+          <span class="hero-chip">🔀 alt fragments</span>
+          <span class="hero-chip">📝 Quiz Alerts</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">👥</span>
+      <b>Read the notation</b>
+      Understand participants, lifelines, messages, returns, activations, and fragments.
+    </div>
+    <div class="objective">
+      <span class="icon">➡️</span>
+      <b>Model calls and returns</b>
+      Distinguish synchronous calls from return messages.
+    </div>
+    <div class="objective">
+      <span class="icon">🔀</span>
+      <b>Model branches</b>
+      Use <code>alt</code> to show a real conditional path such as valid vs invalid.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Very likely quiz territory:</strong> when a workflow has valid and invalid paths, an <code>alt</code> fragment is the right UML sequence-diagram tool.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 1</div>
+    <h2>A Different View of the Same Design</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A class diagram shows structure. A sequence diagram shows behavior for one scenario.</p>
+
+    <div class="split">
+      <div class="cardish lav">
+        <h3>Class diagram</h3>
+        <p>What classes exist?</p>
+        <p>What attributes and methods do they have?</p>
+        <p>How are they related?</p>
+      </div>
+      <div class="cardish mint">
+        <h3>Sequence diagram</h3>
+        <p>Who starts the scenario?</p>
+        <p>What call happens next?</p>
+        <p>What does each object return?</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">MadShapes scenario</div>
+      <b>What happens when a student judges whether two displayed shapes have the same area?</b>
+      The class diagram tells us which objects exist. The sequence diagram tells us the order in which they interact.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 2</div>
+    <h2>Participants and Messages</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A participant is one object involved in the scenario. Time moves downward. Each horizontal arrow is a message.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>sequenceDiagram
+participant S as Student
+participant E as ExperimentController
+participant C as ShapeComparator
+
+S->>E: submitJudgement("SAME")
+E->>C: sameArea(shapeA, shapeB)
+C-->>E: true
+E-->>S: "Correct"</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: participants, lifelines, calls, and returns</div>
+      <canvas id="basicCanvas" class="sequence-canvas" width="1050" height="450"></canvas>
+      <div class="canvas-note">Read from top to bottom. Solid arrows are calls. Dashed arrows are returns.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Notation check:</strong> <code>-&gt;&gt;</code> is a synchronous call. <code>--&gt;&gt;</code> is the return.
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Quick check</h3>
+      <p>Which arrow is the return in Mermaid: <code>-&gt;&gt;</code> or <code>--&gt;&gt;</code>?</p>
+      <textarea placeholder="// Answer..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Sequence started ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Reveal answer</button>
+      </div>
+      <div class="solution"><pre><code>--&gt;&gt;
+
+The dashed arrow represents the return message.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 3</div>
+    <h2>Synchronous Calls and Matching Returns</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A synchronous call means the caller waits for the called object to finish. This is exactly what a normal Java method call does.</p>
+
+    <div class="timeline-grid">
+      <div class="timeline-card">
+        <span class="big">1️⃣</span>
+        <b>Caller sends a message</b>
+        <code>controller-&gt;&gt;circle: calcArea()</code>
+      </div>
+      <div class="timeline-card">
+        <span class="big">2️⃣</span>
+        <b>Called object works</b>
+        Circle calculates its area.
+      </div>
+      <div class="timeline-card">
+        <span class="big">3️⃣</span>
+        <b>Return comes back</b>
+        <code>circle--&gt;&gt;controller: 78.54</code>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>sequenceDiagram
+participant E as ExperimentController
+participant C as Circle
+
+E->>C: calcArea()
+C-->>E: 78.54</code></pre>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Good diagram habit:</strong> show the return, even when it is just <code>done</code> or <code>void</code>. It makes the interaction easier to follow.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 4</div>
+    <h2>Activation Bars: Who Is Actually Doing Work?</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The thin vertical rectangle on a lifeline shows when that participant is active.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>sequenceDiagram
+participant E as ExperimentController
+participant C as ShapeComparator
+participant A as Circle
+participant B as Rectangle
+
+E->>+C: sameArea(A, B)
+C->>+A: calcArea()
+A-->>-C: 78.54
+C->>+B: calcArea()
+B-->>-C: 80.00
+C-->>-E: false</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: nested activation bars</div>
+      <canvas id="activationCanvas" class="sequence-canvas" width="1050" height="520"></canvas>
+      <div class="canvas-note">The comparator stays active while it waits for each shape to return an area.</div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Design smell clue</div>
+      <b>A participant active for almost the entire diagram may be doing too much.</b>
+      Sequence diagrams can reveal responsibility problems that are harder to notice in a class diagram.
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Later connection:</strong> this is another way to spot a central manager or orchestrator that has absorbed too much responsibility.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 5</div>
+    <h2><code>alt</code>: Show a Real Conditional Path</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Use an <code>alt</code> fragment when the workflow truly branches into different sequences of messages.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>sequenceDiagram
+participant S as Student
+participant E as ExperimentController
+participant C as ShapeComparator
+participant R as ResultRecorder
+
+S->>+E: submitJudgement("SAME")
+E->>+C: sameArea(shapeA, shapeB)
+C-->>-E: true
+
+alt judgement is correct
+    E->>+R: recordCorrect()
+    R-->>-E: done
+    E-->>S: "Correct"
+else judgement is incorrect
+    E->>+R: recordIncorrect()
+    R-->>-E: done
+    E-->>S: "Try again"
+end</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: <code>alt</code> fragment</div>
+      <canvas id="altCanvas" class="sequence-canvas" width="1050" height="650"></canvas>
+      <div class="canvas-note">Each branch contains a different sequence of messages, not merely a note.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct exam connection:</strong> for "order valid" vs "order invalid", use an <code>alt</code> fragment with one branch for execution and another for rejection.
+    </div>
+
+    <div class="challenge">
+      <h3>🔀 Your challenge</h3>
+      <p>What is wrong with using a single straight-line sequence and adding a comment saying "sometimes rejected"?</p>
+      <textarea placeholder="// Explain why alt is better..."></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Branch understood 🎀</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>A comment does not show the different behavior.
+An alt fragment makes the valid and invalid message sequences explicit.</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 6</div>
+    <h2>Do Not Turn Every Rule Into Its Own Branch</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A sequence diagram should explain the scenario clearly, not reproduce every possible internal validation rule.</p>
+
+    <div class="split">
+      <div class="cardish pink">
+        <h3>Too much</h3>
+        <ul>
+          <li>alt quantity negative</li>
+          <li>alt price invalid</li>
+          <li>alt risk limit exceeded</li>
+          <li>alt missing instrument</li>
+          <li>alt unsupported side</li>
+        </ul>
+      </div>
+      <div class="cardish mint">
+        <h3>Enough for this lab</h3>
+        <ul>
+          <li>Validate the order</li>
+          <li><b>alt order is valid</b></li>
+          <li><b>else order is invalid</b></li>
+          <li>Show different message sequences</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Reasoning over exhaustiveness:</strong> one valid/invalid <code>alt</code> branch is enough to demonstrate conditional workflow modeling for this lab.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator says simplify</b>
+        If the diagram needs six nested validation fragments to explain one submission, it may be modeling implementation details instead of the workflow.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Read critically</div>
+    <h2>A Sequence Diagram Is a Hypothesis About Behavior</h2>
+  </div>
+  <div class="module-body">
+    <div class="critical-grid">
+      <div class="critical">1️⃣ Does the message order match the requirement?</div>
+      <div class="critical">2️⃣ Does one participant receive far more messages than everyone else?</div>
+      <div class="critical">3️⃣ Does every <code>alt</code> branch correspond to a real requirement?</div>
+      <div class="critical">4️⃣ Do calls have matching returns?</div>
+      <div class="critical">5️⃣ Are activation bars balanced and understandable?</div>
+      <div class="critical">6️⃣ Are all participants classes that actually exist in the class diagram?</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Peer review preview:</strong> a sequence diagram can look polished and still model the wrong order of operations. Review the behavior, not just the appearance.
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James sequence review</b>
+        Jimbo James of the Columbian cartel produced one activation bar that runs from the first message to the last and named the participant <code>EverythingManager</code>. Review comments have been submitted.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Structure plus behavior</div>
+    <h2>Class Diagram + Sequence Diagram = A Complete First Draft</h2>
+  </div>
+  <div class="module-body">
+    <div class="split">
+      <div class="cardish lav">
+        <h3>Class diagram</h3>
+        <p>Defines the cast: classes, interfaces, attributes, methods, and relationships.</p>
+      </div>
+      <div class="cardish mint">
+        <h3>Sequence diagram</h3>
+        <p>Shows the scene: the order in which those objects interact for one scenario.</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Still a first draft</div>
+      <b>Neither diagram is final yet.</b>
+      The next module uses peer review to challenge both the structural model and the behavioral model.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>Module 5 Lab: Sequence the Mission</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The official lab uses the "client submits an order" workflow. Every participant should already exist in your Module 4 class diagram.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>%%{init: {'sequence': {'mirrorActors': false}}}%%
+sequenceDiagram
+
+participant C as Client
+participant O as Order
+participant V as OrderValidator
+participant E as OrderExecutor
+participant P as Portfolio
+participant I as Instrument
+participant R as SettlementReport</code></pre>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why mirrorActors is disabled</div>
+      <b>It prevents Mermaid from repeating participant boxes at the bottom.</b>
+      That keeps long lifelines cleaner.
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: mission valid/invalid branch</div>
+      <canvas id="missionCanvas" class="sequence-canvas" width="1120" height="780"></canvas>
+      <div class="canvas-note">The mission lab asks for the same basic structure shown here: validate, branch, execute or reject, then report.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct exam connection:</strong> the correct way to model "execute when valid, reject with a reason when invalid" is an <code>alt</code> fragment with distinct branches.
+    </div>
+
+    <div class="lab-grid">
+      <div class="lab-step">
+        <div class="step">1</div>
+        <h3>Create the file</h3>
+        <p>Create <code>mission-order-sequence.mmd</code>.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">2</div>
+        <h3>Add participants</h3>
+        <p>Use classes that already exist in Module 4.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">3</div>
+        <h3>Happy path first</h3>
+        <p>Submit, validate, execute, update, report.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">4</div>
+        <h3>Add activations</h3>
+        <p>Use matching <code>+</code> and <code>-</code>.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">5</div>
+        <h3>Add <code>alt</code></h3>
+        <p>Valid order vs invalid order.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">6</div>
+        <h3>Render it</h3>
+        <p>Use Mermaid CLI and inspect the PNG.</p>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>npx --yes @mermaid-js/mermaid-cli \
+  -i mission-order-sequence.mmd \
+  -o mission-order-sequence.png \
+  -b white \
+  -w 1200</code></pre>
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span>Every participant corresponds to a class in <code>mission-model.mmd</code>.</span></div>
+      <div class="accept">✅ <span>At least one synchronous call and matching return are present.</span></div>
+      <div class="accept">✅ <span>At least one activation bar uses matching <code>+</code> and <code>-</code>.</span></div>
+      <div class="accept">✅ <span>An <code>alt</code> fragment models valid and invalid order paths.</span></div>
+      <div class="accept">✅ <span>Each branch contains a distinct sequence of messages.</span></div>
+      <div class="accept">✅ <span>The diagram renders without errors via <code>mmdc</code>.</span></div>
+      <div class="accept">✅ <span>Commit both the <code>.mmd</code> source and rendered <code>.png</code>.</span></div>
+      <div class="accept">✅ <span>Do not model every validation rule as its own branch.</span></div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Complete the conceptual sequence below with the correct fragment and branch contents.</p>
+      <textarea placeholder="Client submits order
+Validator validates
+
+??? order is valid
+    ...
+??? order is invalid
+    ...
+end"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">Sequence mastered 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show one answer</button>
+      </div>
+      <div class="solution"><pre><code>Client submits order
+Validator validates
+
+alt order is valid
+    Executor executes the order
+    Portfolio updates the holding
+    SettlementReport records accepted
+else order is invalid
+    SettlementReport records rejected with reason
+end</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>Sequence diagrams make behavior visible.</h2>
+  <p>You learned participants, synchronous calls, returns, activation bars, and <code>alt</code> fragments. You can now show what happens step by step when objects collaborate in one scenario.</p>
+
+  <div class="pills">
+    <span class="pill">👥 Participants</span>
+    <span class="pill">➡️ Calls</span>
+    <span class="pill">↩️ Returns</span>
+    <span class="pill">📶 Activations</span>
+    <span class="pill">🔀 alt fragments</span>
+    <span class="pill">🧜 Mermaid</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived UML Sequence Diagrams 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> Peer Review</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm has confirmed that time flows downward. ROFLGator is satisfied with the activation bars. Jimbo James, Columbian cartel member and enthusiastic user of oversized manager classes, has been asked to shorten his lifeline.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function copyCode(button){
+  const text=button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=button.textContent;
+    button.textContent="Copied ✨";
+    setTimeout(()=>button.textContent=old,1200);
+  });
+}
+
+function toggleSolution(button){
+  const challenge=button.closest(".challenge");
+  const solution=challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent=solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+
+function celebrate(button,amount=30){
+  const colors=["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  const old=button.textContent;
+  button.textContent="✨ MadShapes approved! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+
+function fitCanvas(canvas){
+  const ratio=window.devicePixelRatio||1;
+  const cssWidth=canvas.clientWidth;
+  const logicalHeight=parseInt(canvas.getAttribute("height"),10);
+  canvas.style.height=logicalHeight+"px";
+  canvas.width=Math.round(cssWidth*ratio);
+  canvas.height=Math.round(logicalHeight*ratio);
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  return {ctx,w:cssWidth,h:logicalHeight};
+}
+
+function roundedRect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  if(fill){ctx.fillStyle=fill;ctx.fill()}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.8;ctx.stroke()}
+}
+
+function participant(ctx,x,name,yTop,yBottom){
+  roundedRect(ctx,x-70,yTop,140,42,12,"#f8efff","#cdb9d0");
+  ctx.textAlign="center";
+  ctx.fillStyle="#3b2b43";
+  ctx.font="700 14px Arial";
+  ctx.fillText(name,x,yTop+26);
+  ctx.save();
+  ctx.setLineDash([6,6]);
+  ctx.strokeStyle="#bcaec1";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(x,yTop+42);
+  ctx.lineTo(x,yBottom);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function message(ctx,x1,x2,y,text,ret=false){
+  ctx.save();
+  ctx.strokeStyle="#6d5875";
+  ctx.fillStyle="#6d5875";
+  ctx.lineWidth=2;
+  if(ret) ctx.setLineDash([8,5]);
+  ctx.beginPath();
+  ctx.moveTo(x1,y);
+  ctx.lineTo(x2,y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  const dir=x2>x1?1:-1;
+  ctx.beginPath();
+  ctx.moveTo(x2,y);
+  ctx.lineTo(x2-dir*12,y-6);
+  ctx.lineTo(x2-dir*12,y+6);
+  if(ret){
+    ctx.stroke();
+  }else{
+    ctx.closePath();ctx.fill();
+  }
+  ctx.font="13px Arial";
+  ctx.textAlign="center";
+  const mid=(x1+x2)/2;
+  const tw=ctx.measureText(text).width;
+  roundedRect(ctx,mid-tw/2-6,y-22,tw+12,18,7,"#fffafd","#ead9e7");
+  ctx.fillStyle="#5f4d67";
+  ctx.fillText(text,mid,y-9);
+  ctx.restore();
+}
+
+function activation(ctx,x,y1,y2,color="#f1d6ff"){
+  ctx.fillStyle=color;
+  ctx.strokeStyle="#9d75b2";
+  ctx.lineWidth=1.4;
+  ctx.fillRect(x-6,y1,12,y2-y1);
+  ctx.strokeRect(x-6,y1,12,y2-y1);
+}
+
+function drawBasic(){
+  const canvas=document.getElementById("basicCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+
+  const xs=[120,w/2,w-120];
+  participant(ctx,xs[0],"Student",28,h-25);
+  participant(ctx,xs[1],"ExperimentController",28,h-25);
+  participant(ctx,xs[2],"ShapeComparator",28,h-25);
+
+  message(ctx,xs[0],xs[1],120,'submitJudgement("SAME")');
+  message(ctx,xs[1],xs[2],190,"sameArea(shapeA, shapeB)");
+  message(ctx,xs[2],xs[1],260,"true",true);
+  message(ctx,xs[1],xs[0],330,'"Correct"',true);
+}
+
+function drawActivation(){
+  const canvas=document.getElementById("activationCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+
+  const xs=[110,365,640,w-110];
+  ["ExperimentController","ShapeComparator","Circle","Rectangle"].forEach((n,i)=>participant(ctx,xs[i],n,28,h-25));
+
+  activation(ctx,xs[1],112,410);
+  message(ctx,xs[0],xs[1],120,"sameArea(A, B)");
+
+  activation(ctx,xs[2],177,240,"#dff5e7");
+  message(ctx,xs[1],xs[2],185,"calcArea()");
+  message(ctx,xs[2],xs[1],235,"78.54",true);
+
+  activation(ctx,xs[3],282,345,"#dff5e7");
+  message(ctx,xs[1],xs[3],290,"calcArea()");
+  message(ctx,xs[3],xs[1],340,"80.00",true);
+
+  message(ctx,xs[1],xs[0],405,"false",true);
+}
+
+function altBox(ctx,x,y,w,h,labelText){
+  ctx.save();
+  ctx.strokeStyle="#a884b8";
+  ctx.lineWidth=2;
+  ctx.strokeRect(x,y,w,h);
+  roundedRect(ctx,x,y,112,28,0,"#f2e3ff","#a884b8");
+  ctx.fillStyle="#5a4264";
+  ctx.font="700 13px Arial";
+  ctx.textAlign="left";
+  ctx.fillText("alt",x+10,y+19);
+  ctx.font="13px Arial";
+  ctx.fillText(labelText,x+122,y+19);
+  ctx.restore();
+}
+
+function drawAlt(){
+  const canvas=document.getElementById("altCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+
+  const xs=[90,350,620,w-100];
+  ["Student","ExperimentController","ShapeComparator","ResultRecorder"].forEach((n,i)=>participant(ctx,xs[i],n,28,h-25));
+
+  message(ctx,xs[0],xs[1],105,'submitJudgement("SAME")');
+  message(ctx,xs[1],xs[2],160,"sameArea(shapeA, shapeB)");
+  message(ctx,xs[2],xs[1],215,"true",true);
+
+  altBox(ctx,55,260,w-110,310,"judgement outcome");
+  ctx.strokeStyle="#c7b4ca";
+  ctx.setLineDash([7,5]);
+  ctx.beginPath();
+  ctx.moveTo(55,425);
+  ctx.lineTo(w-55,425);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle="#705879";
+  ctx.font="700 13px Arial";
+  ctx.fillText("else judgement is incorrect",70,446);
+  ctx.fillText("judgement is correct",70,286);
+
+  message(ctx,xs[1],xs[3],320,"recordCorrect()");
+  message(ctx,xs[3],xs[1],365,"done",true);
+  message(ctx,xs[1],xs[0],405,'"Correct"',true);
+
+  message(ctx,xs[1],xs[3],480,"recordIncorrect()");
+  message(ctx,xs[3],xs[1],525,"done",true);
+  message(ctx,xs[1],xs[0],565,'"Try again"',true);
+}
+
+function drawMission(){
+  const canvas=document.getElementById("missionCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+
+  const labels=["Client","OrderValidator","OrderExecutor","Portfolio","SettlementReport"];
+  const margin=70;
+  const gap=(w-2*margin)/(labels.length-1);
+  const xs=labels.map((_,i)=>margin+i*gap);
+  labels.forEach((n,i)=>participant(ctx,xs[i],n,28,h-25));
+
+  message(ctx,xs[0],xs[1],105,"submit(order)");
+  activation(ctx,xs[1],98,215);
+  message(ctx,xs[1],xs[1]+1,150,"validate()");
+  message(ctx,xs[1],xs[0],210,"ValidationResult",true);
+
+  altBox(ctx,40,250,w-80,410,"order outcome");
+  ctx.fillStyle="#705879";
+  ctx.font="700 13px Arial";
+  ctx.fillText("order is valid",55,276);
+
+  activation(ctx,xs[2],300,480);
+  message(ctx,xs[0],xs[2],315,"execute(order)");
+  message(ctx,xs[2],xs[3],370,"updateHolding()");
+  message(ctx,xs[3],xs[2],420,"done",true);
+  message(ctx,xs[2],xs[4],465,"recordAccepted()");
+  message(ctx,xs[4],xs[2],510,"done",true);
+
+  ctx.save();
+  ctx.strokeStyle="#c7b4ca";
+  ctx.setLineDash([7,5]);
+  ctx.beginPath();
+  ctx.moveTo(40,535);
+  ctx.lineTo(w-40,535);
+  ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle="#705879";
+  ctx.font="700 13px Arial";
+  ctx.fillText("else order is invalid",55,558);
+
+  message(ctx,xs[1],xs[4],600,"recordRejected(reason)");
+  message(ctx,xs[4],xs[1],645,"done",true);
+}
+
+function redraw(){
+  drawBasic();
+  drawActivation();
+  drawAlt();
+  drawMission();
+}
+window.addEventListener("load",redraw);
+window.addEventListener("resize",()=>{
+  clearTimeout(window.__seqResize);
+  window.__seqResize=setTimeout(redraw,120);
+});
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=bits[Math.floor(Math.random()*bits.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

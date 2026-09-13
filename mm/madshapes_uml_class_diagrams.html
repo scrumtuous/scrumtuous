@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadShapes | UML Class Diagrams</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/line/lineicons.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/5.1/solid/lineicons-solid.css">
+
+<style>
+:root{
+  --ink:#2f2335;
+  --muted:#75657b;
+  --pink:#ff5fae;
+  --pink2:#ff9dce;
+  --lav:#a57dff;
+  --lav2:#e9dfff;
+  --mint:#d4f5e6;
+  --peach:#ffd0af;
+  --gold:#f6c654;
+  --sky:#c9eef8;
+  --line:#ebd9e8;
+  --paper:#fffdfd;
+  --plum:#311f3b;
+  --code:#2d2334;
+  --shadow:0 18px 55px rgba(94,48,91,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  line-height:1.58;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 8% 9%, rgba(255,95,174,.15), transparent 21%),
+    radial-gradient(circle at 92% 13%, rgba(165,125,255,.18), transparent 24%),
+    radial-gradient(circle at 76% 74%, rgba(212,245,230,.23), transparent 20%),
+    linear-gradient(180deg,#fff8fc 0%,#ffffff 52%,#fff8fc 100%);
+}
+a{color:inherit}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+
+.floaties{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.floaties span{position:absolute;opacity:.16;animation:floaty 8s ease-in-out infinite}
+.floaties span:nth-child(1){left:3%;top:8%;font-size:34px}
+.floaties span:nth-child(2){right:4%;top:17%;font-size:36px;animation-delay:-2s}
+.floaties span:nth-child(3){left:6%;top:64%;font-size:30px;animation-delay:-4s}
+.floaties span:nth-child(4){right:8%;top:75%;font-size:38px;animation-delay:-6s}
+.floaties span:nth-child(5){left:47%;top:4%;font-size:28px;animation-delay:-3s}
+.floaties span:nth-child(6){right:28%;top:46%;font-size:34px;animation-delay:-5s}
+@keyframes floaty{50%{transform:translateY(-18px) rotate(8deg) scale(1.05)}}
+
+.masthead{
+  background:linear-gradient(90deg,#25143a,#4a1c68 55%,#2a163c);
+  color:#fff;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.masthead-inner{
+  max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{
+  display:flex;align-items:center;gap:8px;font-size:clamp(28px,3vw,40px);font-weight:1000;letter-spacing:-.05em
+}
+.logo .mad{
+  background:linear-gradient(90deg,#ff5daf,#ff9dce,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.logo .shapes{color:#ceb7ff}
+.mast-tag{color:#ffd4ea;font-size:14px;font-weight:850}
+
+.hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+.hero-shell{
+  min-height:270px;border-radius:32px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 84% 20%,rgba(255,255,255,.23),transparent 17%),
+    linear-gradient(135deg,#6c43ef 0%,#a14cd8 38%,#f54fa7 76%,#ff8fc6 100%);
+  color:#fff;box-shadow:0 24px 62px rgba(86,43,112,.21)
+}
+.hero-grid{min-height:270px;display:grid;grid-template-columns:1.34fr .66fr;align-items:center}
+.hero-copy{padding:28px 34px;position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(6px);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:1000
+}
+h1{
+  margin:13px 0 9px;font-size:clamp(36px,5vw,62px);line-height:.96;letter-spacing:-.05em;font-weight:1000
+}
+.hero-copy p{max-width:770px;font-size:18px;color:#fff5fb;margin:0}
+.hero-note{display:inline-block;margin-top:10px;font-size:16px;font-weight:900;transform:rotate(-1deg)}
+.hero-chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:9px}
+.hero-chip{
+  padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(7px);font-weight:900;font-size:14px
+}
+.hero-art{position:relative;height:100%}
+.hero-orb{
+  position:absolute;width:185px;height:185px;border-radius:50%;right:43px;top:40px;
+  background:radial-gradient(circle at 35% 32%,#fff 0 7%,#ffe4f2 8% 31%,#ecd5ff 60%,#ccb4ff 100%);
+  box-shadow:0 20px 45px rgba(70,29,94,.20);animation:bloop 4s ease-in-out infinite
+}
+@keyframes bloop{50%{transform:translateY(-8px) scale(1.03)}}
+.hero-art .shape{
+  position:absolute;font-size:48px;animation:spin 9s linear infinite;filter:drop-shadow(0 10px 8px rgba(59,18,82,.16))
+}
+.hero-art .shape.s1{right:24px;bottom:24px}
+.hero-art .shape.s2{right:196px;top:34px;animation-direction:reverse}
+.hero-art .shape.s3{right:145px;bottom:16px;font-size:40px}
+.hero-art .shape.s4{right:86px;top:112px;font-size:42px;animation-duration:7s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1120px;margin:0 auto;padding:10px 20px 80px}
+.panel,.module,.finale,.video-card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;
+  box-shadow:var(--shadow);overflow:hidden;margin:28px 0
+}
+.panel{padding:28px}
+.kicker{
+  text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:1000;color:#a35587
+}
+h2{
+  margin:5px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:1000
+}
+h3{margin:0 0 8px;font-size:22px;font-weight:950}
+.leadish{font-size:18px;color:#55475c}
+.module-head{
+  padding:24px 28px;background:linear-gradient(135deg,#fff1f8,#f7f0ff 60%,#effcf7);
+  border-bottom:1px solid var(--line);position:relative
+}
+.module-head::after{
+  content:"";position:absolute;width:84px;height:84px;border-radius:50%;
+  right:24px;top:-20px;background:radial-gradient(circle,#ff9dce 0 30%,transparent 31%);opacity:.22
+}
+.module-body{padding:28px}
+
+.objective-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.objective{
+  border:1px solid var(--line);border-radius:22px;padding:20px;min-height:165px;background:#fff;transition:.24s ease
+}
+.objective:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.objective:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.objective:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.objective:hover{transform:translateY(-5px) rotate(-.4deg)}
+.objective .icon{display:block;font-size:36px;margin-bottom:8px}
+.objective b{display:block;font-size:18px;margin-bottom:4px}
+
+.quiz-alert{
+  margin:20px 0;padding:18px 18px 18px 20px;border-radius:22px;border:2px solid #efb2c9;
+  background:linear-gradient(135deg,#fff0f7,#fff9fc);box-shadow:0 10px 24px rgba(151,68,111,.08)
+}
+.quiz-alert::before{
+  content:"QUIZ ALERT";display:inline-block;margin-bottom:8px;color:#fff;
+  background:linear-gradient(90deg,#d94f7d,#ff56ad);padding:5px 10px;border-radius:999px;
+  font-size:12px;font-weight:1000;letter-spacing:.07em
+}
+.quiz-alert strong{color:#813850}
+
+.canvas-card{
+  border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff;margin:18px 0
+}
+.canvas-title{font-weight:1000;font-size:18px;margin-bottom:10px;text-align:center}
+.uml-canvas{
+  display:block;width:100%;height:auto;min-height:280px;
+  border-radius:16px;background:linear-gradient(180deg,#fff,#fffafe);
+  border:1px solid #eee1ec
+}
+.canvas-note{text-align:center;color:var(--muted);font-size:14px;margin-top:8px}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.cardish{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+.cardish.pink{background:#fff4fa}
+.cardish.lav{background:#f5f0ff}
+.cardish.mint{background:#effcf7}
+.cardish.gold{background:#fff9df}
+
+.code-wrap{position:relative;margin:18px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,#302637,#241c29);
+  color:#fff7fd;border-radius:20px;padding:22px;overflow:auto;
+  font-size:14px;line-height:1.62;border:1px solid #56405f
+}
+.copy{
+  position:absolute;right:12px;top:12px;border:none;border-radius:999px;
+  background:#fff;color:#624c6c;padding:8px 12px;font-weight:950;cursor:pointer
+}
+
+.notation-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.notation{
+  border:1px solid var(--line);border-radius:20px;padding:16px;background:#fff;min-height:205px
+}
+.notation:nth-child(1){background:linear-gradient(145deg,#fff5fb,#fff)}
+.notation:nth-child(2){background:linear-gradient(145deg,#f5f0ff,#fff)}
+.notation:nth-child(3){background:linear-gradient(145deg,#effcf7,#fff)}
+.notation:nth-child(4){background:linear-gradient(145deg,#fff9df,#fff)}
+.notation:nth-child(5){background:linear-gradient(145deg,#edf8ff,#fff)}
+.notation .big{font-size:32px;display:block;margin-bottom:6px}
+.notation b{display:block;font-size:18px;margin-bottom:5px}
+
+.challenge{
+  margin-top:24px;padding:20px;border:1px solid #e5d1ee;border-radius:22px;
+  background:linear-gradient(135deg,#fff0f7,#f8f1ff)
+}
+.challenge p{color:#604e67}
+textarea{
+  width:100%;min-height:122px;resize:vertical;padding:14px;border-radius:16px;
+  border:1px solid #dcc4e3;background:#fff;color:var(--ink);font:14px "SFMono-Regular",Consolas,monospace;outline:none
+}
+textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,95,174,.14)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fun-btn{
+  border:none;border-radius:999px;padding:10px 15px;cursor:pointer;color:#fff;font-weight:950;
+  background:linear-gradient(90deg,var(--pink),var(--lav));box-shadow:0 9px 18px rgba(157,75,158,.24)
+}
+.fun-btn.secondary{background:#fff;color:#705978;border:1px solid var(--line);box-shadow:none}
+.solution{display:none;margin-top:14px;animation:pop .3s ease}
+.solution.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.table-wrap{overflow:auto;margin-top:16px}
+.mapping-table{width:100%;border-collapse:separate;border-spacing:0 10px;min-width:760px}
+.mapping-table th{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#8a6c90;padding:10px 12px;text-align:left}
+.mapping-table td{padding:12px 14px;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mapping-table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
+.mapping-table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+
+.critical-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.critical{
+  padding:15px 16px;border:1px solid var(--line);border-radius:16px;background:#fff
+}
+
+.lab-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.lab-step{
+  border:1px solid var(--line);border-radius:20px;padding:16px;background:#fff;min-height:205px
+}
+.lab-step .step{
+  display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  color:#fff;background:linear-gradient(135deg,var(--pink),var(--lav));font-weight:1000;margin-bottom:8px
+}
+.acceptance{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.accept{
+  display:flex;gap:10px;align-items:flex-start;padding:14px 15px;border-radius:16px;border:1px solid var(--line);background:#fff
+}
+
+.sticker{
+  margin:18px 0;display:flex;align-items:center;gap:16px;padding:14px 16px;
+  border-radius:20px;border:1px dashed #e7c7df;background:linear-gradient(135deg,#fff9fc,#fff)
+}
+.sticker svg{flex:0 0 auto}
+.sticker b{display:block}
+
+.small-note{
+  margin:18px 0;padding:17px 18px;border-radius:20px;background:linear-gradient(135deg,#fff6d8,#fffdf7);border:1px solid #eddb9d
+}
+.small-note .label{
+  display:inline-block;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em;color:#8a6216;margin-bottom:4px
+}
+.small-note b{color:#5e4716}
+
+.finale{text-align:center;padding:34px;background:linear-gradient(135deg,#fff0f7,#f5efff,#fff9df)}
+.finale p{max-width:820px;margin:10px auto 20px;color:var(--muted)}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:850}
+
+.video-card{padding:22px;background:linear-gradient(135deg,#2d2035,#3b2850);color:#fff}
+.video-card p{color:#eadcf3}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:22px;overflow:hidden;background:#000}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+.confetti{
+  position:fixed;top:-14px;width:10px;height:10px;border-radius:3px;z-index:9999;pointer-events:none;
+  animation:confettiFall 1.9s linear forwards
+}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(780deg);opacity:.18}}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{min-height:145px}
+  .notation-grid{grid-template-columns:1fr 1fr}
+  .lab-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  .objective-grid,.split,.critical-grid,.acceptance{grid-template-columns:1fr}
+  .hero-copy{padding:26px 22px}
+  .module-head,.module-body,.panel{padding:21px}
+}
+@media(max-width:620px){
+  .hero-art{display:none}
+  .hero-shell,.hero-grid{min-height:auto}
+  h1{font-size:44px}
+  .notation-grid,.lab-grid{grid-template-columns:1fr}
+  .masthead-inner{justify-content:center;text-align:center}
+}
+</style>
+<style>
+
+/* Shared MadShapes Bootstrap navigation */
+.mad-course-nav{
+  background:linear-gradient(90deg,#171238,#21164f 55%,#17123d)!important;
+  box-shadow:0 10px 30px rgba(30,18,66,.22);
+  min-height:74px;
+  z-index:1050;
+}
+.mad-course-nav .nav-link{
+  color:#fff!important;
+  font-weight:900;
+  border-radius:999px;
+  padding:.62rem .9rem!important;
+  transition:.18s ease;
+}
+.mad-course-nav .nav-link:hover,.mad-course-nav .nav-link:focus{
+  background:rgba(255,255,255,.11);
+  transform:translateY(-1px);
+}
+.mad-course-nav .dropdown-menu{
+  border-radius:18px;
+  border:1px solid #e8d8ef;
+  padding:10px;
+  box-shadow:0 20px 50px rgba(35,20,70,.22);
+  max-height:70vh;
+  overflow:auto;
+}
+.mad-course-nav .dropdown-item{
+  border-radius:12px;
+  padding:9px 12px;
+  color:#33285c;
+  font-weight:750;
+}
+.mad-course-nav .dropdown-item:hover{
+  background:#fff0f8;
+  color:#9b2d72;
+}
+.mad-course-brand{
+  font-size:clamp(27px,3vw,42px)!important;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  transform:rotate(-2deg);
+  text-shadow:0 3px 0 rgba(0,0,0,.08);
+  white-space:nowrap;
+}
+.mad-course-brand:hover{transform:rotate(1deg) scale(1.035)}
+.mad-course-brand-mad{
+  background:linear-gradient(180deg,#ffa6d9 0%,#ff57be 58%,#e96dff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mad-course-brand-shapes{color:#fff}
+.mad-keep-going{
+  align-items:center;gap:8px;color:#8ff9e2!important;
+  font-weight:1000;transform:rotate(-4deg);animation:madKeepWiggle 2.8s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes madKeepWiggle{50%{transform:rotate(4deg) scale(1.05)}}
+@media(max-width:991.98px){
+  .mad-course-nav .navbar-collapse{padding-top:12px}
+  .mad-course-brand{font-size:30px!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span>✨</span><span>💖</span><span>🟪</span><span>🔺</span><span>🌸</span><span>🟣</span>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top mad-course-nav">
+  <div class="container-fluid px-3 px-lg-4">
+    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#madNav" aria-controls="madNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-3 order-lg-1" id="madNav">
+      <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">🗂️ Modules</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="madshapes_core_java_refresher_roflgator_jimbo.html"><span class="me-2">☕</span>Module 1: Core Java Refresher</a></li>
+<li><a class="dropdown-item" href="madshapes_oo_principles_in_practice.html"><span class="me-2">🧱</span>Module 2: Object-Oriented Principles in Practice</a></li>
+<li><a class="dropdown-item" href="madshapes_ooad_requirements_to_objects.html"><span class="me-2">🧠</span>Module 3: OOAD: Requirements to Objects</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_class_diagrams.html"><span class="me-2">🔗</span>Module 4: UML Class Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_uml_sequence_diagrams.html"><span class="me-2">🎬</span>Module 5: UML Sequence Diagrams</a></li>
+<li><a class="dropdown-item" href="madshapes_peer_review.html"><span class="me-2">💬</span>Module 6: Peer Review</a></li>
+<li><a class="dropdown-item" href="madshapes_solid_principles_part2.html"><span class="me-2">🧩</span>Module 8: SOLID Principles, Part 2</a></li>
+<li><a class="dropdown-item" href="madshapes_clean_code.html"><span class="me-2">🧼</span>Module 9: Clean Code</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_fundamentals.html"><span class="me-2">🔴</span>Module 10: TDD Fundamentals</a></li>
+<li><a class="dropdown-item" href="madshapes_junit.html"><span class="me-2">🧪</span>Module 11: JUnit</a></li>
+<li><a class="dropdown-item" href="madshapes_tdd_in_practice.html"><span class="me-2">🚀</span>Module 12: TDD in Practice</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html#quiz">🏆 Quiz</a></li>
+      </ul>
+      <span class="nav-link mad-keep-going d-none d-lg-inline-flex">≻≻ Keep Going! ♡</span>
+    </div>
+
+    <a class="navbar-brand mad-course-brand ms-auto ms-lg-3 order-2 order-lg-2" href="index.html" aria-label="MadShapes home">
+      <span class="mad-course-brand-mad">Mad</span><span class="mad-course-brand-shapes">Shapes</span> 👑
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="lni lni-layout"></i> Sprint 5 • Module 4</div>
+        <h1>UML Class Diagrams</h1>
+        <p>Take the informal model from OOAD and express it with precise class boxes, attributes, methods, multiplicities, and relationship arrows.</p>
+        <div class="hero-note">Same model, sharper language. ✨</div>
+        <div class="hero-chips">
+          <span class="hero-chip">📦 Classes</span>
+          <span class="hero-chip">🔗 Relationships</span>
+          <span class="hero-chip">💎 Diamonds</span>
+          <span class="hero-chip">🔺 Inheritance</span>
+          <span class="hero-chip">📝 Quiz Alerts</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+        <div class="shape s1">🔷</div>
+        <div class="shape s2">🔺</div>
+        <div class="shape s3">🟣</div>
+        <div class="shape s4">🟪</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+  <div class="kicker">Module objectives</div>
+  <h2>By the end, you should be able to...</h2>
+
+  <div class="objective-grid">
+    <div class="objective">
+      <span class="icon">📦</span>
+      <b>Read a UML class box</b>
+      Understand class names, attributes, methods, visibility, and return types.
+    </div>
+    <div class="objective">
+      <span class="icon">🔗</span>
+      <b>Choose the right relationship</b>
+      Distinguish association, aggregation, composition, inheritance, and interface realization.
+    </div>
+    <div class="objective">
+      <span class="icon">🧜</span>
+      <b>Express UML as text</b>
+      Write Mermaid class diagrams and render them into images.
+    </div>
+  </div>
+
+  <div class="quiz-alert">
+    <strong>Expect notation questions:</strong> the supplied quiz asks you to distinguish aggregation, composition, dependency, inheritance, and interface realization by meaning, not by memorizing arrow shapes alone.
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 1</div>
+    <h2>From Worksheet to Diagram</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Your Module 3 worksheet already had entities, responsibilities, and relationships. UML expresses the same ideas with more precision.</p>
+
+    <div class="split">
+      <div class="cardish pink">
+        <h3>Module 3</h3>
+        <p><b>Informal:</b> "Experiment has many trials. A trial refers to two shapes."</p>
+      </div>
+      <div class="cardish lav">
+        <h3>Module 4</h3>
+        <p><b>Formal:</b> class boxes, multiplicities, and relationship-specific arrows.</p>
+      </div>
+    </div>
+
+    <div class="small-note">
+      <div class="label">Why the notation matters</div>
+      <b>Precision forces a decision.</b>
+      If you write an open diamond, filled diamond, dashed arrow, or hollow triangle, you are making a specific claim about the relationship.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 2</div>
+    <h2>A Class, in Mermaid</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">One block per class. A minus sign means private. A plus sign means public.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+
+class Circle {
+    -radius double
+    +calcArea() double
+}
+
+class Rectangle {
+    -height double
+    -width double
+    +calcArea() double
+}</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: UML class boxes</div>
+      <canvas id="classCanvas" class="uml-canvas" width="920" height="300"></canvas>
+      <div class="canvas-note">The class name is at the top, attributes in the middle, methods at the bottom.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Visibility hint:</strong> <code>-radius</code> means private. <code>+calcArea()</code> means public. This connects directly to encapsulation from Module 2.
+    </div>
+
+    <div class="challenge">
+      <h3>🌸 Your challenge</h3>
+      <p>Write a Mermaid class block for <code>Triangle</code> with private <code>base</code> and <code>height</code>, plus public <code>calcArea()</code>.</p>
+      <textarea placeholder="classDiagram
+class Triangle {
+    ...
+}"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this)">Class box complete ✨</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show answer</button>
+      </div>
+      <div class="solution"><pre><code>classDiagram
+class Triangle {
+    -base double
+    -height double
+    +calcArea() double
+}</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Five relationship types</div>
+    <h2>Same Boxes, Very Different Meanings</h2>
+  </div>
+  <div class="module-body">
+
+    <div class="notation-grid">
+      <div class="notation">
+        <span class="big">➡️</span>
+        <b>Association</b>
+        Holds a reference. "Knows about."
+        <p><code>Trial --> Student</code></p>
+      </div>
+      <div class="notation">
+        <span class="big">◇</span>
+        <b>Aggregation</b>
+        Loose "has a". The part can outlive the whole.
+        <p><code>Experiment o-- Shape</code></p>
+      </div>
+      <div class="notation">
+        <span class="big">◆</span>
+        <b>Composition</b>
+        Strong "has a". The part depends on the whole for meaning.
+        <p><code>Experiment *-- Trial</code></p>
+      </div>
+      <div class="notation">
+        <span class="big">△</span>
+        <b>Inheritance</b>
+        "Is a kind of."
+        <p><code>Circle --|> Shape</code></p>
+      </div>
+      <div class="notation">
+        <span class="big">⇢△</span>
+        <b>Implements</b>
+        A class satisfies an interface contract.
+        <p><code>Circle ..|> Measurable</code></p>
+      </div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Key exam habit:</strong> decide the meaning first, then the arrow. "Has a" alone is not enough. Ask whether the part can exist independently.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 3</div>
+    <h2>Association: "Refers To"</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Association means one class holds a reference to another to do its job. No ownership claim is implied.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+class ComparisonTrial
+class Student
+
+ComparisonTrial --> Student : answered by</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Association</div>
+      <canvas id="associationCanvas" class="uml-canvas" width="920" height="290"></canvas>
+      <div class="canvas-note">Read it as: ComparisonTrial knows about the Student who answered it.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Multiplicity matters:</strong> a student could answer many trials while each trial refers to one student. UML can make that cardinality explicit.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 4</div>
+    <h2>Aggregation: "Has A", Loosely</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Aggregation is a whole-part relationship where the part still makes sense without the whole.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+class Experiment
+class Shape
+
+Experiment o-- Shape : uses</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Aggregation</div>
+      <canvas id="aggregationCanvas" class="uml-canvas" width="920" height="290"></canvas>
+      <div class="canvas-note">Delete the Experiment and the Circle still makes sense as a Circle.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz test:</strong> ask "if I delete the whole, does the part still make sense on its own?" If yes, aggregation is plausible.
+    </div>
+
+    <div class="sticker">
+      <svg width="100" height="80" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="200" cy="300" rx="106" ry="18" fill="rgba(80,36,95,.10)"/>
+        <path d="M88 227 C40 193 46 120 90 92 C116 76 149 70 192 72 C260 75 312 105 326 156 C338 201 304 239 239 254 C186 266 126 256 88 227 Z" fill="#57d878"/>
+        <circle cx="101" cy="95" r="22" fill="#57d878"/>
+        <circle cx="138" cy="86" r="22" fill="#57d878"/>
+        <circle cx="101" cy="95" r="11" fill="#fff"/>
+        <circle cx="138" cy="86" r="11" fill="#fff"/>
+        <circle cx="101" cy="95" r="5" fill="#2f2335"/>
+        <circle cx="138" cy="86" r="5" fill="#2f2335"/>
+        <path d="M82 134 Q118 154 174 151" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="75" y="61" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="129" y="52" width="88" height="31" rx="14" fill="#301f42"/>
+        <rect x="149" y="67" width="18" height="6" rx="3" fill="#301f42"/>
+      </svg>
+      <div>
+        <b>ROFLGator memory trick</b>
+        Open diamond, loose ownership. If the whole vanishes, the part can still carry on with its day.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 5</div>
+    <h2>Composition: "Has A", Strongly</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Composition is also whole-part, but the part is conceptually tied to the whole.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+class Experiment
+class ComparisonTrial
+
+Experiment *-- ComparisonTrial : owns</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Composition</div>
+      <canvas id="compositionCanvas" class="uml-canvas" width="920" height="290"></canvas>
+      <div class="canvas-note">A ComparisonTrial in this design belongs to an Experiment. Without the Experiment, the trial loses its context.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Classic distinction:</strong> open diamond is aggregation, filled diamond is composition. The meaning behind the diamond matters more than the shape itself.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 6</div>
+    <h2>Inheritance: "Is A Kind Of"</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Inheritance is the UML version of Java's <code>extends</code>.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+class Shape {
+    &lt;&lt;abstract&gt;&gt;
+    +calcArea() double
+}
+class Circle
+class Rectangle
+class Triangle
+
+Circle --|> Shape
+Rectangle --|> Shape
+Triangle --|> Shape</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Inheritance</div>
+      <canvas id="inheritanceCanvas" class="uml-canvas" width="920" height="420"></canvas>
+      <div class="canvas-note">The hollow triangle points at the parent class.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Quiz clue:</strong> "Circle is a kind of Shape" supports inheritance. "Portfolio has Instruments" does not. That is a different relationship.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Concept 7</div>
+    <h2>Interface Realization: Implements a Contract</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A class can implement an interface without sharing implementation or belonging to the same family tree.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+
+class Renderable {
+    &lt;&lt;interface&gt;&gt;
+    +render() void
+}
+
+class Circle
+class InstructionBanner
+
+Circle ..|> Renderable
+InstructionBanner ..|> Renderable</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Interface realization</div>
+      <canvas id="interfaceCanvas" class="uml-canvas" width="920" height="390"></canvas>
+      <div class="canvas-note">The line is dashed, and the hollow triangle points at the interface.</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Exam distinction:</strong> interface realization looks similar to inheritance, but the dashed line matters. It means "implements", not "extends".
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James notation memo</b>
+        Jimbo James of the Columbian cartel drew every relationship as a solid arrow. The review board has asked him to distinguish contracts from inheritance before resubmitting.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Bonus relationship</div>
+    <h2>Dependency: "Uses Briefly"</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">The lab explicitly asks you to distinguish association from dependency. A dependency is temporary use, often through a method parameter, without storing a lasting reference.</p>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+class ShapeComparator
+class Shape
+
+ShapeComparator ..> Shape : compares</code></pre>
+    </div>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Dependency</div>
+      <canvas id="dependencyCanvas" class="uml-canvas" width="920" height="290"></canvas>
+      <div class="canvas-note">Dashed arrow, no hollow triangle. It means "uses", not "implements".</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Direct quiz connection:</strong> if <code>OrderValidator</code> receives <code>RiskLimit</code> only as a method parameter and does not retain it, that is a dependency, not a permanent association.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">All together</div>
+    <h2>A Tiny MadShapes Model</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">A real class diagram mixes relationship types. That is exactly why being precise matters.</p>
+
+    <div class="canvas-card">
+      <div class="canvas-title">Canvas example: Combined class diagram</div>
+      <canvas id="combinedCanvas" class="uml-canvas" width="1120" height="620"></canvas>
+      <div class="canvas-note">This combines inheritance, composition, aggregation, association, dependency, and interface realization.</div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>classDiagram
+
+class Shape {
+    &lt;&lt;abstract&gt;&gt;
+    +calcArea() double
+}
+
+class Renderable {
+    &lt;&lt;interface&gt;&gt;
+    +render() void
+}
+
+class Circle
+class Rectangle
+class Experiment
+class ComparisonTrial
+class Student
+class ShapeComparator
+
+Circle --|> Shape
+Rectangle --|> Shape
+
+Circle ..|> Renderable
+Rectangle ..|> Renderable
+
+Experiment *-- ComparisonTrial
+Experiment o-- Shape
+ComparisonTrial --> Student
+ShapeComparator ..> Shape</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Read critically</div>
+    <h2>Precise Does Not Automatically Mean Correct</h2>
+  </div>
+  <div class="module-body">
+    <div class="critical-grid">
+      <div class="critical">🔎 Does every class trace back to the worksheet or a clearly explained design need?</div>
+      <div class="critical">🔗 Is every permanent reference really an association?</div>
+      <div class="critical">◇ Is a "has a" relationship truly aggregation?</div>
+      <div class="critical">◆ Should that "has a" actually be composition?</div>
+      <div class="critical">△ Does every inheritance arrow describe a real "is a" relationship?</div>
+      <div class="critical">🧩 Are interfaces expressing capabilities instead of forced family trees?</div>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Important reasoning:</strong> a neat diagram can still model the wrong relationship. Peer review exists partly to challenge diagrams that look polished but encode weak design decisions.
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Why Mermaid?</div>
+    <h2>Diagrams as Text Stay Close to the Codebase</h2>
+  </div>
+  <div class="module-body">
+    <div class="split">
+      <div class="cardish mint">
+        <h3>Text source</h3>
+        <ul>
+          <li>Diffs cleanly in Git</li>
+          <li>Easy to review in a pull request</li>
+          <li>Lives beside the rest of the project</li>
+          <li>Can be rendered automatically</li>
+        </ul>
+      </div>
+      <div class="cardish gold">
+        <h3>Rendered image</h3>
+        <ul>
+          <li>Useful in slides and documentation</li>
+          <li>Easy for non-developers to read</li>
+          <li>Generated from the text source</li>
+          <li>Less likely to drift if re-rendered regularly</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <button class="copy" onclick="copyCode(this)">Copy</button>
+      <pre><code>npx --yes @mermaid-js/mermaid-cli \
+  -i mission-model.mmd \
+  -o mission-model.png \
+  -b white</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="module-head">
+    <div class="kicker">Lab bridge</div>
+    <h2>Module 4 Lab: Diagram the Mission</h2>
+  </div>
+  <div class="module-body">
+    <p class="leadish">Take your Module 3 worksheet and turn it into <code>mission-model.mmd</code>. Every edge should be chosen deliberately.</p>
+
+    <div class="table-wrap">
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th>Your Module 3 sketch said...</th>
+            <th>Mermaid notation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>"X has a Y" and holds a reference</td><td><code>X --&gt; Y</code></td></tr>
+          <tr><td>"X has many Y"</td><td><code>X "1" --&gt; "*" Y</code></td></tr>
+          <tr><td>Part can exist without whole</td><td><code>X o-- Y</code></td></tr>
+          <tr><td>Part loses meaning without whole</td><td><code>X *-- Y</code></td></tr>
+          <tr><td>X uses Y briefly</td><td><code>X ..&gt; Y</code></td></tr>
+          <tr><td>X is a kind of Y</td><td><code>X --|&gt; Y</code></td></tr>
+          <tr><td>X implements Y</td><td><code>X ..|&gt; Y</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quiz-alert">
+      <strong>Lab and exam overlap:</strong> association vs dependency and aggregation vs composition are the distinctions most likely to require reasoning rather than memorization.
+    </div>
+
+    <div class="lab-grid">
+      <div class="lab-step">
+        <div class="step">1</div>
+        <h3>Create the file</h3>
+        <p>Create <code>mission-model.mmd</code>.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">2</div>
+        <h3>Add every class</h3>
+        <p>Use your Module 3 worksheet as the source.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">3</div>
+        <h3>Add relationships</h3>
+        <p>Choose the correct edge type for each relationship.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">4</div>
+        <h3>Render it</h3>
+        <p>Use <code>mmdc</code> through <code>npx</code>.</p>
+      </div>
+      <div class="lab-step">
+        <div class="step">5</div>
+        <h3>Compare back</h3>
+        <p>Check the PNG against the original worksheet.</p>
+      </div>
+    </div>
+
+    <div class="acceptance">
+      <div class="accept">✅ <span>Every class from Module 3 appears in the diagram.</span></div>
+      <div class="accept">✅ <span>At least one association is present.</span></div>
+      <div class="accept">✅ <span>At least one aggregation or composition edge is present.</span></div>
+      <div class="accept">✅ <span>At least one dependency is present.</span></div>
+      <div class="accept">✅ <span>At least one inheritance edge is present.</span></div>
+      <div class="accept">✅ <span>At least one interface-realization edge is present.</span></div>
+      <div class="accept">✅ <span>The diagram renders without errors.</span></div>
+      <div class="accept">✅ <span>Commit both <code>mission-model.mmd</code> and <code>mission-model.png</code>.</span></div>
+    </div>
+
+    <div class="sticker">
+      <svg width="92" height="92" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="110" cy="182" rx="58" ry="18" fill="rgba(80,36,95,.10)"/>
+        <circle cx="110" cy="112" r="55" fill="#66cf57"/>
+        <ellipse cx="110" cy="131" rx="60" ry="40" fill="#7ad965"/>
+        <circle cx="82" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="138" cy="72" r="18" fill="#66cf57"/>
+        <circle cx="82" cy="69" r="10" fill="#fff"/>
+        <circle cx="138" cy="69" r="10" fill="#fff"/>
+        <circle cx="82" cy="69" r="4" fill="#2f2335"/>
+        <circle cx="138" cy="69" r="4" fill="#2f2335"/>
+        <path d="M80 141 Q110 165 140 141" fill="none" stroke="#2f2335" stroke-width="8" stroke-linecap="round"/>
+        <rect x="66" y="30" width="88" height="24" rx="12" fill="#ff5dae"/>
+        <text x="110" y="47" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff">CARTEL</text>
+      </svg>
+      <div>
+        <b>Jimbo James diagram review</b>
+        Jimbo James of the Columbian cartel used composition for every relationship because he liked the filled diamonds. The class diagram has been returned with a note reading "meaning first, shapes second."
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3>🎓 Final challenge</h3>
+      <p>Pick the best relationship for each MadShapes pair: Experiment to Shape, Experiment to ComparisonTrial, Circle to Shape, ShapeComparator to Shape, Circle to Renderable.</p>
+      <textarea placeholder="Experiment -> Shape:
+Experiment -> ComparisonTrial:
+Circle -> Shape:
+ShapeComparator -> Shape:
+Circle -> Renderable:"></textarea>
+      <div class="actions">
+        <button class="fun-btn" onclick="celebrate(this,70)">UML reasoning complete 🎊</button>
+        <button class="fun-btn secondary" onclick="toggleSolution(this)">Show one mapping</button>
+      </div>
+      <div class="solution"><pre><code>Experiment -> Shape: aggregation
+Experiment -> ComparisonTrial: composition
+Circle -> Shape: inheritance
+ShapeComparator -> Shape: dependency
+Circle -> Renderable: interface realization</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="kicker">Module summary</div>
+  <h2>UML class diagrams turn vague relationships into explicit claims.</h2>
+  <p>You learned class-box notation, association, aggregation, composition, dependency, inheritance, and interface realization. You also saw why Mermaid is useful when diagrams need to live beside code and survive review.</p>
+
+  <div class="pills">
+    <span class="pill">➡️ Association</span>
+    <span class="pill">◇ Aggregation</span>
+    <span class="pill">◆ Composition</span>
+    <span class="pill">⇢ Dependency</span>
+    <span class="pill">△ Inheritance</span>
+    <span class="pill">🧩 Implements</span>
+  </div>
+
+  <div class="actions" style="justify-content:center;margin-top:20px">
+    <button class="fun-btn" onclick="celebrate(this,90)">I survived UML Class Diagrams 🎉</button>
+  </div>
+
+  <p style="margin-top:22px"><b>Next:</b> UML Sequence Diagrams</p>
+</section>
+
+<section class="video-card">
+  <div class="kicker" style="color:#ffb7d8">Extremely serious academic enrichment</div>
+  <h2 style="color:#fff">Marcus the Worm decompression break</h2>
+  <p>Marcus the Worm has reviewed the open and filled diamonds. ROFLGator is satisfied. Jimbo James, Columbian cartel member and enthusiastic arrow over-user, has been asked to submit a corrected diagram.</p>
+  <div class="video-frame">
+    <iframe
+      src="https://www.youtube.com/embed/yAEMVVtnUqM"
+      title="Marcus the Worm video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+</main>
+
+<script>
+function toggleSolution(button){
+  const challenge = button.closest(".challenge");
+  const solution = challenge.querySelector(".solution");
+  solution.classList.toggle("show");
+  button.textContent = solution.classList.contains("show") ? "Hide answer" : "Reveal answer";
+}
+
+function copyCode(button){
+  const text = button.parentElement.querySelector("code").innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old = button.textContent;
+    button.textContent = "Copied ✨";
+    setTimeout(()=>button.textContent = old,1200);
+  });
+}
+
+function celebrate(button, amount=30){
+  const colors=["#ff5fae","#a57dff","#ffd0af","#f6c654","#d4f5e6","#c9eef8","#ffbddd"];
+  for(let i=0;i<amount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(6+Math.random()*8)+"px";
+    c.style.height=(6+Math.random()*11)+"px";
+    c.style.animationDuration=(1.2+Math.random()*1.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+  const old=button.textContent;
+  button.textContent="✨ MadShapes approved! ✨";
+  setTimeout(()=>button.textContent=old,1400);
+}
+
+function fitCanvas(canvas){
+  const ratio = window.devicePixelRatio || 1;
+  const cssWidth = canvas.clientWidth;
+  const logicalHeight = parseInt(canvas.getAttribute("height"),10);
+  canvas.style.height = logicalHeight + "px";
+  canvas.width = Math.round(cssWidth * ratio);
+  canvas.height = Math.round(logicalHeight * ratio);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  return {ctx,w:cssWidth,h:logicalHeight};
+}
+
+function roundedRect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  if(fill){ctx.fillStyle=fill;ctx.fill()}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}
+}
+
+function drawClass(ctx,x,y,w,name,attrs=[],methods=[],stereo=""){
+  const lineH=23;
+  const headH=44;
+  const attrH=Math.max(44,attrs.length*lineH+14);
+  const methH=Math.max(44,methods.length*lineH+14);
+  const h=headH+attrH+methH;
+
+  roundedRect(ctx,x,y,w,h,16,"#fff","#cdb9d0");
+  ctx.fillStyle="#f7ecff";
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,headH,[16,16,0,0]);
+  ctx.fill();
+
+  ctx.strokeStyle="#d8c7da";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(x,y+headH);
+  ctx.lineTo(x+w,y+headH);
+  ctx.moveTo(x,y+headH+attrH);
+  ctx.lineTo(x+w,y+headH+attrH);
+  ctx.stroke();
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#3b2b43";
+  ctx.font="700 16px Arial";
+  ctx.fillText(name,x+w/2,y+26);
+  if(stereo){
+    ctx.font="12px Arial";
+    ctx.fillStyle="#8b6a92";
+    ctx.fillText(stereo,x+w/2,y+41);
+  }
+
+  ctx.textAlign="left";
+  ctx.font="14px Arial";
+  ctx.fillStyle="#4e3c55";
+  attrs.forEach((a,i)=>ctx.fillText(a,x+12,y+headH+22+i*lineH));
+  methods.forEach((m,i)=>ctx.fillText(m,x+12,y+headH+attrH+22+i*lineH));
+  return {x,y,w,h,cx:x+w/2,cy:y+h/2,left:x,right:x+w,top:y,bottom:y+h};
+}
+
+function line(ctx,x1,y1,x2,y2,dashed=false){
+  ctx.save();
+  ctx.strokeStyle="#6d5875";
+  ctx.lineWidth=2.2;
+  if(dashed) ctx.setLineDash([8,6]);
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function arrowHead(ctx,x,y,angle,filled=true){
+  const len=12,spread=Math.PI/7;
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-len*Math.cos(spread),-len*Math.sin(spread));
+  ctx.lineTo(-len*Math.cos(spread),len*Math.sin(spread));
+  ctx.closePath();
+  ctx.fillStyle=filled ? "#6d5875" : "#fff";
+  ctx.strokeStyle="#6d5875";
+  ctx.lineWidth=2;
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+
+function hollowTriangle(ctx,x,y,angle){
+  const len=16,spread=10;
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-len, -spread);
+  ctx.lineTo(-len, spread);
+  ctx.closePath();
+  ctx.fillStyle="#fff";
+  ctx.strokeStyle="#6d5875";
+  ctx.lineWidth=2.2;
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+
+function diamond(ctx,x,y,angle,filled){
+  const a=13,b=8;
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-a,-b);
+  ctx.lineTo(-2*a,0);
+  ctx.lineTo(-a,b);
+  ctx.closePath();
+  ctx.fillStyle=filled ? "#6d5875" : "#fff";
+  ctx.strokeStyle="#6d5875";
+  ctx.lineWidth=2.2;
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+
+function label(ctx,text,x,y){
+  ctx.font="13px Arial";
+  ctx.fillStyle="#6b5871";
+  ctx.textAlign="center";
+  const m=ctx.measureText(text).width;
+  roundedRect(ctx,x-m/2-6,y-14,m+12,20,8,"#fffafc","#ead9e7");
+  ctx.fillStyle="#6b5871";
+  ctx.fillText(text,x,y);
+}
+
+function multiplicity(ctx,text,x,y){
+  ctx.font="700 13px Arial";
+  ctx.fillStyle="#8f5e84";
+  ctx.textAlign="center";
+  ctx.fillText(text,x,y);
+}
+
+function drawClassCanvas(){
+  const canvas=document.getElementById("classCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const bw=Math.min(320,w*0.36);
+  drawClass(ctx,w*0.13,42,bw,"Circle",["-radius double"],["+calcArea() double"]);
+  drawClass(ctx,w*0.56,42,bw,"Rectangle",["-width double","-height double"],["+calcArea() double"]);
+}
+
+function drawAssociation(){
+  const canvas=document.getElementById("associationCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const a=drawClass(ctx,80,70,250,"ComparisonTrial",["-trialId String"],["+recordAnswer() void"]);
+  const b=drawClass(ctx,w-330,70,250,"Student",["-studentId String"],["+answer() void"]);
+  const y=145;
+  line(ctx,a.right,y,b.left,y,false);
+  arrowHead(ctx,b.left,y,0,true);
+  label(ctx,"answered by",w/2,y-10);
+  multiplicity(ctx,"*",a.right+20,y-12);
+  multiplicity(ctx,"1",b.left-20,y-12);
+}
+
+function drawAggregation(){
+  const canvas=document.getElementById("aggregationCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const a=drawClass(ctx,80,70,250,"Experiment",["-name String"],["+run() void"]);
+  const b=drawClass(ctx,w-330,70,250,"Shape",[],["+calcArea() double"],"<<abstract>>");
+  const y=145;
+  line(ctx,a.right+26,y,b.left,y,false);
+  diamond(ctx,a.right+26,y,0,false);
+  label(ctx,"uses",w/2,y-10);
+  multiplicity(ctx,"1",a.right+45,y-12);
+  multiplicity(ctx,"*",b.left-20,y-12);
+}
+
+function drawComposition(){
+  const canvas=document.getElementById("compositionCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const a=drawClass(ctx,80,70,250,"Experiment",["-name String"],["+run() void"]);
+  const b=drawClass(ctx,w-330,70,250,"ComparisonTrial",["-result String"],["+evaluate() boolean"]);
+  const y=145;
+  line(ctx,a.right+26,y,b.left,y,false);
+  diamond(ctx,a.right+26,y,0,true);
+  label(ctx,"owns",w/2,y-10);
+  multiplicity(ctx,"1",a.right+45,y-12);
+  multiplicity(ctx,"*",b.left-20,y-12);
+}
+
+function drawInheritance(){
+  const canvas=document.getElementById("inheritanceCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const parent=drawClass(ctx,w/2-135,34,270,"Shape",[],["+calcArea() double"],"<<abstract>>");
+  const c1=drawClass(ctx,80,245,210,"Circle",["-radius double"],["+calcArea() double"]);
+  const c2=drawClass(ctx,w/2-105,245,210,"Rectangle",["-width double","-height double"],["+calcArea() double"]);
+  const c3=drawClass(ctx,w-290,245,210,"Triangle",["-base double","-height double"],["+calcArea() double"]);
+  [c1,c2,c3].forEach(c=>{
+    const sx=c.cx, sy=c.top;
+    const tx=parent.cx, ty=parent.bottom;
+    line(ctx,sx,sy,tx,ty,false);
+    hollowTriangle(ctx,tx,ty,Math.atan2(ty-sy,tx-sx));
+  });
+}
+
+function drawInterface(){
+  const canvas=document.getElementById("interfaceCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const intf=drawClass(ctx,w/2-135,32,270,"Renderable",[],["+render() void"],"<<interface>>");
+  const c1=drawClass(ctx,120,230,240,"Circle",["-radius double"],["+render() void"]);
+  const c2=drawClass(ctx,w-360,230,240,"InstructionBanner",["-text String"],["+render() void"]);
+  [c1,c2].forEach(c=>{
+    const sx=c.cx,sy=c.top,tx=intf.cx,ty=intf.bottom;
+    line(ctx,sx,sy,tx,ty,true);
+    hollowTriangle(ctx,tx,ty,Math.atan2(ty-sy,tx-sx));
+  });
+}
+
+function drawDependency(){
+  const canvas=document.getElementById("dependencyCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const a=drawClass(ctx,90,70,250,"ShapeComparator",[],["+sameArea(a,b) boolean"]);
+  const b=drawClass(ctx,w-340,70,250,"Shape",[],["+calcArea() double"],"<<abstract>>");
+  const y=145;
+  line(ctx,a.right,y,b.left,y,true);
+  arrowHead(ctx,b.left,y,0,false);
+  label(ctx,"uses briefly",w/2,y-10);
+}
+
+function drawCombined(){
+  const canvas=document.getElementById("combinedCanvas");
+  const {ctx,w,h}=fitCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+
+  const shape=drawClass(ctx,w/2-120,26,240,"Shape",[],["+calcArea() double"],"<<abstract>>");
+  const renderable=drawClass(ctx,w-280,26,230,"Renderable",[],["+render() void"],"<<interface>>");
+
+  const circle=drawClass(ctx,80,230,220,"Circle",["-radius double"],["+calcArea() double","+render() void"]);
+  const rect=drawClass(ctx,350,230,220,"Rectangle",["-width double","-height double"],["+calcArea() double","+render() void"]);
+  const experiment=drawClass(ctx,80,430,220,"Experiment",[],["+run() void"]);
+  const trial=drawClass(ctx,350,430,220,"ComparisonTrial",["-result String"],["+evaluate() boolean"]);
+  const student=drawClass(ctx,650,430,220,"Student",["-studentId String"],["+answer() void"]);
+  const comparator=drawClass(ctx,w-270,230,220,"ShapeComparator",[],["+sameArea(a,b) boolean"]);
+
+  [circle,rect].forEach(c=>{
+    line(ctx,c.cx,c.top,shape.cx,shape.bottom,false);
+    hollowTriangle(ctx,shape.cx,shape.bottom,Math.atan2(shape.bottom-c.top,shape.cx-c.cx));
+  });
+
+  [circle,rect].forEach(c=>{
+    line(ctx,c.right,c.cy,renderable.left,renderable.cy,true);
+    hollowTriangle(ctx,renderable.left,renderable.cy,0);
+  });
+
+  line(ctx,experiment.right+26,experiment.cy,trial.left,trial.cy,false);
+  diamond(ctx,experiment.right+26,experiment.cy,0,true);
+  label(ctx,"owns", (experiment.right+trial.left)/2+12, experiment.cy-10);
+
+  line(ctx,experiment.cx,experiment.top,circle.cx,circle.bottom,false);
+  diamond(ctx,experiment.cx,experiment.top,Math.atan2(circle.bottom-experiment.top,circle.cx-experiment.cx),false);
+
+  line(ctx,trial.right,trial.cy,student.left,student.cy,false);
+  arrowHead(ctx,student.left,student.cy,0,true);
+  label(ctx,"answered by",(trial.right+student.left)/2,trial.cy-10);
+
+  line(ctx,comparator.left,comparator.cy,shape.right,shape.cy,true);
+  arrowHead(ctx,shape.right,shape.cy,Math.PI,false);
+  label(ctx,"uses", (comparator.left+shape.right)/2, comparator.cy-10);
+}
+
+function redraw(){
+  ["classCanvas","associationCanvas","aggregationCanvas","compositionCanvas","inheritanceCanvas","interfaceCanvas","dependencyCanvas","combinedCanvas"].forEach(id=>{
+    const c=document.getElementById(id);
+    if(c){
+      const ctx=c.getContext("2d");
+      ctx.clearRect(0,0,c.width,c.height);
+    }
+  });
+  drawClassCanvas();
+  drawAssociation();
+  drawAggregation();
+  drawComposition();
+  drawInheritance();
+  drawInterface();
+  drawDependency();
+  drawCombined();
+}
+
+window.addEventListener("load",redraw);
+window.addEventListener("resize",()=>{
+  clearTimeout(window.__umlResize);
+  window.__umlResize=setTimeout(redraw,120);
+});
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const bits=["■","●","▲","◆"];
+  const x=document.createElement("div");
+  x.textContent=bits[Math.floor(Math.random()*bits.length)];
+  x.style.position="fixed";
+  x.style.left=(4+Math.random()*92)+"vw";
+  x.style.bottom="-35px";
+  x.style.fontSize=(22+Math.random()*28)+"px";
+  x.style.fontWeight="1000";
+  x.style.color=Math.random()>.5 ? "#ff5fae" : "#a57dff";
+  x.style.opacity=".15";
+  x.style.pointerEvents="none";
+  x.style.zIndex="0";
+  x.style.transition="transform 6s linear, opacity 6s linear";
+  document.body.appendChild(x);
+  requestAnimationFrame(()=>{
+    x.style.transform=`translateY(-115vh) rotate(${Math.random()*360}deg)`;
+    x.style.opacity="0";
+  });
+  setTimeout(()=>x.remove(),6200);
+},4300);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
