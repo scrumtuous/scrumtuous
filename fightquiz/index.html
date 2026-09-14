@@ -1209,6 +1209,18 @@
         STREAK_PRIZE_RESULT: "STREAK_PRIZE_RESULT"
       };
 
+      const PLAYER_TARGETED_MESSAGES = new Set([
+        MSG.PLAYER_JOINED,
+        MSG.ANSWER_SUBMITTED,
+        MSG.FIFTY_FIFTY_RESULT,
+        MSG.SCORE_RESET,
+        MSG.PLAYER_REMOVED,
+        MSG.DOUBLE_DOWN_SET,
+        MSG.DOUBLE_DOWN_BUY_RESULT,
+        MSG.POINT_SHIELD_BUY_RESULT,
+        MSG.STREAK_PRIZE_RESULT
+      ]);
+
       const STREAK_ACTION = {
         MASK: "MASK_SELF",
         STEAL: "STEAL_1000",
@@ -1589,17 +1601,17 @@
 
         renderLobby(model) {
           const maskedLine = model.isScoreMasked
-            ? "<div class='small-note mt-2'>Leaderboard currently shows " + formatScore(model.playerDisplayedScore || 0) + " points for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turns.</div>"
+            ? "Leaderboard currently shows " + formatScore(model.playerDisplayedScore || 0) + " points for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turns."
             : "";
           this.app.innerHTML = ""
             + "<section class='glass p-3 text-center celebrate landing-card'>"
-            + "<div class='title-font fs-2'>" + (model.quizTitle || "Fight Quiz") + "</div>"
-            + "<div class='small-note mb-2'>Fight " + model.gameId + "</div>"
+            + "<div id='lobbyQuizTitle' class='title-font fs-2'>" + (model.quizTitle || "Fight Quiz") + "</div>"
+            + "<div id='lobbyGameId' class='small-note mb-2'>Fight " + model.gameId + "</div>"
             + "<div class='score-box'>"
             + "<div class='small-note'>Your Score</div>"
-            + "<div class='fs-2 fw-bold'>" + formatScore(model.playerScore) + "</div>"
+            + "<div id='lobbyScore' class='fs-2 fw-bold'>" + formatScore(model.playerScore) + "</div>"
             + "</div>"
-            + maskedLine
+            + "<div id='lobbyMaskNotice' class='small-note mt-2" + (maskedLine ? "" : " d-none") + "'>" + maskedLine + "</div>"
             + "<div class='small-note mt-3'>Hold tight. The next question is coming soon.</div>"
             + "</section>";
         }
@@ -1838,7 +1850,7 @@
             cardHtml += "<button id='powerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
             cardHtml += "<button id='powerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
             cardHtml += "</div>";
-            cardHtml += "<div id='streakPrizeTargetWrap' class='power-target-picker d-none'>";
+            cardHtml += "<div id='streakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "'>";
             cardHtml += "<label class='form-label mb-1 small-note' for='streakPrizeTarget'>Select target</label>";
             cardHtml += "<select id='streakPrizeTarget' class='form-control join-input'>";
             cardHtml += "<option value=''>Choose player...</option>" + targetOptions;
@@ -1889,9 +1901,10 @@
                 return;
               }
               if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
-              if (targetWrap) targetWrap.classList.toggle("d-none");
+              model.onSetStreakTargetPickerOpen(true);
+              if (targetWrap) targetWrap.classList.remove("d-none");
               const targetEl = document.getElementById("streakPrizeTarget");
-              if (targetEl && targetWrap && !targetWrap.classList.contains("d-none")) targetEl.focus();
+              if (targetEl) targetEl.focus();
             });
           }
           const stealthTarget = document.getElementById("streakPrizeTarget");
@@ -1899,6 +1912,7 @@
             stealthTarget.addEventListener("change", () => {
               const targetId = String(stealthTarget.value || "");
               if (!targetId) return;
+              model.onSetStreakTargetPickerOpen(false);
               model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
               stealthTarget.value = "";
               const targetWrap = document.getElementById("streakPrizeTargetWrap");
@@ -1967,8 +1981,14 @@
 
           if (model.isScoreMasked) {
             const masked = document.createElement("div");
+            masked.id = "leaderboardScoreMaskNotice";
             masked.className = "double-down-note warn mb-3";
             masked.textContent = "Real score: " + formatScore(model.playerScore || 0) + " pts. Leaderboard shows: " + formatScore(model.playerDisplayedScore || 0) + " pts for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turn" + (Number(model.fakeScoreTurnsRemaining || 0) === 1 ? "" : "s") + ".";
+            wrap.appendChild(masked);
+          } else {
+            const masked = document.createElement("div");
+            masked.id = "leaderboardScoreMaskNotice";
+            masked.className = "d-none";
             wrap.appendChild(masked);
           }
 
@@ -2022,7 +2042,7 @@
                 html += "<button id='lbPowerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
                 html += "<button id='lbPowerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
                 html += "</div>";
-                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker d-none'>";
+                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "'>";
                 html += "<label class='form-label mb-1 small-note' for='lbStreakPrizeTarget'>Select target</label>";
                 html += "<select id='lbStreakPrizeTarget' class='form-control join-input'>";
                 html += "<option value=''>Choose player...</option>" + targetOptions;
@@ -2201,9 +2221,10 @@
                 return;
               }
               if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
-              if (targetWrap) targetWrap.classList.toggle("d-none");
+              model.onSetStreakTargetPickerOpen(true);
+              if (targetWrap) targetWrap.classList.remove("d-none");
               const targetEl = document.getElementById("lbStreakPrizeTarget");
-              if (targetEl && targetWrap && !targetWrap.classList.contains("d-none")) targetEl.focus();
+              if (targetEl) targetEl.focus();
             });
           }
           const lbStealthTarget = document.getElementById("lbStreakPrizeTarget");
@@ -2211,6 +2232,7 @@
             lbStealthTarget.addEventListener("change", () => {
               const targetId = String(lbStealthTarget.value || "");
               if (!targetId) return;
+              model.onSetStreakTargetPickerOpen(false);
               model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
               lbStealthTarget.value = "";
               const targetWrap = document.getElementById("lbStreakPrizeTargetWrap");
@@ -2382,6 +2404,7 @@
           this.leaderboardSort = { key: "score", dir: "desc" };
           this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
           this.fiftyFiftyInFlight = false;
+          this.streakTargetPickerPhase = null;
           this.joinDraft = {
             gameId: "",
             playerName: ""
@@ -2401,6 +2424,14 @@
           });
         }
 
+        setStreakTargetPickerOpen(phase, open) {
+          this.streakTargetPickerPhase = open ? phase : null;
+        }
+
+        isStreakTargetPickerOpen(phase) {
+          return this.game.phase === phase && this.streakTargetPickerPhase === phase;
+        }
+
         shouldRenderAfterMessage(msgType, before) {
           if (!before) return true;
           const nowPhase = this.game.phase;
@@ -2408,10 +2439,6 @@
           const questionIndex = question && question.questionIndex != null ? Number(question.questionIndex) : null;
           const reveal = this.game.reveal;
           const revealKey = reveal && reveal.questionIndex != null ? Number(reveal.questionIndex) : (reveal ? "present" : null);
-          const fiftyFiftyKey = this.game.fiftyFiftyQuestionIndex != null
-            ? String(this.game.fiftyFiftyQuestionIndex) + ":" + (Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.join(",") : "")
-            : "";
-
           if (msgType === MSG.QUESTION_STARTED) {
             return before.phase !== PHASES.QUESTION || before.questionIndex !== questionIndex;
           }
@@ -2456,6 +2483,23 @@
         }
 
         applyLightweightViewUpdates(msgType) {
+          if (this.game.phase === PHASES.LOBBY) {
+            const titleEl = document.getElementById("lobbyQuizTitle");
+            if (titleEl) titleEl.textContent = this.game.quizTitle || "Fight Quiz";
+            const gameIdEl = document.getElementById("lobbyGameId");
+            if (gameIdEl) gameIdEl.textContent = "Fight " + (this.game.gameId || "");
+            const scoreEl = document.getElementById("lobbyScore");
+            if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
+            const maskNotice = document.getElementById("lobbyMaskNotice");
+            if (maskNotice) {
+              maskNotice.classList.toggle("d-none", !this.game.isScoreMasked);
+              maskNotice.textContent = this.game.isScoreMasked
+                ? "Leaderboard currently shows " + formatScore(this.game.playerDisplayedScore || 0) + " points for " + Number(this.game.fakeScoreTurnsRemaining || 0) + " more turns."
+                : "";
+            }
+            return;
+          }
+
           if (this.game.phase === PHASES.QUESTION) {
             const scoreEl = document.getElementById("scoreValue");
             if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
@@ -2573,6 +2617,19 @@
 
             const streakNoticeEl = document.getElementById("lbStreakPrizeNotice");
             if (streakNoticeEl) streakNoticeEl.textContent = this.game.streakPrizeNotice || "";
+
+            ["lbPowerBonusBtn", "lbPowerCloakBtn", "lbPowerStealthBtn"].forEach((id) => {
+              const button = document.getElementById(id);
+              if (button) button.disabled = !this.game.streakPrizeAvailable;
+            });
+
+            const maskNotice = document.getElementById("leaderboardScoreMaskNotice");
+            if (maskNotice) {
+              maskNotice.className = this.game.isScoreMasked ? "double-down-note warn mb-3" : "d-none";
+              maskNotice.textContent = this.game.isScoreMasked
+                ? "Real score: " + formatScore(this.game.playerScore || 0) + " pts. Leaderboard shows: " + formatScore(this.game.playerDisplayedScore || 0) + " pts for " + Number(this.game.fakeScoreTurnsRemaining || 0) + " more turn" + (Number(this.game.fakeScoreTurnsRemaining || 0) === 1 ? "" : "s") + "."
+                : "";
+            }
 
             const pointNoticeEl = document.getElementById("lbPointShieldNotice");
             if (pointNoticeEl) pointNoticeEl.textContent = this.game.pointShieldNotice || "";
@@ -3166,9 +3223,6 @@
             phase: this.game.phase,
             questionIndex: this.game.question && this.game.question.questionIndex != null ? Number(this.game.question.questionIndex) : null,
             revealKey: this.game.reveal && this.game.reveal.questionIndex != null ? Number(this.game.reveal.questionIndex) : (this.game.reveal ? "present" : null),
-            fiftyFiftyKey: this.game.fiftyFiftyQuestionIndex != null
-              ? String(this.game.fiftyFiftyQuestionIndex) + ":" + (Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.join(",") : "")
-              : "",
             playerRemoved: !!this.game.playerRemoved
           };
 
@@ -3238,18 +3292,7 @@
             return !(payload.player && payload.player.id) || payload.player.id === this.identity.playerId;
           }
 
-          const targetedTypes = new Set([
-            MSG.PLAYER_JOINED,
-            MSG.ANSWER_SUBMITTED,
-            MSG.FIFTY_FIFTY_RESULT,
-            MSG.SCORE_RESET,
-            MSG.PLAYER_REMOVED,
-            MSG.DOUBLE_DOWN_SET,
-            MSG.DOUBLE_DOWN_BUY_RESULT,
-            MSG.POINT_SHIELD_BUY_RESULT,
-            MSG.STREAK_PRIZE_RESULT
-          ]);
-          if (!targetedTypes.has(msg.type)) return true;
+          if (!PLAYER_TARGETED_MESSAGES.has(msg.type)) return true;
           return String(payload.playerId || "") === this.identity.playerId;
         }
 
@@ -3263,9 +3306,11 @@
           if (!snapshot || snapshot.type !== MSG.STATE_SNAPSHOT) return;
           if (snapshot.player && snapshot.player.id && snapshot.player.id !== this.identity.playerId) return;
 
+          const previousPhase = this.game.phase;
           this.game.gameId = snapshot.gameId || this.game.gameId;
           this.identity.gameId = this.game.gameId;
           this.game.phase = snapshot.phase || this.game.phase;
+          if (this.game.phase !== previousPhase) this.streakTargetPickerPhase = null;
           this.game.quizTitle = snapshot.quizTitle || this.game.quizTitle;
           this.game.leaderboard = Array.isArray(snapshot.leaderboard) ? snapshot.leaderboard : this.game.leaderboard;
 
@@ -3339,6 +3384,7 @@
               && this.game.question
               && Number(this.game.question.questionIndex) === Number(payload.questionIndex)) return;
           this.game.phase = PHASES.QUESTION;
+          this.streakTargetPickerPhase = null;
           this.questionCloseWaitingShown = false;
           this.game.question = payload;
           this.game.reveal = null;
@@ -3409,6 +3455,7 @@
               && nextReveal
               && Number(this.game.reveal.questionIndex) === Number(nextReveal.questionIndex)) return;
           this.game.phase = PHASES.ANSWER_REVEAL;
+          this.streakTargetPickerPhase = null;
           this.questionCloseWaitingShown = false;
           this.game.reveal = nextReveal;
           this.game.playerScoreBeforeReveal = this.game.playerScore;
@@ -3477,6 +3524,7 @@
 
         handleStreakPrizeResult(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.streakTargetPickerPhase = null;
           this.game.streakPrizeNotice = payload.reason ? String(payload.reason) : "";
           if (payload.realScore != null) this.game.playerScore = Number(payload.realScore);
           if (payload.displayedScore != null) this.game.playerDisplayedScore = Number(payload.displayedScore);
@@ -3492,6 +3540,7 @@
         }
 
         handleLeaderboard(payload) {
+          if (this.game.phase !== PHASES.LEADERBOARD) this.streakTargetPickerPhase = null;
           this.game.phase = PHASES.LEADERBOARD;
           this.game.leaderboard = payload && Array.isArray(payload.leaderboard) ? payload.leaderboard : this.game.leaderboard;
           this.game.totalPlayers = Array.isArray(this.game.leaderboard) ? this.game.leaderboard.length : this.game.totalPlayers;
@@ -3628,6 +3677,7 @@
 
         handleGameFinished(payload) {
           this.game.phase = PHASES.FINISHED;
+          this.streakTargetPickerPhase = null;
           if (payload && Array.isArray(payload.leaderboard)) {
             this.game.leaderboard = payload.leaderboard;
             this.game.totalPlayers = payload.leaderboard.length;
@@ -3909,6 +3959,7 @@
           this.game.prizeTargets = [];
           this.game.totalPlayers = 0;
           this.fiftyFiftyInFlight = false;
+          this.streakTargetPickerPhase = null;
           this.joinDraft.gameId = "";
           this.resetSorts();
           this.persist();
@@ -4011,6 +4062,7 @@
                 streakPrizeUsed: !!this.game.streakPrizeUsed,
                 streakPrizeNotice: this.game.streakPrizeNotice || "",
                 prizeTargets: Array.isArray(this.game.prizeTargets) ? this.game.prizeTargets : [],
+                streakTargetPickerOpen: this.isStreakTargetPickerOpen(PHASES.ANSWER_REVEAL),
                 doubleDownArmed: this.game.doubleDownArmed,
                 doubleDownEligible: !!this.game.doubleDownEligible,
                 doubleDownDisabledReason: this.game.doubleDownNotice || this.game.doubleDownDisabledReason || "",
@@ -4038,6 +4090,7 @@
                   else if (this.game.canBuyDoubleDown) this.onBuyDoubleDown();
                 },
                 onBuyPointShield: this.onBuyPointShield.bind(this),
+                onSetStreakTargetPickerOpen: (open) => this.setStreakTargetPickerOpen(PHASES.ANSWER_REVEAL, open),
                 onClaimStreakPrize: this.onClaimStreakPrize.bind(this)
               });
               break;
@@ -4068,6 +4121,7 @@
                 streakPrizeAvailable: this.game.streakPrizeAvailable,
                 streakPrizeNotice: this.game.streakPrizeNotice || "",
                 prizeTargets: Array.isArray(this.game.prizeTargets) ? this.game.prizeTargets : [],
+                streakTargetPickerOpen: this.isStreakTargetPickerOpen(PHASES.LEADERBOARD),
                 doubleDownArmed: !!this.game.doubleDownArmed,
                 doubleDownEligible: !!this.game.doubleDownEligible,
                 doubleDownStatusText: this.getDoubleDownStatusText(hasNextFromBoard),
@@ -4086,6 +4140,7 @@
                 onDoubleDown: this.onDoubleDown.bind(this),
                 onBuyDoubleDown: this.onBuyDoubleDown.bind(this),
                 onBuyPointShield: this.onBuyPointShield.bind(this),
+                onSetStreakTargetPickerOpen: (open) => this.setStreakTargetPickerOpen(PHASES.LEADERBOARD, open),
                 onClaimStreakPrize: this.onClaimStreakPrize.bind(this),
                 onSortLeaderboard: (key) => {
                   this.toggleSortState("leaderboard", key);
