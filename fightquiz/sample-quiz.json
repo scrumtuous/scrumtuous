@@ -1,0 +1,618 @@
+[
+  {
+    "query": "The expression df.groupby(\"client_name\")[\"value\"].sum() produces the same per-client totals as a manual dictionary-accumulation loop. What does the expression do?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "It calculates a cumulative running total for every row in the DataFrame.",
+        "explanation": "A cumulative total would use an operation such as cumsum(), not a groupby aggregation that returns per-group totals.",
+        "correct": false
+      },
+      {
+        "text": "It removes duplicate client names before calculating one overall total.",
+        "explanation": "groupby does not merely drop duplicate names; it aggregates the value column separately for each distinct group.",
+        "correct": false
+      },
+      {
+        "text": "It selects the final trade recorded for each client.",
+        "explanation": "Selecting a final row would require an operation such as last() or tail(), not sum().",
+        "correct": false
+      },
+      {
+        "text": "It groups rows by client_name and sums the value values within each group.",
+        "explanation": "That is exactly the groupby-plus-sum operation expressed by the code.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>It groups rows by client_name and sums the value values within each group.</b>.</p><p>The expression groups rows that share the same client_name, selects the value column in each group, and sums those values. The result contains one summed value for each client.</p>",
+    "tip": "<p>Read groupby expressions from left to right: define the groups, select the column, then apply the aggregation.</p>"
+  },
+  {
+    "query": "One Equity trade has a quantity far larger than every other Equity trade in the dataset. You do not yet know whether it is a valid large trade or a data-entry error. What should you do?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Replace it automatically with the median Equity quantity.",
+        "explanation": "Replacing the value without evidence invents data and removes the original observation.",
+        "correct": false
+      },
+      {
+        "text": "Cap it at the largest quantity found among the other Equity trades.",
+        "explanation": "Capping changes the source value without establishing that the original value was erroneous.",
+        "correct": false
+      },
+      {
+        "text": "Delete it because extreme observations should not remain in clean datasets.",
+        "explanation": "An extreme value can be legitimate, so automatic deletion may destroy valid information.",
+        "correct": false
+      },
+      {
+        "text": "Flag the record for investigation and preserve the original value.",
+        "explanation": "This keeps potentially valid information while making the unusual record visible for review.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>Flag the record for investigation and preserve the original value.</b>.</p><p>Flag the record and preserve its original value. An outlier is unusual, not automatically wrong, so investigation should determine whether it is a valid large trade or an error.</p>",
+    "tip": "<p>Detection and deletion are different decisions. First identify the outlier; only change or remove it when you have evidence.</p>"
+  },
+  {
+    "query": "A two-sample t-test comparing BUY and SELL trade values produces p = 0.04. The dataset is small, and the SELL group contains relatively few observations. What is the most appropriate interpretation?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "The result is reliable as long as the significance threshold was chosen before the test.",
+        "explanation": "Pre-specifying a threshold is useful, but it does not guarantee that the sample or test assumptions are adequate.",
+        "correct": false
+      },
+      {
+        "text": "The result must be invalid because t-tests require the two groups to contain exactly the same number of observations.",
+        "explanation": "Independent two-sample t-tests do not require equal group sizes.",
+        "correct": false
+      },
+      {
+        "text": "Treat the result as preliminary and examine sample sizes, outliers, assumptions, effect size, and uncertainty before drawing a strong conclusion.",
+        "explanation": "This interpretation recognizes that a nominally significant p-value does not remove uncertainty from a small or imbalanced sample.",
+        "correct": true
+      },
+      {
+        "text": "Because p < 0.05, the BUY and SELL groups have been proven to differ in an important practical way.",
+        "explanation": "Statistical significance does not prove practical importance and does not justify ignoring uncertainty or assumptions.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Treat the result as preliminary and examine sample sizes, outliers, assumptions, effect size, and uncertainty before drawing a strong conclusion.</b>.</p><p>The result is evidence worth investigating, but it should be treated as preliminary. Small or imbalanced samples can make estimates unstable, so review assumptions, outliers, effect size, confidence intervals, and practical importance before making a strong claim.</p>",
+    "tip": "<p>A p-value is one piece of evidence. Always consider sample quality, assumptions, effect size, and uncertainty.</p>"
+  },
+  {
+    "query": "A developer creates a SELL-trades DataFrame and then adds a new flag column. The intention is to create an independent DataFrame containing only the selected rows and columns before modifying it. Which version is the clearest and safest?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "df[df[\"side\"] == \"SELL\"][\"flag\"] = True",
+        "explanation": "This is chained indexing directly followed by assignment and may not modify the intended object reliably.",
+        "correct": false
+      },
+      {
+        "text": "sell_df = df[df[\"side\"] == \"SELL\"][[\"trade_id\", \"client_name\", \"value\"]]; sell_df[\"flag\"] = True",
+        "explanation": "This chained selection is less explicit about whether the result is an independent object and is a pattern pandas users generally avoid before assignment.",
+        "correct": false
+      },
+      {
+        "text": "Keep the chained-indexing version and suppress any SettingWithCopyWarning.",
+        "explanation": "Suppressing a warning hides the symptom without making the data-selection and mutation semantics clearer.",
+        "correct": false
+      },
+      {
+        "text": "sell_df = df.loc[df[\"side\"] == \"SELL\", [\"trade_id\", \"client_name\", \"value\"]].copy(); sell_df[\"flag\"] = True",
+        "explanation": "This performs explicit row-and-column selection and then creates an independent copy before mutation.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>sell_df = df.loc[df[&quot;side&quot;] == &quot;SELL&quot;, [&quot;trade_id&quot;, &quot;client_name&quot;, &quot;value&quot;]].copy(); sell_df[&quot;flag&quot;] = True</b>.</p><p>Use df.loc[...] to select the required rows and columns in one operation, then call .copy() to make the independence explicit before assigning the new flag column.</p>",
+    "tip": "<p>When you intend to modify a filtered DataFrame independently, use .loc for selection and .copy() to make ownership clear.</p>"
+  },
+  {
+    "query": "A LinearRegression model predicts value using quantity and price. It performs little better than a DummyRegressor baseline. Investigation shows that quantity × price matches value for most asset classes but consistently does not match it for one particular asset class. What should you investigate first?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Whether monetary values are fundamentally unsuitable targets for linear regression.",
+        "explanation": "Linear regression can model monetary targets; the issue described is a segment-specific relationship, not the fact that the target is money.",
+        "correct": false
+      },
+      {
+        "text": "Whether that asset class uses an additional valuation rule, multiplier, unit conversion, or other class-specific relationship that is missing from the model.",
+        "explanation": "A systematic mismatch confined to one asset class strongly suggests missing class-specific structure in the features or target relationship.",
+        "correct": true
+      },
+      {
+        "text": "Whether DummyRegressor changed the training data used by LinearRegression.",
+        "explanation": "DummyRegressor provides a baseline prediction strategy and does not alter the training data used by the separate linear model.",
+        "correct": false
+      },
+      {
+        "text": "Whether random_state=42 caused the linear regression algorithm to learn incorrect coefficients.",
+        "explanation": "LinearRegression itself is deterministic for a fixed training set; random_state affects the split here, not a class-specific valuation formula.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Whether that asset class uses an additional valuation rule, multiplier, unit conversion, or other class-specific relationship that is missing from the model.</b>.</p><p>Investigate whether that asset class follows a different valuation rule, multiplier, unit conversion, contract size, or other class-specific relationship. If the relationship between the features and target changes by class, the model or feature engineering must represent that difference.</p>",
+    "tip": "<p>When a simple relationship works for most rows but fails systematically for one segment, investigate segment-specific business rules before blaming the algorithm.</p>"
+  },
+  {
+    "query": "During EDA, someone proposes the hypothesis: \"Some advisors seem busier than others.\" Why is this weak as a statistical hypothesis?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "\"Busier\" is not defined as a measurable outcome, so the hypothesis needs a metric and a clear basis for comparison.",
+        "explanation": "Without an operational definition of busier, the statement cannot be tested consistently.",
+        "correct": true
+      },
+      {
+        "text": "Statistical hypotheses must always claim that one variable causes another.",
+        "explanation": "Hypotheses can test differences or associations without making causal claims.",
+        "correct": false
+      },
+      {
+        "text": "A visual impression from a chart is already sufficient to make the statement statistically testable.",
+        "explanation": "A chart may motivate a hypothesis, but the hypothesis still needs a measurable definition and comparison.",
+        "correct": false
+      },
+      {
+        "text": "A hypothesis based on advisors cannot be tested using tabular data.",
+        "explanation": "Advisor-level questions can be tested when the relevant advisor and activity measures are represented in the data.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>&quot;Busier&quot; is not defined as a measurable outcome, so the hypothesis needs a metric and a clear basis for comparison.</b>.</p><p>The term &quot;busier&quot; is undefined. A testable hypothesis needs a measurable outcome, such as number of trades, number of active clients, or average trade count over a specified period, plus a clear comparison.</p>",
+    "tip": "<p>Replace vague adjectives with measurable variables before trying to test a hypothesis.</p>"
+  },
+  {
+    "query": "You calculate a strongly positive skew for value and a Pearson correlation between quantity and value of r = 0.62 with p = 0.003. Which interpretations are supported? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Assuming the statistical test's assumptions hold, p = 0.003 means a result at least this extreme would be unlikely under the null hypothesis of zero correlation.",
+        "explanation": "That is the appropriate frequentist interpretation of the p-value for the stated null hypothesis.",
+        "correct": true
+      },
+      {
+        "text": "r = 0.62 indicates a positive linear association between quantity and value, but does not establish causation.",
+        "explanation": "Pearson's r summarizes linear association; correlation alone does not demonstrate a causal relationship.",
+        "correct": true
+      },
+      {
+        "text": "Positive skew indicates a longer tail toward larger values.",
+        "explanation": "Positive skew describes a distribution with a longer or heavier tail on the high-value side.",
+        "correct": true
+      },
+      {
+        "text": "p = 0.003 means there is a 0.3% probability that the null hypothesis is true.",
+        "explanation": "A p-value is calculated assuming the null hypothesis is true; it is not the posterior probability that the null is true.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct options are <b>Assuming the statistical test&#x27;s assumptions hold, p = 0.003 means a result at least this extreme would be unlikely under the null hypothesis of zero correlation.</b>, <b>r = 0.62 indicates a positive linear association between quantity and value, but does not establish causation.</b>, and <b>Positive skew indicates a longer tail toward larger values.</b>.</p><p>Positive skew means the distribution has a longer right tail. An r of 0.62 indicates a positive linear association, not causation. Under the assumptions of the Pearson test, p = 0.003 means data this extreme would be unlikely if the true correlation were zero; it is not the probability that the null hypothesis itself is true.</p>",
+    "tip": "<p>Keep three ideas separate: distribution shape, association strength and direction, and evidence against a null hypothesis.</p>"
+  },
+  {
+    "query": "A pytest test contains assert clean_trades[\"asset_class\"].isin(valid), and Python reports that the truth value of a Series is ambiguous. Which statements explain the problem and its fix? Select two.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Using .any() is equivalent because it verifies that every row contains an allowed value.",
+        "explanation": "any() only verifies that at least one row is valid, not that every row is valid.",
+        "correct": false
+      },
+      {
+        "text": "Using .all() reduces those values to a single Boolean that verifies every row is valid.",
+        "explanation": "all() is true only when every Boolean in the Series is true, which matches the intended validation.",
+        "correct": true
+      },
+      {
+        "text": "isin(valid) returns one Boolean value for each row rather than one Boolean for the entire expression.",
+        "explanation": "The result is a pandas Series containing a separate membership result for every row.",
+        "correct": true
+      },
+      {
+        "text": "pytest automatically reduces pandas Boolean Series, so the failure must be caused by the contents of valid.",
+        "explanation": "Python deliberately rejects the ambiguous truth value of a multi-element pandas Series unless it is explicitly reduced.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct options are <b>Using .all() reduces those values to a single Boolean that verifies every row is valid.</b> and <b>isin(valid) returns one Boolean value for each row rather than one Boolean for the entire expression.</b>.</p><p>isin(valid) returns a Boolean Series with one True or False value per row. assert needs one truth value, so .all() is appropriate when the test should verify that every row belongs to the valid set.</p>",
+    "tip": "<p>When a pandas expression returns many Boolean values, decide whether your rule means all rows, any row, or some other reduction.</p>"
+  },
+  {
+    "query": "An API returns HTTP 429 Too Many Requests with a Retry-After value when its rate limit is exceeded. The client receives a 429 while requesting page 4. After waiting, it requests page 5. What is wrong with this logic?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Page 4 never succeeded, so page 4 should be retried after the required delay before the client advances to page 5.",
+        "explanation": "The failed page has not been retrieved, so moving forward would create a gap in the result set.",
+        "correct": true
+      },
+      {
+        "text": "A 429 means the page contained no records, so advancing to page 5 is correct.",
+        "explanation": "HTTP 429 indicates rate limiting, not an empty page.",
+        "correct": false
+      },
+      {
+        "text": "The client should ignore Retry-After and repeatedly request page 4 until it succeeds.",
+        "explanation": "Ignoring the server's requested delay can prolong rate limiting and create unnecessary traffic.",
+        "correct": false
+      },
+      {
+        "text": "The client should immediately restart from page 1 whenever a 429 occurs.",
+        "explanation": "Restarting from page 1 is unnecessary and can duplicate work; the failed page itself should be retried.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Page 4 never succeeded, so page 4 should be retried after the required delay before the client advances to page 5.</b>.</p><p>Page 4 was rejected and therefore was never processed. After respecting Retry-After, the client should retry page 4. Advancing directly to page 5 skips data.</p>",
+    "tip": "<p>Retry the failed operation before advancing pagination or a cursor.</p>"
+  },
+  {
+    "query": "A developer writes: def add_validation_error(trade_id: str, errors: list[str] = []): errors.append(trade_id); return errors. What is the main problem with the function?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Lists cannot be passed as function arguments when type hints are used.",
+        "explanation": "Type hints do not prevent lists from being passed as arguments.",
+        "correct": false
+      },
+      {
+        "text": "Python does not allow type hints on parameters with default values.",
+        "explanation": "Python allows type annotations and default values on the same parameter.",
+        "correct": false
+      },
+      {
+        "text": "Default parameters must appear before required parameters.",
+        "explanation": "The opposite rule applies: required parameters generally come before parameters with defaults.",
+        "correct": false
+      },
+      {
+        "text": "The same default list is reused across calls, so errors from earlier calls can appear in later calls.",
+        "explanation": "The list is created once at function definition time, so mutations persist across calls that use the default.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>The same default list is reused across calls, so errors from earlier calls can appear in later calls.</b>.</p><p>The default list is created once when the function is defined and is reused on later calls that omit the errors argument. Mutating that shared list can cause data from earlier calls to leak into later calls.</p>",
+    "tip": "<p>Mutable defaults such as lists and dictionaries are a classic Python gotcha. Use None as the default and create a new object inside the function.</p>"
+  },
+  {
+    "query": "In which country was Latin American revolutionary Ernesto Guevara born?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Argentina",
+        "explanation": "Guevara was born in Rosario, Argentina.",
+        "correct": true
+      },
+      {
+        "text": "Colombia",
+        "explanation": "Colombia was not Guevara's country of birth.",
+        "correct": false
+      },
+      {
+        "text": "Bolivia",
+        "explanation": "Guevara was killed in Bolivia, but he was not born there.",
+        "correct": false
+      },
+      {
+        "text": "Cuba",
+        "explanation": "Cuba was central to Guevara's revolutionary career, but it was not his birthplace.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Argentina</b>.</p><p>Ernesto &quot;Che&quot; Guevara was born in Rosario, Argentina, in 1928.</p>",
+    "tip": "<p>Distinguish the country where Guevara was born from the countries most associated with his revolutionary activity.</p>"
+  },
+  {
+    "query": "A validation script must print every trade whose value exceeds 20,000. The code will be maintained by other developers and may gain additional validation rules later. Which implementation is the clearest choice?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Use a list comprehension because comprehensions should always replace loops when filtering data.",
+        "explanation": "Comprehensions are useful for creating collections, but they do not universally replace loops, especially when the purpose is side effects.",
+        "correct": false
+      },
+      {
+        "text": "Use a regular for loop with an if statement, because the purpose of the code is to perform an action rather than create a new list.",
+        "explanation": "A plain loop makes the filtering rule and the print action explicit and is easy to extend with more validation logic.",
+        "correct": true
+      },
+      {
+        "text": "Use the list comprehension and assign its result to a variable, even though the resulting list is not needed.",
+        "explanation": "Creating and storing an unused list adds unnecessary work and still obscures that printing is the real purpose.",
+        "correct": false
+      },
+      {
+        "text": "Use a list comprehension that filters the trades and calls print() for each matching trade.",
+        "explanation": "This works syntactically, but it uses a comprehension for side effects rather than for producing a meaningful collection.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Use a regular for loop with an if statement, because the purpose of the code is to perform an action rather than create a new list.</b>.</p><p>A regular for loop with an if statement is the clearest choice because the goal is to perform an action for matching trades, not to build a new list. A comprehension used only for side effects such as print() hides intent and becomes harder to extend.</p>",
+    "tip": "<p>Use a list comprehension when the expression is creating a useful collection. Use a regular loop when the main purpose is performing actions or handling several steps.</p>"
+  },
+  {
+    "query": "A program reads trades using csv.DictReader. A value that should total 60 instead appears as \"102030\" after processing values 10, 20, and 30. What is the most likely cause?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "DictReader automatically converts numeric fields to integers, but dictionaries convert them back to strings.",
+        "explanation": "DictReader normally returns field contents as strings rather than automatically creating integers.",
+        "correct": false
+      },
+      {
+        "text": "DictReader returns CSV fields as strings, and the values were combined without first converting them to a numeric type.",
+        "explanation": "String addition concatenates values, which explains the observed result \"102030\".",
+        "correct": true
+      },
+      {
+        "text": "Repeated dictionary keys cannot have their values updated during a loop.",
+        "explanation": "Dictionary values can be updated repeatedly; that is a normal way to maintain running totals.",
+        "correct": false
+      },
+      {
+        "text": "Numeric CSV fields must be converted to JSON before arithmetic can be performed.",
+        "explanation": "JSON conversion is unrelated; the CSV strings simply need to be converted to numeric Python types.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>DictReader returns CSV fields as strings, and the values were combined without first converting them to a numeric type.</b>.</p><p>csv.DictReader returns field values as strings unless you explicitly convert them. Combining &quot;10&quot;, &quot;20&quot;, and &quot;30&quot; with string addition produces &quot;102030&quot; rather than the numeric total 60.</p>",
+    "tip": "<p>CSV text is not automatically typed. Convert numeric fields with int() or float() before doing arithmetic.</p>"
+  },
+  {
+    "query": "The asset_class column should contain only Equity, Bond, ETF, and Crypto. The raw data contains values such as equity, EQUITY, Etf, and crypto. Which are defensible cleaning practices? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Use .str.capitalize() as the final transformation because it correctly produces all four canonical values.",
+        "explanation": "capitalize() would turn ETF into Etf, which does not match the required canonical label.",
+        "correct": false
+      },
+      {
+        "text": "Validate the cleaned values against the allowed set and flag any value that cannot be mapped.",
+        "explanation": "Validation ensures unrecognized values are surfaced rather than silently accepted.",
+        "correct": true
+      },
+      {
+        "text": "Check the resulting unique values after cleaning to make sure only expected categories remain.",
+        "explanation": "Inspecting the unique cleaned values is a useful validation step that can reveal unexpected categories.",
+        "correct": true
+      },
+      {
+        "text": "Normalise the input and use an explicit mapping to the four canonical values.",
+        "explanation": "An explicit mapping makes the allowed transformations clear and preserves special capitalization such as ETF.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct options are <b>Validate the cleaned values against the allowed set and flag any value that cannot be mapped.</b>, <b>Check the resulting unique values after cleaning to make sure only expected categories remain.</b>, and <b>Normalise the input and use an explicit mapping to the four canonical values.</b>.</p><p>A robust approach normalizes the raw text, maps it explicitly to the required canonical labels, checks the unique cleaned values, and flags anything that cannot be mapped. A generic capitalize operation is unsafe because ETF would become Etf.</p>",
+    "tip": "<p>Normalize, map, then validate. Special abbreviations such as ETF are a good reason not to rely on generic capitalization alone.</p>"
+  },
+  {
+    "query": "You have a trades DataFrame with one row per trade and an advisors DataFrame with advisor details, including team. You want to keep every trade and attach advisor information whenever a matching advisor exists. Which join should you use?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Outer join.",
+        "explanation": "An outer join would preserve unmatched rows from both tables, including advisors with no trades, which is broader than the stated requirement.",
+        "correct": false
+      },
+      {
+        "text": "Right join with advisors as the right DataFrame.",
+        "explanation": "This preserves all advisor rows instead of guaranteeing that every trade row remains.",
+        "correct": false
+      },
+      {
+        "text": "Inner join.",
+        "explanation": "An inner join would discard trades whose advisor key has no match in the advisor table.",
+        "correct": false
+      },
+      {
+        "text": "Left join with trades as the left DataFrame.",
+        "explanation": "A left join preserves all rows from trades and attaches matching advisor columns when available.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>Left join with trades as the left DataFrame.</b>.</p><p>Use a left join with trades on the left. A left join preserves every trade row and adds advisor details when a matching advisor exists.</p>",
+    "tip": "<p>Choose a join by deciding which input&#x27;s rows must always survive. Here, every trade must remain.</p>"
+  },
+  {
+    "query": "Which pandas patterns are valid? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "df.groupby(\"client_name\")[\"value\"].agg([\"sum\", \"count\", \"mean\"])",
+        "explanation": "This is a valid way to calculate several aggregations for the value column within each client group.",
+        "correct": true
+      },
+      {
+        "text": "merge() is valid only when the two DataFrames contain exactly the same number of rows.",
+        "explanation": "A merge matches rows using join keys; the input DataFrames do not need equal row counts.",
+        "correct": false
+      },
+      {
+        "text": "df[\"trade_date\"] = pd.to_datetime(df[\"trade_date\"]); weekly = df.resample(\"W\", on=\"trade_date\")[\"value\"].sum()",
+        "explanation": "After converting trade_date to datetime, resample can use the on parameter to aggregate value by week.",
+        "correct": true
+      },
+      {
+        "text": "pd.pivot_table(df, values=\"value\", index=\"instrument\", columns=\"side\", aggfunc=\"sum\", fill_value=0)",
+        "explanation": "This is a valid pivot table that sums value by instrument and side and fills missing combinations with zero.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct options are <b>df.groupby(&quot;client_name&quot;)[&quot;value&quot;].agg([&quot;sum&quot;, &quot;count&quot;, &quot;mean&quot;])</b>, <b>df[&quot;trade_date&quot;] = pd.to_datetime(df[&quot;trade_date&quot;]); weekly = df.resample(&quot;W&quot;, on=&quot;trade_date&quot;)[&quot;value&quot;].sum()</b>, and <b>pd.pivot_table(df, values=&quot;value&quot;, index=&quot;instrument&quot;, columns=&quot;side&quot;, aggfunc=&quot;sum&quot;, fill_value=0)</b>.</p><p>The groupby aggregation, pivot table, and datetime resample examples are all valid pandas patterns. merge() does not require two DataFrames to contain the same number of rows.</p>",
+    "tip": "<p>Judge each pandas operation by what it requires: aggregation needs grouped data, resampling needs datetime information, and joins match keys rather than row counts.</p>"
+  },
+  {
+    "query": "A DataFrame contains both USD and GBP trades. A developer calculates df[\"value\"].sum(). Which statements describe responsible handling of this data? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "df.groupby(\"currency\")[\"value\"].sum() can produce meaningful totals for each currency separately.",
+        "explanation": "Grouping by currency avoids combining unlike monetary units and gives a total for each currency bucket.",
+        "correct": true
+      },
+      {
+        "text": "Adding USD and GBP amounts directly produces a total whose financial meaning is unclear.",
+        "explanation": "The two currencies represent different units of value, so a raw sum mixes unlike quantities.",
+        "correct": true
+      },
+      {
+        "text": "Because value is numeric, pandas automatically makes USD and GBP amounts financially comparable.",
+        "explanation": "pandas performs arithmetic on numbers but has no automatic knowledge of exchange rates or financial comparability.",
+        "correct": false
+      },
+      {
+        "text": "A combined total can be calculated after applying an appropriate, documented currency-conversion method.",
+        "explanation": "Converting values to a common currency can make a combined total meaningful when the rate and methodology are defined.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct options are <b>df.groupby(&quot;currency&quot;)[&quot;value&quot;].sum() can produce meaningful totals for each currency separately.</b>, <b>Adding USD and GBP amounts directly produces a total whose financial meaning is unclear.</b>, and <b>A combined total can be calculated after applying an appropriate, documented currency-conversion method.</b>.</p><p>USD and GBP amounts should not be treated as directly comparable simply because they are numeric. You can summarize each currency separately, or convert them using an appropriate documented exchange-rate method before creating a combined total.</p>",
+    "tip": "<p>Always inspect the unit or currency attached to a number before aggregating it.</p>"
+  },
+  {
+    "query": "An ETL script reads a CSV file and writes a summary file. Why should both files normally be opened using with blocks? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Context managers automatically convert CSV strings into the correct Python data types.",
+        "explanation": "Context managers manage resource lifetime; they do not infer or convert CSV field types.",
+        "correct": false
+      },
+      {
+        "text": "Context managers make file ownership and lifetime explicit, reducing the chance of resource leaks.",
+        "explanation": "The indentation clearly shows where the resource is active and ensures cleanup at the end of that scope.",
+        "correct": true
+      },
+      {
+        "text": "The files are closed automatically even if an exception occurs.",
+        "explanation": "The context manager's exit handling closes the file when control leaves the with block, including during exceptions.",
+        "correct": true
+      },
+      {
+        "text": "Output is flushed and the file is closed predictably when the block finishes.",
+        "explanation": "Exiting the context finalizes the file resource rather than relying on eventual process cleanup.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct options are <b>Context managers make file ownership and lifetime explicit, reducing the chance of resource leaks.</b>, <b>The files are closed automatically even if an exception occurs.</b>, and <b>Output is flushed and the file is closed predictably when the block finishes.</b>.</p><p>with blocks provide deterministic cleanup: files are closed even when exceptions occur, buffered output is finalized when the block exits, and the resource lifetime is clear in the code. They do not perform automatic data-type conversion.</p>",
+    "tip": "<p>Think of a context manager as a reliable open-use-close boundary for a resource.</p>"
+  },
+  {
+    "query": "A trade-processing script can encounter malformed numeric values and negative quantities that violate a business rule. Which practices are appropriate? Select three.",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Wrap the entire processing loop in one broad except Exception block and ignore the error so processing continues.",
+        "explanation": "A broad catch that ignores failures can silently hide programming errors and data-quality problems.",
+        "correct": false
+      },
+      {
+        "text": "Keep try blocks narrow so unexpected errors are not accidentally hidden.",
+        "explanation": "Narrow exception scopes make it clearer which operation can fail and reduce the chance of masking unrelated bugs.",
+        "correct": true
+      },
+      {
+        "text": "Raise or handle a custom InvalidTradeError for business-rule violations such as negative quantities.",
+        "explanation": "A custom exception clearly distinguishes a business-rule violation from lower-level technical failures.",
+        "correct": true
+      },
+      {
+        "text": "Catch related conversion errors such as TypeError and ValueError where those errors are expected.",
+        "explanation": "These exceptions commonly represent invalid input types or values during numeric conversion and can reasonably be handled together.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct options are <b>Keep try blocks narrow so unexpected errors are not accidentally hidden.</b>, <b>Raise or handle a custom InvalidTradeError for business-rule violations such as negative quantities.</b>, and <b>Catch related conversion errors such as TypeError and ValueError where those errors are expected.</b>.</p><p>The appropriate practices are to use a custom InvalidTradeError for business-rule failures, catch expected conversion errors such as TypeError and ValueError where they can occur, and keep try blocks narrow. Broadly catching and ignoring every exception can hide real defects.</p>",
+    "tip": "<p>Separate business-rule failures from data-conversion failures, and catch only the errors you can handle meaningfully.</p>"
+  },
+  {
+    "query": "A dataset normally stores dates as YYYY-MM-DD, but one row contains 03/04/2024. There is no reliable information showing whether this means March 4 or April 3. What is the safest cleaning decision?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Assume day-first because that format is common in Europe.",
+        "explanation": "A regional convention is not evidence that this specific record uses day-first ordering.",
+        "correct": false
+      },
+      {
+        "text": "Assume month-first because that format is common in the United States.",
+        "explanation": "A regional convention is not evidence that this specific record uses month-first ordering.",
+        "correct": false
+      },
+      {
+        "text": "Replace the value with today's date so the pipeline can continue.",
+        "explanation": "Today's date has no relationship to the uncertain source value and would introduce fabricated data.",
+        "correct": false
+      },
+      {
+        "text": "Preserve and flag the value as ambiguous until the intended date format can be verified.",
+        "explanation": "This preserves the original evidence and prevents an unsupported date interpretation from silently entering the cleaned data.",
+        "correct": true
+      }
+    ],
+    "answer": "<p>The correct option is <b>Preserve and flag the value as ambiguous until the intended date format can be verified.</b>.</p><p>The safest choice is to preserve and flag the ambiguous value until its intended format can be verified. Guessing silently converts uncertainty into potentially incorrect data.</p>",
+    "tip": "<p>Do not invent certainty during data cleaning. If two interpretations are plausible and evidence cannot resolve them, flag the record.</p>"
+  },
+  {
+    "query": "safe_trade_value() catches an InvalidTradeError and needs to add the trade_id while explicitly preserving the original exception as the cause. Which pattern is best?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "except Exception: raise InvalidTradeError(\"Invalid trade\")",
+        "explanation": "Catching every exception is too broad, and the replacement message loses the requested original cause and trade-specific detail.",
+        "correct": false
+      },
+      {
+        "text": "except InvalidTradeError as e: raise InvalidTradeError(f\"trade {trade['trade_id']}: {e}\") from e",
+        "explanation": "The from e syntax explicitly chains the new exception to the original one while adding trade-specific context.",
+        "correct": true
+      },
+      {
+        "text": "except InvalidTradeError as e: raise e",
+        "explanation": "This re-raises the same exception but does not add the requested trade ID context.",
+        "correct": false
+      },
+      {
+        "text": "except InvalidTradeError: return None",
+        "explanation": "Returning None hides the failure instead of preserving and enriching the exception.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>except InvalidTradeError as e: raise InvalidTradeError(f&quot;trade {trade[&#x27;trade_id&#x27;]}: {e}&quot;) from e</b>.</p><p>Use raise InvalidTradeError(...) from e. Exception chaining adds the trade ID to the higher-level message while explicitly retaining the original InvalidTradeError as the cause.</p>",
+    "tip": "<p>When adding context to an exception, use raise NewException(...) from e when you want Python to preserve the causal chain explicitly.</p>"
+  },
+  {
+    "query": "What is the name of the orange ghost in Ms. Pac-Man?",
+    "type": "multiple-choice",
+    "options": [
+      {
+        "text": "Pinky",
+        "explanation": "Pinky is the pink ghost.",
+        "correct": false
+      },
+      {
+        "text": "Sue",
+        "explanation": "Sue is the orange ghost in Ms. Pac-Man.",
+        "correct": true
+      },
+      {
+        "text": "Blinky",
+        "explanation": "Blinky is the red ghost.",
+        "correct": false
+      },
+      {
+        "text": "Inky",
+        "explanation": "Inky is the cyan ghost associated with the Pac-Man ghost lineup.",
+        "correct": false
+      }
+    ],
+    "answer": "<p>The correct option is <b>Sue</b>.</p><p>Sue is the orange ghost in Ms. Pac-Man.</p>",
+    "tip": "<p>Think specifically about the ghost roster in Ms. Pac-Man rather than the original Pac-Man lineup.</p>"
+  }
+]

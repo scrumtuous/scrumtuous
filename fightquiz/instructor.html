@@ -1,0 +1,4107 @@
+<!DOCTYPE html>
+<!-- instructor.html: Authoritative host interface for the Fight Quiz multiplayer game. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fight Quiz Host</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #0f0d14;
+      --bg-1: #1a1221;
+      --bg-2: #271a31;
+      --plum: #5b3b61;
+      --mauve: #8f6a96;
+      --lavender: #ceb3dc;
+      --rose: #d28fa9;
+      --soft-pink: #f3d7e5;
+      --silver: #d5d4db;
+      --ok: #5ed8a2;
+      --warn: #ff9f7d;
+      --danger: #ff6b88;
+      --card-glass: rgba(27, 19, 35, 0.78);
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.42);
+      --radius: 18px;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--soft-pink);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(210, 143, 169, 0.24), transparent 32%),
+        radial-gradient(circle at 85% 22%, rgba(143, 106, 150, 0.3), transparent 30%),
+        radial-gradient(circle at 50% 80%, rgba(206, 179, 220, 0.1), transparent 28%),
+        linear-gradient(150deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("fight-landing-bg.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .title-font {
+      font-family: "Poppins", sans-serif;
+      letter-spacing: 0.01em;
+      font-weight: 700;
+    }
+
+    .shell {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    .glass {
+      background: var(--card-glass);
+      border: 1px solid rgba(243, 215, 229, 0.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .header-ribbon {
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.9rem;
+      background: rgba(213, 212, 219, 0.12);
+      border: 1px solid rgba(213, 212, 219, 0.3);
+    }
+
+    .socket-control {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .socket-pill-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(213, 212, 219, 0.3);
+      background: rgba(213, 212, 219, 0.12);
+      color: var(--soft-pink);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .socket-pill-btn:hover,
+    .socket-pill-btn:focus-visible {
+      background: rgba(213, 212, 219, 0.2);
+      color: #fff;
+    }
+
+    .socket-menu {
+      position: absolute;
+      top: calc(100% + 0.45rem);
+      right: 0;
+      width: min(94vw, 420px);
+      z-index: 80;
+      border-radius: 14px;
+      border: 1px solid rgba(243, 215, 229, 0.28);
+      background: rgba(24, 15, 32, 0.96);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+      padding: 0.7rem;
+    }
+
+    .socket-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(243, 215, 229, 0.15);
+      border-radius: 10px;
+      padding: 0.45rem 0.55rem;
+      margin-bottom: 0.42rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .socket-health-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7b7b7b;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .socket-health-dot.ok {
+      background: var(--ok);
+      box-shadow: 0 0 10px rgba(94, 216, 162, 0.62);
+    }
+
+    .socket-health-dot.fail {
+      background: var(--danger);
+      box-shadow: 0 0 10px rgba(255, 107, 136, 0.62);
+    }
+
+    .socket-health-dot.testing {
+      background: var(--warn);
+      box-shadow: 0 0 10px rgba(255, 159, 125, 0.62);
+    }
+
+    .socket-label {
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: #ffe7f1;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .socket-url {
+      font-size: 0.73rem;
+      color: rgba(243, 215, 229, 0.8);
+      word-break: break-all;
+      display: block;
+      line-height: 1.25;
+      margin-top: 0.1rem;
+    }
+
+    .new-fight-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(243, 215, 229, 0.42);
+      background: rgba(74, 48, 96, 0.72);
+      color: #ffe9f2;
+      font-weight: 700;
+      padding: 0.32rem 0.8rem;
+      font-size: 0.85rem;
+      line-height: 1.2;
+    }
+
+    .new-fight-pill:hover,
+    .new-fight-pill:focus-visible {
+      color: #fff;
+      border-color: rgba(243, 215, 229, 0.65);
+      background: rgba(104, 67, 134, 0.82);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #888;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+    }
+
+    .status-dot.connected { background: var(--ok); box-shadow: 0 0 12px rgba(94, 216, 162, 0.7); }
+    .status-dot.reconnecting { background: var(--warn); box-shadow: 0 0 12px rgba(255, 159, 125, 0.7); }
+    .status-dot.disconnected { background: var(--danger); box-shadow: 0 0 12px rgba(255, 107, 136, 0.7); }
+
+    .section-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--lavender);
+      margin-bottom: 0.75rem;
+    }
+
+    .moon-btn {
+      border: 1px solid rgba(243, 215, 229, 0.3);
+      color: var(--soft-pink);
+      background: linear-gradient(140deg, rgba(143, 106, 150, 0.36), rgba(210, 143, 169, 0.28));
+      border-radius: 13px;
+      font-weight: 700;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .moon-btn:hover,
+    .moon-btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(210, 143, 169, 0.34);
+      filter: brightness(1.06);
+      color: #fff;
+    }
+
+    .moon-btn:disabled {
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .danger-btn {
+      border: 1px solid rgba(255, 107, 136, 0.45);
+      color: #ffd6e0;
+      background: rgba(112, 39, 58, 0.45);
+    }
+
+    .outline-moon {
+      border: 1px solid rgba(243, 215, 229, 0.35);
+      color: var(--soft-pink);
+      background: transparent;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .small-note { color: rgba(243, 215, 229, 0.78); font-size: 0.9rem; }
+
+    .host-footer {
+      border-top: 1px solid rgba(243, 215, 229, 0.2);
+      margin-top: 0.9rem;
+      padding-top: 0.7rem;
+      font-size: 0.83rem;
+      line-height: 1.35;
+      color: rgba(243, 215, 229, 0.72);
+    }
+
+    textarea.form-control,
+    input.form-control,
+    input.form-control:focus,
+    textarea.form-control:focus {
+      background: rgba(11, 8, 14, 0.65);
+      color: #fbeffa;
+      border-color: rgba(243, 215, 229, 0.35);
+      box-shadow: 0 0 0 0.15rem rgba(210, 143, 169, 0.15);
+    }
+
+    .player-card {
+      border: 1px solid rgba(206, 179, 220, 0.35);
+      border-radius: 14px;
+      background: rgba(37, 24, 46, 0.75);
+      padding: 0.8rem;
+      animation: pop-in 350ms ease both;
+    }
+
+    @keyframes pop-in {
+      from { transform: translateY(8px) scale(0.97); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .q-option {
+      border: 1px solid rgba(243, 215, 229, 0.35);
+      border-radius: 12px;
+      padding: 0.7rem;
+      background: rgba(34, 23, 42, 0.72);
+    }
+
+    .badge-phase {
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      background: rgba(210, 143, 169, 0.22);
+      border: 1px solid rgba(210, 143, 169, 0.42);
+    }
+
+    .timer-pill {
+      display: inline-flex;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(243, 215, 229, 0.44);
+      border-radius: 14px;
+      padding: 0.5rem 1rem;
+      min-width: 160px;
+      justify-content: center;
+    }
+
+    .timer-pill.warn {
+      color: #ffd3c2;
+      border-color: rgba(255, 159, 125, 0.6);
+      box-shadow: 0 0 14px rgba(255, 159, 125, 0.25);
+    }
+
+    .timer-pill.danger {
+      color: #ffd9e2;
+      border-color: rgba(255, 107, 136, 0.75);
+      box-shadow: 0 0 16px rgba(255, 107, 136, 0.3);
+      animation: timer-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes timer-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .quiz-card {
+      border: 1px solid rgba(243, 215, 229, 0.2);
+      border-radius: 14px;
+      background: rgba(33, 22, 42, 0.76);
+      padding: 0.85rem;
+    }
+
+    .question-points-list {
+      max-height: 240px;
+      overflow: auto;
+      border: 1px solid rgba(243, 215, 229, 0.2);
+      border-radius: 12px;
+      padding: 0.7rem;
+      background: rgba(10, 8, 14, 0.4);
+    }
+
+    .rank-row {
+      border-radius: 12px;
+      background: rgba(41, 28, 51, 0.8);
+      border: 1px solid rgba(243, 215, 229, 0.22);
+      padding: 0.65rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .power-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      margin-right: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .power-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(243, 215, 229, 0.28);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.74rem;
+      color: #f7ddeb;
+    }
+
+    .power-icon.ready {
+      border-color: rgba(255, 233, 169, 0.65);
+      color: #ffe9a9;
+      background: rgba(122, 85, 31, 0.34);
+    }
+
+    .power-icon.shield {
+      border-color: rgba(147, 241, 212, 0.62);
+      color: #cfffee;
+      background: rgba(29, 94, 73, 0.32);
+    }
+
+    .power-icon.rocket {
+      border-color: rgba(255, 146, 164, 0.62);
+      color: #ffd2dc;
+      background: rgba(105, 41, 61, 0.35);
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .podium-card {
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(243, 215, 229, 0.3);
+      padding: 0.7rem;
+      background: rgba(56, 37, 69, 0.7);
+    }
+
+    .podium-card.first { box-shadow: 0 0 18px rgba(255, 222, 140, 0.4); }
+    .podium-card.second { box-shadow: 0 0 12px rgba(214, 214, 225, 0.25); }
+    .podium-card.third { box-shadow: 0 0 12px rgba(214, 168, 148, 0.25); }
+
+    .control-dock {
+      position: sticky;
+      top: 0.65rem;
+      z-index: 35;
+      border: 1px solid rgba(255, 214, 224, 0.42);
+      background: linear-gradient(145deg, rgba(51, 31, 64, 0.92), rgba(31, 19, 40, 0.9));
+      box-shadow: 0 0 0 1px rgba(255, 214, 224, 0.18), 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .control-dock .section-title {
+      color: #f7ddeb;
+      margin-bottom: 0.2rem;
+    }
+
+    .control-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .sort-btn {
+      border: 1px solid rgba(243, 215, 229, 0.35);
+      border-radius: 10px;
+      background: rgba(72, 48, 90, 0.5);
+      color: var(--soft-pink);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .sort-btn:hover,
+    .sort-btn:focus-visible {
+      background: rgba(115, 76, 141, 0.6);
+      color: #fff;
+    }
+
+    .stats-table-wrap {
+      border: 1px solid rgba(243, 215, 229, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(10, 7, 14, 0.45);
+    }
+
+    .stats-table {
+      margin-bottom: 0;
+      color: var(--soft-pink);
+    }
+
+    .stats-table th,
+    .stats-table td {
+      background: transparent !important;
+      border-color: rgba(243, 215, 229, 0.18) !important;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .stats-table th {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--lavender);
+    }
+
+    .stats-empty {
+      border: 1px dashed rgba(243, 215, 229, 0.24);
+      border-radius: 12px;
+      padding: 0.75rem;
+      color: rgba(243, 215, 229, 0.75);
+    }
+
+    .spark {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0.18;
+      pointer-events: none;
+      background: var(--lavender);
+      animation: drift 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(0) translateX(0) scale(0.7); }
+      100% { transform: translateY(-120vh) translateX(30px) scale(1.25); }
+    }
+
+    .focus-ring:focus-visible {
+      outline: 2px solid #ffd6e0;
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="sparkLayer"></div>
+  <div class="shell">
+    <header class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div>
+        <div class="title-font fs-3">Fight Quiz Host</div>
+        <div class="small-note">On a long enough timeline, the survival rate for every quiz drops to zero.</div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button id="newFightBtn" class="btn new-fight-pill focus-ring d-none" type="button">New Fight</button>
+        <span id="phaseBadge" class="badge-phase">LOBBY</span>
+        <div class="socket-control">
+          <button id="socketPill" class="socket-pill-btn focus-ring" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="socketMenu">
+            <span id="socketDot" class="status-dot disconnected"></span><span id="socketText">Connecting...</span>
+          </button>
+          <div id="socketMenu" class="socket-menu d-none" role="dialog" aria-label="WebSocket endpoint selector">
+            <div class="small-note mb-2">Choose endpoint priority. The selected one is tried first, then fallbacks.</div>
+            <div id="socketOptions"></div>
+            <div id="socketModeOptions" class="mt-2"></div>
+            <label class="form-label mb-1 mt-1" for="socketCustomInput">Custom URL</label>
+            <div class="d-flex gap-2">
+              <input id="socketCustomInput" class="form-control form-control-sm" placeholder="ws://example:8099/madmoney" />
+              <button id="socketCustomSaveBtn" class="btn btn-sm moon-btn focus-ring" type="button">Save</button>
+            </div>
+            <div id="socketMenuMsg" class="small-note mt-2" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="resumeBanner" class="glass p-3 mb-3 d-none">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <div class="fw-bold">An unfinished game was found.</div>
+          <div class="small-note" id="resumeMeta"></div>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="resumeBtn" class="btn moon-btn focus-ring"><i class="lni lni-spinner-arrow me-1"></i>Resume Game</button>
+          <button id="discardBtn" class="btn danger-btn focus-ring"><i class="lni lni-trash-can me-1"></i>Discard Game</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="activeControls" class="glass control-dock p-3 mb-3 d-none" aria-live="polite">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <div class="section-title">Active Quiz Controls</div>
+          <div id="activeControlsMeta" class="small-note">Start or resume a game to unlock controls.</div>
+        </div>
+        <div id="activeControlsButtons" class="control-strip"></div>
+      </div>
+    </div>
+
+    <main class="row g-3">
+      <section class="col-12 col-xl-4">
+        <div class="glass p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="section-title mb-0">My Quizzes</div>
+            <small id="quizCount" class="small-note">0 saved</small>
+          </div>
+          <div id="quizLibrary" class="d-grid gap-2"></div>
+        </div>
+
+        <div class="glass p-3">
+          <div class="section-title">Quiz Import</div>
+          <label class="form-label" for="quizTitleInput">Quiz Title</label>
+          <input id="quizTitleInput" class="form-control mb-2" maxlength="80" placeholder="Ex: AWS Fundamentals" />
+          <label class="form-label" for="quizJsonInput">Quiz JSON</label>
+          <textarea id="quizJsonInput" class="form-control mb-2" rows="10" spellcheck="false" placeholder='Paste JSON array of question objects...'></textarea>
+          <div class="d-flex flex-wrap gap-2">
+            <button id="createQuizBtn" class="btn moon-btn focus-ring">Create Quiz</button>
+            <button id="demoQuizBtn" class="btn outline-moon focus-ring">Load Demo Quiz</button>
+          </div>
+          <div id="importStatus" class="small-note mt-2" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="col-12 col-xl-8">
+        <div id="phaseStage" class="glass p-3 mb-3">
+          <div class="section-title">Stage</div>
+          <div id="stageContent" class="small-note">Start or resume a game to begin.</div>
+        </div>
+
+        <div class="glass p-3">
+          <button class="btn outline-moon focus-ring" type="button" data-bs-toggle="collapse" data-bs-target="#debugPanel" aria-expanded="false" aria-controls="debugPanel">
+            Toggle Debug Panel
+          </button>
+          <div id="debugPanel" class="collapse mt-2">
+            <div class="question-points-list">
+              <div id="debugStats" class="small-note"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="col-12">
+        <div class="row g-3">
+          <div class="col-12 col-xl-4">
+            <div class="glass p-3 h-100">
+              <div class="section-title">Players</div>
+              <div id="playerGrid" class="row g-2"></div>
+            </div>
+          </div>
+          <div class="col-12 col-xl-8">
+            <div class="glass p-3 h-100">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                <div>
+                  <div class="section-title mb-1">Game Lobby</div>
+                  <div class="small-note">Share this code and QR to onboard players quickly.</div>
+                </div>
+                <div class="text-end">
+                  <div class="small-note">Game Code</div>
+                  <div id="gameCodeText" class="title-font fs-3">------</div>
+                </div>
+              </div>
+              <div class="row g-3 mt-1">
+                <div class="col-12 col-md-5">
+                  <div class="glass p-2 h-100">
+                    <div class="small-note mb-1">Scan to Join</div>
+                    <div id="qrcode" class="d-flex justify-content-center align-items-center" style="min-height:140px"></div>
+                    <div id="joinUrlText" class="small-note text-break mt-2"></div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-7">
+                  <div class="glass p-2 h-100">
+                    <div class="small-note">Players</div>
+                    <div class="title-font fs-4" id="playerCountText">0 Players Joined</div>
+                    <div class="small-note">Only one instructor is active. Students reconnect using the same player ID.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="host-footer"><div id="hostFooterQuote">Quote loading...</div></footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const SOCKET_CHOICES = [
+        { id: "primary", name: "TheServerSide", url: "wss://websockets.theserverside.com" },
+        { id: "internal", name: "Internal", url: "ws://internal.theserverside.com:8099/madmoney" },
+        { id: "legacy", name: "Cameron's VM", url: "ws://10.23.131.137:8099/madmoney" }
+      ];
+      const STORAGE_KEYS = {
+        QUIZZES: "gothicQuiz.quizzes.v1",
+        ACTIVE_GAME: "gothicQuiz.activeGame.v1",
+        SETTINGS: "gothicQuiz.instructorSettings.v1",
+        SOCKET_PREFS: "gothicQuiz.socketPrefs.instructor.v1"
+      };
+
+      const PHASES = {
+        LOBBY: "LOBBY",
+        QUESTION: "QUESTION",
+        ANSWER_REVEAL: "ANSWER_REVEAL",
+        LEADERBOARD: "LEADERBOARD",
+        FINISHED: "FINISHED"
+      };
+
+      const DOUBLE_DOWN_BASE_USES = 3;
+      const DOUBLE_DOWN_BUY_COST = 3000;
+      const POINT_SHIELD_COST = 2500;
+      const REFLECTIVE_SHIELD_COST = 4000;
+      const FIFTY_FIFTY_COST = 1000;
+      const STREAK_PRIZE_LEVELS = [1, 2, 5, 8, 13, 21, 34, 55];
+      const STREAK_PRIZE_FAKE_TURNS = 3;
+      const STREAK_PRIZE_SELF_BONUS = 2000;
+      const STREAK_PRIZE_TARGET_PENALTY = 1000;
+      const STREAK_ACTION = {
+        MASK: "MASK_SELF",
+        STEAL: "STEAL_1000",
+        BONUS: "BONUS_2000"
+      };
+
+      const QUOTES = [
+        "You can spend years building a life that never really belonged to you.",
+        "Owning more things does not automatically make you more complete.",
+        "Sometimes the identity you protect is the thing keeping you trapped.",
+        "Comfort can become its own kind of prison.",
+        "Fear loses some of its power once you stop running from it.",
+        "A perfect apartment cannot fix an empty life.",
+        "You learn what matters when the things you relied on disappear.",
+        "People often confuse their possessions with their personality.",
+        "The safest version of your life may also be the least alive.",
+        "Destruction can feel like freedom when everything around you feels fake.",
+        "If your whole identity comes from your career, losing the job feels like losing yourself.",
+        "Consumer culture is very good at inventing problems it can sell you solutions for.",
+        "Sometimes you have to question the person you think you are.",
+        "Routine can numb you so gradually that you barely notice it happening.",
+        "Pain has a way of making the present moment impossible to ignore.",
+        "The desire to control everything often comes from being terrified of chaos.",
+        "A life built entirely around approval eventually belongs to everyone except you.",
+        "You can follow every rule and still end up completely lost.",
+        "The image you show the world can become harder to maintain than the truth.",
+        "People will endure incredible discomfort just to feel something authentic.",
+        "You are more complicated than your resume, salary, clothes, or apartment.",
+        "Sometimes rebellion begins with admitting that the normal path is not working.",
+        "Freedom can be frightening because it leaves you responsible for what happens next.",
+        "The person you pretend to be can eventually start making decisions for you.",
+        "There is something dangerous about believing you have nothing left to lose.",
+        "Society rewards obedience more often than self-examination.",
+        "The things that make you look successful can still leave you miserable.",
+        "Confidence can sometimes be nothing more than refusing to ask permission.",
+        "People often seek extreme experiences when ordinary life stops feeling real.",
+        "Hitting bottom can destroy you, but it can also destroy your illusions.",
+        "The harder you cling to certainty, the more frightening change becomes.",
+        "A polished life can hide a tremendous amount of anger.",
+        "You cannot purchase a personality one product at a time.",
+        "Many people spend their lives performing a version of themselves for strangers.",
+        "Sometimes the greatest threat to your identity is discovering that it was invented.",
+        "Chaos becomes attractive when order feels meaningless.",
+        "Being admired is not the same thing as being understood.",
+        "You can be surrounded by people and still feel completely disconnected.",
+        "There is a difference between being alive and merely functioning.",
+        "The urge to destroy something can come from wanting proof that change is possible.",
+        "Most people are taught how to succeed long before they are taught why success matters.",
+        "You discover strange things about yourself when the usual distractions disappear.",
+        "Losing control can feel liberating right up until you realize you cannot get it back.",
+        "Anger can give you direction without giving you wisdom.",
+        "A movement built around rejecting conformity can create a new kind of conformity.",
+        "The person promising to set you free can become another person telling you what to do.",
+        "Rebellion stops being freedom when nobody is allowed to question it.",
+        "Escaping one identity does not help if you immediately replace it with another.",
+        "The most dangerous ideas are often the ones that make you feel completely certain.",
+        "Becoming free requires more than destroying the life you already have. It requires deciding what should replace it.",
+        "It's only after we've lost everything that we're free to do anything.",
+        "Without pain, without sacrifice, we would have nothing."
+      ];
+
+      function pickRandomQuotes(count) {
+        const pool = QUOTES.slice();
+        const out = [];
+        while (pool.length && out.length < count) {
+          const idx = Math.floor(Math.random() * pool.length);
+          out.push(pool.splice(idx, 1)[0]);
+        }
+        return out;
+      }
+
+      function quoteSetForPhase(phase) {
+        const introspective = QUOTES.filter((q) => /comfort|routine|identity|approval|functioning|disconnected|normal path|obedience|personality/i.test(q));
+        const pressure = QUOTES.filter((q) => /pain|chaos|fear|anger|destroy|bottom|control|frightening|extreme/i.test(q));
+        const resolution = QUOTES.filter((q) => /freedom|replace it|responsible|question|authentic|understood|alive/i.test(q));
+        let pool = QUOTES;
+        if (phase === PHASES.LOBBY) pool = introspective.length ? introspective : QUOTES;
+        else if (phase === PHASES.QUESTION || phase === PHASES.ANSWER_REVEAL) pool = pressure.length ? pressure : QUOTES;
+        else if (phase === PHASES.LEADERBOARD || phase === PHASES.FINISHED) pool = resolution.length ? resolution : QUOTES;
+        const local = pool.slice();
+        const out = [];
+        while (local.length && out.length < 3) {
+          const idx = Math.floor(Math.random() * local.length);
+          out.push(local.splice(idx, 1)[0]);
+        }
+        while (out.length < 3) {
+          const fill = pickRandomQuotes(1)[0] || "";
+          if (!fill) break;
+          out.push(fill);
+        }
+        return { title: out[0] || "", below: out[1] || "", footer: out[2] || "" };
+      }
+
+      const MSG = {
+        PLAYER_JOIN: "PLAYER_JOIN",
+        PLAYER_REJOIN: "PLAYER_REJOIN",
+        PLAYER_JOINED: "PLAYER_JOINED",
+        PLAYER_REMOVE: "PLAYER_REMOVE",
+        PLAYER_REMOVED: "PLAYER_REMOVED",
+        SYNC_REQUEST: "SYNC_REQUEST",
+        STATE_SNAPSHOT: "STATE_SNAPSHOT",
+        GAME_STARTED: "GAME_STARTED",
+        QUESTION_STARTED: "QUESTION_STARTED",
+        ANSWER_SUBMITTED: "ANSWER_SUBMITTED",
+        FIFTY_FIFTY: "FIFTY_FIFTY",
+        FIFTY_FIFTY_RESULT: "FIFTY_FIFTY_RESULT",
+        QUESTION_ENDED: "QUESTION_ENDED",
+        ANSWER_REVEALED: "ANSWER_REVEALED",
+        SCORE_UPDATED: "SCORE_UPDATED",
+        SCORE_RESET: "SCORE_RESET",
+        LEADERBOARD: "LEADERBOARD",
+        GAME_FINISHED: "GAME_FINISHED",
+        INSTRUCTOR_PRESENT: "INSTRUCTOR_PRESENT",
+        DOUBLE_DOWN_NEXT: "DOUBLE_DOWN_NEXT",
+        DOUBLE_DOWN_SET: "DOUBLE_DOWN_SET",
+        DOUBLE_DOWN_BUY: "DOUBLE_DOWN_BUY",
+        DOUBLE_DOWN_BUY_RESULT: "DOUBLE_DOWN_BUY_RESULT",
+        POINT_SHIELD_BUY: "POINT_SHIELD_BUY",
+        POINT_SHIELD_BUY_RESULT: "POINT_SHIELD_BUY_RESULT",
+        STREAK_PRIZE_CLAIM: "STREAK_PRIZE_CLAIM",
+        STREAK_PRIZE_RESULT: "STREAK_PRIZE_RESULT"
+      };
+
+      const OPTION_COLORS = ["red", "green", "blue", "purple", "orange", "pink"];
+      const OPTION_COLOR_CLASS = {
+        red: "#dc3545",
+        green: "#2bb673",
+        blue: "#0d6efd",
+        purple: "#8f5ad4",
+        orange: "#fd7e14",
+        pink: "#d63384"
+      };
+
+      function nowTs() {
+        return Date.now();
+      }
+
+      function generateGameId() {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let out = "";
+        for (let i = 0; i < 6; i += 1) {
+          out += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return out;
+      }
+
+      function generateMessageId() {
+        if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+        return "m-" + Math.random().toString(36).slice(2) + "-" + nowTs();
+      }
+
+      function formatScore(score) {
+        return Number(score || 0).toLocaleString();
+      }
+
+      function formatTime(msRemaining) {
+        const safe = Math.max(0, msRemaining);
+        const totalSec = Math.floor(safe / 1000);
+        const m = String(Math.floor(totalSec / 60)).padStart(2, "0");
+        const s = String(totalSec % 60).padStart(2, "0");
+        return m + ":" + s;
+      }
+
+      function formatMs(ms) {
+        if (ms == null || !isFinite(ms)) return "-";
+        return Math.round(ms) + " ms";
+      }
+
+      function sanitizeName(name) {
+        const trimmed = String(name || "").trim().replace(/\s+/g, " ");
+        return trimmed.slice(0, 30);
+      }
+
+      function normalizeSocketUrl(value) {
+        return String(value || "").trim();
+      }
+
+      function isValidSocketUrl(value) {
+        return /^wss?:\/\/.+/i.test(normalizeSocketUrl(value));
+      }
+
+      function dedupeByUrl(items) {
+        const seen = new Set();
+        const out = [];
+        items.forEach((item) => {
+          const url = String(item && item.url ? item.url : "");
+          if (!url || seen.has(url)) return;
+          seen.add(url);
+          out.push(item);
+        });
+        return out;
+      }
+
+      function probeSocketUrl(url, timeoutMs) {
+        const target = normalizeSocketUrl(url);
+        if (!isValidSocketUrl(target)) return Promise.resolve(false);
+        return new Promise((resolve) => {
+          let settled = false;
+          let ws;
+          const finish = (ok) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            try {
+              if (ws && ws.readyState === WebSocket.OPEN) ws.close();
+            } catch (err) {
+              // ignore close failures in probe mode
+            }
+            resolve(!!ok);
+          };
+          const timer = setTimeout(() => finish(false), timeoutMs || 2200);
+          try {
+            ws = new WebSocket(target);
+          } catch (err) {
+            finish(false);
+            return;
+          }
+          ws.onopen = () => finish(true);
+          ws.onerror = () => finish(false);
+          ws.onclose = () => finish(false);
+        });
+      }
+
+      function randomPoints() {
+        return Math.floor(Math.random() * (5000 - 100 + 1)) + 100;
+      }
+
+      function calculateScore(questionPoints, endsAt, submittedAt) {
+        const totalTime = 120000;
+        const timeRemaining = Math.max(0, endsAt - submittedAt);
+        const speedRatio = timeRemaining / totalTime;
+        return Math.round(questionPoints * (0.25 + 0.75 * speedRatio));
+      }
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      class LocalStore {
+        static readJson(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return fallback;
+            return JSON.parse(raw);
+          } catch (err) {
+            return fallback;
+          }
+        }
+
+        static writeJson(key, value) {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+
+        static remove(key) {
+          localStorage.removeItem(key);
+        }
+      }
+
+      class SocketManager {
+        constructor(onMessage, onState, getSocketCandidates, onConnectedUrl) {
+          this.onMessage = onMessage;
+          this.onState = onState;
+          this.getSocketCandidates = getSocketCandidates;
+          this.onConnectedUrl = onConnectedUrl;
+          this.ws = null;
+          this.manuallyClosed = false;
+          this.retries = 0;
+          this.maxDelay = 10000;
+          this.seen = new Map();
+          this.flushSeenTimer = null;
+          this.lastMessageType = "-";
+          this.activeUrl = "";
+        }
+
+        connect() {
+          this.manuallyClosed = false;
+          this._open();
+          this.flushSeenTimer = setInterval(() => this.pruneSeen(), 10000);
+        }
+
+        _open() {
+          this.setState("connecting");
+          const candidates = dedupeByUrl(typeof this.getSocketCandidates === "function" ? this.getSocketCandidates() : []);
+          if (!candidates.length) {
+            this.scheduleReconnect();
+            return;
+          }
+
+          const tryCandidate = (idx) => {
+            if (this.manuallyClosed) return;
+            if (idx >= candidates.length) {
+              this.scheduleReconnect();
+              return;
+            }
+
+            const target = candidates[idx];
+            let probeWs = null;
+            let settled = false;
+            const fail = () => {
+              if (settled) return;
+              settled = true;
+              clearTimeout(openTimer);
+              try {
+                if (probeWs) probeWs.close();
+              } catch (err) {
+                // ignore close failures while rotating fallbacks
+              }
+              tryCandidate(idx + 1);
+            };
+
+            let openTimer = null;
+            try {
+              probeWs = new WebSocket(target.url);
+            } catch (err) {
+              tryCandidate(idx + 1);
+              return;
+            }
+
+            openTimer = setTimeout(() => fail(), 3200);
+
+            probeWs.onopen = () => {
+              if (settled || this.manuallyClosed) {
+                try {
+                  probeWs.close();
+                } catch (err) {
+                  // ignore
+                }
+                return;
+              }
+              settled = true;
+              clearTimeout(openTimer);
+              this.ws = probeWs;
+              this.activeUrl = target.url;
+              this.retries = 0;
+              if (typeof this.onConnectedUrl === "function") this.onConnectedUrl(target);
+              this.setState("connected");
+
+              this.ws.onclose = () => {
+                if (this.manuallyClosed) {
+                  this.setState("disconnected");
+                  return;
+                }
+                this.scheduleReconnect();
+              };
+
+              this.ws.onerror = () => {
+                this.setState("reconnecting");
+              };
+
+              this.ws.onmessage = (evt) => {
+                const parsed = this.safeParse(evt.data);
+                if (!parsed) return;
+                if (!this.validateEnvelope(parsed)) return;
+                if (this.isDuplicate(parsed.messageId)) return;
+                this.lastMessageType = parsed.type;
+                this.onMessage(parsed);
+              };
+            };
+
+            probeWs.onerror = () => fail();
+            probeWs.onclose = () => fail();
+          };
+
+          tryCandidate(0);
+        }
+
+        setState(state) {
+          this.onState(state);
+        }
+
+        scheduleReconnect() {
+          this.setState("reconnecting");
+          const delay = Math.min(this.maxDelay, 800 * Math.pow(1.6, this.retries));
+          this.retries += 1;
+          setTimeout(() => {
+            if (!this.manuallyClosed) this._open();
+          }, delay);
+        }
+
+        close() {
+          this.manuallyClosed = true;
+          if (this.flushSeenTimer) {
+            clearInterval(this.flushSeenTimer);
+            this.flushSeenTimer = null;
+          }
+          this.activeUrl = "";
+          if (this.ws) this.ws.close();
+        }
+
+        send(message) {
+          if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return false;
+          this.ws.send(JSON.stringify(message));
+          return true;
+        }
+
+        safeParse(data) {
+          try {
+            return JSON.parse(data);
+          } catch (err) {
+            return null;
+          }
+        }
+
+        validateEnvelope(msg) {
+          return !!(
+            msg &&
+            typeof msg.type === "string" &&
+            typeof msg.gameId === "string" &&
+            typeof msg.messageId === "string" &&
+            typeof msg.senderRole === "string" &&
+            typeof msg.timestamp === "number"
+          );
+        }
+
+        isDuplicate(id) {
+          if (!id) return false;
+          if (this.seen.has(id)) return true;
+          this.seen.set(id, nowTs());
+          if (this.seen.size > 1800) this.pruneSeen(true);
+          return false;
+        }
+
+        pruneSeen(force) {
+          const cutoff = nowTs() - 8 * 60 * 1000;
+          for (const [id, ts] of this.seen.entries()) {
+            if (force || ts < cutoff) this.seen.delete(id);
+          }
+        }
+      }
+
+      class QuizLibrary {
+        constructor() {
+          this.quizzes = LocalStore.readJson(STORAGE_KEYS.QUIZZES, []);
+        }
+
+        save() {
+          LocalStore.writeJson(STORAGE_KEYS.QUIZZES, this.quizzes);
+        }
+
+        list() {
+          return this.quizzes;
+        }
+
+        getById(id) {
+          return this.quizzes.find((q) => q.id === id) || null;
+        }
+
+        delete(id) {
+          this.quizzes = this.quizzes.filter((q) => q.id !== id);
+          this.save();
+        }
+
+        createQuiz(title, rawQuestions) {
+          const quizId = generateMessageId();
+          const questions = rawQuestions.map((item, qIndex) => {
+            const normalizedOpts = item.options.slice(0, 6).map((opt, idx) => ({
+              id: "q" + (qIndex + 1) + "-" + String.fromCharCode(97 + idx),
+              text: String(opt.text),
+              explanation: typeof opt.explanation === "string" ? opt.explanation : "",
+              correct: !!opt.correct,
+              letter: String.fromCharCode(65 + idx),
+              color: OPTION_COLORS[idx] || OPTION_COLORS[OPTION_COLORS.length - 1]
+            }));
+            return {
+              query: String(item.query),
+              type: "multiple-choice",
+              options: normalizedOpts,
+              answerHtml: typeof item.answer === "string" ? item.answer : "",
+              tipHtml: typeof item.tip === "string" ? item.tip : "",
+              pointValue: randomPoints()
+            };
+          });
+
+          const quiz = {
+            id: quizId,
+            title,
+            createdAt: nowTs(),
+            questions
+          };
+
+          this.quizzes.unshift(quiz);
+          this.save();
+          return quiz;
+        }
+
+        validateImportedArray(value) {
+          const errors = [];
+          if (!Array.isArray(value)) {
+            errors.push("Top-level JSON must be an array.");
+            return errors;
+          }
+          if (value.length === 0) errors.push("Quiz must include at least one question.");
+          value.forEach((q, idx) => {
+            const n = idx + 1;
+            if (!q || typeof q !== "object") {
+              errors.push("Question " + n + " must be an object.");
+              return;
+            }
+            if (!q.query || typeof q.query !== "string") {
+              errors.push("Question " + n + " is missing query text.");
+            }
+            if (!Array.isArray(q.options)) {
+              errors.push("Question " + n + " must contain an options array.");
+            } else {
+              if (q.options.length < 2) errors.push("Question " + n + " must have at least two options.");
+              q.options.forEach((opt, optIdx) => {
+                if (!opt || typeof opt !== "object") {
+                  errors.push("Question " + n + " option " + (optIdx + 1) + " must be an object.");
+                  return;
+                }
+                if (typeof opt.text !== "string" || !opt.text.trim()) {
+                  errors.push("Question " + n + " option " + (optIdx + 1) + " needs text.");
+                }
+                if (typeof opt.correct !== "boolean") {
+                  errors.push("Question " + n + " option " + (optIdx + 1) + " correct must be true/false.");
+                }
+              });
+              const correctCount = q.options.filter((o) => o && o.correct === true).length;
+              if (correctCount < 1) errors.push("Question " + n + " must include at least one correct answer.");
+            }
+          });
+          return errors;
+        }
+
+        setQuestionPoints(quizId, qIndex, points) {
+          const quiz = this.getById(quizId);
+          if (!quiz || !quiz.questions[qIndex]) return;
+          quiz.questions[qIndex].pointValue = points;
+          this.save();
+        }
+
+        randomizePoints(quizId) {
+          const quiz = this.getById(quizId);
+          if (!quiz) return;
+          quiz.questions.forEach((q) => {
+            q.pointValue = randomPoints();
+          });
+          this.save();
+        }
+      }
+
+      class GameController {
+        constructor(quizLibrary) {
+          this.quizLibrary = quizLibrary;
+          this.instructorId = "instructor-main";
+          this.activeGame = null;
+          this.lastSaveAt = 0;
+        }
+
+        hasActiveGame() {
+          return !!this.activeGame;
+        }
+
+        loadUnfinished() {
+          const saved = LocalStore.readJson(STORAGE_KEYS.ACTIVE_GAME, null);
+          if (!saved) return null;
+          if (saved.phase === PHASES.FINISHED) return null;
+          return saved;
+        }
+
+        restoreGame(savedGame) {
+          this.activeGame = savedGame;
+          this.ensureMaps();
+        }
+
+        startNewGame(quiz) {
+          this.activeGame = {
+            gameId: generateGameId(),
+            quizId: quiz.id,
+            quizTitle: quiz.title,
+            phase: PHASES.LOBBY,
+            questionIndex: -1,
+            questionStartedAt: null,
+            questionEndsAt: null,
+            questions: JSON.parse(JSON.stringify(quiz.questions)),
+            players: {},
+            submissions: {},
+            currentQuestionPowerSummary: null,
+            revealedAnswer: null,
+            updatedAt: nowTs()
+          };
+          this.saveGame();
+          return this.activeGame;
+        }
+
+        ensureMaps() {
+          if (!this.activeGame.players || typeof this.activeGame.players !== "object") this.activeGame.players = {};
+          if (!this.activeGame.submissions || typeof this.activeGame.submissions !== "object") this.activeGame.submissions = {};
+          Object.values(this.activeGame.players).forEach((p) => this.normalizePlayerState(p));
+        }
+
+        normalizePlayerState(player) {
+          if (!player || typeof player !== "object") return;
+          if (typeof player.doubleDownNext !== "boolean") player.doubleDownNext = false;
+          if (typeof player.doubleDownUses !== "number") player.doubleDownUses = 0;
+          if (typeof player.doubleDownPurchasedCredits !== "number") player.doubleDownPurchasedCredits = 0;
+          if (typeof player.pointShieldNext !== "boolean") player.pointShieldNext = false;
+          if (typeof player.pointShieldQuestionIndex !== "number") player.pointShieldQuestionIndex = null;
+          if (typeof player.pointShieldMode !== "string") player.pointShieldMode = "NORMAL";
+          if (typeof player.pointShieldActiveMode !== "string") player.pointShieldActiveMode = "NONE";
+          if (typeof player.fiftyFiftyQuestionIndex !== "number") player.fiftyFiftyQuestionIndex = null;
+          if (!Array.isArray(player.fiftyFiftyRemovedOptionIds)) player.fiftyFiftyRemovedOptionIds = [];
+          if (typeof player.fiftyFiftyUsed !== "boolean") player.fiftyFiftyUsed = false;
+          if (typeof player.incomingStrikeCount !== "number") player.incomingStrikeCount = 0;
+          if (typeof player.attackedCount !== "number") player.attackedCount = 0;
+          if (!Array.isArray(player.pendingIncomingStrikes)) player.pendingIncomingStrikes = [];
+          if (typeof player.strikeOutcome !== "string") player.strikeOutcome = "";
+          if (typeof player.strikeDelta !== "number") player.strikeDelta = 0;
+          if (typeof player.strikeCount !== "number") player.strikeCount = 0;
+          if (!Array.isArray(player.strikeAttackers)) player.strikeAttackers = [];
+          if (typeof player.strikeNotice !== "string") player.strikeNotice = "";
+          if (typeof player.streakPrizeAvailable !== "boolean") player.streakPrizeAvailable = false;
+          if (typeof player.streakPrizeUsed !== "boolean") player.streakPrizeUsed = false;
+          if (typeof player.streakPrizeUses !== "number") player.streakPrizeUses = 0;
+          if (typeof player.streakPrizeNextIndex !== "number") player.streakPrizeNextIndex = 0;
+          if (typeof player.streakPrizeRun !== "number") player.streakPrizeRun = 0;
+          if (typeof player.streakPrizeAction !== "string") player.streakPrizeAction = "";
+          if (typeof player.fakeScoreTurnsRemaining !== "number") player.fakeScoreTurnsRemaining = 0;
+          if (typeof player.fakeScorePrimed !== "boolean") player.fakeScorePrimed = false;
+          if (typeof player.correctStreak !== "number") player.correctStreak = 0;
+          if (typeof player.correctAnswers !== "number") player.correctAnswers = 0;
+          if (typeof player.longestStreak !== "number") player.longestStreak = 0;
+          if (typeof player.quickDrawWins !== "number") player.quickDrawWins = 0;
+          if (typeof player.responseTotalMs !== "number") player.responseTotalMs = 0;
+          if (typeof player.responseCount !== "number") player.responseCount = 0;
+          if (player.fastestResponseMs != null && typeof player.fastestResponseMs !== "number") {
+            player.fastestResponseMs = null;
+          }
+        }
+
+        getDisplayedScore(player) {
+          this.normalizePlayerState(player);
+          if (Number(player.fakeScoreTurnsRemaining || 0) > 0) {
+            return Math.trunc(Number(player.score || 0) / 2);
+          }
+          return Number(player.score || 0);
+        }
+
+        maybeUnlockStreakPrize(player) {
+          this.normalizePlayerState(player);
+          if (player.streakPrizeAvailable) return false;
+          const idx = Math.max(0, Number(player.streakPrizeNextIndex || 0));
+          const threshold = STREAK_PRIZE_LEVELS[idx];
+          if (typeof threshold !== "number") return false;
+          if (Number(player.streakPrizeRun || 0) < threshold) return false;
+          player.streakPrizeAvailable = true;
+          player.streakPrizeNextIndex = idx + 1;
+          player.streakPrizeRun = 0;
+          return true;
+        }
+
+        getDoubleDownPolicy(playerId, opts) {
+          if (!this.activeGame) {
+            return { allowed: false, reason: "No active game", source: "none", rank: null, totalPlayers: 0, uses: 0, cap: DOUBLE_DOWN_BASE_USES, remainingBaseUses: 0, purchasedCredits: 0, bonusEligible: false, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "No active game" };
+          }
+
+          const player = this.activeGame.players[playerId];
+          if (!player || player.removed) {
+            return { allowed: false, reason: "Unknown player", source: "none", rank: null, totalPlayers: 0, uses: 0, cap: DOUBLE_DOWN_BASE_USES, remainingBaseUses: 0, purchasedCredits: 0, bonusEligible: false, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "Unknown player" };
+          }
+
+          this.normalizePlayerState(player);
+
+          const board = this.getLeaderboard();
+          const rankObj = board.find((row) => row.playerId === playerId);
+          const rank = rankObj ? rankObj.rank : null;
+          const totalPlayers = board.length;
+          const uses = Number(player.doubleDownUses || 0);
+          const cap = DOUBLE_DOWN_BASE_USES;
+          const remainingBaseUses = Math.max(0, cap - uses);
+          const purchasedCredits = Math.max(0, Number(player.doubleDownPurchasedCredits || 0));
+          const inBottomFive = rank != null && rank >= Math.max(1, totalPlayers - 4);
+          const bonusEligible = rank === 3 || rank === 5 || inBottomFive;
+
+          let allowed = false;
+          let reason = "";
+          let source = "none";
+
+          if (rank === 1) {
+            reason = "Double Down is disabled for 1st place.";
+          } else if (remainingBaseUses > 0) {
+            allowed = true;
+            source = "base";
+          } else if (purchasedCredits > 0) {
+            allowed = true;
+            source = "purchased";
+          } else if (bonusEligible) {
+            allowed = true;
+            source = "bonus";
+          } else {
+            reason = "Double Down disabled after 3 uses unless you are in 3rd, 5th, or the bottom 5.";
+          }
+
+          if (opts && opts.enforcePhase) {
+            const validPhase = this.activeGame.phase === PHASES.ANSWER_REVEAL || this.activeGame.phase === PHASES.LEADERBOARD || this.activeGame.phase === PHASES.LOBBY;
+            if (!validPhase) {
+              allowed = false;
+              source = "none";
+              reason = "Double Down can only be armed after reveals, on leaderboard, or in lobby.";
+            }
+          }
+
+          if (opts && opts.requireNextQuestion) {
+            const nextIndex = this.activeGame.questionIndex + 1;
+            if (nextIndex >= this.activeGame.questions.length) {
+              allowed = false;
+              source = "none";
+              reason = "No next question.";
+            }
+          }
+
+          if (player.doubleDownNext) {
+            allowed = false;
+            source = "none";
+            reason = "Double Down is already armed for the next question.";
+          }
+
+          const exhaustedStandard = remainingBaseUses === 0;
+          const canBuyDoubleDown = rank !== 1 && exhaustedStandard && !bonusEligible && Number(player.score || 0) >= DOUBLE_DOWN_BUY_COST;
+          let buyBlockedReason = "";
+          if (rank === 1) buyBlockedReason = "1st place cannot use or buy Double Down.";
+          else if (!exhaustedStandard) buyBlockedReason = "Use your remaining standard Double Downs first.";
+          else if (bonusEligible) buyBlockedReason = "Your current rank already unlocks bonus Double Down uses.";
+          else if (Number(player.score || 0) < DOUBLE_DOWN_BUY_COST) buyBlockedReason = "Need at least " + formatScore(DOUBLE_DOWN_BUY_COST) + " points to buy one.";
+
+          return {
+            allowed,
+            reason,
+            source,
+            rank,
+            totalPlayers,
+            uses,
+            cap,
+            remainingBaseUses,
+            purchasedCredits,
+            bonusEligible,
+            canBuyDoubleDown,
+            buyCost: DOUBLE_DOWN_BUY_COST,
+            buyBlockedReason
+          };
+        }
+
+        saveGame() {
+          if (!this.activeGame) return;
+          this.activeGame.updatedAt = nowTs();
+          LocalStore.writeJson(STORAGE_KEYS.ACTIVE_GAME, this.activeGame);
+          this.lastSaveAt = this.activeGame.updatedAt;
+        }
+
+        clearGame() {
+          this.activeGame = null;
+          LocalStore.remove(STORAGE_KEYS.ACTIVE_GAME);
+        }
+
+        joinOrRejoinPlayer(payload) {
+          if (!this.activeGame) return { ok: false, reason: "No active game" };
+          const playerId = String(payload.playerId || "").trim();
+          const playerName = sanitizeName(payload.playerName);
+          if (!playerId || !playerName) return { ok: false, reason: "Invalid player" };
+
+          let p = this.activeGame.players[playerId];
+          if (!p) {
+            p = {
+              id: playerId,
+              name: playerName,
+              score: 0,
+              joinedAt: nowTs(),
+              lastSeenAt: nowTs(),
+              removed: false,
+              currentSubmission: null,
+              doubleDownNext: false,
+              doubleDownUses: 0,
+              doubleDownPurchasedCredits: 0,
+              pointShieldNext: false,
+              pointShieldQuestionIndex: null,
+              pointShieldMode: "NORMAL",
+              pointShieldActiveMode: "NONE",
+              fiftyFiftyQuestionIndex: null,
+              fiftyFiftyRemovedOptionIds: [],
+              fiftyFiftyUsed: false,
+              incomingStrikeCount: 0,
+              attackedCount: 0,
+              pendingIncomingStrikes: [],
+              strikeOutcome: "",
+              strikeDelta: 0,
+              strikeCount: 0,
+              strikeAttackers: [],
+              strikeNotice: "",
+              streakPrizeAvailable: false,
+              streakPrizeUsed: false,
+              streakPrizeUses: 0,
+              streakPrizeNextIndex: 0,
+              streakPrizeRun: 0,
+              fakeScoreTurnsRemaining: 0,
+              fakeScorePrimed: false,
+              correctStreak: 0,
+              correctAnswers: 0,
+              longestStreak: 0,
+              quickDrawWins: 0,
+              responseTotalMs: 0,
+              responseCount: 0,
+              fastestResponseMs: null
+            };
+            this.activeGame.players[playerId] = p;
+          } else {
+            p.name = playerName;
+            p.lastSeenAt = nowTs();
+            if (p.removed) return { ok: false, reason: "Removed" };
+            this.normalizePlayerState(p);
+          }
+
+          this.saveGame();
+          return { ok: true, player: p };
+        }
+
+        removePlayer(playerId) {
+          const p = this.activeGame.players[playerId];
+          if (!p) return false;
+          p.removed = true;
+          p.lastSeenAt = nowTs();
+          this.saveGame();
+          return true;
+        }
+
+        resetScore(playerId) {
+          const p = this.activeGame.players[playerId];
+          if (!p || p.removed) return false;
+          p.score = 0;
+          p.doubleDownNext = false;
+          p.doubleDownUses = 0;
+          p.doubleDownPurchasedCredits = 0;
+          p.pointShieldNext = false;
+          p.pointShieldQuestionIndex = null;
+          p.pointShieldMode = "NORMAL";
+          p.pointShieldActiveMode = "NONE";
+          p.fiftyFiftyQuestionIndex = null;
+          p.fiftyFiftyRemovedOptionIds = [];
+          p.fiftyFiftyUsed = false;
+          p.incomingStrikeCount = 0;
+          p.attackedCount = 0;
+          p.pendingIncomingStrikes = [];
+          p.strikeOutcome = "";
+          p.strikeDelta = 0;
+          p.strikeCount = 0;
+          p.strikeAttackers = [];
+          p.strikeNotice = "";
+          p.streakPrizeAvailable = false;
+          p.streakPrizeUsed = false;
+          p.streakPrizeUses = 0;
+          p.streakPrizeNextIndex = 0;
+          p.streakPrizeRun = 0;
+          p.streakPrizeAction = "";
+          p.fakeScoreTurnsRemaining = 0;
+          p.fakeScorePrimed = false;
+          p.correctStreak = 0;
+          p.correctAnswers = 0;
+          p.longestStreak = 0;
+          p.quickDrawWins = 0;
+          p.responseTotalMs = 0;
+          p.responseCount = 0;
+          p.fastestResponseMs = null;
+          this.saveGame();
+          return true;
+        }
+
+        setDoubleDownNext(playerId) {
+          if (!this.activeGame) return { ok: false, reason: "No active game", playerId };
+          const p = this.activeGame.players[playerId];
+          if (!p || p.removed) return { ok: false, reason: "Unknown player", playerId };
+
+          const policy = this.getDoubleDownPolicy(playerId, { enforcePhase: true, requireNextQuestion: true });
+          if (!policy.allowed) {
+            return {
+              ok: false,
+              playerId,
+              reason: policy.reason,
+              rank: policy.rank,
+              totalPlayers: policy.totalPlayers,
+              doubleDownUses: policy.uses,
+              doubleDownCap: policy.cap,
+              remainingBaseUses: policy.remainingBaseUses,
+              bonusEligible: policy.bonusEligible,
+              purchasedCredits: policy.purchasedCredits,
+              canBuyDoubleDown: policy.canBuyDoubleDown,
+              buyCost: policy.buyCost,
+              buyBlockedReason: policy.buyBlockedReason
+            };
+          }
+
+          if (policy.source === "purchased" && Number(p.doubleDownPurchasedCredits || 0) > 0) {
+            p.doubleDownPurchasedCredits = Number(p.doubleDownPurchasedCredits || 0) - 1;
+          }
+          p.doubleDownNext = true;
+          p.doubleDownUses = Number(p.doubleDownUses || 0) + 1;
+          p.lastSeenAt = nowTs();
+          this.saveGame();
+
+          const nextPolicy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
+
+          return {
+            ok: true,
+            playerId: p.id,
+            armedForQuestionIndex: this.activeGame.questionIndex + 1,
+            rank: policy.rank,
+            totalPlayers: policy.totalPlayers,
+            doubleDownUses: p.doubleDownUses,
+            doubleDownCap: DOUBLE_DOWN_BASE_USES,
+            remainingBaseUses: Math.max(0, DOUBLE_DOWN_BASE_USES - p.doubleDownUses),
+            bonusEligible: policy.bonusEligible,
+            purchasedCredits: Number(p.doubleDownPurchasedCredits || 0),
+            canBuyDoubleDown: nextPolicy.canBuyDoubleDown,
+            buyCost: DOUBLE_DOWN_BUY_COST,
+            buyBlockedReason: nextPolicy.buyBlockedReason,
+            source: policy.source,
+            reason: "Double Down armed for the next question."
+          };
+        }
+
+        purchaseDoubleDown(playerId) {
+          if (!this.activeGame) return { ok: false, playerId, reason: "No active game" };
+          const p = this.activeGame.players[playerId];
+          if (!p || p.removed) return { ok: false, playerId, reason: "Unknown player" };
+
+          if (p.doubleDownNext) {
+            const policy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
+            return {
+              ok: false,
+              playerId,
+              reason: "Double Down is already armed for the next question.",
+              rank: policy.rank,
+              totalPlayers: policy.totalPlayers,
+              doubleDownUses: policy.uses,
+              doubleDownCap: policy.cap,
+              remainingBaseUses: policy.remainingBaseUses,
+              purchasedCredits: policy.purchasedCredits,
+              canBuyDoubleDown: false,
+              buyCost: DOUBLE_DOWN_BUY_COST,
+              buyBlockedReason: "Double Down is already armed."
+            };
+          }
+
+          const policy = this.getDoubleDownPolicy(playerId, { enforcePhase: true, requireNextQuestion: true });
+
+          if (policy.rank === 1) {
+            return { ok: false, playerId, reason: "1st place cannot buy Double Down.", rank: policy.rank, totalPlayers: policy.totalPlayers, doubleDownUses: policy.uses, doubleDownCap: policy.cap, remainingBaseUses: policy.remainingBaseUses, purchasedCredits: policy.purchasedCredits, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "1st place cannot buy Double Down." };
+          }
+
+          if (policy.remainingBaseUses > 0) {
+            return { ok: false, playerId, reason: "You still have standard Double Downs left.", rank: policy.rank, totalPlayers: policy.totalPlayers, doubleDownUses: policy.uses, doubleDownCap: policy.cap, remainingBaseUses: policy.remainingBaseUses, purchasedCredits: policy.purchasedCredits, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "Use your standard Double Downs first." };
+          }
+
+          if (policy.bonusEligible) {
+            return { ok: false, playerId, reason: "Your rank already has unlimited bonus Double Down access.", rank: policy.rank, totalPlayers: policy.totalPlayers, doubleDownUses: policy.uses, doubleDownCap: policy.cap, remainingBaseUses: policy.remainingBaseUses, purchasedCredits: policy.purchasedCredits, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "Bonus Double Down already unlocked by rank." };
+          }
+
+          if (Number(p.score || 0) < DOUBLE_DOWN_BUY_COST) {
+            return { ok: false, playerId, reason: "Need at least " + formatScore(DOUBLE_DOWN_BUY_COST) + " points to buy a Double Down.", rank: policy.rank, totalPlayers: policy.totalPlayers, doubleDownUses: policy.uses, doubleDownCap: policy.cap, remainingBaseUses: policy.remainingBaseUses, purchasedCredits: policy.purchasedCredits, canBuyDoubleDown: false, buyCost: DOUBLE_DOWN_BUY_COST, buyBlockedReason: "Not enough points." };
+          }
+
+          p.score = Number(p.score || 0) - DOUBLE_DOWN_BUY_COST;
+          p.doubleDownPurchasedCredits = Number(p.doubleDownPurchasedCredits || 0) + 1;
+          p.lastSeenAt = nowTs();
+          this.saveGame();
+
+          const nextPolicy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
+          return {
+            ok: true,
+            playerId,
+            reason: "Purchased 1 Double Down credit for " + formatScore(DOUBLE_DOWN_BUY_COST) + " points.",
+            rank: nextPolicy.rank,
+            totalPlayers: nextPolicy.totalPlayers,
+            score: p.score,
+            doubleDownUses: Number(p.doubleDownUses || 0),
+            doubleDownCap: DOUBLE_DOWN_BASE_USES,
+            remainingBaseUses: nextPolicy.remainingBaseUses,
+            purchasedCredits: Number(p.doubleDownPurchasedCredits || 0),
+            canBuyDoubleDown: nextPolicy.canBuyDoubleDown,
+            buyCost: DOUBLE_DOWN_BUY_COST,
+            buyBlockedReason: nextPolicy.buyBlockedReason,
+            bonusEligible: nextPolicy.bonusEligible
+          };
+        }
+
+        getPointShieldPolicy(playerId, opts, mode) {
+          const shieldMode = String(mode || "NORMAL").toUpperCase() === "REFLECTIVE" ? "REFLECTIVE" : "NORMAL";
+          const cost = shieldMode === "REFLECTIVE" ? REFLECTIVE_SHIELD_COST : POINT_SHIELD_COST;
+          if (!this.activeGame) {
+            return {
+              allowed: false,
+              reason: "No active game",
+              playerId,
+              hasNextQuestion: false,
+              nextQuestionIndex: null,
+              cost,
+              mode: shieldMode,
+              pointShieldNext: false
+            };
+          }
+
+          const player = this.activeGame.players[playerId];
+          if (!player || player.removed) {
+            return {
+              allowed: false,
+              reason: "Unknown player",
+              playerId,
+              hasNextQuestion: false,
+              nextQuestionIndex: null,
+              cost,
+              mode: shieldMode,
+              pointShieldNext: false
+            };
+          }
+
+          this.normalizePlayerState(player);
+          const nextQuestionIndex = this.activeGame.questionIndex + 1;
+          const hasNextQuestion = nextQuestionIndex < this.activeGame.questions.length;
+          const validPhase = this.activeGame.phase === PHASES.ANSWER_REVEAL || this.activeGame.phase === PHASES.LEADERBOARD || this.activeGame.phase === PHASES.LOBBY;
+
+          let allowed = true;
+          let reason = "";
+
+          if (opts && opts.enforcePhase && !validPhase) {
+            allowed = false;
+            reason = "Shield can only be armed after reveals, on leaderboard, or in lobby.";
+          }
+
+          if (allowed && opts && opts.requireNextQuestion && !hasNextQuestion) {
+            allowed = false;
+            reason = "No next question remains.";
+          }
+
+          if (allowed && player.pointShieldNext) {
+            allowed = false;
+            reason = "Shield is already armed for the next question.";
+          }
+
+          if (allowed && Number(player.score || 0) < cost) {
+            allowed = false;
+            reason = "Need at least " + formatScore(cost) + " points to arm a shield.";
+          }
+
+          return {
+            allowed,
+            reason,
+            playerId,
+            hasNextQuestion,
+            nextQuestionIndex: hasNextQuestion ? nextQuestionIndex : null,
+            cost,
+            mode: shieldMode,
+            pointShieldNext: !!player.pointShieldNext
+          };
+        }
+
+        purchasePointShield(playerId, mode) {
+          const shieldMode = String(mode || "NORMAL").toUpperCase() === "REFLECTIVE" ? "REFLECTIVE" : "NORMAL";
+          const cost = shieldMode === "REFLECTIVE" ? REFLECTIVE_SHIELD_COST : POINT_SHIELD_COST;
+          if (!this.activeGame) return { ok: false, playerId, reason: "No active game", cost, mode: shieldMode };
+          const p = this.activeGame.players[playerId];
+          if (!p || p.removed) return { ok: false, playerId, reason: "Unknown player", cost, mode: shieldMode };
+
+          const policy = this.getPointShieldPolicy(playerId, { enforcePhase: true, requireNextQuestion: true }, shieldMode);
+          if (!policy.allowed) {
+            return {
+              ok: false,
+              playerId,
+              reason: policy.reason,
+              cost,
+              mode: shieldMode,
+              pointShieldNext: !!p.pointShieldNext,
+              hasNextQuestion: policy.hasNextQuestion,
+              nextQuestionIndex: policy.nextQuestionIndex
+            };
+          }
+
+          p.score = Number(p.score || 0) - cost;
+          p.pointShieldNext = true;
+          p.pointShieldMode = shieldMode;
+          p.lastSeenAt = nowTs();
+          this.saveGame();
+
+          const nextPolicy = this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, shieldMode);
+          return {
+            ok: true,
+            playerId,
+            reason: shieldMode === "REFLECTIVE"
+              ? "Reflective shield armed for the next question."
+              : "Point shield armed for the next question.",
+            score: Number(p.score || 0),
+            cost,
+            mode: shieldMode,
+            pointShieldNext: !!p.pointShieldNext,
+            hasNextQuestion: nextPolicy.hasNextQuestion,
+            nextQuestionIndex: nextPolicy.nextQuestionIndex,
+            canBuyPointShield: !!this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, "NORMAL").allowed,
+            canBuyReflectiveShield: !!this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, "REFLECTIVE").allowed
+          };
+        }
+
+        claimStreakPrize(playerId, action, targetPlayerId) {
+          if (!this.activeGame) return { ok: false, playerId, reason: "No active game" };
+          if (this.activeGame.phase === PHASES.QUESTION) {
+            return { ok: false, playerId, reason: "Prize can only be claimed outside active question countdown." };
+          }
+
+          const actor = this.activeGame.players[playerId];
+          if (!actor || actor.removed) return { ok: false, playerId, reason: "Unknown player" };
+          this.normalizePlayerState(actor);
+
+          this.maybeUnlockStreakPrize(actor);
+          if (!actor.streakPrizeAvailable) {
+            const idx = Math.max(0, Number(actor.streakPrizeNextIndex || 0));
+            const needed = STREAK_PRIZE_LEVELS[idx];
+            const neededText = typeof needed === "number" ? String(needed) : "a higher";
+            return { ok: false, playerId, reason: "Reach " + neededText + " consecutive correct answers in this prize run to unlock the next prize." };
+          }
+
+          const chosen = String(action || "").toUpperCase();
+          if (chosen !== STREAK_ACTION.MASK && chosen !== STREAK_ACTION.STEAL && chosen !== STREAK_ACTION.BONUS) {
+            return { ok: false, playerId, reason: "Choose a valid prize action." };
+          }
+          if (chosen === STREAK_ACTION.STEAL && this.activeGame.questionIndex + 1 >= this.activeGame.questions.length) {
+            return { ok: false, playerId, reason: "No next question remains for this attack." };
+          }
+
+          let targetId = null;
+          let target = null;
+          let targetShielded = false;
+          if (chosen === STREAK_ACTION.STEAL) {
+            targetId = String(targetPlayerId || "");
+            if (!targetId || targetId === playerId) {
+              return { ok: false, playerId, reason: "Pick another player as the target." };
+            }
+            target = this.activeGame.players[targetId];
+            if (!target || target.removed) {
+              return { ok: false, playerId, reason: "Target player is unavailable." };
+            }
+            this.normalizePlayerState(target);
+            target.pendingIncomingStrikes.push(actor.id);
+            target.incomingStrikeCount = Number(target.pendingIncomingStrikes.length || 0);
+            target.attackedCount = Number(target.attackedCount || 0) + 1;
+            target.lastSeenAt = nowTs();
+          }
+
+          if (chosen === STREAK_ACTION.BONUS) {
+            actor.score = Number(actor.score || 0) + STREAK_PRIZE_SELF_BONUS;
+          }
+
+          if (chosen === STREAK_ACTION.MASK) {
+            actor.fakeScoreTurnsRemaining = STREAK_PRIZE_FAKE_TURNS;
+            actor.fakeScorePrimed = true;
+          }
+
+          actor.streakPrizeUsed = false;
+          actor.streakPrizeUses = Number(actor.streakPrizeUses || 0) + 1;
+          actor.streakPrizeAvailable = false;
+          actor.streakPrizeAction = chosen;
+          actor.lastSeenAt = nowTs();
+
+          this.saveGame();
+
+          const displayedScore = this.getDisplayedScore(actor);
+          let reason = "";
+          if (chosen === STREAK_ACTION.MASK) reason = "Streak prize activated: your leaderboard score is masked for 3 turns.";
+          else if (chosen === STREAK_ACTION.STEAL) reason = "Streak prize activated: Shadow Strike queued for next question.";
+          else reason = "Streak prize activated: you gained " + formatScore(STREAK_PRIZE_SELF_BONUS) + " points.";
+
+          return {
+            ok: true,
+            playerId,
+            action: chosen,
+            targetPlayerId: target ? target.id : null,
+            reason,
+            realScore: Number(actor.score || 0),
+            displayedScore,
+            isScoreMasked: Number(actor.fakeScoreTurnsRemaining || 0) > 0,
+            fakeScoreTurnsRemaining: Number(actor.fakeScoreTurnsRemaining || 0),
+            fakeScorePrimed: !!actor.fakeScorePrimed,
+            streakPrizeAvailable: !!actor.streakPrizeAvailable,
+            streakPrizeUsed: !!actor.streakPrizeUsed,
+            streakPrizeUses: Number(actor.streakPrizeUses || 0),
+            streakPrizeNextIndex: Number(actor.streakPrizeNextIndex || 0),
+            streakPrizeAction: actor.streakPrizeAction,
+            targetShielded,
+            targetIncomingStrikeCount: target ? Number(target.incomingStrikeCount || 0) : 0,
+            targetNewScore: target ? Number(target.score || 0) : null
+          };
+        }
+
+        getQuestion(index) {
+          if (!this.activeGame) return null;
+          return this.activeGame.questions[index] || null;
+        }
+
+        startQuestion() {
+          if (!this.activeGame) return null;
+          const nextIndex = this.activeGame.phase === PHASES.LOBBY ? this.activeGame.questionIndex + 1 : this.activeGame.questionIndex + 1;
+          if (nextIndex >= this.activeGame.questions.length) return null;
+
+          const playerMap = this.activeGame.players || {};
+          const powerSummary = {
+            doubleDownCount: 0,
+            shieldCount: 0,
+            reflectiveShieldCount: 0,
+            strikeCount: 0
+          };
+          const appendNotice = (player, text) => {
+            if (!text) return;
+            if (!player.strikeNotice) player.strikeNotice = text;
+            else player.strikeNotice += " " + text;
+          };
+
+          Object.values(playerMap).forEach((p) => {
+            this.normalizePlayerState(p);
+            p.strikeOutcome = "";
+            p.strikeDelta = 0;
+            p.strikeCount = 0;
+            p.strikeAttackers = [];
+            p.strikeNotice = "";
+            p.fiftyFiftyQuestionIndex = null;
+            p.fiftyFiftyRemovedOptionIds = [];
+            p.fiftyFiftyUsed = false;
+
+            if (p.pointShieldNext) {
+              p.pointShieldQuestionIndex = nextIndex;
+              p.pointShieldActiveMode = String(p.pointShieldMode || "NORMAL").toUpperCase() === "REFLECTIVE" ? "REFLECTIVE" : "NORMAL";
+              p.pointShieldMode = "NORMAL";
+              p.pointShieldNext = false;
+            } else if (typeof p.pointShieldQuestionIndex === "number" && p.pointShieldQuestionIndex < nextIndex) {
+              p.pointShieldQuestionIndex = null;
+              p.pointShieldActiveMode = "NONE";
+            }
+
+            if (p.fakeScoreTurnsRemaining > 0) {
+              if (p.fakeScorePrimed) {
+                p.fakeScorePrimed = false;
+              } else {
+                p.fakeScoreTurnsRemaining = Math.max(0, p.fakeScoreTurnsRemaining - 1);
+              }
+            }
+          });
+
+          Object.values(playerMap).forEach((target) => {
+            this.normalizePlayerState(target);
+            const pending = Array.isArray(target.pendingIncomingStrikes) ? target.pendingIncomingStrikes.slice() : [];
+            const validAttackerIds = pending
+              .map((attackerId) => String(attackerId || ""))
+              .filter((attackerId) => {
+                const attacker = playerMap[attackerId];
+                return !!(attacker && !attacker.removed);
+              });
+            const attackerNames = [];
+            validAttackerIds.forEach((attackerId) => {
+              const attacker = playerMap[attackerId];
+              const nm = sanitizeName(attacker.name || "");
+              if (!nm) return;
+              if (attackerNames.includes(nm)) return;
+              attackerNames.push(nm);
+            });
+            target.pendingIncomingStrikes = [];
+            target.incomingStrikeCount = 0;
+            if (!validAttackerIds.length) return;
+            target.strikeAttackers = attackerNames;
+            powerSummary.strikeCount += validAttackerIds.length;
+
+            const shieldActive = Number(target.pointShieldQuestionIndex) === Number(nextIndex);
+            const reflective = shieldActive && String(target.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE";
+
+            if (reflective) {
+              validAttackerIds.forEach((attackerId) => {
+                const attacker = playerMap[attackerId];
+                this.normalizePlayerState(attacker);
+                attacker.score = Number(attacker.score || 0) - STREAK_PRIZE_TARGET_PENALTY;
+                attacker.strikeOutcome = "REFLECTED_HIT";
+                attacker.strikeDelta = Number(attacker.strikeDelta || 0) - STREAK_PRIZE_TARGET_PENALTY;
+                attacker.strikeCount = Number(attacker.strikeCount || 0) + 1;
+                attacker.lastSeenAt = nowTs();
+                appendNotice(attacker, "Your Shadow Strike was reflected for " + formatScore(STREAK_PRIZE_TARGET_PENALTY) + " points.");
+              });
+
+              if (!target.strikeOutcome) target.strikeOutcome = "REFLECTED_BLOCK";
+              target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
+              appendNotice(target, "Reflective shield bounced " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".");
+              target.lastSeenAt = nowTs();
+              return;
+            }
+
+            if (shieldActive) {
+              if (!target.strikeOutcome) target.strikeOutcome = "SHIELD_BLOCK";
+              target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
+              appendNotice(target, "Shield blocked " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".");
+              target.lastSeenAt = nowTs();
+              return;
+            }
+
+            const loss = validAttackerIds.length * STREAK_PRIZE_TARGET_PENALTY;
+            target.score = Number(target.score || 0) - loss;
+            target.strikeOutcome = "STRUCK";
+            target.strikeDelta = Number(target.strikeDelta || 0) - loss;
+            target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
+            appendNotice(target, "Shadow Strike hit: you lost " + formatScore(loss) + " points.");
+            target.lastSeenAt = nowTs();
+          });
+
+          Object.values(playerMap).forEach((p) => {
+            this.normalizePlayerState(p);
+            if (p.doubleDownNext) powerSummary.doubleDownCount += 1;
+            if (Number(p.pointShieldQuestionIndex) === Number(nextIndex)) {
+              if (String(p.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE") {
+                powerSummary.reflectiveShieldCount += 1;
+              } else {
+                powerSummary.shieldCount += 1;
+              }
+            }
+          });
+
+          this.activeGame.currentQuestionPowerSummary = powerSummary;
+
+          this.activeGame.questionIndex = nextIndex;
+          this.activeGame.phase = PHASES.QUESTION;
+          this.activeGame.questionStartedAt = nowTs();
+          this.activeGame.questionEndsAt = this.activeGame.questionStartedAt + 120000;
+          this.activeGame.revealedAnswer = null;
+          const key = String(nextIndex);
+          if (!this.activeGame.submissions[key]) this.activeGame.submissions[key] = {};
+          Object.values(playerMap).forEach((p) => {
+            p.currentSubmission = null;
+          });
+          this.saveGame();
+          return this.getQuestion(nextIndex);
+        }
+
+        isSubmissionOpen() {
+          return !!(this.activeGame && this.activeGame.phase === PHASES.QUESTION && nowTs() <= this.activeGame.questionEndsAt);
+        }
+
+        acceptSubmission(msg) {
+          if (!this.activeGame || this.activeGame.phase !== PHASES.QUESTION) return { ok: false, reason: "Not in question phase" };
+          if (!this.isSubmissionOpen()) return { ok: false, reason: "Question closed" };
+
+          const payload = msg.payload || {};
+          const playerId = String(payload.playerId || "");
+          const player = this.activeGame.players[playerId];
+          if (!player || player.removed) return { ok: false, reason: "Removed or unknown player" };
+
+          const qIndex = this.activeGame.questionIndex;
+          if (Number(payload.questionIndex) !== qIndex) return { ok: false, reason: "Wrong question index" };
+
+          const submittedAt = Number(payload.submittedAt || 0);
+          if (!submittedAt || submittedAt > this.activeGame.questionEndsAt + 500) return { ok: false, reason: "Invalid timestamp" };
+
+          const selected = Array.isArray(payload.selectedOptionIds) ? payload.selectedOptionIds.map(String) : [];
+          const q = this.getQuestion(qIndex);
+          const validIds = new Set(q.options.map((o) => o.id));
+          const removedIds = new Set(Array.isArray(player.fiftyFiftyRemovedOptionIds) ? player.fiftyFiftyRemovedOptionIds.map(String) : []);
+          if (selected.length < 1) return { ok: false, reason: "No option selected" };
+          if (selected.some((id) => !validIds.has(id))) return { ok: false, reason: "Invalid option id" };
+          if (selected.some((id) => removedIds.has(id))) return { ok: false, reason: "Option removed by 50/50" };
+
+          const key = String(qIndex);
+          const submissionMap = this.activeGame.submissions[key] || {};
+          if (submissionMap[playerId]) return { ok: false, reason: "Duplicate submission" };
+
+          const record = {
+            playerId,
+            questionIndex: qIndex,
+            selectedOptionIds: Array.from(new Set(selected)).sort(),
+            submittedAt
+          };
+
+          submissionMap[playerId] = record;
+          this.activeGame.submissions[key] = submissionMap;
+          player.currentSubmission = record;
+          player.lastSeenAt = nowTs();
+          this.saveGame();
+          return { ok: true, submission: record };
+        }
+
+        handleFiftyFifty(msg) {
+          if (!this.activeGame || this.activeGame.phase !== PHASES.QUESTION) {
+            return { ok: false, reason: "Not in question phase" };
+          }
+          if (!this.isSubmissionOpen()) {
+            return { ok: false, reason: "Question closed" };
+          }
+
+          const payload = msg.payload || {};
+          const playerId = String(payload.playerId || "");
+          const player = this.activeGame.players[playerId];
+          if (!player || player.removed) return { ok: false, playerId, reason: "Unknown player" };
+
+          const qIndex = this.activeGame.questionIndex;
+          if (Number(payload.questionIndex) !== qIndex) {
+            return { ok: false, playerId, reason: "Wrong question index" };
+          }
+
+          this.normalizePlayerState(player);
+          if (Number(player.fiftyFiftyQuestionIndex) === Number(qIndex) && Array.isArray(player.fiftyFiftyRemovedOptionIds) && player.fiftyFiftyRemovedOptionIds.length >= 2) {
+            return { ok: false, playerId, reason: "50/50 already used for this question" };
+          }
+
+          if (Number(player.score || 0) < FIFTY_FIFTY_COST) {
+            return { ok: false, playerId, reason: "Need at least " + formatScore(FIFTY_FIFTY_COST) + " points for 50/50" };
+          }
+
+          const question = this.getQuestion(qIndex);
+          const incorrectIds = (question && Array.isArray(question.options) ? question.options : [])
+            .filter((option) => !option.correct)
+            .map((option) => option.id);
+
+          if (incorrectIds.length < 2) {
+            return { ok: false, playerId, reason: "Not enough incorrect answers to remove." };
+          }
+
+          const pool = incorrectIds.slice();
+          for (let i = pool.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tmp = pool[i];
+            pool[i] = pool[j];
+            pool[j] = tmp;
+          }
+
+          const removedOptionIds = pool.slice(0, 2);
+          player.score = Number(player.score || 0) - FIFTY_FIFTY_COST;
+          player.fiftyFiftyQuestionIndex = qIndex;
+          player.fiftyFiftyRemovedOptionIds = removedOptionIds.slice();
+          player.fiftyFiftyUsed = true;
+          player.lastSeenAt = nowTs();
+          this.saveGame();
+
+          return {
+            ok: true,
+            playerId,
+            questionIndex: qIndex,
+            score: Number(player.score || 0),
+            removedOptionIds,
+            reason: "50/50 used: two incorrect answers were removed."
+          };
+        }
+
+        endQuestion() {
+          if (!this.activeGame || this.activeGame.phase !== PHASES.QUESTION) return null;
+          const qIndex = this.activeGame.questionIndex;
+          const question = this.getQuestion(qIndex);
+          const submissions = this.activeGame.submissions[String(qIndex)] || {};
+          const submissionRecords = Object.values(submissions).filter(Boolean);
+          let fastestSubmittedAt = null;
+          submissionRecords.forEach((sub) => {
+            if (typeof sub.submittedAt !== "number") return;
+            if (fastestSubmittedAt === null || sub.submittedAt < fastestSubmittedAt) {
+              fastestSubmittedAt = sub.submittedAt;
+            }
+          });
+          const correctSet = new Set(question.options.filter((o) => o.correct).map((o) => o.id));
+          const isSingle = correctSet.size === 1;
+          const optionStats = question.options.map((o) => ({ id: o.id, letter: o.letter, text: o.text, count: 0, pct: 0 }));
+
+          const playerOutcomes = {};
+          const activePlayers = Object.values(this.activeGame.players).filter((p) => !p.removed);
+
+          activePlayers.forEach((p) => {
+            const sub = submissions[p.id] || null;
+            let correct = false;
+            let earned = 0;
+            const usedDoubleDown = !!p.doubleDownNext;
+            if (sub) {
+              const selectedSet = new Set(sub.selectedOptionIds);
+              const exactMatch = selectedSet.size === correctSet.size && [...selectedSet].every((id) => correctSet.has(id));
+              correct = exactMatch;
+              const responseMs = Math.max(0, Number(sub.submittedAt || this.activeGame.questionEndsAt) - Number(this.activeGame.questionStartedAt || sub.submittedAt));
+              p.responseTotalMs = Number(p.responseTotalMs || 0) + responseMs;
+              p.responseCount = Number(p.responseCount || 0) + 1;
+              if (p.fastestResponseMs == null || responseMs < p.fastestResponseMs) p.fastestResponseMs = responseMs;
+              const wonQuickDraw = fastestSubmittedAt !== null && sub.submittedAt === fastestSubmittedAt;
+              if (wonQuickDraw) p.quickDrawWins = Number(p.quickDrawWins || 0) + 1;
+              if (correct) {
+                earned = calculateScore(question.pointValue, this.activeGame.questionEndsAt, sub.submittedAt);
+                if (usedDoubleDown) earned = earned * 2;
+              } else if (usedDoubleDown) {
+                earned = -question.pointValue;
+              }
+              sub.selectedOptionIds.forEach((id) => {
+                const stat = optionStats.find((x) => x.id === id);
+                if (stat) stat.count += 1;
+              });
+            } else if (usedDoubleDown) {
+              earned = -question.pointValue;
+            }
+
+            if (correct) {
+              p.correctStreak = Number(p.correctStreak || 0) + 1;
+              p.correctAnswers = Number(p.correctAnswers || 0) + 1;
+              p.streakPrizeRun = Number(p.streakPrizeRun || 0) + 1;
+            } else {
+              p.correctStreak = 0;
+              p.streakPrizeRun = 0;
+            }
+            p.longestStreak = Math.max(Number(p.longestStreak || 0), Number(p.correctStreak || 0));
+
+            this.maybeUnlockStreakPrize(p);
+
+            p.score += earned;
+            p.doubleDownNext = false;
+            if (Number(p.pointShieldQuestionIndex) === Number(qIndex)) {
+              p.pointShieldQuestionIndex = null;
+              p.pointShieldActiveMode = "NONE";
+            }
+            playerOutcomes[p.id] = {
+              playerId: p.id,
+              correct,
+              earnedPoints: earned,
+              usedDoubleDown,
+              streak: p.correctStreak,
+              quickDrawWins: Number(p.quickDrawWins || 0)
+            };
+          });
+
+          const totalAnswers = Object.keys(submissions).length || 1;
+          optionStats.forEach((st) => {
+            st.pct = Math.round((st.count / totalAnswers) * 100);
+          });
+
+          const reveal = {
+            questionIndex: qIndex,
+            isSingleSelect: isSingle,
+            correctOptionIds: [...correctSet],
+            optionStats,
+            answerHtml: question.answerHtml || "",
+            tipHtml: question.tipHtml || "",
+            optionExplanations: question.options.map((o) => ({ id: o.id, explanation: o.explanation || "" })),
+            playerOutcomes
+          };
+
+          this.activeGame.phase = PHASES.ANSWER_REVEAL;
+          this.activeGame.revealedAnswer = reveal;
+          this.saveGame();
+          return reveal;
+        }
+
+        getLeaderboard() {
+          if (!this.activeGame) return [];
+          const hasNextQuestion = this.activeGame.questionIndex < this.activeGame.questions.length - 1;
+          const phaseAllowsShield = this.activeGame.phase === PHASES.ANSWER_REVEAL || this.activeGame.phase === PHASES.LEADERBOARD || this.activeGame.phase === PHASES.LOBBY;
+          const sorted = Object.values(this.activeGame.players)
+            .filter((p) => !p.removed)
+            .slice()
+            .sort((a, b) => this.getDisplayedScore(b) - this.getDisplayedScore(a) || a.joinedAt - b.joinedAt)
+            .map((p, idx) => ({
+              rank: idx + 1,
+              playerId: p.id,
+              playerName: p.name,
+              score: this.getDisplayedScore(p),
+              streak: Number(p.correctStreak || 0),
+              currentStreak: Number(p.correctStreak || 0),
+              correctAnswers: Number(p.correctAnswers || 0),
+              longestStreak: Number(p.longestStreak || 0),
+              streakPrizeReady: !!p.streakPrizeAvailable,
+              canBuyPointShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= POINT_SHIELD_COST,
+              canBuyReflectiveShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= REFLECTIVE_SHIELD_COST,
+              pointShieldNext: !!p.pointShieldNext,
+              pointShieldMode: String(p.pointShieldMode || "NORMAL"),
+              shieldActive: Number(p.pointShieldQuestionIndex) === Number(this.activeGame.questionIndex),
+              shieldReflectiveActive: Number(p.pointShieldQuestionIndex) === Number(this.activeGame.questionIndex) && String(p.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE",
+              incomingStrikeCount: Number(p.incomingStrikeCount || 0),
+              attackedCount: Number(p.attackedCount || 0),
+              strikeOutcome: String(p.strikeOutcome || ""),
+              strikeDelta: Number(p.strikeDelta || 0),
+              strikeCount: Number(p.strikeCount || 0),
+              strikeAttackers: Array.isArray(p.strikeAttackers) ? p.strikeAttackers.slice() : [],
+              quickDrawWins: Number(p.quickDrawWins || 0),
+              avgResponseMs: Number(p.responseCount || 0) > 0 ? Math.round(Number(p.responseTotalMs || 0) / Number(p.responseCount || 0)) : null,
+              fastestResponseMs: p.fastestResponseMs == null ? null : Number(p.fastestResponseMs),
+              responseCount: Number(p.responseCount || 0)
+            }));
+          return sorted;
+        }
+
+        toLeaderboardPhase() {
+          if (!this.activeGame) return;
+          this.activeGame.phase = PHASES.LEADERBOARD;
+          this.saveGame();
+        }
+
+        finishGame() {
+          if (!this.activeGame) return;
+          Object.values(this.activeGame.players || {}).forEach((p) => {
+            this.normalizePlayerState(p);
+            p.fakeScoreTurnsRemaining = 0;
+            p.fakeScorePrimed = false;
+            p.pointShieldNext = false;
+            p.pointShieldMode = "NORMAL";
+            p.pointShieldQuestionIndex = null;
+            p.pointShieldActiveMode = "NONE";
+            p.incomingStrikeCount = 0;
+            p.pendingIncomingStrikes = [];
+            p.strikeOutcome = "";
+            p.strikeDelta = 0;
+            p.strikeCount = 0;
+            p.strikeAttackers = [];
+            p.strikeNotice = "";
+          });
+          this.activeGame.currentQuestionPowerSummary = null;
+          this.activeGame.phase = PHASES.FINISHED;
+          this.saveGame();
+        }
+
+        nextStepAfterLeaderboard() {
+          if (!this.activeGame) return "none";
+          if (this.activeGame.questionIndex >= this.activeGame.questions.length - 1) return "finish";
+          return "next-question";
+        }
+
+        getPublicQuestionPayload(qIndex) {
+          const q = this.getQuestion(qIndex);
+          if (!q) return null;
+          const correctCount = q.options.filter((o) => o.correct).length;
+          const summary = this.activeGame && this.activeGame.currentQuestionPowerSummary
+            ? this.activeGame.currentQuestionPowerSummary
+            : { doubleDownCount: 0, shieldCount: 0, reflectiveShieldCount: 0, strikeCount: 0 };
+          return {
+            questionIndex: qIndex,
+            questionNumber: qIndex + 1,
+            questionCount: this.activeGame.questions.length,
+            query: q.query,
+            pointValue: q.pointValue,
+            isMultiSelect: correctCount > 1,
+            startedAt: this.activeGame.questionStartedAt,
+            endsAt: this.activeGame.questionEndsAt,
+            powerInPlay: {
+              doubleDownCount: Number(summary.doubleDownCount || 0),
+              shieldCount: Number(summary.shieldCount || 0),
+              reflectiveShieldCount: Number(summary.reflectiveShieldCount || 0),
+              strikeCount: Number(summary.strikeCount || 0)
+            },
+            options: q.options.map((o) => ({
+              id: o.id,
+              letter: o.letter,
+              text: o.text,
+              color: o.color
+            }))
+          };
+        }
+
+        buildSnapshotForPlayer(playerId) {
+          if (!this.activeGame) return null;
+          const player = this.activeGame.players[playerId] || null;
+          if (player) this.normalizePlayerState(player);
+          const board = this.getLeaderboard();
+          const rankObj = board.find((r) => r.playerId === playerId);
+          const ddPolicy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
+          const shieldPolicy = this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, "NORMAL");
+          const reflectiveShieldPolicy = this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, "REFLECTIVE");
+          const displayedScore = player ? this.getDisplayedScore(player) : 0;
+          const prizeTargets = Object.values(this.activeGame.players || {})
+            .filter((p) => p && !p.removed && p.id !== playerId)
+            .map((p) => ({ playerId: p.id, playerName: p.name }));
+          const hasSubmitted = !!(
+            this.activeGame.phase === PHASES.QUESTION &&
+            this.activeGame.submissions[String(this.activeGame.questionIndex)] &&
+            this.activeGame.submissions[String(this.activeGame.questionIndex)][playerId]
+          );
+
+          const base = {
+            type: MSG.STATE_SNAPSHOT,
+            phase: this.activeGame.phase,
+            gameId: this.activeGame.gameId,
+            quizTitle: this.activeGame.quizTitle,
+            questionNumber: this.activeGame.questionIndex + 1,
+            questionCount: this.activeGame.questions.length,
+            player: {
+              id: playerId,
+              name: player ? player.name : "",
+              score: player ? Number(player.score || 0) : 0,
+              displayedScore,
+              isScoreMasked: player ? Number(player.fakeScoreTurnsRemaining || 0) > 0 : false,
+              fakeScoreTurnsRemaining: player ? Number(player.fakeScoreTurnsRemaining || 0) : 0,
+              fakeScorePrimed: player ? !!player.fakeScorePrimed : false,
+              correctStreak: player ? Number(player.correctStreak || 0) : 0,
+              longestStreak: player ? Number(player.longestStreak || 0) : 0,
+              streakPrizeAvailable: player ? !!player.streakPrizeAvailable : false,
+              streakPrizeUsed: player ? !!player.streakPrizeUsed : false,
+              streakPrizeUses: player ? Number(player.streakPrizeUses || 0) : 0,
+              streakPrizeNextIndex: player ? Number(player.streakPrizeNextIndex || 0) : 0,
+              streakPrizeAction: player ? String(player.streakPrizeAction || "") : "",
+              prizeTargets,
+              rank: rankObj ? rankObj.rank : null,
+              hasSubmitted,
+              removed: !!(player && player.removed),
+              totalPlayers: board.length,
+              doubleDownArmed: !!(player && player.doubleDownNext),
+              doubleDownUses: player ? Number(player.doubleDownUses || 0) : 0,
+              doubleDownCap: DOUBLE_DOWN_BASE_USES,
+              doubleDownPurchasedCredits: player ? Number(player.doubleDownPurchasedCredits || 0) : 0,
+              doubleDownEligible: !!ddPolicy.allowed,
+              doubleDownDisabledReason: ddPolicy.reason || "",
+              canBuyDoubleDown: !!ddPolicy.canBuyDoubleDown,
+              doubleDownBuyCost: Number(ddPolicy.buyCost || DOUBLE_DOWN_BUY_COST),
+              doubleDownBuyBlockedReason: ddPolicy.buyBlockedReason || "",
+              pointShieldNext: player ? !!player.pointShieldNext : false,
+              pointShieldMode: player ? String(player.pointShieldMode || "NORMAL") : "NORMAL",
+              pointShieldArmedForQuestionIndex: player && typeof player.pointShieldQuestionIndex === "number" ? Number(player.pointShieldQuestionIndex) : null,
+              pointShieldActiveMode: player ? String(player.pointShieldActiveMode || "NONE") : "NONE",
+              fiftyFiftyQuestionIndex: player && typeof player.fiftyFiftyQuestionIndex === "number" ? Number(player.fiftyFiftyQuestionIndex) : null,
+              fiftyFiftyRemovedOptionIds: player && Array.isArray(player.fiftyFiftyRemovedOptionIds) ? player.fiftyFiftyRemovedOptionIds.slice() : [],
+              fiftyFiftyUsed: !!(player && Number(player.fiftyFiftyQuestionIndex) === Number(this.activeGame.questionIndex) && Array.isArray(player.fiftyFiftyRemovedOptionIds) && player.fiftyFiftyRemovedOptionIds.length >= 2),
+              incomingStrikeCount: player ? Number(player.incomingStrikeCount || 0) : 0,
+              attackedCount: player ? Number(player.attackedCount || 0) : 0,
+              strikeOutcome: player ? String(player.strikeOutcome || "") : "",
+              strikeDelta: player ? Number(player.strikeDelta || 0) : 0,
+              strikeCount: player ? Number(player.strikeCount || 0) : 0,
+              strikeAttackers: player && Array.isArray(player.strikeAttackers) ? player.strikeAttackers.slice() : [],
+              strikeNotice: player ? String(player.strikeNotice || "") : "",
+              canBuyPointShield: !!shieldPolicy.allowed,
+              pointShieldCost: Number(shieldPolicy.cost || POINT_SHIELD_COST),
+              canBuyReflectiveShield: !!reflectiveShieldPolicy.allowed,
+              reflectiveShieldCost: Number(reflectiveShieldPolicy.cost || REFLECTIVE_SHIELD_COST),
+              pointShieldReason: shieldPolicy.reason || ""
+            },
+            leaderboard: board.slice(0, 10)
+          };
+
+          if (this.activeGame.phase === PHASES.QUESTION) {
+            base.question = this.getPublicQuestionPayload(this.activeGame.questionIndex);
+          }
+
+          if (this.activeGame.phase === PHASES.ANSWER_REVEAL || this.activeGame.phase === PHASES.LEADERBOARD || this.activeGame.phase === PHASES.FINISHED) {
+            const q = this.getQuestion(this.activeGame.questionIndex);
+            const correctCount = q.options.filter((o) => o.correct).length;
+            base.question = {
+              questionIndex: this.activeGame.questionIndex,
+              questionNumber: this.activeGame.questionIndex + 1,
+              questionCount: this.activeGame.questions.length,
+              query: q.query,
+              pointValue: q.pointValue,
+              isMultiSelect: correctCount > 1,
+              options: q.options.map((o) => ({ id: o.id, letter: o.letter, text: o.text, color: o.color }))
+            };
+            base.reveal = this.activeGame.revealedAnswer;
+          }
+          return base;
+        }
+      }
+
+      class InstructorUI {
+        constructor() {
+          this.el = {
+            socketPill: document.getElementById("socketPill"),
+            socketDot: document.getElementById("socketDot"),
+            socketText: document.getElementById("socketText"),
+            socketMenu: document.getElementById("socketMenu"),
+            socketOptions: document.getElementById("socketOptions"),
+            socketModeOptions: document.getElementById("socketModeOptions"),
+            socketCustomInput: document.getElementById("socketCustomInput"),
+            socketCustomSaveBtn: document.getElementById("socketCustomSaveBtn"),
+            socketMenuMsg: document.getElementById("socketMenuMsg"),
+            phaseBadge: document.getElementById("phaseBadge"),
+            gameCodeText: document.getElementById("gameCodeText"),
+            qrcode: document.getElementById("qrcode"),
+            joinUrlText: document.getElementById("joinUrlText"),
+            playerCountText: document.getElementById("playerCountText"),
+            playerGrid: document.getElementById("playerGrid"),
+            stageContent: document.getElementById("stageContent"),
+            debugStats: document.getElementById("debugStats"),
+            quizLibrary: document.getElementById("quizLibrary"),
+            quizCount: document.getElementById("quizCount"),
+            quizTitleInput: document.getElementById("quizTitleInput"),
+            quizJsonInput: document.getElementById("quizJsonInput"),
+            createQuizBtn: document.getElementById("createQuizBtn"),
+            demoQuizBtn: document.getElementById("demoQuizBtn"),
+            importStatus: document.getElementById("importStatus"),
+            resumeBanner: document.getElementById("resumeBanner"),
+            resumeMeta: document.getElementById("resumeMeta"),
+            resumeBtn: document.getElementById("resumeBtn"),
+            discardBtn: document.getElementById("discardBtn"),
+            activeControls: document.getElementById("activeControls"),
+            activeControlsMeta: document.getElementById("activeControlsMeta"),
+            activeControlsButtons: document.getElementById("activeControlsButtons"),
+            newFightBtn: document.getElementById("newFightBtn"),
+            hostFooterQuote: document.getElementById("hostFooterQuote")
+          };
+        }
+
+        setFooterQuote(text) {
+          if (!this.el.hostFooterQuote) return;
+          this.el.hostFooterQuote.textContent = text || "";
+        }
+
+        setSocketState(state) {
+          this.el.socketDot.className = "status-dot " + (state === "connected" ? "connected" : state === "reconnecting" ? "reconnecting" : "disconnected");
+          this.el.socketText.textContent = state === "connected" ? "WebSocket Connected" : state === "reconnecting" ? "Reconnecting..." : "Disconnected";
+        }
+
+        setSocketLabel(state, endpointName) {
+          const base = state === "connected" ? "Connected" : state === "reconnecting" ? "Reconnecting..." : state === "connecting" ? "Connecting..." : "Disconnected";
+          this.el.socketText.textContent = endpointName ? (base + " - " + endpointName) : base;
+        }
+
+        setSocketMenuOpen(isOpen) {
+          this.el.socketMenu.classList.toggle("d-none", !isOpen);
+          this.el.socketPill.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        }
+
+        renderSocketOptions(entries, selectedId, strictMode, healthState) {
+          this.el.socketOptions.innerHTML = "";
+          entries.forEach((entry) => {
+            const row = document.createElement("label");
+            row.className = "socket-row";
+            const health = (healthState && healthState[entry.id]) || "unknown";
+            const healthClass = health === "ok" ? "ok" : health === "fail" ? "fail" : health === "testing" ? "testing" : "";
+            row.innerHTML = ""
+              + "<input class='form-check-input mt-0' type='radio' name='socketEndpoint' value='" + escapeHtml(entry.id) + "' " + (selectedId === entry.id ? "checked" : "") + " />"
+              + "<span><span class='socket-label'>" + escapeHtml(entry.name) + "</span><span class='socket-url'>" + escapeHtml(entry.url) + "</span></span>"
+              + "<span class='socket-health-dot " + healthClass + "' title='Reachability: " + escapeHtml(health) + "'></span>";
+            this.el.socketOptions.appendChild(row);
+          });
+
+          this.el.socketModeOptions.innerHTML = ""
+            + "<div class='d-flex justify-content-between align-items-center gap-2 mb-1 mt-1'>"
+            + "<button id='socketStrictToggleBtn' type='button' class='btn btn-sm outline-moon focus-ring'>"
+            + "Strict Mode: " + (strictMode ? "On" : "Off")
+            + "</button>"
+            + "</div>"
+            + "<div class='socket-url mb-1'>Use only selected endpoint when On. When Off, selected endpoint is tried first, then fallbacks.</div>";
+        }
+
+        setNewFightVisible(visible, onClick) {
+          if (!this.el.newFightBtn) return;
+          this.el.newFightBtn.classList.toggle("d-none", !visible);
+          this.el.newFightBtn.onclick = visible && typeof onClick === "function" ? onClick : null;
+        }
+
+        showImportStatus(text, isError) {
+          this.el.importStatus.textContent = text;
+          this.el.importStatus.style.color = isError ? "#ffd3d3" : "";
+        }
+
+        updateLobby(game) {
+          if (!game) {
+            this.el.gameCodeText.textContent = "------";
+            this.el.joinUrlText.textContent = "";
+            this.el.qrcode.innerHTML = "";
+            this.el.playerCountText.textContent = "0 Players Joined";
+            return;
+          }
+          this.el.gameCodeText.textContent = game.gameId;
+          const joinUrl = buildStudentJoinUrl(game.gameId);
+          this.el.joinUrlText.textContent = joinUrl;
+          this.renderQr(joinUrl);
+          const players = Object.values(game.players || {}).filter((p) => !p.removed);
+          this.el.playerCountText.textContent = players.length + " Players Joined";
+        }
+
+        renderQr(text) {
+          this.el.qrcode.innerHTML = "";
+          try {
+            new QRCode(this.el.qrcode, {
+              text,
+              width: 132,
+              height: 132,
+              colorDark: "#f8dff0",
+              colorLight: "#1c1326"
+            });
+          } catch (err) {
+            this.el.qrcode.textContent = "QR unavailable";
+          }
+        }
+
+        renderPlayers(game, handlers, displayedScoreMap) {
+          this.el.playerGrid.innerHTML = "";
+          const map = displayedScoreMap || {};
+          const players = Object.values(game ? game.players || {} : {})
+            .filter((p) => !p.removed)
+            .sort((a, b) => {
+              const aScore = Number(map[a.id] != null ? map[a.id] : a.score || 0);
+              const bScore = Number(map[b.id] != null ? map[b.id] : b.score || 0);
+              return bScore - aScore || a.joinedAt - b.joinedAt;
+            });
+          if (!players.length) {
+            this.el.playerGrid.innerHTML = "<div class='small-note'>No players yet. Share the code or QR.</div>";
+            return;
+          }
+
+          players.forEach((p) => {
+            const col = document.createElement("div");
+            col.className = "col-12 col-md-6";
+            const card = document.createElement("div");
+            card.className = "player-card";
+
+            const top = document.createElement("div");
+            top.className = "d-flex justify-content-between align-items-start gap-2";
+
+            const left = document.createElement("div");
+            const name = document.createElement("div");
+            name.className = "fw-bold";
+            name.textContent = p.name;
+            const status = document.createElement("div");
+            const secondsAgo = Math.max(0, Math.floor((nowTs() - (p.lastSeenAt || 0)) / 1000));
+            const shownScore = Number(map[p.id] != null ? map[p.id] : p.score || 0);
+            status.className = "small-note";
+            status.textContent = "Score " + formatScore(shownScore) + "  •  Seen " + secondsAgo + "s ago";
+            left.appendChild(name);
+            left.appendChild(status);
+
+            const right = document.createElement("div");
+            right.className = "d-flex gap-1";
+            const resetBtn = document.createElement("button");
+            resetBtn.className = "btn btn-sm outline-moon focus-ring";
+            resetBtn.setAttribute("aria-label", "Reset score for " + p.name);
+            resetBtn.innerHTML = "<i class='lni lni-reload me-1'></i>Reset";
+            resetBtn.addEventListener("click", () => handlers.onReset(p.id));
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "btn btn-sm danger-btn focus-ring";
+            removeBtn.setAttribute("aria-label", "Remove " + p.name + " from game");
+            removeBtn.innerHTML = "<i class='lni lni-trash-can me-1'></i>Remove";
+            removeBtn.addEventListener("click", () => handlers.onRemove(p.id, p.name));
+            right.appendChild(resetBtn);
+            right.appendChild(removeBtn);
+
+            top.appendChild(left);
+            top.appendChild(right);
+            card.appendChild(top);
+            col.appendChild(card);
+            this.el.playerGrid.appendChild(col);
+          });
+        }
+
+        setPhase(phase) {
+          this.el.phaseBadge.textContent = phase;
+        }
+
+        renderQuizLibrary(quizzes, handlers, viewState) {
+          this.el.quizLibrary.innerHTML = "";
+          this.el.quizCount.textContent = quizzes.length + " saved";
+          const startLocked = !!(viewState && viewState.startLocked);
+          const activeQuizTitle = viewState && viewState.activeQuizTitle ? viewState.activeQuizTitle : "";
+
+          if (startLocked) {
+            const lockBanner = document.createElement("div");
+            lockBanner.className = "small-note mb-2";
+            lockBanner.textContent = "A game is active (" + activeQuizTitle + "). Finish or return to library before starting another quiz.";
+            this.el.quizLibrary.appendChild(lockBanner);
+          }
+
+          if (!quizzes.length) {
+            this.el.quizLibrary.innerHTML = "<div class='small-note'>No quizzes saved yet.</div>";
+            return;
+          }
+
+          quizzes.forEach((quiz) => {
+            const wrap = document.createElement("div");
+            wrap.className = "quiz-card";
+            const header = document.createElement("div");
+            header.className = "d-flex justify-content-between align-items-start gap-2";
+            const left = document.createElement("div");
+            left.innerHTML = "<div class='fw-bold'>" + escapeHtml(quiz.title) + "</div><div class='small-note'>" + quiz.questions.length + " Questions</div>";
+            const right = document.createElement("div");
+            right.className = "d-flex gap-1";
+            const startBtn = document.createElement("button");
+            startBtn.className = "btn btn-sm moon-btn focus-ring";
+            startBtn.textContent = startLocked ? "Locked" : "Start";
+            startBtn.disabled = startLocked;
+            startBtn.addEventListener("click", () => handlers.onStart(quiz.id));
+            const pointsBtn = document.createElement("button");
+            pointsBtn.className = "btn btn-sm outline-moon focus-ring";
+            pointsBtn.textContent = "Edit Points";
+            pointsBtn.addEventListener("click", () => {
+              body.classList.toggle("d-none");
+            });
+            const delBtn = document.createElement("button");
+            delBtn.className = "btn btn-sm danger-btn focus-ring";
+            delBtn.textContent = "Delete";
+            delBtn.addEventListener("click", () => handlers.onDelete(quiz.id, quiz.title));
+            right.appendChild(startBtn);
+            right.appendChild(pointsBtn);
+            right.appendChild(delBtn);
+            header.appendChild(left);
+            header.appendChild(right);
+
+            const body = document.createElement("div");
+            body.className = "question-points-list d-none mt-2";
+            quiz.questions.forEach((q, idx) => {
+              const row = document.createElement("div");
+              row.className = "d-flex justify-content-between align-items-center gap-2 mb-1";
+              const qTxt = document.createElement("small");
+              qTxt.className = "small-note";
+              qTxt.textContent = "Question " + (idx + 1);
+              const input = document.createElement("input");
+              input.type = "number";
+              input.className = "form-control form-control-sm";
+              input.min = "100";
+              input.max = "5000";
+              input.value = q.pointValue;
+              input.style.maxWidth = "130px";
+              input.addEventListener("change", () => handlers.onPointChange(quiz.id, idx, input.value));
+              row.appendChild(qTxt);
+              row.appendChild(input);
+              body.appendChild(row);
+            });
+
+            const randomizeBtn = document.createElement("button");
+            randomizeBtn.className = "btn btn-sm moon-btn mt-2 focus-ring";
+            randomizeBtn.textContent = "Randomize Points";
+            randomizeBtn.addEventListener("click", () => handlers.onRandomize(quiz.id));
+            body.appendChild(randomizeBtn);
+
+            wrap.appendChild(header);
+            wrap.appendChild(body);
+            this.el.quizLibrary.appendChild(wrap);
+          });
+        }
+
+        renderActiveControls(game, handlers) {
+          const dock = this.el.activeControls;
+          const meta = this.el.activeControlsMeta;
+          const strip = this.el.activeControlsButtons;
+
+          if (!game) {
+            dock.classList.add("d-none");
+            return;
+          }
+
+          dock.classList.remove("d-none");
+          strip.innerHTML = "";
+
+          const phaseLabel = game.phase + "  •  Question " + Math.max(0, game.questionIndex + 1) + " / " + game.questions.length;
+          meta.textContent = "Game " + game.gameId + "  •  " + game.quizTitle + "  •  " + phaseLabel;
+
+          const addBtn = (label, className, clickHandler, disabled) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = className;
+            btn.textContent = label;
+            btn.disabled = !!disabled;
+            btn.addEventListener("click", clickHandler);
+            strip.appendChild(btn);
+          };
+
+          const addEndGameButton = () => {
+            addBtn("End Game", "btn danger-btn focus-ring", handlers.onEndGameEarly, false);
+          };
+
+          if (game.phase === PHASES.LOBBY) {
+            addBtn("Start Question", "btn moon-btn focus-ring", handlers.onStartQuestion, false);
+            addEndGameButton();
+            return;
+          }
+
+          if (game.phase === PHASES.QUESTION) {
+            addBtn("End Question", "btn danger-btn focus-ring", handlers.onEndQuestionNow, false);
+            addBtn("Reveal Answer", "btn outline-moon focus-ring", handlers.onEndQuestionNow, false);
+            addEndGameButton();
+            return;
+          }
+
+          if (game.phase === PHASES.ANSWER_REVEAL) {
+            if (game.questionIndex < game.questions.length - 1) {
+              addBtn("Next Question", "btn moon-btn focus-ring", handlers.onNextQuestion, false);
+            } else {
+              addBtn("Finish Game", "btn moon-btn focus-ring", handlers.onFinishGame, false);
+            }
+            addBtn("Show Leaderboard", "btn outline-moon focus-ring", handlers.onShowLeaderboard, false);
+            addEndGameButton();
+            return;
+          }
+
+          if (game.phase === PHASES.LEADERBOARD) {
+            if (game.questionIndex < game.questions.length - 1) {
+              addBtn("Next Question", "btn moon-btn focus-ring", handlers.onNextQuestion, false);
+            } else {
+              addBtn("Finish Game", "btn moon-btn focus-ring", handlers.onFinishGame, false);
+            }
+            addEndGameButton();
+            return;
+          }
+
+          addBtn("Play Again", "btn moon-btn focus-ring", handlers.onPlayAgain, false);
+          addBtn("Return To Library", "btn outline-moon focus-ring", handlers.onReturnLibrary, false);
+        }
+
+        renderStage(game, stageStats, handlers, quoteSet) {
+          if (!game) {
+            this.el.stageContent.innerHTML = "<div class='small-note'>Start or resume a game to begin.</div>";
+            return;
+          }
+
+          const phase = game.phase;
+          if (phase === PHASES.LOBBY) {
+            this.el.stageContent.innerHTML = "";
+            const block = document.createElement("div");
+            block.innerHTML = "<div class='fw-bold mb-2'>Lobby Open</div><div class='small-note mb-2'>Quiz: " + escapeHtml(game.quizTitle) + "</div>";
+            const startQBtn = document.createElement("button");
+            startQBtn.className = "btn moon-btn focus-ring";
+            startQBtn.textContent = "Start Question";
+            startQBtn.addEventListener("click", handlers.onStartQuestion);
+            block.appendChild(startQBtn);
+            this.el.stageContent.appendChild(block);
+            return;
+          }
+
+          if (phase === PHASES.QUESTION) {
+            const q = game.questions[game.questionIndex];
+            const submittedCount = Object.keys(game.submissions[String(game.questionIndex)] || {}).length;
+            const totalPlayers = Object.values(game.players).filter((p) => !p.removed).length;
+            const remaining = game.questionEndsAt - nowTs();
+            const timerCls = remaining <= 10000 ? "danger" : remaining <= 30000 ? "warn" : "";
+
+            let html = "";
+            html += "<div class='d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2'>";
+            html += "<div><div class='fw-bold'>Question " + (game.questionIndex + 1) + " of " + game.questions.length + "</div><div class='small-note'>Worth " + formatScore(q.pointValue) + " points</div></div>";
+            html += "<div id='timerPill' class='timer-pill " + timerCls + "'>" + formatTime(remaining) + "</div>";
+            html += "</div>";
+            html += "<div class='mb-2'>" + escapeHtml(q.query) + "</div>";
+            html += "<div id='submissionCountLine' class='small-note mb-2'>" + submittedCount + " / " + totalPlayers + " players answered</div>";
+            html += "<div class='progress mb-2' role='progressbar' aria-label='Answered players progress'><div id='submissionProgress' class='progress-bar' style='width:" + (totalPlayers ? Math.round((submittedCount / totalPlayers) * 100) : 0) + "%'></div></div>";
+            html += "<div class='row g-2 mb-2'>";
+            q.options.forEach((o) => {
+              html += "<div class='col-12 col-md-6'><div class='q-option'><strong>" + o.letter + "</strong> - " + escapeHtml(o.text) + "</div></div>";
+            });
+            html += "</div>";
+            html += "<div class='d-flex gap-2'><button id='endQuestionNowBtn' class='btn danger-btn focus-ring'>End Question Now</button><button id='revealNowBtn' class='btn outline-moon focus-ring'>Reveal Answer</button></div>";
+            this.el.stageContent.innerHTML = html;
+            document.getElementById("endQuestionNowBtn").addEventListener("click", handlers.onEndQuestionNow);
+            document.getElementById("revealNowBtn").addEventListener("click", handlers.onEndQuestionNow);
+            return;
+          }
+
+          if (phase === PHASES.ANSWER_REVEAL) {
+            const q = game.questions[game.questionIndex];
+            const rv = game.revealedAnswer;
+            let html = "<div class='fw-bold mb-2'>Answer Reveal</div>";
+            html += "<div class='mb-2'>" + escapeHtml(q.query) + "</div>";
+            html += "<div class='small-note mb-2'>Correct options: " + rv.correctOptionIds.map((id) => {
+              const opt = q.options.find((o) => o.id === id);
+              return opt ? opt.letter : id;
+            }).join(", ") + "</div>";
+            html += "<div class='row g-2 mb-2'>";
+            rv.optionStats.forEach((st) => {
+              html += "<div class='col-12 col-md-6'><div class='q-option'><strong>" + st.letter + "</strong> " + escapeHtml(st.text) + "<div class='small-note'>" + st.count + " players • " + st.pct + "%</div></div></div>";
+            });
+            html += "</div>";
+            html += "<div class='glass p-2 mb-2'><div class='small-note'>Answer Details</div><div>" + (q.answerHtml || "") + "</div></div>";
+            if (q.tipHtml) {
+              html += "<div class='glass p-2 mb-2'><div class='small-note'>Tip</div><div>" + q.tipHtml + "</div></div>";
+            }
+            html += "<div class='d-flex flex-wrap gap-2'>";
+            if (game.questionIndex < game.questions.length - 1) {
+              html += "<button id='nextQuestionBtn' class='btn moon-btn focus-ring'>Next Question</button>";
+            } else {
+              html += "<button id='finishGameBtn' class='btn moon-btn focus-ring'>Finish Game</button>";
+            }
+            html += "<button id='showLeaderboardBtn' class='btn outline-moon focus-ring'>Show Leaderboard</button></div>";
+            this.el.stageContent.innerHTML = html;
+            const nextBtn = document.getElementById("nextQuestionBtn");
+            if (nextBtn) nextBtn.addEventListener("click", handlers.onNextQuestion);
+            const finishBtn = document.getElementById("finishGameBtn");
+            if (finishBtn) finishBtn.addEventListener("click", handlers.onFinishGame);
+            document.getElementById("showLeaderboardBtn").addEventListener("click", handlers.onShowLeaderboard);
+            return;
+          }
+
+          if (phase === PHASES.LEADERBOARD || phase === PHASES.FINISHED) {
+            const scoreRankRows = stageStats && Array.isArray(stageStats.scoreRankRows) ? stageStats.scoreRankRows : [];
+            const leaderboardRows = stageStats && Array.isArray(stageStats.leaderboardRows) ? stageStats.leaderboardRows : scoreRankRows;
+            const quickDrawRows = stageStats && Array.isArray(stageStats.quickDrawRows) ? stageStats.quickDrawRows : [];
+            const lbSort = stageStats && stageStats.leaderboardSort ? stageStats.leaderboardSort : { key: "score", dir: "desc" };
+            const qdSort = stageStats && stageStats.quickDrawSort ? stageStats.quickDrawSort : { key: "avgResponseMs", dir: "asc" };
+            const labelWithSort = (base, state, key) => {
+              if (!state || state.key !== key) return base;
+              return base + (state.dir === "asc" ? " ▲" : " ▼");
+            };
+            const powerIcons = (row) => {
+              let out = "";
+              if (row.streakPrizeReady) {
+                out += "<span class='power-icon ready' title='Fog Cloak available'><i class='lni lni-lock-alt'></i></span>";
+                out += "<span class='power-icon ready' title='Shadow Strike available'><i class='lni lni-target'></i></span>";
+                out += "<span class='power-icon ready' title='Smelling Salts available'><i class='lni lni-bolt'></i></span>";
+              }
+              if (row.canBuyPointShield || row.pointShieldNext || row.shieldActive) {
+                out += "<span class='power-icon shield' title='Point shield'><i class='lni lni-shield'></i></span>";
+              }
+              if (row.canBuyReflectiveShield || (row.pointShieldNext && String(row.pointShieldMode || "").toUpperCase() === "REFLECTIVE") || row.shieldReflectiveActive) {
+                out += "<span class='power-icon shield' title='Reflective shield'>✨</span>";
+              }
+              const rockets = Math.max(0, Number(row.incomingStrikeCount || 0));
+              if (rockets > 0) {
+                for (let i = 0; i < rockets; i += 1) {
+                  out += "<span class='power-icon rocket' title='Incoming strike'><i class='lni lni-rocket'></i></span>";
+                }
+              }
+              if (String(row.strikeOutcome || "") === "STRUCK") {
+                out += "<span class='power-icon rocket' title='Lost points from Shadow Strike'><i class='lni lni-bolt'></i></span>";
+              } else if (String(row.strikeOutcome || "") === "SHIELD_BLOCK") {
+                out += "<span class='power-icon shield' title='Shield blocked Shadow Strike'><i class='lni lni-shield'></i></span>";
+              } else if (String(row.strikeOutcome || "") === "REFLECTED_BLOCK") {
+                out += "<span class='power-icon shield' title='Reflective shield bounced Shadow Strike'>✨</span>";
+              } else if (String(row.strikeOutcome || "") === "REFLECTED_HIT") {
+                out += "<span class='power-icon rocket' title='Your Shadow Strike was reflected'>✨</span>";
+              }
+              return out ? "<span class='power-icons'>" + out + "</span>" : "";
+            };
+
+            const titleQuote = quoteSet && quoteSet.title ? quoteSet.title : (phase === PHASES.FINISHED ? "Final Leaderboard" : "Leaderboard");
+            const belowQuote = quoteSet && quoteSet.below ? quoteSet.below : "";
+            let html = "<div class='fw-bold mb-2'>" + escapeHtml(titleQuote) + "</div>";
+            const top3 = scoreRankRows.slice(0, 3);
+            html += "<div class='podium mb-3'>";
+            [1, 0, 2].forEach((orderIdx, slot) => {
+              const p = top3[orderIdx] || null;
+              const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+              html += "<div class='podium-card " + cls + "'>";
+              html += "<div>" + (p ? (p.rank + (p.rank === 1 ? "st" : p.rank === 2 ? "nd" : "rd")) : "-") + "</div>";
+              html += "<div class='fw-bold'>" + (p ? escapeHtml(p.playerName) : "Waiting") + "</div>";
+              html += "<div class='small-note'>" + (p ? formatScore(p.score) + " pts" : "") + "</div>";
+              html += "</div>";
+            });
+            html += "</div>";
+
+            html += "<div class='d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1'>";
+            html += "<div class='fw-bold mb-0'>Leaderboard Details</div>";
+            html += "<button id='resetSortsBtn' class='btn btn-sm outline-moon focus-ring'>Reset Sorts</button></div>";
+            if (!leaderboardRows.length) {
+              html += "<div class='stats-empty mb-3'>No players yet.</div>";
+            } else {
+              html += "<div class='stats-table-wrap mb-3'><div class='table-responsive'><table class='table table-sm stats-table'>";
+              html += "<thead><tr>";
+              html += "<th>Rank</th>";
+              html += "<th><button id='sortLbNameBtn' class='sort-btn focus-ring'>" + labelWithSort("Player", lbSort, "playerName") + "</button></th>";
+              html += "<th><button id='sortLbScoreBtn' class='sort-btn focus-ring'>" + labelWithSort("Score", lbSort, "score") + "</button></th>";
+              html += "<th><button id='sortLbCurrentStreakBtn' class='sort-btn focus-ring'>" + labelWithSort("Current Streak", lbSort, "currentStreak") + "</button></th>";
+              html += "<th><button id='sortLbCorrectAnswersBtn' class='sort-btn focus-ring'>" + labelWithSort("Correct Answers", lbSort, "correctAnswers") + "</button></th>";
+              html += "<th><button id='sortLbLongestStreakBtn' class='sort-btn focus-ring'>" + labelWithSort("Longest Streak", lbSort, "longestStreak") + "</button></th>";
+              html += "<th><button id='sortLbQuickBtn' class='sort-btn focus-ring'>" + labelWithSort("Quick Draw Wins", lbSort, "quickDrawWins") + "</button></th>";
+              html += "<th><button id='sortLbAttackedBtn' class='sort-btn focus-ring'>" + labelWithSort("Times Attacked", lbSort, "attackedCount") + "</button></th>";
+              html += "</tr></thead><tbody>";
+              leaderboardRows.forEach((row) => {
+                html += "<tr>";
+                html += "<td>#" + row.rank + "</td>";
+                html += "<td>" + powerIcons(row) + escapeHtml(row.playerName) + "</td>";
+                html += "<td>" + formatScore(row.score) + "</td>";
+                html += "<td>" + formatScore(row.currentStreak || row.streak || 0) + "</td>";
+                html += "<td>" + formatScore(row.correctAnswers || 0) + "</td>";
+                html += "<td>" + formatScore(row.longestStreak || 0) + "</td>";
+                html += "<td>" + formatScore(row.quickDrawWins || 0) + "</td>";
+                html += "<td>" + formatScore(row.attackedCount || 0) + "</td>";
+                html += "</tr>";
+              });
+              html += "</tbody></table></div></div>";
+            }
+
+            const longestStreakRows = scoreRankRows
+              .slice()
+              .sort((a, b) => Number(b.longestStreak || 0) - Number(a.longestStreak || 0) || Number(b.currentStreak || b.streak || 0) - Number(a.currentStreak || a.streak || 0) || Number(b.score || 0) - Number(a.score || 0) || a.rank - b.rank);
+            const streakLeader = longestStreakRows[0] || null;
+            if (streakLeader && Number(streakLeader.longestStreak || 0) > 0) {
+              html += "<div class='small-note mb-3'>Longest streak leader: <strong>" + escapeHtml(streakLeader.playerName) + "</strong> at <strong>" + formatScore(streakLeader.longestStreak || 0) + "</strong>.</div>";
+            }
+
+            if (belowQuote) {
+              html += "<div class='small-note mb-3'>" + escapeHtml(belowQuote) + "</div>";
+            }
+
+            html += "<div class='fw-bold mb-1'>Quick Draw</div>";
+            html += "<div class='small-note mb-2'>Fastest average lock-in speed across answered questions, regardless of correctness.</div>";
+            if (!quickDrawRows.length) {
+              html += "<div class='stats-empty mb-3'>No speed data yet.</div>";
+            } else {
+              html += "<div class='stats-table-wrap mb-3'><div class='table-responsive'><table class='table table-sm stats-table'>";
+              html += "<thead><tr>";
+              html += "<th><button id='sortQdNameBtn' class='sort-btn focus-ring'>" + labelWithSort("Player", qdSort, "playerName") + "</button></th>";
+              html += "<th><button id='sortQdAvgBtn' class='sort-btn focus-ring'>" + labelWithSort("Average", qdSort, "avgResponseMs") + "</button></th>";
+              html += "<th><button id='sortQdFastBtn' class='sort-btn focus-ring'>" + labelWithSort("Fastest", qdSort, "fastestResponseMs") + "</button></th>";
+              html += "<th><button id='sortQdWinsBtn' class='sort-btn focus-ring'>" + labelWithSort("Wins", qdSort, "quickDrawWins") + "</button></th>";
+              html += "</tr></thead><tbody>";
+              quickDrawRows.forEach((row) => {
+                html += "<tr>";
+                html += "<td>" + escapeHtml(row.playerName) + "</td>";
+                html += "<td>" + formatMs(row.avgResponseMs) + "</td>";
+                html += "<td>" + formatMs(row.fastestResponseMs) + "</td>";
+                html += "<td>" + formatScore(row.quickDrawWins || 0) + "</td>";
+                html += "</tr>";
+              });
+              html += "</tbody></table></div></div>";
+            }
+
+            if (phase === PHASES.FINISHED) {
+              const fastestGun = scoreRankRows
+                .filter((row) => Number(row.responseCount || 0) > 0)
+                .slice()
+                .sort((a, b) => Number(a.avgResponseMs || Number.MAX_SAFE_INTEGER) - Number(b.avgResponseMs || Number.MAX_SAFE_INTEGER) || Number(a.fastestResponseMs || Number.MAX_SAFE_INTEGER) - Number(b.fastestResponseMs || Number.MAX_SAFE_INTEGER) || Number(b.quickDrawWins || 0) - Number(a.quickDrawWins || 0) || a.rank - b.rank)[0] || null;
+              const mostAttacked = scoreRankRows
+                .slice()
+                .sort((a, b) => Number(b.attackedCount || 0) - Number(a.attackedCount || 0) || Number(b.score || 0) - Number(a.score || 0) || a.rank - b.rank)
+                .slice(0, 3);
+              const mostCorrectAnswers = scoreRankRows
+                .slice()
+                .sort((a, b) => Number(b.correctAnswers || 0) - Number(a.correctAnswers || 0) || Number(b.score || 0) - Number(a.score || 0) || a.rank - b.rank)
+                .slice(0, 3);
+
+              html += "<div class='fw-bold mb-1'>Final Awards</div>";
+              html += "<div class='small-note mb-2'>Award Icons: ⚡ Fastest Gun • 🏆 Top 3 Score • ✅ Top 3 Most Correct Answers • 🔥 Top 3 Correct Streaks • 🎯 Top 3 Most Attacked</div>";
+              if (fastestGun) {
+                html += "<div class='glass p-2 mb-2'><strong>Fastest Gun:</strong> " + escapeHtml(fastestGun.playerName) + " (avg " + formatMs(fastestGun.avgResponseMs) + ", fastest " + formatMs(fastestGun.fastestResponseMs) + ")</div>";
+              } else {
+                html += "<div class='stats-empty mb-2'>Fastest Gun: no response-time data this game.</div>";
+              }
+
+              const topStreaks = longestStreakRows.slice(0, 3);
+              html += "<div class='fw-bold mb-1'>Top 3 Correct Streaks</div>";
+              if (!topStreaks.length || Number(topStreaks[0].longestStreak || 0) === 0) {
+                html += "<div class='stats-empty mb-3'>No streaks were recorded.</div>";
+              } else {
+                html += "<div class='podium mb-3'>";
+                [1, 0, 2].forEach((orderIdx, slot) => {
+                  const p = topStreaks[orderIdx] || null;
+                  const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                  html += "<div class='podium-card " + cls + "'>";
+                  html += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                  html += "<div class='fw-bold'>" + (p ? escapeHtml(p.playerName) : "Waiting") + "</div>";
+                  html += "<div class='small-note'>" + (p ? ("Longest " + formatScore(p.longestStreak || 0) + " • Current " + formatScore(p.currentStreak || p.streak || 0)) : "") + "</div>";
+                  html += "</div>";
+                });
+                html += "</div>";
+              }
+
+              html += "<div class='fw-bold mb-1'>Top 3 Most Correct Answers</div>";
+              if (!mostCorrectAnswers.length || Number(mostCorrectAnswers[0].correctAnswers || 0) === 0) {
+                html += "<div class='stats-empty mb-3'>No correct answers were recorded.</div>";
+              } else {
+                html += "<div class='podium mb-3'>";
+                [1, 0, 2].forEach((orderIdx, slot) => {
+                  const p = mostCorrectAnswers[orderIdx] || null;
+                  const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                  html += "<div class='podium-card " + cls + "'>";
+                  html += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                  html += "<div class='fw-bold'>" + (p ? escapeHtml(p.playerName) : "Waiting") + "</div>";
+                  html += "<div class='small-note'>" + (p ? ("✅ " + formatScore(p.correctAnswers || 0) + " correct") : "") + "</div>";
+                  html += "</div>";
+                });
+                html += "</div>";
+              }
+
+              html += "<div class='fw-bold mb-1'>Top 3 Most Attacked</div>";
+              if (!mostAttacked.length || Number(mostAttacked[0].attackedCount || 0) === 0) {
+                html += "<div class='stats-empty mb-3'>No attacks were attempted this game.</div>";
+              } else {
+                html += "<div class='podium mb-3'>";
+                [1, 0, 2].forEach((orderIdx, slot) => {
+                  const p = mostAttacked[orderIdx] || null;
+                  const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                  html += "<div class='podium-card " + cls + "'>";
+                  html += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                  html += "<div class='fw-bold'>" + (p ? escapeHtml(p.playerName) : "Waiting") + "</div>";
+                  html += "<div class='small-note'>" + (p ? ("🎯 " + formatScore(p.attackedCount || 0) + " attacks") : "") + "</div>";
+                  html += "</div>";
+                });
+                html += "</div>";
+              }
+            }
+
+            if (phase === PHASES.LEADERBOARD) {
+              html += "<div class='d-flex gap-2 mt-2'>";
+              if (game.questionIndex < game.questions.length - 1) {
+                html += "<button id='nextQuestionBtn' class='btn moon-btn focus-ring'>Next Question</button>";
+              } else {
+                html += "<button id='finishGameBtn' class='btn moon-btn focus-ring'>Finish Game</button>";
+              }
+              html += "</div>";
+            } else {
+              html += "<div class='d-flex gap-2 mt-2'><button id='playAgainBtn' class='btn moon-btn focus-ring'>Play Again</button><button id='returnLibraryBtn' class='btn outline-moon focus-ring'>Return to Quiz Library</button></div>";
+            }
+
+            this.el.stageContent.innerHTML = html;
+            const nextBtn = document.getElementById("nextQuestionBtn");
+            if (nextBtn) nextBtn.addEventListener("click", handlers.onNextQuestion);
+            const finishBtn = document.getElementById("finishGameBtn");
+            if (finishBtn) finishBtn.addEventListener("click", handlers.onFinishGame);
+            const playAgainBtn = document.getElementById("playAgainBtn");
+            if (playAgainBtn) playAgainBtn.addEventListener("click", handlers.onPlayAgain);
+            const returnLibraryBtn = document.getElementById("returnLibraryBtn");
+            if (returnLibraryBtn) returnLibraryBtn.addEventListener("click", handlers.onReturnLibrary);
+
+            const sortLbNameBtn = document.getElementById("sortLbNameBtn");
+            if (sortLbNameBtn) sortLbNameBtn.addEventListener("click", () => handlers.onSortLeaderboard("playerName"));
+            const sortLbScoreBtn = document.getElementById("sortLbScoreBtn");
+            if (sortLbScoreBtn) sortLbScoreBtn.addEventListener("click", () => handlers.onSortLeaderboard("score"));
+            const sortLbCurrentStreakBtn = document.getElementById("sortLbCurrentStreakBtn");
+            if (sortLbCurrentStreakBtn) sortLbCurrentStreakBtn.addEventListener("click", () => handlers.onSortLeaderboard("currentStreak"));
+            const sortLbCorrectAnswersBtn = document.getElementById("sortLbCorrectAnswersBtn");
+            if (sortLbCorrectAnswersBtn) sortLbCorrectAnswersBtn.addEventListener("click", () => handlers.onSortLeaderboard("correctAnswers"));
+            const sortLbLongestStreakBtn = document.getElementById("sortLbLongestStreakBtn");
+            if (sortLbLongestStreakBtn) sortLbLongestStreakBtn.addEventListener("click", () => handlers.onSortLeaderboard("longestStreak"));
+            const sortLbQuickBtn = document.getElementById("sortLbQuickBtn");
+            if (sortLbQuickBtn) sortLbQuickBtn.addEventListener("click", () => handlers.onSortLeaderboard("quickDrawWins"));
+            const sortLbAttackedBtn = document.getElementById("sortLbAttackedBtn");
+            if (sortLbAttackedBtn) sortLbAttackedBtn.addEventListener("click", () => handlers.onSortLeaderboard("attackedCount"));
+
+            const sortQdNameBtn = document.getElementById("sortQdNameBtn");
+            if (sortQdNameBtn) sortQdNameBtn.addEventListener("click", () => handlers.onSortQuickDraw("playerName"));
+            const sortQdAvgBtn = document.getElementById("sortQdAvgBtn");
+            if (sortQdAvgBtn) sortQdAvgBtn.addEventListener("click", () => handlers.onSortQuickDraw("avgResponseMs"));
+            const sortQdFastBtn = document.getElementById("sortQdFastBtn");
+            if (sortQdFastBtn) sortQdFastBtn.addEventListener("click", () => handlers.onSortQuickDraw("fastestResponseMs"));
+            const sortQdWinsBtn = document.getElementById("sortQdWinsBtn");
+            if (sortQdWinsBtn) sortQdWinsBtn.addEventListener("click", () => handlers.onSortQuickDraw("quickDrawWins"));
+
+            const resetSortsBtn = document.getElementById("resetSortsBtn");
+            if (resetSortsBtn) resetSortsBtn.addEventListener("click", handlers.onResetSorts);
+          }
+        }
+
+        showResumeBanner(meta) {
+          this.el.resumeMeta.textContent = meta;
+          this.el.resumeBanner.classList.remove("d-none");
+        }
+
+        hideResumeBanner() {
+          this.el.resumeBanner.classList.add("d-none");
+        }
+
+        renderDebug(state) {
+          this.el.debugStats.innerHTML = "";
+          const lines = [
+            "WebSocket status: " + state.socketStatus,
+            "Game ID: " + (state.gameId || "-"),
+            "Current phase: " + (state.phase || "-"),
+            "Current question: " + (state.questionLabel || "-"),
+            "Players: " + state.playerCount,
+            "Submissions: " + state.submissionCount,
+            "Last message type: " + (state.lastMessageType || "-"),
+            "Last save time: " + (state.lastSaveTime ? new Date(state.lastSaveTime).toLocaleTimeString() : "-")
+          ];
+          lines.forEach((l) => {
+            const div = document.createElement("div");
+            div.textContent = l;
+            this.el.debugStats.appendChild(div);
+          });
+        }
+
+        refreshQuestionLive(game) {
+          if (!game || game.phase !== PHASES.QUESTION) return;
+          const timerEl = document.getElementById("timerPill");
+          if (timerEl) {
+            const remaining = game.questionEndsAt - nowTs();
+            timerEl.textContent = formatTime(remaining);
+            timerEl.classList.remove("warn", "danger");
+            if (remaining <= 10000) timerEl.classList.add("danger");
+            else if (remaining <= 30000) timerEl.classList.add("warn");
+          }
+
+          const submittedCount = Object.keys(game.submissions[String(game.questionIndex)] || {}).length;
+          const totalPlayers = Object.values(game.players || {}).filter((p) => !p.removed).length;
+          const countEl = document.getElementById("submissionCountLine");
+          if (countEl) {
+            countEl.textContent = submittedCount + " / " + totalPlayers + " players answered";
+          }
+
+          const barEl = document.getElementById("submissionProgress");
+          if (barEl) {
+            barEl.style.width = (totalPlayers ? Math.round((submittedCount / totalPlayers) * 100) : 0) + "%";
+          }
+        }
+      }
+
+      function buildStudentJoinUrl(gameId) {
+        const url = new URL(window.location.href);
+        const basePath = url.pathname.replace(/instructor\.html?$/i, "index.html");
+        const out = url.origin + basePath + "?game=" + encodeURIComponent(gameId);
+        return out;
+      }
+
+      class InstructorApp {
+        constructor() {
+          this.ui = new InstructorUI();
+          this.quizLibrary = new QuizLibrary();
+          this.game = new GameController(this.quizLibrary);
+          this.socketPrefs = this.loadSocketPrefs();
+          this.socketEndpointHealth = {};
+          this.socketMenuOpen = false;
+          this.connectedEndpoint = null;
+          this.socket = new SocketManager(
+            this.onMessage.bind(this),
+            this.onSocketState.bind(this),
+            this.getSocketCandidates.bind(this),
+            this.onSocketConnectedEndpoint.bind(this)
+          );
+          this.socketStatus = "disconnected";
+          this.tickInterval = null;
+          this.heartbeat = null;
+          this.actionLock = false;
+          this.importDraft = {
+            title: "",
+            json: ""
+          };
+          this.leaderboardSort = { key: "score", dir: "desc" };
+          this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
+        }
+
+        loadSocketPrefs() {
+          const raw = LocalStore.readJson(STORAGE_KEYS.SOCKET_PREFS, null) || {};
+          const selectedId = typeof raw.selectedId === "string" ? raw.selectedId : "primary";
+          const customUrl = normalizeSocketUrl(raw.customUrl || "");
+          const strictMode = !!raw.strictMode;
+          return {
+            selectedId,
+            customUrl,
+            strictMode
+          };
+        }
+
+        saveSocketPrefs() {
+          LocalStore.writeJson(STORAGE_KEYS.SOCKET_PREFS, this.socketPrefs);
+        }
+
+        getSocketEntries() {
+          const entries = SOCKET_CHOICES.slice();
+          if (this.socketPrefs.customUrl && isValidSocketUrl(this.socketPrefs.customUrl)) {
+            entries.push({ id: "custom", name: "Custom", url: this.socketPrefs.customUrl });
+          }
+          return entries;
+        }
+
+        getSocketCandidates() {
+          const entries = this.getSocketEntries();
+          const selected = entries.find((x) => x.id === this.socketPrefs.selectedId) || entries[0];
+          if (this.socketPrefs.strictMode) {
+            return selected ? [{ id: selected.id, name: selected.name, url: selected.url }] : [];
+          }
+          const ordered = [];
+          if (selected) ordered.push(selected);
+          entries.forEach((entry) => {
+            if (!selected || entry.id !== selected.id) ordered.push(entry);
+          });
+          return dedupeByUrl(ordered);
+        }
+
+        onSocketConnectedEndpoint(endpoint) {
+          this.connectedEndpoint = endpoint || null;
+          this.refreshSocketMenuState();
+        }
+
+        getSelectedSocketName() {
+          const entries = this.getSocketEntries();
+          const selected = entries.find((x) => x.id === this.socketPrefs.selectedId);
+          return selected ? selected.name : "Primary";
+        }
+
+        bindSocketPickerEvents() {
+          const e = this.ui.el;
+          e.socketPill.addEventListener("click", (evt) => {
+            evt.stopPropagation();
+            this.toggleSocketMenu();
+          });
+
+          e.socketMenu.addEventListener("click", (evt) => evt.stopPropagation());
+
+          document.addEventListener("click", () => {
+            if (!this.socketMenuOpen) return;
+            this.socketMenuOpen = false;
+            this.ui.setSocketMenuOpen(false);
+          });
+
+          e.socketOptions.addEventListener("change", (evt) => {
+            const target = evt.target;
+            if (!target || target.name !== "socketEndpoint") return;
+            this.socketPrefs.selectedId = String(target.value || "primary");
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState("Endpoint preference saved. Reconnecting...");
+            this.reconnectSocket();
+          });
+
+          e.socketModeOptions.addEventListener("click", (evt) => {
+            const target = evt.target;
+            if (!target || target.id !== "socketStrictToggleBtn") return;
+            this.socketPrefs.strictMode = !this.socketPrefs.strictMode;
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState();
+            this.reconnectSocket();
+          });
+
+          e.socketCustomSaveBtn.addEventListener("click", () => {
+            const val = normalizeSocketUrl(e.socketCustomInput.value);
+            if (!isValidSocketUrl(val)) {
+              this.refreshSocketMenuState("Enter a valid ws:// or wss:// URL.");
+              return;
+            }
+            this.socketPrefs.customUrl = val;
+            this.socketPrefs.selectedId = "custom";
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState("Custom endpoint saved. Reconnecting...");
+            this.reconnectSocket();
+          });
+        }
+
+        reconnectSocket() {
+          this.socket.close();
+          this.socket = new SocketManager(
+            this.onMessage.bind(this),
+            this.onSocketState.bind(this),
+            this.getSocketCandidates.bind(this),
+            this.onSocketConnectedEndpoint.bind(this)
+          );
+          this.socket.connect();
+          this.refreshSocketHealth();
+        }
+
+        async refreshSocketHealth() {
+          const entries = this.getSocketEntries();
+          entries.forEach((entry) => {
+            this.socketEndpointHealth[entry.id] = "testing";
+          });
+          this.refreshSocketMenuState();
+
+          const results = await Promise.all(entries.map(async (entry) => {
+            const ok = await probeSocketUrl(entry.url, 1800);
+            return { id: entry.id, ok };
+          }));
+
+          results.forEach((r) => {
+            this.socketEndpointHealth[r.id] = r.ok ? "ok" : "fail";
+          });
+          this.refreshSocketMenuState();
+        }
+
+        refreshSocketMenuState(msg) {
+          const entries = this.getSocketEntries();
+          if (!entries.some((x) => x.id === this.socketPrefs.selectedId)) {
+            this.socketPrefs.selectedId = entries[0] ? entries[0].id : "primary";
+            this.saveSocketPrefs();
+          }
+          this.ui.renderSocketOptions(entries, this.socketPrefs.selectedId, !!this.socketPrefs.strictMode, this.socketEndpointHealth);
+          this.ui.el.socketCustomInput.value = this.socketPrefs.customUrl || "";
+          if (typeof msg === "string") this.ui.el.socketMenuMsg.textContent = msg;
+          const label = this.connectedEndpoint && this.connectedEndpoint.name
+            ? this.connectedEndpoint.name
+            : this.getSelectedSocketName();
+          this.ui.setSocketLabel(this.socketStatus, label);
+        }
+
+        toggleSocketMenu() {
+          this.socketMenuOpen = !this.socketMenuOpen;
+          this.ui.setSocketMenuOpen(this.socketMenuOpen);
+          if (this.socketMenuOpen) {
+            this.refreshSocketMenuState();
+            this.refreshSocketHealth();
+          }
+        }
+
+        toggleSortState(scope, key) {
+          const target = scope === "leaderboard" ? this.leaderboardSort : this.quickDrawSort;
+          const prefersAsc = key === "playerName" || key === "avgResponseMs" || key === "fastestResponseMs";
+          const fallbackDir = prefersAsc ? "asc" : "desc";
+          if (target.key === key) {
+            target.dir = target.dir === "asc" ? "desc" : "asc";
+          } else {
+            target.key = key;
+            target.dir = fallbackDir;
+          }
+        }
+
+        resetSorts() {
+          this.leaderboardSort = { key: "score", dir: "desc" };
+          this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
+        }
+
+        sortRows(rows, sortState) {
+          const list = rows.slice();
+          list.sort((a, b) => {
+            if (sortState.key === "playerName") {
+              const cmpName = String(a.playerName || "").localeCompare(String(b.playerName || ""));
+              if (cmpName !== 0) return sortState.dir === "asc" ? cmpName : -cmpName;
+              return a.rank - b.rank;
+            }
+
+            const aVal = a[sortState.key];
+            const bVal = b[sortState.key];
+            const aNil = aVal == null;
+            const bNil = bVal == null;
+            if (aNil && bNil) return a.rank - b.rank;
+            if (aNil) return 1;
+            if (bNil) return -1;
+
+            const cmpNum = Number(aVal) - Number(bVal);
+            if (cmpNum !== 0) return sortState.dir === "asc" ? cmpNum : -cmpNum;
+            return a.rank - b.rank;
+          });
+          return list;
+        }
+
+        buildStageStats(scoreRankRows) {
+          const leaderboardRows = this.sortRows(scoreRankRows, this.leaderboardSort);
+          const quickDrawSource = scoreRankRows.filter((row) => Number(row.responseCount || 0) > 0);
+          const quickDrawRows = this.sortRows(quickDrawSource, this.quickDrawSort);
+          return {
+            scoreRankRows,
+            leaderboardRows,
+            quickDrawRows,
+            leaderboardSort: this.leaderboardSort,
+            quickDrawSort: this.quickDrawSort
+          };
+        }
+
+        init() {
+          this.attachEvents();
+          this.renderQuizLibrary();
+          this.bindSocketPickerEvents();
+          this.socket.connect();
+          this.spawnSparks();
+
+          const unfinished = this.game.loadUnfinished();
+          if (unfinished) {
+            const updated = unfinished.updatedAt ? new Date(unfinished.updatedAt).toLocaleString() : "recently";
+            this.ui.showResumeBanner("Game " + unfinished.gameId + " • " + unfinished.quizTitle + " • Updated " + updated);
+          }
+
+          this.startTicker();
+          this.startHeartbeat();
+          this.refreshSocketMenuState();
+          this.renderAll();
+        }
+
+        attachEvents() {
+          const e = this.ui.el;
+          e.createQuizBtn.addEventListener("click", () => this.handleCreateQuiz());
+          e.demoQuizBtn.addEventListener("click", () => this.loadDemoQuiz());
+          e.resumeBtn.addEventListener("click", () => this.resumeGame());
+          e.discardBtn.addEventListener("click", () => this.discardGame());
+          e.quizTitleInput.addEventListener("input", () => {
+            this.importDraft.title = e.quizTitleInput.value;
+          });
+          e.quizJsonInput.addEventListener("input", () => {
+            this.importDraft.json = e.quizJsonInput.value;
+          });
+        }
+
+        startTicker() {
+          this.tickInterval = setInterval(() => {
+            if (!this.game.activeGame) return;
+            if (this.game.activeGame.phase === PHASES.QUESTION && nowTs() >= this.game.activeGame.questionEndsAt) {
+              this.forceEndQuestion();
+              return;
+            }
+            this.ui.refreshQuestionLive(this.game.activeGame);
+            this.renderDebug();
+          }, 400);
+        }
+
+        startHeartbeat() {
+          this.heartbeat = setInterval(() => {
+            if (this.game.activeGame) {
+              this.send(MSG.INSTRUCTOR_PRESENT, this.game.activeGame.gameId, "instructor-main", {
+                phase: this.game.activeGame.phase,
+                questionIndex: this.game.activeGame.questionIndex
+              });
+            }
+          }, 90000);
+        }
+
+        onSocketState(state) {
+          this.socketStatus = state;
+          this.ui.setSocketState(state);
+          this.refreshSocketMenuState();
+          if (state === "connected" && this.game.activeGame) {
+            this.send(MSG.INSTRUCTOR_PRESENT, this.game.activeGame.gameId, "instructor-main", {
+              phase: this.game.activeGame.phase,
+              questionIndex: this.game.activeGame.questionIndex
+            });
+          }
+          this.renderDebug();
+        }
+
+        onMessage(msg) {
+          if (msg.senderRole === "instructor") return;
+          if (!this.game.activeGame) return;
+          if (msg.gameId !== this.game.activeGame.gameId) return;
+
+          switch (msg.type) {
+            case MSG.PLAYER_JOIN:
+            case MSG.PLAYER_REJOIN:
+              this.handleJoin(msg);
+              break;
+            case MSG.SYNC_REQUEST:
+              this.handleSyncRequest(msg);
+              break;
+            case MSG.ANSWER_SUBMITTED:
+              this.handleAnswerSubmitted(msg);
+              break;
+            case MSG.FIFTY_FIFTY:
+              {
+                const trustedMsg = this.getTrustedPlayerMessage(msg);
+                const result = trustedMsg ? this.game.handleFiftyFifty(trustedMsg) : null;
+                if (result) {
+                  this.send(MSG.FIFTY_FIFTY_RESULT, this.game.activeGame.gameId, "instructor-main", result);
+                  if (result.ok) {
+                    this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+                      leaderboard: this.game.getLeaderboard()
+                    });
+                  }
+                }
+              }
+              break;
+            case MSG.DOUBLE_DOWN_NEXT:
+              this.handleDoubleDown(msg);
+              break;
+            case MSG.DOUBLE_DOWN_BUY:
+              this.handleDoubleDownPurchase(msg);
+              break;
+            case MSG.POINT_SHIELD_BUY:
+              this.handlePointShieldPurchase(msg);
+              break;
+            case MSG.STREAK_PRIZE_CLAIM:
+              this.handleStreakPrizeClaim(msg);
+              break;
+            default:
+              break;
+          }
+          this.renderAll();
+        }
+
+        getTrustedPlayerMessage(msg) {
+          const senderId = String(msg && msg.senderId || "").trim();
+          const payload = msg && msg.payload ? msg.payload : {};
+          const claimedPlayerId = String(payload.playerId || "").trim();
+          if (!senderId || (claimedPlayerId && claimedPlayerId !== senderId)) return null;
+          return Object.assign({}, msg, {
+            payload: Object.assign({}, payload, { playerId: senderId })
+          });
+        }
+
+        send(type, gameId, senderId, payload) {
+          const message = {
+            type,
+            gameId,
+            messageId: generateMessageId(),
+            timestamp: nowTs(),
+            senderRole: "instructor",
+            senderId,
+            payload: payload || {}
+          };
+          this.socket.send(message);
+        }
+
+        handleJoin(msg) {
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const payload = trustedMsg.payload;
+          const result = this.game.joinOrRejoinPlayer(payload);
+          if (!result.ok) {
+            if (result.reason === "Removed") {
+              this.send(MSG.PLAYER_REMOVED, this.game.activeGame.gameId, "instructor-main", { playerId: payload.playerId, reason: "removed" });
+            }
+            return;
+          }
+          this.send(MSG.PLAYER_JOINED, this.game.activeGame.gameId, "instructor-main", {
+            playerId: result.player.id,
+            playerName: result.player.name,
+            score: result.player.score
+          });
+          const snapshot = this.game.buildSnapshotForPlayer(result.player.id);
+          this.send(MSG.STATE_SNAPSHOT, this.game.activeGame.gameId, "instructor-main", snapshot);
+        }
+
+        handleSyncRequest(msg) {
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const playerId = trustedMsg.payload.playerId;
+          const snapshot = this.game.buildSnapshotForPlayer(playerId);
+          if (snapshot) {
+            this.send(MSG.STATE_SNAPSHOT, this.game.activeGame.gameId, "instructor-main", snapshot);
+          }
+        }
+
+        handleAnswerSubmitted(msg) {
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const accepted = this.game.acceptSubmission(trustedMsg);
+          if (!accepted.ok) return;
+
+          this.send(MSG.ANSWER_SUBMITTED, this.game.activeGame.gameId, "instructor-main", {
+            playerId: accepted.submission.playerId,
+            questionIndex: accepted.submission.questionIndex,
+            accepted: true
+          });
+
+          this.game.saveGame();
+        }
+
+        handleDoubleDown(msg) {
+          if (!this.game.activeGame) return;
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const playerId = trustedMsg.payload.playerId;
+          const result = this.game.setDoubleDownNext(playerId);
+          this.send(MSG.DOUBLE_DOWN_SET, this.game.activeGame.gameId, "instructor-main", {
+            playerId: result.playerId || playerId,
+            armedForQuestionIndex: result.armedForQuestionIndex,
+            active: !!result.ok,
+            reason: result.reason || "",
+            doubleDownUses: Number(result.doubleDownUses || 0),
+            doubleDownCap: Number(result.doubleDownCap || DOUBLE_DOWN_BASE_USES),
+            remainingBaseUses: Number(result.remainingBaseUses || 0),
+            rank: result.rank == null ? null : Number(result.rank),
+            totalPlayers: Number(result.totalPlayers || 0),
+            bonusEligible: !!result.bonusEligible,
+            purchasedCredits: Number(result.purchasedCredits || 0),
+            canBuyDoubleDown: !!result.canBuyDoubleDown,
+            buyCost: Number(result.buyCost || DOUBLE_DOWN_BUY_COST),
+            buyBlockedReason: String(result.buyBlockedReason || "")
+          });
+        }
+
+        handleDoubleDownPurchase(msg) {
+          if (!this.game.activeGame) return;
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const playerId = trustedMsg.payload.playerId;
+
+          const result = this.game.purchaseDoubleDown(playerId);
+          this.send(MSG.DOUBLE_DOWN_BUY_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            ok: !!result.ok,
+            playerId,
+            reason: String(result.reason || ""),
+            score: result.score == null ? null : Number(result.score),
+            rank: result.rank == null ? null : Number(result.rank),
+            totalPlayers: Number(result.totalPlayers || 0),
+            doubleDownUses: Number(result.doubleDownUses || 0),
+            doubleDownCap: Number(result.doubleDownCap || DOUBLE_DOWN_BASE_USES),
+            remainingBaseUses: Number(result.remainingBaseUses || 0),
+            purchasedCredits: Number(result.purchasedCredits || 0),
+            canBuyDoubleDown: !!result.canBuyDoubleDown,
+            buyCost: Number(result.buyCost || DOUBLE_DOWN_BUY_COST),
+            buyBlockedReason: String(result.buyBlockedReason || ""),
+            bonusEligible: !!result.bonusEligible
+          });
+
+          if (result.ok) {
+            this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+          }
+        }
+
+        handlePointShieldPurchase(msg) {
+          if (!this.game.activeGame) return;
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const payload = trustedMsg.payload;
+          const playerId = payload.playerId;
+          const mode = String(payload.mode || "NORMAL").toUpperCase();
+
+          const result = this.game.purchasePointShield(playerId, mode);
+          this.send(MSG.POINT_SHIELD_BUY_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            ok: !!result.ok,
+            playerId,
+            reason: String(result.reason || ""),
+            score: result.score == null ? null : Number(result.score),
+            cost: Number(result.cost || POINT_SHIELD_COST),
+            mode: String(result.mode || mode || "NORMAL"),
+            pointShieldNext: !!result.pointShieldNext,
+            nextQuestionIndex: result.nextQuestionIndex == null ? null : Number(result.nextQuestionIndex),
+            hasNextQuestion: !!result.hasNextQuestion,
+            canBuyPointShield: !!result.canBuyPointShield,
+            canBuyReflectiveShield: !!result.canBuyReflectiveShield,
+            reflectiveShieldCost: REFLECTIVE_SHIELD_COST
+          });
+
+          if (result.ok) {
+            this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+          }
+        }
+
+        handleStreakPrizeClaim(msg) {
+          if (!this.game.activeGame) return;
+          const trustedMsg = this.getTrustedPlayerMessage(msg);
+          if (!trustedMsg) return;
+          const payload = trustedMsg.payload;
+          const playerId = payload.playerId;
+          const action = String(payload.action || "").toUpperCase();
+          const targetPlayerId = String(payload.targetPlayerId || "");
+
+          const result = this.game.claimStreakPrize(playerId, action, targetPlayerId);
+          this.send(MSG.STREAK_PRIZE_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            ok: !!result.ok,
+            playerId,
+            action: result.action || action,
+            targetPlayerId: result.targetPlayerId || null,
+            reason: String(result.reason || ""),
+            realScore: result.realScore == null ? null : Number(result.realScore),
+            displayedScore: result.displayedScore == null ? null : Number(result.displayedScore),
+            isScoreMasked: !!result.isScoreMasked,
+            fakeScoreTurnsRemaining: Number(result.fakeScoreTurnsRemaining || 0),
+            fakeScorePrimed: !!result.fakeScorePrimed,
+            streakPrizeAvailable: !!result.streakPrizeAvailable,
+            streakPrizeUsed: !!result.streakPrizeUsed,
+            streakPrizeUses: Number(result.streakPrizeUses || 0),
+            streakPrizeNextIndex: Number(result.streakPrizeNextIndex || 0),
+            streakPrizeAction: String(result.streakPrizeAction || ""),
+            targetShielded: !!result.targetShielded
+          });
+
+          if (result.ok) {
+            this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+          }
+        }
+
+        handleCreateQuiz() {
+          const title = sanitizeName(this.ui.el.quizTitleInput.value).slice(0, 80);
+          const raw = this.ui.el.quizJsonInput.value.trim();
+          if (!title) {
+            this.ui.showImportStatus("Enter a quiz title.", true);
+            return;
+          }
+          if (!raw) {
+            this.ui.showImportStatus("Paste quiz JSON first.", true);
+            return;
+          }
+
+          let parsed;
+          try {
+            parsed = JSON.parse(raw);
+          } catch (err) {
+            this.ui.showImportStatus("The quiz JSON could not be parsed. " + err.message, true);
+            return;
+          }
+
+          const errors = this.quizLibrary.validateImportedArray(parsed);
+          if (errors.length) {
+            this.ui.showImportStatus(errors[0], true);
+            return;
+          }
+
+          this.quizLibrary.createQuiz(title, parsed);
+          this.ui.el.quizTitleInput.value = "";
+          this.ui.el.quizJsonInput.value = "";
+          this.importDraft.title = "";
+          this.importDraft.json = "";
+          this.ui.showImportStatus("Quiz created and saved.", false);
+          this.renderQuizLibrary();
+        }
+
+        loadDemoQuiz() {
+          const demo = [
+            {
+              query: "What do you call a fish without an eye?",
+              type: "multiple-choice",
+              options: [
+                { text: "Blinky", explanation: "Blinky is a reasonable name for a fish, but it is not the punchline.", correct: false },
+                { text: "One eye fish", explanation: "This describes the fish, but it misses the wordplay.", correct: false },
+                { text: "fsh", explanation: "Remove the letter 'i', which sounds like 'eye', from 'fish' and you get 'fsh'.", correct: true },
+                { text: "Fishy", explanation: "Fishy sounds appropriate, but it is not the answer to the joke.", correct: false }
+              ],
+              answer: "<p>The correct answer is <b>fsh</b>.</p><p>Take the 'i', or 'eye', out of the word <b>fish</b> and you are left with <b>fsh</b>.</p>",
+              tip: "<p>Think about what happens if you literally remove an 'eye' from the word fish.</p>",
+              reference: "Dad Joke Collection."
+            },
+            {
+              query: "What do you call a deer with no eyes?",
+              type: "multiple-choice",
+              options: [
+                { text: "Poor Bambi", explanation: "Poor Bambi may deserve some sympathy, but that is not the punchline.", correct: false },
+                { text: "No idea", explanation: "'No idea' sounds like 'no-eye deer', making it the classic punchline.", correct: true },
+                { text: "Doe Eyed Deer", explanation: "A doe-eyed deer would presumably still have eyes.", correct: false },
+                { text: "Blind deer", explanation: "This is technically descriptive, but dad jokes demand wordplay.", correct: false }
+              ],
+              answer: "<p>The correct answer is <b>No idea</b>.</p><p>Say it out loud: <b>no-eye deer</b>. No idea.</p>",
+              tip: "<p>Some dad jokes work much better when you say the answer out loud.</p>",
+              reference: "Dad Joke Collection."
+            },
+            {
+              query: "How do you stop bad fish from smelling?",
+              type: "multiple-choice",
+              options: [
+                { text: "Freeze them", explanation: "Freezing fish may reduce odors, but that is far too practical for a dad joke.", correct: false },
+                { text: "Put them in a ziplock bag", explanation: "A sealed bag might contain the smell, but it does not stop the fish from smelling.", correct: false },
+                { text: "Keep them under water", explanation: "Fish already spend quite a lot of time underwater, so this is unlikely to solve the problem.", correct: false },
+                { text: "Cut off their noses", explanation: "Without noses, the fish can no longer smell anything. The joke changes the meaning of 'smelling' from producing an odor to detecting one.", correct: true }
+              ],
+              answer: "<p>The correct answer is <b>Cut off their noses</b>.</p><p>The trick is that the question is not asking how to stop the fish from <i>stinking</i>. It is asking how to stop the fish themselves from being able to smell.</p>",
+              tip: "<p>Think about the two different meanings of the word 'smelling'.</p>",
+              reference: "Dad Joke Collection."
+            },
+            {
+              query: "Why are there no Python jokes in this quiz?",
+              type: "multiple-choice",
+              options: [
+                { text: "Because programming isn't funny", explanation: "Programming can be extremely funny, especially when someone else's code breaks.", correct: false },
+                { text: "Because Python devs are too serious", explanation: "Python developers are perfectly capable of making jokes, indentation permitting.", correct: false },
+                { text: "Because this quiz is about animals", explanation: "There are plenty of animals here, but that is not why Python was excluded.", correct: false },
+                { text: "Because Python is the joke", explanation: "This is the intentionally provocative programming-language punchline.", correct: true }
+              ],
+              answer: "<p>The correct answer is <b>Because Python is a joke</b>.</p><p>Python developers may submit complaints using a properly indented form.</p>",
+              tip: "<p>This question may cause slightly elevated blood pressure among Python developers.</p>",
+              reference: "Dad Joke Collection, Programming Language Division."
+            },
+            {
+              query: "What do you call a deer with no eyes and no legs?",
+              type: "multiple-choice",
+              options: [
+                { text: "Immobile deer", explanation: "Accurate, but far too sensible for this quiz.", correct: false },
+                { text: "Sad deer", explanation: "The deer probably is not thrilled about the situation, but this is not the punchline.", correct: false },
+                { text: "Deer that needs help", explanation: "This deer unquestionably needs help, but dad jokes are rarely concerned with practical assistance.", correct: false },
+                { text: "Still no idea", explanation: "A deer with no eyes is 'no-eye deer', or 'no idea'. With no legs, it is also still.", correct: true }
+              ],
+              answer: "<p>The correct answer is <b>Still no idea</b>.</p><p>A deer with no eyes is <b>no-eye deer</b>, or 'no idea'. A deer with no legs is not going anywhere, so it is <b>still no idea</b>.</p>",
+              tip: "<p>This joke builds on the previous deer joke. Add the consequences of having no legs.</p>",
+              reference: "Dad Joke Collection."
+            },
+            {
+              query: "Why did the two Java methods get a divorce?",
+              type: "multiple-choice",
+              options: [
+                { text: "Their relationship was static", explanation: "Static is certainly a Java keyword and a respectable programming pun, but it is not the intended answer.", correct: false },
+                { text: "They had constant arguments", explanation: "Methods can receive arguments, while couples can have arguments. That makes this the intended programming pun.", correct: true },
+                { text: "They couldn't agree on a return value", explanation: "Return values are important to methods, but disagreement about one is not the intended punchline.", correct: false },
+                { text: "They varied too much", explanation: "Variables may vary, but the joke is specifically about methods and their arguments.", correct: false }
+              ],
+              answer: "<p>The correct answer is <b>They had constant arguments</b>.</p><p>Java methods can take arguments. Married couples can also have arguments. Apparently these two had too many of them.</p>",
+              tip: "<p>Think about a word that means one thing in programming and another thing in a relationship.</p>",
+              reference: "Dad Joke Collection, Java Edition."
+            },
+            {
+              query: "The man who invented Java was:",
+              type: "multiple-choice",
+              options: [
+                { text: "Austrian", explanation: "James Gosling was not born in Austria.", correct: false },
+                { text: "American", explanation: "Java was developed at the American company Sun Microsystems, but James Gosling himself is Canadian.", correct: false },
+                { text: "Canadian", explanation: "James Gosling, widely known as the father of Java, was born in Calgary, Alberta, Canada.", correct: true },
+                { text: "German", explanation: "James Gosling was not born in Germany.", correct: false }
+              ],
+              answer: "<p>The correct answer is <b>Canadian</b>.</p><p>James Gosling, widely known as the father of Java, was born in Calgary, Alberta, Canada.</p><p>And, as everyone knows, all the greatest Americans are Canadian.</p>",
+              tip: "<p>Java came from Sun Microsystems in the United States, but its creator came from a little farther north.</p>",
+              reference: "James Gosling, creator of the Java programming language."
+            }
+          ];
+          this.ui.el.quizTitleInput.value = "Dad Joke Fight Quiz";
+          this.ui.el.quizJsonInput.value = JSON.stringify(demo, null, 2);
+          this.importDraft.title = this.ui.el.quizTitleInput.value;
+          this.importDraft.json = this.ui.el.quizJsonInput.value;
+          this.ui.showImportStatus("Built-in dad joke quiz loaded into the editor.", false);
+        }
+
+        renderQuizLibrary() {
+          this.ui.renderQuizLibrary(this.quizLibrary.list(), {
+            onStart: (quizId) => this.startGameFromQuiz(quizId),
+            onDelete: (quizId, title) => {
+              if (confirm("Delete quiz '" + title + "'?")) {
+                this.quizLibrary.delete(quizId);
+                this.renderQuizLibrary();
+              }
+            },
+            onPointChange: (quizId, idx, val) => {
+              const n = Math.max(100, Math.min(5000, Number(val) || 100));
+              this.quizLibrary.setQuestionPoints(quizId, idx, n);
+            },
+            onRandomize: (quizId) => {
+              this.quizLibrary.randomizePoints(quizId);
+              this.renderQuizLibrary();
+            }
+          }, {
+            startLocked: !!(this.game.activeGame && this.game.activeGame.phase !== PHASES.FINISHED),
+            activeQuizTitle: this.game.activeGame ? this.game.activeGame.quizTitle : ""
+          });
+        }
+
+        startGameFromQuiz(quizId) {
+          if (this.game.activeGame && this.game.activeGame.phase !== PHASES.FINISHED) {
+            this.ui.showImportStatus("A quiz is already active. Finish it or return to library before starting another.", true);
+            return;
+          }
+          const quiz = this.quizLibrary.getById(quizId);
+          if (!quiz) return;
+          this.game.startNewGame(quiz);
+          this.ui.hideResumeBanner();
+          this.send(MSG.GAME_STARTED, this.game.activeGame.gameId, "instructor-main", {
+            gameId: this.game.activeGame.gameId,
+            quizTitle: this.game.activeGame.quizTitle
+          });
+          this.renderAll();
+        }
+
+        resumeGame() {
+          const unfinished = this.game.loadUnfinished();
+          if (!unfinished) return;
+          this.game.restoreGame(unfinished);
+          this.ui.hideResumeBanner();
+          this.send(MSG.INSTRUCTOR_PRESENT, this.game.activeGame.gameId, "instructor-main", {
+            resumed: true,
+            phase: this.game.activeGame.phase,
+            questionIndex: this.game.activeGame.questionIndex
+          });
+          this.renderAll();
+        }
+
+        discardGame() {
+          this.game.clearGame();
+          this.ui.hideResumeBanner();
+          this.renderAll();
+        }
+
+        withActionLock(fn) {
+          if (this.actionLock) return;
+          this.actionLock = true;
+          try { fn(); } finally { setTimeout(() => { this.actionLock = false; }, 250); }
+        }
+
+        startQuestion() {
+          this.withActionLock(() => {
+            const question = this.game.startQuestion();
+            if (!question) return;
+            const payload = this.game.getPublicQuestionPayload(this.game.activeGame.questionIndex);
+            this.send(MSG.QUESTION_STARTED, this.game.activeGame.gameId, "instructor-main", payload);
+            this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+            this.renderAll();
+          });
+        }
+
+        forceEndQuestion() {
+          this.withActionLock(() => {
+            const reveal = this.game.endQuestion();
+            if (!reveal) return;
+            this.send(MSG.QUESTION_ENDED, this.game.activeGame.gameId, "instructor-main", {
+              questionIndex: this.game.activeGame.questionIndex
+            });
+            this.send(MSG.ANSWER_REVEALED, this.game.activeGame.gameId, "instructor-main", {
+              questionIndex: this.game.activeGame.questionIndex,
+              reveal
+            });
+            this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+            this.renderAll();
+          });
+        }
+
+        showLeaderboard() {
+          this.withActionLock(() => {
+            this.game.toLeaderboardPhase();
+            this.send(MSG.LEADERBOARD, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard(),
+              questionIndex: this.game.activeGame.questionIndex
+            });
+            this.renderAll();
+          });
+        }
+
+        nextQuestion() {
+          this.startQuestion();
+        }
+
+        finishGame() {
+          this.withActionLock(() => {
+            this.game.finishGame();
+            this.send(MSG.GAME_FINISHED, this.game.activeGame.gameId, "instructor-main", {
+              leaderboard: this.game.getLeaderboard()
+            });
+            this.renderAll();
+          });
+        }
+
+        endGameEarly() {
+          if (!this.game.activeGame) return;
+          if (!confirm("End this game now and show final results to all students?")) return;
+          this.finishGame();
+        }
+
+        playAgain() {
+          if (!this.game.activeGame) return;
+          const quiz = this.quizLibrary.getById(this.game.activeGame.quizId);
+          if (!quiz) return;
+          this.startGameFromQuiz(quiz.id);
+        }
+
+        returnToLibrary() {
+          this.game.clearGame();
+          this.renderAll();
+        }
+
+        removePlayer(playerId, playerName) {
+          if (!confirm("Remove " + playerName + " from this game?")) return;
+          if (!this.game.removePlayer(playerId)) return;
+          this.send(MSG.PLAYER_REMOVED, this.game.activeGame.gameId, "instructor-main", {
+            playerId,
+            reason: "removed-by-instructor"
+          });
+          this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+            leaderboard: this.game.getLeaderboard()
+          });
+          this.renderAll();
+        }
+
+        resetPlayer(playerId) {
+          if (!this.game.resetScore(playerId)) return;
+          this.send(MSG.SCORE_RESET, this.game.activeGame.gameId, "instructor-main", {
+            playerId,
+            doubleDownUses: 0,
+            doubleDownCap: DOUBLE_DOWN_BASE_USES,
+            purchasedCredits: 0,
+            buyCost: DOUBLE_DOWN_BUY_COST,
+            pointShieldNext: false,
+            pointShieldMode: "NORMAL",
+            pointShieldArmedForQuestionIndex: null,
+            pointShieldCost: POINT_SHIELD_COST,
+            reflectiveShieldCost: REFLECTIVE_SHIELD_COST,
+            streakPrizeAvailable: false,
+            streakPrizeUsed: false,
+            streakPrizeUses: 0,
+            streakPrizeNextIndex: 0,
+            fakeScoreTurnsRemaining: 0
+          });
+          this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
+            leaderboard: this.game.getLeaderboard()
+          });
+          this.renderAll();
+        }
+
+        renderDebug() {
+          const g = this.game.activeGame;
+          this.ui.renderDebug({
+            socketStatus: this.socketStatus,
+            gameId: g ? g.gameId : "-",
+            phase: g ? g.phase : "-",
+            questionLabel: g ? (g.questionIndex + 1) + " / " + g.questions.length : "-",
+            playerCount: g ? Object.values(g.players).filter((p) => !p.removed).length : 0,
+            submissionCount: g && g.questionIndex >= 0 ? Object.keys(g.submissions[String(g.questionIndex)] || {}).length : 0,
+            lastMessageType: this.socket.lastMessageType,
+            lastSaveTime: this.game.lastSaveAt
+          });
+        }
+
+        renderAll() {
+          const g = this.game.activeGame;
+          const quoteSet = quoteSetForPhase(g ? g.phase : PHASES.LOBBY);
+          this.renderQuizLibrary();
+
+          const handlers = {
+            onStartQuestion: () => this.startQuestion(),
+            onEndQuestionNow: () => this.forceEndQuestion(),
+            onShowLeaderboard: () => this.showLeaderboard(),
+            onNextQuestion: () => this.nextQuestion(),
+            onFinishGame: () => this.finishGame(),
+            onEndGameEarly: () => this.endGameEarly(),
+            onPlayAgain: () => this.playAgain(),
+            onReturnLibrary: () => this.returnToLibrary(),
+            onSortLeaderboard: (key) => {
+              this.toggleSortState("leaderboard", key);
+              this.renderAll();
+            },
+            onSortQuickDraw: (key) => {
+              this.toggleSortState("quickdraw", key);
+              this.renderAll();
+            },
+            onResetSorts: () => {
+              this.resetSorts();
+              this.renderAll();
+            }
+          };
+
+          this.ui.updateLobby(g);
+          this.ui.setNewFightVisible(!!g, () => {
+            if (this.game.activeGame && !confirm("Start a new fight and return to the quiz library?")) return;
+            this.returnToLibrary();
+          });
+          this.ui.setPhase(g ? g.phase : PHASES.LOBBY);
+          this.ui.renderActiveControls(g, handlers);
+
+          const scoreRankRows = this.game.getLeaderboard();
+          const displayedScoreMap = {};
+          scoreRankRows.forEach((row) => {
+            displayedScoreMap[row.playerId] = Number(row.score || 0);
+          });
+          this.ui.renderPlayers(g || { players: {} }, {
+            onRemove: (playerId, name) => this.removePlayer(playerId, name),
+            onReset: (playerId) => this.resetPlayer(playerId)
+          }, displayedScoreMap);
+
+          const stageStats = this.buildStageStats(scoreRankRows);
+          this.ui.renderStage(g, stageStats, handlers, quoteSet);
+          this.ui.setFooterQuote(quoteSet.footer);
+
+          this.renderDebug();
+        }
+
+        spawnSparks() {
+          const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reduce) return;
+          const layer = document.getElementById("sparkLayer");
+          for (let i = 0; i < 16; i += 1) {
+            const s = document.createElement("div");
+            s.className = "spark";
+            s.style.left = Math.floor(Math.random() * 100) + "vw";
+            s.style.bottom = -Math.floor(Math.random() * 130) + "px";
+            s.style.animationDuration = (18 + Math.random() * 16) + "s";
+            s.style.animationDelay = (-Math.random() * 12) + "s";
+            layer.appendChild(s);
+          }
+        }
+      }
+
+      const app = new InstructorApp();
+      app.init();
+    })();
+  </script>
+</body>
+</html>

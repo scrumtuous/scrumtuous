@@ -1,0 +1,4146 @@
+<!DOCTYPE html>
+<!-- index.html: Player interface for joining, answering, and following the live Fight Quiz multiplayer game. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fight Quiz | On a long enough timeline, the survival rate for every quiz drops to zero</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+  <style>
+    :root {
+      --night: #0f0b16;
+      --plum-dark: #21142b;
+      --plum-mid: #3a2148;
+      --rose: #d392b2;
+      --lavender: #c8afd9;
+      --pink: #f7dde9;
+      --silver: #d2d5e0;
+      --danger: #ff6b88;
+      --ok: #56d79f;
+      --warn: #ff9d74;
+      --card: rgba(29, 18, 38, 0.82);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+      --radius: 20px;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--pink);
+      font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(211, 146, 178, 0.28), transparent 28%),
+        radial-gradient(circle at 82% 24%, rgba(200, 175, 217, 0.23), transparent 30%),
+        radial-gradient(circle at 50% 78%, rgba(211, 146, 178, 0.15), transparent 36%),
+        linear-gradient(165deg, var(--night), var(--plum-dark) 44%, var(--plum-mid));
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("fight-landing-bg.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title-font {
+      font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid rgba(247, 221, 233, 0.24);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .small-note { color: rgba(247, 221, 233, 0.82); }
+
+    .landing-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("fight-landing-bg.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.08;
+      filter: contrast(0.95);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .join-landing::before {
+      background-image:
+        linear-gradient(rgba(58, 33, 72, 0.85), rgba(58, 33, 72, 0.85)),
+        url("fight-landing-bg.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      background-blend-mode: multiply;
+      opacity: 0.35;
+    }
+
+    .landing-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .conn-badge {
+      border-radius: 999px;
+      border: 1px solid rgba(210, 213, 224, 0.3);
+      padding: 0.3rem 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .socket-control {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .socket-pill-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(210, 213, 224, 0.3);
+      padding: 0.3rem 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 0, 0.16);
+      color: var(--pink);
+      cursor: pointer;
+    }
+
+    .socket-pill-btn:hover,
+    .socket-pill-btn:focus-visible {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .socket-menu {
+      position: absolute;
+      top: calc(100% + 0.45rem);
+      right: 0;
+      width: min(94vw, 420px);
+      z-index: 80;
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.28);
+      background: rgba(24, 15, 32, 0.96);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+      padding: 0.7rem;
+    }
+
+    .socket-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(247, 221, 233, 0.15);
+      border-radius: 10px;
+      padding: 0.45rem 0.55rem;
+      margin-bottom: 0.42rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .socket-health-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7b7b7b;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .socket-health-dot.ok {
+      background: var(--ok);
+      box-shadow: 0 0 10px rgba(86, 215, 159, 0.62);
+    }
+
+    .socket-health-dot.fail {
+      background: var(--danger);
+      box-shadow: 0 0 10px rgba(255, 107, 136, 0.62);
+    }
+
+    .socket-health-dot.testing {
+      background: var(--warn);
+      box-shadow: 0 0 10px rgba(255, 157, 116, 0.62);
+    }
+
+    .socket-label {
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: #ffe7f1;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .socket-url {
+      font-size: 0.73rem;
+      color: rgba(247, 221, 233, 0.8);
+      word-break: break-all;
+      display: block;
+      line-height: 1.25;
+      margin-top: 0.1rem;
+    }
+
+    .new-fight-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(247, 221, 233, 0.4);
+      background: rgba(60, 36, 79, 0.7);
+      color: #ffe7f0;
+      font-weight: 700;
+      padding: 0.28rem 0.75rem;
+      font-size: 0.84rem;
+      line-height: 1.2;
+    }
+
+    .new-fight-pill:hover,
+    .new-fight-pill:focus-visible {
+      color: #fff;
+      border-color: rgba(247, 221, 233, 0.6);
+      background: rgba(93, 56, 122, 0.8);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #888;
+    }
+
+    .dot.connected { background: var(--ok); box-shadow: 0 0 12px rgba(86, 215, 159, 0.65); }
+    .dot.reconnecting { background: var(--warn); box-shadow: 0 0 12px rgba(255, 157, 116, 0.65); }
+    .dot.disconnected { background: var(--danger); box-shadow: 0 0 12px rgba(255, 107, 136, 0.65); }
+
+    .moon-btn {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.35);
+      color: var(--pink);
+      background: linear-gradient(140deg, rgba(163, 96, 132, 0.45), rgba(92, 61, 124, 0.42));
+      font-weight: 800;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .moon-btn:hover,
+    .moon-btn:focus-visible {
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 9px 20px rgba(211, 146, 178, 0.33);
+    }
+
+    .moon-btn:disabled {
+      opacity: 0.5;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .outline-moon {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.35);
+      color: var(--pink);
+      background: transparent;
+      font-weight: 700;
+    }
+
+    .join-input,
+    .join-input:focus {
+      border-radius: 12px;
+      background: rgba(8, 6, 12, 0.65);
+      color: #fff;
+      border-color: rgba(247, 221, 233, 0.35);
+      box-shadow: 0 0 0 0.12rem rgba(211, 146, 178, 0.2);
+    }
+
+    .score-box {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.3);
+      background: rgba(0, 0, 0, 0.36);
+      padding: 0.7rem;
+      text-align: center;
+    }
+
+    .question-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
+    .question-status-lane {
+      display: grid;
+      gap: 0.45rem;
+      grid-template-columns: repeat(2, minmax(92px, 1fr));
+      width: 100%;
+    }
+
+    @media (min-width: 820px) {
+      .question-status-lane {
+        width: auto;
+        grid-template-columns: repeat(5, minmax(92px, 108px));
+      }
+    }
+
+    .status-tile {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.3);
+      background: rgba(0, 0, 0, 0.36);
+      min-height: 84px;
+      padding: 0.55rem 0.45rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.22rem;
+      text-align: center;
+    }
+
+    .status-tile .label {
+      font-size: 0.68rem;
+      color: rgba(247, 221, 233, 0.78);
+      line-height: 1.2;
+    }
+
+    .status-tile .status-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      color: rgba(247, 221, 233, 0.88);
+    }
+
+    .status-tile.is-on {
+      border-color: rgba(255, 224, 144, 0.6);
+      background: rgba(98, 65, 21, 0.3);
+    }
+
+    .status-tile.is-on .status-icon {
+      color: #ffe4a3;
+    }
+
+    .status-tile.is-shield.is-on {
+      border-color: rgba(145, 240, 211, 0.58);
+      background: rgba(25, 95, 73, 0.31);
+    }
+
+    .status-tile.is-shield.is-on .status-icon {
+      color: #cffff0;
+    }
+
+    .status-tile.is-attack.is-on {
+      border-color: rgba(255, 141, 160, 0.62);
+      background: rgba(112, 44, 66, 0.34);
+    }
+
+    .status-tile.is-attack.is-on .status-icon {
+      color: #ffd4dd;
+    }
+
+    .status-tile.question-action-tile {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+    }
+
+    .status-tile.question-action-tile:hover:not(:disabled),
+    .status-tile.question-action-tile:focus-visible:not(:disabled) {
+      border-color: rgba(255, 224, 144, 0.75);
+      background: rgba(98, 65, 21, 0.36);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .status-tile.question-action-tile:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-tile.is-fifty.is-on {
+      border-color: rgba(255, 224, 144, 0.7);
+      background: rgba(98, 65, 21, 0.34);
+    }
+
+    .timer {
+      font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.1rem, 7vw, 3.5rem);
+      text-align: center;
+      line-height: 1;
+      border: 1px solid rgba(247, 221, 233, 0.45);
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.42);
+      padding: 0.45rem 0.9rem;
+      min-width: 180px;
+      margin: 0 auto;
+      animation: pulse-soft 1300ms ease-in-out infinite;
+    }
+
+    .timer.warn {
+      border-color: rgba(255, 157, 116, 0.6);
+      color: #ffd4c2;
+    }
+
+    .timer.danger {
+      border-color: rgba(255, 107, 136, 0.75);
+      color: #ffdbe5;
+      animation: pulse-hot 760ms ease-in-out infinite;
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes pulse-hot {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    @media (min-width: 768px) {
+      .options-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .ans-btn {
+      text-align: left;
+      border: none;
+      border-radius: 16px;
+      min-height: 88px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      width: 100%;
+      padding: 0.8rem;
+      font-weight: 700;
+      transition: transform 130ms ease, box-shadow 130ms ease, filter 130ms ease;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ans-btn .letter {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .ans-btn:hover,
+    .ans-btn:focus-visible {
+      transform: translateY(-1px) scale(1.01);
+      filter: brightness(1.06);
+    }
+
+    .ans-btn.selected {
+      outline: 3px solid rgba(247, 221, 233, 0.88);
+      box-shadow: 0 0 0 4px rgba(247, 221, 233, 0.22), 0 14px 28px rgba(0, 0, 0, 0.45);
+      animation: select-glow 680ms ease;
+    }
+
+    .ans-btn.locked {
+      opacity: 0.64;
+      transform: none;
+      filter: grayscale(0.12);
+    }
+
+    .ans-btn.fifty-fifty-removed {
+      opacity: 0.42;
+      filter: grayscale(0.9) brightness(0.82);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .ans-btn.fifty-fifty-removed:hover,
+    .ans-btn.fifty-fifty-removed:focus-visible {
+      transform: none;
+      filter: grayscale(0.9) brightness(0.82);
+    }
+
+    .ans-btn.reveal-wrong {
+      background: linear-gradient(145deg, #54545d, #3f3f46) !important;
+      filter: grayscale(0.25);
+      opacity: 0.66;
+    }
+
+    .ans-btn.reveal-correct {
+      border: 2px solid rgba(255, 246, 194, 0.95);
+      box-shadow: 0 0 0 4px rgba(255, 235, 150, 0.2), 0 0 30px rgba(255, 214, 122, 0.55);
+      animation: correct-throb 950ms ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ans-btn.reveal-correct:hover,
+    .ans-btn.reveal-correct:focus-visible {
+      transform: scale(1.03) rotate(-0.4deg);
+      filter: brightness(1.12) saturate(1.15);
+      box-shadow: 0 0 0 6px rgba(255, 232, 144, 0.24), 0 0 40px rgba(255, 214, 122, 0.8);
+    }
+
+    @keyframes correct-throb {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.018); }
+    }
+
+    .answer-reveal-blast {
+      animation: reveal-blast 700ms cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes reveal-blast {
+      0% { transform: scale(0.94); opacity: 0; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .confetti-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      opacity: 0.95;
+      animation: confetti-fall 900ms ease-out forwards;
+      border-radius: 2px;
+    }
+
+    @keyframes confetti-fall {
+      from { transform: translateY(-8px) rotate(0deg); opacity: 1; }
+      to { transform: translateY(88px) rotate(320deg); opacity: 0; }
+    }
+
+    .double-down-banner {
+      border-radius: 12px;
+      border: 1px solid rgba(255, 194, 145, 0.8);
+      background: rgba(130, 73, 37, 0.28);
+      color: #ffe8c5;
+      font-weight: 800;
+      padding: 0.58rem 0.72rem;
+      margin-bottom: 0.8rem;
+      animation: danger-throb 920ms ease-in-out infinite;
+    }
+
+    @keyframes danger-throb {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 194, 145, 0.28); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 194, 145, 0); }
+    }
+
+    .double-down-note {
+      border-radius: 10px;
+      border: 1px solid rgba(247, 221, 233, 0.22);
+      background: rgba(0, 0, 0, 0.26);
+      color: rgba(247, 221, 233, 0.9);
+      padding: 0.55rem 0.65rem;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .double-down-note.warn {
+      border-color: rgba(255, 194, 145, 0.62);
+      color: #ffe2c5;
+      background: rgba(123, 63, 32, 0.28);
+    }
+
+    .double-down-note.ok {
+      border-color: rgba(130, 235, 186, 0.52);
+      color: #d9ffed;
+      background: rgba(30, 96, 71, 0.26);
+    }
+
+    .double-down-note.bad {
+      border-color: rgba(255, 132, 158, 0.58);
+      color: #ffdce7;
+      background: rgba(114, 41, 61, 0.32);
+    }
+
+    .streak-prize {
+      border-radius: 16px;
+      border: 2px solid rgba(255, 231, 142, 0.92);
+      background: linear-gradient(145deg, rgba(120, 74, 20, 0.38), rgba(98, 45, 26, 0.45));
+      box-shadow: 0 0 0 2px rgba(255, 214, 102, 0.2), 0 0 34px rgba(255, 204, 97, 0.35);
+      padding: 0.85rem;
+      margin-bottom: 0.9rem;
+      animation: prize-pop 680ms ease;
+    }
+
+    .streak-prize-title {
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #ffeab7;
+      font-size: 1.12rem;
+    }
+
+    .streak-prize-note {
+      color: #fff0d4;
+      font-size: 0.92rem;
+    }
+
+    @keyframes prize-pop {
+      0% { transform: scale(0.96); opacity: 0.3; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes select-glow {
+      0% { box-shadow: 0 0 0 0 rgba(247, 221, 233, 0.45); }
+      100% { box-shadow: 0 0 0 9px rgba(247, 221, 233, 0); }
+    }
+
+    .c-red { background: linear-gradient(145deg, #cc384f, #a12545); }
+    .c-green { background: linear-gradient(145deg, #2aa467, #1f8450); }
+    .c-blue { background: linear-gradient(145deg, #3377e2, #2b52b9); }
+    .c-purple { background: linear-gradient(145deg, #8451cf, #6943af); }
+    .c-orange { background: linear-gradient(145deg, #ea7f2b, #ca5e18); }
+    .c-pink { background: linear-gradient(145deg, #d14b8d, #a53672); }
+
+    .lock-state {
+      border-radius: 12px;
+      border: 1px solid rgba(86, 215, 159, 0.5);
+      background: rgba(36, 99, 72, 0.2);
+      padding: 0.65rem;
+      font-weight: 700;
+      animation: pop-msg 280ms ease;
+    }
+
+    @keyframes pop-msg {
+      from { opacity: 0; transform: translateY(6px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .shake {
+      animation: wrong-shake 420ms ease;
+    }
+
+    @keyframes wrong-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
+      75% { transform: translateX(-4px); }
+    }
+
+    .celebrate {
+      animation: win-pop 520ms ease;
+    }
+
+    @keyframes win-pop {
+      0% { transform: scale(0.95); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .rank-row {
+      border-radius: 12px;
+      border: 1px solid rgba(247, 221, 233, 0.2);
+      background: rgba(47, 30, 60, 0.75);
+      padding: 0.58rem 0.72rem;
+      margin-bottom: 0.45rem;
+      animation: rise 280ms ease both;
+    }
+
+    .sort-btn {
+      border: 1px solid rgba(247, 221, 233, 0.35);
+      border-radius: 10px;
+      background: rgba(85, 54, 108, 0.55);
+      color: var(--pink);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .sort-btn:hover,
+    .sort-btn:focus-visible {
+      background: rgba(132, 83, 168, 0.6);
+      color: #fff;
+    }
+
+    .stats-table-wrap {
+      border: 1px solid rgba(247, 221, 233, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(10, 7, 14, 0.45);
+    }
+
+    .stats-table {
+      margin-bottom: 0;
+      color: var(--pink);
+    }
+
+    .final-results-view .stats-table,
+    .final-results-view .stats-table th,
+    .final-results-view .stats-table td,
+    .final-results-view .podium-card,
+    .final-results-view .score-box,
+    .final-results-view .glass,
+    .final-results-view .small-note,
+    .final-results-view .fw-bold,
+    .final-results-view .stats-empty,
+    .final-results-view .final-action-summary {
+      color: #d6d8e2;
+    }
+
+    .final-results-view .stats-table th {
+      color: #e1e4ef;
+    }
+
+    .final-results-view .podium-card,
+    .final-results-view .stats-table-wrap,
+    .final-results-view .stats-empty,
+    .final-results-view .final-action-summary {
+      border-color: rgba(214, 216, 226, 0.24);
+    }
+
+    .final-results-view .sort-btn {
+      color: #d6d8e2;
+      border-color: rgba(214, 216, 226, 0.36);
+      background: rgba(55, 45, 72, 0.62);
+    }
+
+    .final-results-view .sort-btn:hover,
+    .final-results-view .sort-btn:focus-visible {
+      color: #f2f4fb;
+    }
+
+    .stats-table th,
+    .stats-table td {
+      background: transparent !important;
+      border-color: rgba(247, 221, 233, 0.18) !important;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .stats-table th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--lavender);
+    }
+
+    .stats-empty {
+      border: 1px dashed rgba(247, 221, 233, 0.24);
+      border-radius: 12px;
+      padding: 0.75rem;
+      color: rgba(247, 221, 233, 0.75);
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .podium-card {
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(247, 221, 233, 0.3);
+      padding: 0.7rem;
+      background: rgba(56, 37, 69, 0.7);
+    }
+
+    .podium-card.first { box-shadow: 0 0 18px rgba(255, 222, 140, 0.4); }
+    .podium-card.second { box-shadow: 0 0 12px rgba(214, 214, 225, 0.25); }
+    .podium-card.third { box-shadow: 0 0 12px rgba(214, 168, 148, 0.25); }
+
+    .leaderboard-view {
+      position: relative;
+    }
+
+    .final-action-summary {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 231, 142, 0.58);
+      background: linear-gradient(150deg, rgba(102, 64, 28, 0.44), rgba(62, 36, 53, 0.5));
+      color: #ffeecd;
+      padding: 0.7rem 0.8rem;
+      margin-bottom: 0.7rem;
+      font-weight: 700;
+    }
+
+    .power-action-card {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.28);
+      background: linear-gradient(160deg, rgba(37, 24, 49, 0.92), rgba(22, 14, 31, 0.9));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 25px rgba(0, 0, 0, 0.3);
+      padding: 0.65rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .power-rail {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin-bottom: 0.45rem;
+    }
+
+    @media (min-width: 760px) {
+      .power-rail {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .power-pill-btn {
+      border: 1px solid rgba(247, 221, 233, 0.38);
+      border-radius: 999px;
+      background: rgba(73, 46, 92, 0.55);
+      color: #ffeaf3;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      line-height: 1.15;
+      min-height: 2.35rem;
+      padding: 0.4rem 0.7rem;
+      width: 100%;
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    }
+
+    .power-pill-btn:hover,
+    .power-pill-btn:focus-visible {
+      color: #fff;
+      background: rgba(98, 61, 124, 0.76);
+      transform: translateY(-1px);
+      box-shadow: 0 7px 16px rgba(0, 0, 0, 0.26);
+    }
+
+    .power-pill-btn:disabled,
+    .power-pill-btn.is-disabled {
+      opacity: 0.54;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .power-pill-btn.ready {
+      border-color: rgba(255, 226, 138, 0.7);
+      background: rgba(126, 79, 25, 0.45);
+      color: #ffe9b7;
+    }
+
+    .power-pill-btn.shield {
+      border-color: rgba(134, 232, 202, 0.68);
+      background: rgba(22, 87, 66, 0.45);
+      color: #ddfff2;
+    }
+
+    .power-pill-btn.attack {
+      border-color: rgba(255, 140, 165, 0.72);
+      background: rgba(123, 46, 72, 0.42);
+      color: #ffdce6;
+    }
+
+    .power-pill-btn.active {
+      box-shadow: 0 0 0 2px rgba(247, 221, 233, 0.22), 0 10px 20px rgba(0, 0, 0, 0.34);
+      background: rgba(109, 68, 138, 0.84);
+      color: #fff;
+    }
+
+    .power-target-picker {
+      border: 1px solid rgba(247, 221, 233, 0.28);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.24);
+      padding: 0.52rem;
+      margin-top: 0.2rem;
+    }
+
+    .power-status-row {
+      display: grid;
+      gap: 0.38rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      margin-bottom: 0.45rem;
+    }
+
+    .power-notice-center {
+      text-align: center;
+    }
+
+    @media (min-width: 760px) {
+      .power-status-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .power-status-note {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.3);
+      background: rgba(0, 0, 0, 0.36);
+      color: rgba(247, 221, 233, 0.8);
+      font-size: 0.76rem;
+      line-height: 1.35;
+      padding: 0.7rem;
+      min-height: 2.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .power-status-note.ok {
+      border-color: rgba(247, 221, 233, 0.3);
+      color: rgba(247, 221, 233, 0.8);
+      background: rgba(0, 0, 0, 0.36);
+    }
+
+    .power-status-note.bad {
+      border-color: rgba(247, 221, 233, 0.3);
+      color: rgba(247, 221, 233, 0.8);
+      background: rgba(0, 0, 0, 0.36);
+    }
+
+    .reveal-score-row {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin: 0.75rem 0 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .reveal-score-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .answer-tip-card {
+      border-radius: 14px;
+      border: 1px solid rgba(247, 221, 233, 0.24);
+      background: rgba(0, 0, 0, 0.22);
+      padding: 0.7rem 0.8rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .answer-tip-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .answer-tip-row + .answer-tip-row {
+      margin-top: 0.65rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid rgba(247, 221, 233, 0.16);
+    }
+
+    .answer-tip-label {
+      flex-shrink: 0;
+      min-width: 4.2rem;
+      font-weight: 800;
+      color: #ffeab7;
+    }
+
+    .answer-tip-copy {
+      color: rgba(247, 221, 233, 0.92);
+      line-height: 1.35;
+    }
+
+    .rail-heading {
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #ffe7f1;
+      margin-bottom: 0.5rem;
+    }
+
+    .power-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .power-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 221, 233, 0.26);
+      background: rgba(0, 0, 0, 0.28);
+      color: rgba(247, 221, 233, 0.92);
+      padding: 0.18rem 0.5rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .power-pill.ready {
+      border-color: rgba(255, 224, 144, 0.62);
+      color: #ffe7ab;
+      background: rgba(123, 78, 27, 0.35);
+    }
+
+    .power-pill.shield {
+      border-color: rgba(145, 240, 211, 0.58);
+      color: #d4fff0;
+      background: rgba(25, 95, 73, 0.31);
+    }
+
+    .power-pill.rocket {
+      border-color: rgba(255, 141, 160, 0.62);
+      color: #ffd4dd;
+      background: rgba(112, 44, 66, 0.34);
+    }
+
+    .in-play-strip {
+      border-radius: 12px;
+      border: 1px solid rgba(247, 221, 233, 0.24);
+      background: rgba(0, 0, 0, 0.22);
+      padding: 0.55rem 0.65rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .in-play-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    .power-action-row {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    @media (min-width: 860px) {
+      .power-action-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .power-action-col {
+      max-width: 420px;
+    }
+
+    @keyframes rise {
+      from { transform: translateY(6px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .floater {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.22;
+      z-index: 0;
+      animation: floaty linear infinite;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(255,255,255,0));
+    }
+
+    @keyframes floaty {
+      from { transform: translateY(12vh) translateX(0); }
+      to { transform: translateY(-120vh) translateX(25px); }
+    }
+
+    .focus-ring:focus-visible {
+      outline: 2px solid #ffe6ef;
+      outline-offset: 2px;
+    }
+
+    .phase-video {
+      border: 1px solid rgba(247, 221, 233, 0.24);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.24);
+      padding: 0.55rem;
+      margin-top: 0.9rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .phase-video-frame {
+      position: relative;
+      width: 100%;
+      min-height: clamp(320px, 42vw, 520px);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.35);
+      flex: 1 1 auto;
+    }
+
+    .phase-video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="floatLayer"></div>
+  <div class="shell">
+    <header class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+      <div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button id="newFightBtn" class="btn new-fight-pill focus-ring d-none" type="button">New Quiz</button>
+        <div class="socket-control">
+          <button id="socketPill" class="socket-pill-btn focus-ring" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="socketMenu">
+            <span id="connDot" class="dot disconnected"></span><span id="connText">Connecting...</span>
+          </button>
+          <div id="socketMenu" class="socket-menu d-none" role="dialog" aria-label="WebSocket endpoint selector">
+            <div class="small-note mb-2">Choose endpoint priority. The selected one is tried first, then fallbacks.</div>
+            <div id="socketOptions"></div>
+            <div id="socketModeOptions" class="mt-2"></div>
+            <label class="form-label mb-1 mt-1" for="socketCustomInput">Custom URL</label>
+            <div class="d-flex gap-2">
+              <input id="socketCustomInput" class="form-control form-control-sm" placeholder="ws://example:8099/madmoney" />
+              <button id="socketCustomSaveBtn" class="btn btn-sm moon-btn focus-ring" type="button">Save</button>
+            </div>
+            <div id="socketMenuMsg" class="small-note mt-2" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app"></main>
+
+    <footer class="small-note text-center mt-3 mb-1"></footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const SOCKET_CHOICES = [
+        { id: "primary", name: "TheServerSide", url: "wss://websockets.theserverside.com" },
+        { id: "internal", name: "Internal", url: "ws://internal.theserverside.com:8099/madmoney" },
+        { id: "legacy", name: "Cameron's VM", url: "ws://10.23.131.137:8099/madmoney" }
+      ];
+      const STORAGE_KEYS = {
+        IDENTITY: "gothicQuiz.studentIdentity.v1",
+        GAME: "gothicQuiz.studentGame.v1",
+        SOCKET_PREFS: "gothicQuiz.socketPrefs.student.v1"
+      };
+
+      const PHASES = {
+        LOBBY: "LOBBY",
+        QUESTION: "QUESTION",
+        ANSWER_REVEAL: "ANSWER_REVEAL",
+        LEADERBOARD: "LEADERBOARD",
+        FINISHED: "FINISHED"
+      };
+
+      const MSG = {
+        PLAYER_JOIN: "PLAYER_JOIN",
+        PLAYER_REJOIN: "PLAYER_REJOIN",
+        PLAYER_JOINED: "PLAYER_JOINED",
+        PLAYER_REMOVE: "PLAYER_REMOVE",
+        PLAYER_REMOVED: "PLAYER_REMOVED",
+        SYNC_REQUEST: "SYNC_REQUEST",
+        STATE_SNAPSHOT: "STATE_SNAPSHOT",
+        GAME_STARTED: "GAME_STARTED",
+        QUESTION_STARTED: "QUESTION_STARTED",
+        ANSWER_SUBMITTED: "ANSWER_SUBMITTED",
+        FIFTY_FIFTY: "FIFTY_FIFTY",
+        FIFTY_FIFTY_RESULT: "FIFTY_FIFTY_RESULT",
+        QUESTION_ENDED: "QUESTION_ENDED",
+        ANSWER_REVEALED: "ANSWER_REVEALED",
+        SCORE_UPDATED: "SCORE_UPDATED",
+        SCORE_RESET: "SCORE_RESET",
+        LEADERBOARD: "LEADERBOARD",
+        GAME_FINISHED: "GAME_FINISHED",
+        INSTRUCTOR_PRESENT: "INSTRUCTOR_PRESENT",
+        DOUBLE_DOWN_NEXT: "DOUBLE_DOWN_NEXT",
+        DOUBLE_DOWN_SET: "DOUBLE_DOWN_SET",
+        DOUBLE_DOWN_BUY: "DOUBLE_DOWN_BUY",
+        DOUBLE_DOWN_BUY_RESULT: "DOUBLE_DOWN_BUY_RESULT",
+        POINT_SHIELD_BUY: "POINT_SHIELD_BUY",
+        POINT_SHIELD_BUY_RESULT: "POINT_SHIELD_BUY_RESULT",
+        STREAK_PRIZE_CLAIM: "STREAK_PRIZE_CLAIM",
+        STREAK_PRIZE_RESULT: "STREAK_PRIZE_RESULT"
+      };
+
+      const STREAK_ACTION = {
+        MASK: "MASK_SELF",
+        STEAL: "STEAL_1000",
+        BONUS: "BONUS_2000"
+      };
+
+      const FIFTY_FIFTY_COST = 1000;
+
+      function nowTs() { return Date.now(); }
+      function generateMessageId() {
+        if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+        return "m-" + Math.random().toString(36).slice(2) + "-" + nowTs();
+      }
+      function formatScore(v) { return Number(v || 0).toLocaleString(); }
+      function formatTime(ms) {
+        const safe = Math.max(0, ms);
+        const sec = Math.floor(safe / 1000);
+        const mm = String(Math.floor(sec / 60)).padStart(2, "0");
+        const ss = String(sec % 60).padStart(2, "0");
+        return mm + ":" + ss;
+      }
+      function formatMs(ms) {
+        if (ms == null || !isFinite(ms)) return "-";
+        return Math.round(ms) + " ms";
+      }
+      function normalizeNames(value) {
+        if (!Array.isArray(value)) return [];
+        const seen = new Set();
+        const out = [];
+        value.forEach((item) => {
+          const txt = sanitizeName(item);
+          if (!txt) return;
+          const key = txt.toLowerCase();
+          if (seen.has(key)) return;
+          seen.add(key);
+          out.push(txt);
+        });
+        return out;
+      }
+      function sanitizeName(name) {
+        return String(name || "").trim().replace(/\s+/g, " ").slice(0, 30);
+      }
+      function readQueryGame() {
+        const sp = new URLSearchParams(window.location.search);
+        return (sp.get("game") || "").trim().toUpperCase().slice(0, 12);
+      }
+
+      function normalizeSocketUrl(value) {
+        return String(value || "").trim();
+      }
+
+      function isValidSocketUrl(value) {
+        return /^wss?:\/\/.+/i.test(normalizeSocketUrl(value));
+      }
+
+      function dedupeByUrl(items) {
+        const seen = new Set();
+        const out = [];
+        items.forEach((item) => {
+          const url = String(item && item.url ? item.url : "");
+          if (!url || seen.has(url)) return;
+          seen.add(url);
+          out.push(item);
+        });
+        return out;
+      }
+
+      function probeSocketUrl(url, timeoutMs) {
+        const target = normalizeSocketUrl(url);
+        if (!isValidSocketUrl(target)) return Promise.resolve(false);
+        return new Promise((resolve) => {
+          let settled = false;
+          let ws;
+          const finish = (ok) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            try {
+              if (ws && ws.readyState === WebSocket.OPEN) ws.close();
+            } catch (err) {
+              // ignore close failures in probe mode
+            }
+            resolve(!!ok);
+          };
+          const timer = setTimeout(() => finish(false), timeoutMs || 2200);
+          try {
+            ws = new WebSocket(target);
+          } catch (err) {
+            finish(false);
+            return;
+          }
+          ws.onopen = () => finish(true);
+          ws.onerror = () => finish(false);
+          ws.onclose = () => finish(false);
+        });
+      }
+
+      const STUDENT_PHASE_VIDEOS = {
+        join: "https://www.youtube.com/embed/uNb5sf0xWt4",
+        waiting: "https://www.youtube.com/embed/S2xyFQlpzIY",
+        question: "https://www.youtube.com/embed/IxxJlLolj-E",
+        answer: "https://www.youtube.com/embed/fu2bvCTSd9U",
+        leaderboard: "https://www.youtube.com/embed/9aBPxO6Wl6c",
+        final: "https://www.youtube.com/embed/uNb5sf0xWt4"
+      };
+
+      class LocalStore {
+        static readJson(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return fallback;
+            return JSON.parse(raw);
+          } catch (err) {
+            return fallback;
+          }
+        }
+        static writeJson(key, value) {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+      }
+
+      class SocketManager {
+        constructor(onMessage, onState, getSocketCandidates, onConnectedUrl) {
+          this.onMessage = onMessage;
+          this.onState = onState;
+          this.getSocketCandidates = getSocketCandidates;
+          this.onConnectedUrl = onConnectedUrl;
+          this.ws = null;
+          this.retries = 0;
+          this.manual = false;
+          this.seen = new Map();
+          this.status = "disconnected";
+          this.activeUrl = "";
+        }
+
+        connect() {
+          this.manual = false;
+          this._open();
+          if (!this.pruneTimer) {
+            this.pruneTimer = setInterval(() => this.pruneSeen(), 9000);
+          }
+        }
+
+        _open() {
+          this.onState("connecting");
+          const candidates = dedupeByUrl(typeof this.getSocketCandidates === "function" ? this.getSocketCandidates() : []);
+          if (!candidates.length) {
+            this.scheduleReconnect();
+            return;
+          }
+
+          const tryCandidate = (idx) => {
+            if (this.manual) return;
+            if (idx >= candidates.length) {
+              this.scheduleReconnect();
+              return;
+            }
+
+            const target = candidates[idx];
+            let probeWs = null;
+            let settled = false;
+            const fail = () => {
+              if (settled) return;
+              settled = true;
+              clearTimeout(openTimer);
+              try {
+                if (probeWs) probeWs.close();
+              } catch (err) {
+                // ignore close failures while rotating fallbacks
+              }
+              tryCandidate(idx + 1);
+            };
+
+            let openTimer = null;
+            try {
+              probeWs = new WebSocket(target.url);
+            } catch (err) {
+              tryCandidate(idx + 1);
+              return;
+            }
+
+            openTimer = setTimeout(() => fail(), 3200);
+
+            probeWs.onopen = () => {
+              if (settled || this.manual) {
+                try {
+                  probeWs.close();
+                } catch (err) {
+                  // ignore
+                }
+                return;
+              }
+              settled = true;
+              clearTimeout(openTimer);
+              this.ws = probeWs;
+              this.activeUrl = target.url;
+              this.retries = 0;
+              if (typeof this.onConnectedUrl === "function") this.onConnectedUrl(target);
+              this.onState("connected");
+
+              this.ws.onclose = () => {
+                if (this.manual) {
+                  this.onState("disconnected");
+                  return;
+                }
+                this.scheduleReconnect();
+              };
+              this.ws.onerror = () => {
+                this.onState("reconnecting");
+              };
+              this.ws.onmessage = (evt) => {
+                const msg = this.parse(evt.data);
+                if (!msg) return;
+                if (!this.validate(msg)) return;
+                if (this.isDup(msg.messageId)) return;
+                this.onMessage(msg);
+              };
+            };
+
+            probeWs.onerror = () => fail();
+            probeWs.onclose = () => fail();
+          };
+
+          tryCandidate(0);
+        }
+
+        scheduleReconnect() {
+          this.onState("reconnecting");
+          const delay = Math.min(10000, 900 * Math.pow(1.6, this.retries));
+          this.retries += 1;
+          setTimeout(() => {
+            if (!this.manual) this._open();
+          }, delay);
+        }
+
+        close() {
+          this.manual = true;
+          if (this.pruneTimer) clearInterval(this.pruneTimer);
+          this.activeUrl = "";
+          if (this.ws) this.ws.close();
+        }
+
+        send(message) {
+          if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return false;
+          this.ws.send(JSON.stringify(message));
+          return true;
+        }
+
+        parse(raw) {
+          try { return JSON.parse(raw); } catch (err) { return null; }
+        }
+
+        validate(msg) {
+          return !!(msg && typeof msg.type === "string" && typeof msg.messageId === "string" && typeof msg.gameId === "string" && typeof msg.senderRole === "string");
+        }
+
+        isDup(id) {
+          if (!id) return false;
+          if (this.seen.has(id)) return true;
+          this.seen.set(id, nowTs());
+          if (this.seen.size > 1500) this.pruneSeen(true);
+          return false;
+        }
+
+        pruneSeen(force) {
+          const cutoff = nowTs() - 8 * 60 * 1000;
+          for (const [k, v] of this.seen.entries()) {
+            if (force || v < cutoff) this.seen.delete(k);
+          }
+        }
+      }
+
+      class StudentUI {
+        constructor() {
+          this.app = document.getElementById("app");
+          this.socketPill = document.getElementById("socketPill");
+          this.socketMenu = document.getElementById("socketMenu");
+          this.socketOptions = document.getElementById("socketOptions");
+          this.socketModeOptions = document.getElementById("socketModeOptions");
+          this.socketCustomInput = document.getElementById("socketCustomInput");
+          this.socketCustomSaveBtn = document.getElementById("socketCustomSaveBtn");
+          this.socketMenuMsg = document.getElementById("socketMenuMsg");
+          this.connDot = document.getElementById("connDot");
+          this.connText = document.getElementById("connText");
+          this.newFightBtn = document.getElementById("newFightBtn");
+        }
+
+        setConn(state) {
+          this.connDot.className = "dot " + (state === "connected" ? "connected" : state === "reconnecting" ? "reconnecting" : "disconnected");
+          this.connText.textContent = state === "connected" ? "Connected" : state === "reconnecting" ? "Reconnecting..." : "Disconnected";
+        }
+
+        setConnLabel(state, endpointName) {
+          const base = state === "connected" ? "Connected" : state === "reconnecting" ? "Reconnecting..." : state === "connecting" ? "Connecting..." : "Disconnected";
+          this.connText.textContent = endpointName ? (base + " - " + endpointName) : base;
+        }
+
+        setSocketMenuOpen(isOpen) {
+          this.socketMenu.classList.toggle("d-none", !isOpen);
+          this.socketPill.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        }
+
+        renderSocketOptions(entries, selectedId, strictMode, healthState) {
+          this.socketOptions.innerHTML = "";
+          entries.forEach((entry) => {
+            const row = document.createElement("label");
+            row.className = "socket-row";
+            const health = (healthState && healthState[entry.id]) || "unknown";
+            const healthClass = health === "ok" ? "ok" : health === "fail" ? "fail" : health === "testing" ? "testing" : "";
+            row.innerHTML = ""
+              + "<input class='form-check-input mt-0' type='radio' name='socketEndpoint' value='" + safeText(entry.id) + "' " + (selectedId === entry.id ? "checked" : "") + " />"
+              + "<span><span class='socket-label'>" + safeText(entry.name) + "</span><span class='socket-url'>" + safeText(entry.url) + "</span></span>"
+              + "<span class='socket-health-dot " + healthClass + "' title='Reachability: " + safeText(health) + "'></span>";
+            this.socketOptions.appendChild(row);
+          });
+
+          this.socketModeOptions.innerHTML = ""
+            + "<div class='d-flex justify-content-between align-items-center gap-2 mb-1 mt-1'>"
+            + "<button id='socketStrictToggleBtn' type='button' class='btn btn-sm outline-moon focus-ring'>"
+            + "Strict Mode: " + (strictMode ? "On" : "Off")
+            + "</button>"
+            + "</div>"
+            + "<div class='socket-url mb-1'>Use only selected endpoint when On. When Off, selected endpoint is tried first, then fallbacks.</div>";
+        }
+
+        setNewFightVisible(visible, onClick) {
+          if (!this.newFightBtn) return;
+          this.newFightBtn.classList.toggle("d-none", !visible);
+          this.newFightBtn.onclick = visible && typeof onClick === "function" ? onClick : null;
+        }
+
+        buildPhaseVideo(url, title) {
+          return ""
+            + "<div class='phase-video'>"
+            + "<div class='small-note mb-1'>" + safeText(title || "") + "</div>"
+            + "<div class='phase-video-frame'>"
+            + "<iframe src='" + safeText(url) + "' title='" + safeText(title || "Phase Video") + "' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>"
+            + "</div>"
+            + "</div>";
+        }
+          renderJoin(prefillGameId, savedName, handlers, stateMsg) {
+          this.app.innerHTML = "";
+          const wrap = document.createElement("section");
+          wrap.className = "glass p-3 landing-card join-landing";
+          wrap.innerHTML = ""
+            + "<div class='title-font fs-3 mb-1'>Join a Quiz</div>"
+            + ""
+            + "<div class='mb-2'><label class='form-label'>Quiz ID</label><input id='joinGameId' class='form-control join-input' maxlength='12' /></div>"
+            + "<div class='mb-2'><label class='form-label'>Your Handle</label><input id='joinName' class='form-control join-input' maxlength='30' /></div>"
+            + "<button id='joinBtn' class='btn moon-btn w-100 focus-ring'>Join Quiz</button>"
+            + "<div id='joinMsg' class='small-note mt-2' aria-live='polite'></div>";
+          this.app.appendChild(wrap);
+          const gid = document.getElementById("joinGameId");
+          const nm = document.getElementById("joinName");
+          gid.value = prefillGameId || "";
+          nm.value = savedName || "";
+          if (stateMsg) document.getElementById("joinMsg").textContent = stateMsg;
+          gid.addEventListener("input", () => handlers.onJoinInputChange(gid.value, nm.value));
+          nm.addEventListener("input", () => handlers.onJoinInputChange(gid.value, nm.value));
+          document.getElementById("joinBtn").addEventListener("click", () => handlers.onJoin(gid.value, nm.value));
+        }
+
+        renderWaiting(text) {
+          this.app.innerHTML = ""
+            + "<section class='glass p-3 text-center landing-card'>"
+            + "<div class='title-font fs-3 mb-1'>Waiting for the instructor...</div>"
+            + "<div class='small-note'>" + text + "</div>"
+            + "</section>";
+        }
+
+        renderRemoved() {
+          this.app.innerHTML = ""
+            + "<section class='glass p-3 text-center shake'>"
+            + "<div class='title-font fs-3 mb-1'>You have been removed from this fight.</div>"
+            + "<div class='small-note'>Ask the instructor if you should rejoin with a new entry.</div>"
+            + "</section>";
+        }
+
+        renderLobby(model) {
+          const maskedLine = model.isScoreMasked
+            ? "<div class='small-note mt-2'>Leaderboard currently shows " + formatScore(model.playerDisplayedScore || 0) + " points for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turns.</div>"
+            : "";
+          this.app.innerHTML = ""
+            + "<section class='glass p-3 text-center celebrate landing-card'>"
+            + "<div class='title-font fs-2'>" + (model.quizTitle || "Fight Quiz") + "</div>"
+            + "<div class='small-note mb-2'>Fight " + model.gameId + "</div>"
+            + "<div class='score-box'>"
+            + "<div class='small-note'>Your Score</div>"
+            + "<div class='fs-2 fw-bold'>" + formatScore(model.playerScore) + "</div>"
+            + "</div>"
+            + maskedLine
+            + "<div class='small-note mt-3'>Hold tight. The next question is coming soon.</div>"
+            + "</section>";
+        }
+
+        renderQuestion(model, handlers) {
+          this.app.innerHTML = "";
+          const q = model.question;
+          const rem = Math.max(0, q.endsAt - nowTs());
+          const questionOpen = rem > 0;
+          const timerClass = rem <= 10000 ? "danger" : rem <= 30000 ? "warn" : "";
+          const fiftyFiftyUsed = Number(model.fiftyFiftyQuestionIndex) === Number(q.questionIndex) && Array.isArray(model.fiftyFiftyRemovedOptionIds) && model.fiftyFiftyRemovedOptionIds.length >= 2;
+          const fiftyFiftyDisabled = !!model.hasSubmitted || !questionOpen || fiftyFiftyUsed || Number(model.playerScore || 0) < FIFTY_FIFTY_COST || !!this.fiftyFiftyInFlight;
+          const removedOptionIds = new Set(Array.isArray(model.fiftyFiftyRemovedOptionIds) ? model.fiftyFiftyRemovedOptionIds.map(String) : []);
+          const power = q.powerInPlay || {};
+          const strikeCount = Math.max(0, Number(power.strikeCount || 0));
+          const shieldCount = Math.max(0, Number(power.shieldCount || 0));
+          const reflectiveShieldCount = Math.max(0, Number(power.reflectiveShieldCount || 0));
+          const doubleDownCount = Math.max(0, Number(power.doubleDownCount || 0));
+
+          const iconGroup = (count, cls, iconHtml, label) => {
+            if (!count) return "";
+            let out = "";
+            for (let i = 0; i < count; i += 1) {
+              out += "<span class='power-pill " + cls + "' title='" + label + "'>" + iconHtml + "</span>";
+            }
+            return out;
+          };
+
+          const inPlayIcons =
+            iconGroup(doubleDownCount, "ready", "<span aria-hidden='true'>x2</span>", "Double Down in play")
+            + iconGroup(shieldCount, "shield", "<i class='lni lni-shield'></i>", "Shield in play")
+            + iconGroup(reflectiveShieldCount, "shield", "✨", "Reflective shield in play")
+            + iconGroup(strikeCount, "rocket", "💥", "Shadow Strike in play");
+
+          const shieldOn = Number(model.pointShieldArmedForQuestionIndex) === Number(q.questionIndex);
+          const attackerNames = normalizeNames(model.strikeAttackers);
+          const underAttack = Number(model.strikeCount || 0) > 0 || attackerNames.length > 0;
+          const attackTitle = underAttack
+            ? (attackerNames.length
+              ? "Under attack by: " + attackerNames.join(", ")
+              : "Under attack")
+            : "No incoming attack";
+
+          const wrap = document.createElement("section");
+          wrap.className = "glass p-3";
+          wrap.innerHTML = ""
+            + "<div class='question-header-row'>"
+            + "<div><div class='title-font fs-3'>Question " + q.questionNumber + " of " + q.questionCount + "</div><div class='small-note'>Worth up to " + formatScore(q.pointValue) + " points</div></div>"
+            + "<div class='question-status-lane'>"
+            + "<div class='status-tile is-shield" + (shieldOn ? " is-on" : "") + "' title='" + (shieldOn ? "Shield active for this question" : "No shield active") + "'><div class='status-icon'><i class='lni lni-shield'></i></div><div class='label'>Shield</div></div>"
+            + "<div class='status-tile" + (model.doubleDownActive ? " is-on" : "") + "' title='" + (model.doubleDownActive ? "Double down is active" : "Double down is not active") + "'><div class='status-icon'>x2</div><div class='label'>Double</div></div>"
+            + "<div class='status-tile is-attack" + (underAttack ? " is-on" : "") + "' title='" + safeText(attackTitle) + "'><div class='status-icon'>💥</div><div class='label'>Attack</div></div>"
+            + "<button id='fiftyFiftyBtn' class='score-box status-tile question-action-tile is-fifty" + (fiftyFiftyUsed ? " is-on" : "") + " focus-ring' type='button'" + (fiftyFiftyDisabled ? " disabled" : "") + " aria-label='Use 50/50 for " + formatScore(FIFTY_FIFTY_COST) + " points'><div class='small-note'>50/50</div><div class='fw-bold fs-5'>" + formatScore(FIFTY_FIFTY_COST) + " points</div></button>"
+            + "<div class='score-box status-tile'><div class='small-note'>Your Score</div><div id='scoreValue' class='fw-bold fs-5'>" + formatScore(model.playerScore) + "</div></div>"
+            + "</div>"
+            + "</div>"
+            + (model.strikeNotice ? "<div class='double-down-note warn mb-2'>" + safeText(model.strikeNotice) + "</div>" : "")
+            + "<div class='fw-bold mb-2'>" + safeText(q.query) + "</div>"
+            + "<div id='timerView' class='timer " + timerClass + " mb-3'>" + formatTime(rem) + "</div>"
+            + "<div id='doubleDownBanner'></div>"
+            + "<div id='submitWrap' class='mb-2'></div>"
+            + "<div id='multiHint' class='small-note mb-2'></div>"
+            + "<div id='optionsGrid' class='options-grid mb-2'></div>"
+            + (inPlayIcons
+              ? "<div class='in-play-strip'><div class='small-note mb-1'>Powers In Play This Question</div><div class='in-play-icons'>" + inPlayIcons + "</div></div>"
+              : "")
+            + "<div id='questionStatus' class='small-note mb-2' aria-live='polite'></div>";
+          this.app.appendChild(wrap);
+
+          const grid = document.getElementById("optionsGrid");
+          const submitted = model.hasSubmitted;
+          const multi = model.isMulti;
+
+          if (multi) {
+            document.getElementById("multiHint").textContent = "Select all answers you think are correct, then click Submit Answer.";
+          }
+
+          q.options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "ans-btn c-" + opt.color + " focus-ring";
+            btn.setAttribute("data-opt-id", opt.id);
+            btn.setAttribute("aria-label", "Option " + opt.letter + ": " + opt.text);
+            btn.innerHTML = "<span class='letter'>" + opt.letter + "</span><span>" + safeText(opt.text) + "</span>";
+            if (submitted) btn.classList.add("locked");
+            const removed = removedOptionIds.has(String(opt.id));
+            if (removed) btn.classList.add("fifty-fifty-removed");
+            if (model.selectedIds && model.selectedIds.includes(opt.id) && !removed) btn.classList.add("selected");
+            btn.disabled = submitted || removed;
+            btn.addEventListener("click", () => handlers.onOptionClick(opt.id));
+            grid.appendChild(btn);
+          });
+
+          if (submitted) {
+            document.getElementById("questionStatus").innerHTML = "<div class='lock-state'><i class='lni lni-lock-alt me-1'></i>Answer locked in! Waiting for everyone else...</div>";
+          } else if (model.fiftyFiftyNotice) {
+            document.getElementById("questionStatus").textContent = model.fiftyFiftyNotice;
+          } else if (!questionOpen) {
+            document.getElementById("questionStatus").textContent = "Question closed. 50/50 is unavailable.";
+          }
+
+          if (model.doubleDownActive) {
+            const dd = document.getElementById("doubleDownBanner");
+            if (dd) {
+              dd.innerHTML = "<div class='double-down-banner'><i class='lni lni-bolt me-1'></i>Double Down Active: right answer earns 2x, wrong answer costs 5x points.</div>";
+            }
+          }
+
+          if (multi) {
+            const sw = document.getElementById("submitWrap");
+            const submit = document.createElement("button");
+            submit.type = "button";
+            submit.className = "btn moon-btn btn-lg w-100 focus-ring";
+            submit.textContent = submitted ? "Answer Locked" : "Submit Answer";
+            submit.disabled = submitted;
+            submit.addEventListener("click", handlers.onSubmitMulti);
+            sw.appendChild(submit);
+          }
+
+          const fiftyFiftyBtn = document.getElementById("fiftyFiftyBtn");
+          if (fiftyFiftyBtn) {
+            fiftyFiftyBtn.addEventListener("click", handlers.onFiftyFifty);
+          }
+        }
+
+        refreshTimer(question) {
+          const timer = document.getElementById("timerView");
+          if (!timer || !question) return;
+          const rem = Math.max(0, question.endsAt - nowTs());
+          timer.textContent = formatTime(rem);
+          timer.classList.remove("warn", "danger");
+          if (rem <= 10000) timer.classList.add("danger");
+          else if (rem <= 30000) timer.classList.add("warn");
+        }
+
+        updateLockedBanner() {
+          const status = document.getElementById("questionStatus");
+          if (!status) return;
+          status.innerHTML = "<div class='lock-state'><i class='lni lni-lock-alt me-1'></i>Answer locked in! Waiting for everyone else...</div>";
+        }
+
+        renderReveal(model) {
+          const rv = model.reveal || {};
+          const outcome = rv.playerOutcomes ? rv.playerOutcomes[model.playerId] : null;
+          const earned = outcome ? outcome.earnedPoints : 0;
+          const correct = outcome ? outcome.correct : false;
+          const gainedText = (correct ? "+" : "+") + formatScore(earned || 0) + " points";
+          const correctOptionIds = Array.isArray(rv.correctOptionIds)
+            ? new Set(rv.correctOptionIds)
+            : (rv.correctOptionId != null ? new Set([rv.correctOptionId]) : new Set());
+
+          this.app.innerHTML = "";
+          const wrap = document.createElement("section");
+          wrap.className = "glass p-3 answer-reveal-blast " + (correct ? "celebrate" : "shake");
+
+          const query = document.createElement("div");
+          query.className = "fw-bold mb-2";
+          query.textContent = model.question.query || "";
+          wrap.appendChild(query);
+
+          const grid = document.createElement("div");
+          grid.className = "options-grid mb-3";
+          (model.question.options || []).forEach((o) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "ans-btn c-" + o.color + " focus-ring";
+            if (correctOptionIds.has(o.id)) btn.classList.add("reveal-correct");
+            else btn.classList.add("reveal-wrong", "locked");
+            btn.innerHTML = "<span class='letter'>" + o.letter + "</span><span>" + safeText(o.text) + "</span>";
+            btn.disabled = true;
+            grid.appendChild(btn);
+          });
+          wrap.appendChild(grid);
+
+          const scoreRow = document.createElement("div");
+          scoreRow.className = "reveal-score-row";
+
+          const outcomeBox = document.createElement("div");
+          outcomeBox.className = "score-box";
+          outcomeBox.innerHTML = "<div class='small-note'>" + (correct ? "Correct!" : "Not this time!") + "</div><div class='fs-4 fw-bold'>" + safeText(gainedText) + "</div>";
+          scoreRow.appendChild(outcomeBox);
+
+          const scoreBox = document.createElement("div");
+          scoreBox.className = "score-box";
+          scoreBox.innerHTML = "<div class='small-note'>Your Score</div><div id='countingScore' class='fs-2 fw-bold'>" + formatScore(model.playerScoreBeforeReveal || 0) + "</div>";
+          scoreRow.appendChild(scoreBox);
+
+          wrap.appendChild(scoreRow);
+
+          const answerHtml = typeof rv.answerHtml === "string" ? rv.answerHtml : "";
+          const tipHtml = typeof rv.tipHtml === "string" ? rv.tipHtml : "";
+          if (answerHtml || tipHtml) {
+            const card = document.createElement("div");
+            card.className = "answer-tip-card";
+            let cardHtml = "";
+            if (answerHtml) {
+              cardHtml += "<div class='answer-tip-row'><div class='answer-tip-label'>Answer:</div><div class='answer-tip-copy'>" + answerHtml + "</div></div>";
+            }
+            if (tipHtml) {
+              cardHtml += "<div class='answer-tip-row'><div class='answer-tip-label'>Tip:</div><div class='answer-tip-copy'>" + tipHtml + "</div></div>";
+            }
+            card.innerHTML = cardHtml;
+            wrap.appendChild(card);
+          }
+
+          const targetOptions = (model.prizeTargets || []).map((t) => {
+            return "<option value='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</option>";
+          }).join("");
+
+          const canArmDoubleDown = !!model.hasNextQuestion && !model.doubleDownArmed && !!model.doubleDownEligible;
+          const canBuyDoubleDown = !!model.hasNextQuestion && !model.doubleDownArmed && !model.doubleDownEligible && !!model.canBuyDoubleDown;
+          const ddDisabled = !canArmDoubleDown && !canBuyDoubleDown;
+          const ddLabel = model.doubleDownArmed
+            ? "Double Down Armed"
+            : canBuyDoubleDown
+              ? ("Buy Double Down " + formatScore(model.doubleDownBuyCost || 3000))
+              : "Double Down";
+
+          const card = document.createElement("div");
+          card.className = "power-action-card mt-3";
+          let cardHtml = "";
+          cardHtml += "<div class='rail-heading'>Next Question Strategy</div>";
+          cardHtml += "<div class='power-status-row'>";
+          cardHtml += "<div id='doubleDownStatus' class='power-status-note " + ((model.doubleDownArmed || model.doubleDownEligible || (!!model.hasNextQuestion && !model.doubleDownArmed && !model.doubleDownEligible && !!model.canBuyDoubleDown)) ? "ok" : "bad") + "'>" + safeText(model.doubleDownStatusText || "") + "</div>";
+          cardHtml += "<div id='pointShieldStatus' class='power-status-note " + ((model.canBuyPointShield || model.pointShieldNext) ? "ok" : "bad") + "'>" + safeText(model.pointShieldStatusText || "") + "</div>";
+          cardHtml += "<div id='reflectiveShieldStatus' class='power-status-note " + ((model.canBuyReflectiveShield || (model.pointShieldNext && String(model.pointShieldMode || "").toUpperCase() === "REFLECTIVE")) ? "ok" : "bad") + "'>" + safeText(model.reflectiveShieldStatusText || "") + "</div>";
+          cardHtml += "</div>";
+          cardHtml += "<div class='power-rail'>";
+          cardHtml += "<button id='doubleDownBtn' class='power-pill-btn focus-ring" + (model.doubleDownArmed ? " active" : "") + (ddDisabled ? " is-disabled" : "") + "' type='button'" + (ddDisabled ? " disabled" : "") + "><span aria-hidden='true'>x2</span><span>" + safeText(ddLabel) + "</span></button>";
+          cardHtml += "<button id='buyPointShieldBtn' class='power-pill-btn shield focus-ring" + ((!!model.pointShieldNext && String(model.pointShieldMode || "").toUpperCase() !== "REFLECTIVE") ? " active" : "") + "' type='button'" + ((!!model.pointShieldNext || !model.canBuyPointShield) ? " disabled" : "") + "><i class='lni lni-shield'></i><span>Shield</span></button>";
+          cardHtml += "<button id='buyReflectiveShieldBtn' class='power-pill-btn shield focus-ring" + ((!!model.pointShieldNext && String(model.pointShieldMode || "").toUpperCase() === "REFLECTIVE") ? " active" : "") + "' type='button'" + ((!!model.pointShieldNext || !model.canBuyReflectiveShield) ? " disabled" : "") + "><span aria-hidden='true'>✨</span><span>Reflective</span></button>";
+          cardHtml += "</div>";
+          if (model.streakPrizeAvailable) {
+            cardHtml += "<div class='power-rail mt-1'>";
+            cardHtml += "<button id='powerBonusBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-bolt'></i><span>Add 2000</span></button>";
+            cardHtml += "<button id='powerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
+            cardHtml += "<button id='powerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
+            cardHtml += "</div>";
+            cardHtml += "<div id='streakPrizeTargetWrap' class='power-target-picker d-none'>";
+            cardHtml += "<label class='form-label mb-1 small-note' for='streakPrizeTarget'>Select target</label>";
+            cardHtml += "<select id='streakPrizeTarget' class='form-control join-input'>";
+            cardHtml += "<option value=''>Choose player...</option>" + targetOptions;
+            cardHtml += "</select></div>";
+          }
+          cardHtml += "<div id='streakPrizeMsg' class='small-note mt-2 power-notice-center'>" + safeText(model.streakPrizeNotice || "") + "</div>";
+          cardHtml += "<div id='pointShieldNotice' class='small-note mt-1'>" + safeText(model.pointShieldNotice || "") + "</div>";
+          card.innerHTML = cardHtml;
+          wrap.appendChild(card);
+
+          const staleNote = document.createElement("div");
+          staleNote.id = "revealScoreMaskNotice";
+          if (model.isScoreMasked) {
+            staleNote.className = "double-down-note warn mb-3";
+            staleNote.textContent = "Real score: " + formatScore(model.playerScore || 0) + " pts. Leaderboard shows: " + formatScore(model.playerDisplayedScore || 0) + " pts for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turn" + (Number(model.fakeScoreTurnsRemaining || 0) === 1 ? "" : "s") + ".";
+          } else {
+            staleNote.className = "d-none";
+          }
+          wrap.appendChild(staleNote);
+
+          if (model.strikeNotice) {
+            const strikeNote = document.createElement("div");
+            strikeNote.className = "double-down-note warn mb-3";
+            strikeNote.textContent = model.strikeNotice;
+            wrap.appendChild(strikeNote);
+          }
+
+          this.app.appendChild(wrap);
+          const ddAction = document.getElementById("doubleDownBtn");
+          if (ddAction) {
+            ddAction.addEventListener("click", model.onDoubleDownAction);
+          }
+          const shieldAction = document.getElementById("buyPointShieldBtn");
+          if (shieldAction) shieldAction.addEventListener("click", () => model.onBuyPointShield("NORMAL"));
+          const reflectiveShieldAction = document.getElementById("buyReflectiveShieldBtn");
+          if (reflectiveShieldAction) reflectiveShieldAction.addEventListener("click", () => model.onBuyPointShield("REFLECTIVE"));
+          const bonusBtn = document.getElementById("powerBonusBtn");
+          if (bonusBtn) bonusBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.BONUS, ""));
+          const cloakBtn = document.getElementById("powerCloakBtn");
+          if (cloakBtn) cloakBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.MASK, ""));
+          const stealthBtn = document.getElementById("powerStealthBtn");
+          if (stealthBtn) {
+            stealthBtn.addEventListener("click", () => {
+              const targetWrap = document.getElementById("streakPrizeTargetWrap");
+              const msgEl = document.getElementById("streakPrizeMsg");
+              if (!model.prizeTargets || !model.prizeTargets.length) {
+                if (msgEl) msgEl.textContent = "No target players are available right now.";
+                return;
+              }
+              if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
+              if (targetWrap) targetWrap.classList.toggle("d-none");
+              const targetEl = document.getElementById("streakPrizeTarget");
+              if (targetEl && targetWrap && !targetWrap.classList.contains("d-none")) targetEl.focus();
+            });
+          }
+          const stealthTarget = document.getElementById("streakPrizeTarget");
+          if (stealthTarget) {
+            stealthTarget.addEventListener("change", () => {
+              const targetId = String(stealthTarget.value || "");
+              if (!targetId) return;
+              model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
+              stealthTarget.value = "";
+              const targetWrap = document.getElementById("streakPrizeTargetWrap");
+              if (targetWrap) targetWrap.classList.add("d-none");
+            });
+          }
+          this.animateCount("countingScore", model.playerScoreBeforeReveal || 0, model.playerScore || 0, 850);
+        }
+
+        spawnConfetti(target) {
+          const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reduce) return;
+          const wrap = document.createElement("div");
+          wrap.className = "confetti-wrap";
+          const colors = ["#ffd86b", "#ff8bb3", "#a2f2c0", "#d9c2ff", "#9bd1ff"];
+          for (let i = 0; i < 18; i += 1) {
+            const c = document.createElement("span");
+            c.className = "confetti";
+            c.style.left = Math.floor(Math.random() * 100) + "%";
+            c.style.top = Math.floor(Math.random() * 25) + "%";
+            c.style.background = colors[i % colors.length];
+            c.style.animationDelay = (Math.random() * 140) + "ms";
+            wrap.appendChild(c);
+          }
+          target.appendChild(wrap);
+          setTimeout(() => {
+            if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+          }, 980);
+        }
+
+        renderLeaderboard(model) {
+          this.app.innerHTML = "";
+          const wrap = document.createElement("section");
+          wrap.className = "glass p-3 leaderboard-view" + (model.phase === PHASES.FINISHED ? " final-results-view" : "");
+          const title = document.createElement("div");
+          title.className = "small-note mb-2";
+          title.textContent = model.phase === PHASES.FINISHED ? "Final Results" : "Leaderboard";
+          wrap.appendChild(title);
+
+          const me = document.createElement("div");
+          me.className = "score-box mb-3";
+          me.innerHTML = "<div id='leaderboardMyRank' class='small-note'>You're #" + (model.rank || "-") + "</div><div id='leaderboardMyScore' class='fs-2 fw-bold'>" + formatScore(model.playerScore) + " points</div>";
+          wrap.appendChild(me);
+
+          const scoreRankRows = Array.isArray(model.scoreRankRows) ? model.scoreRankRows : (Array.isArray(model.leaderboard) ? model.leaderboard : []);
+          const leaderboardRows = Array.isArray(model.leaderboardRows) ? model.leaderboardRows : scoreRankRows;
+          const quickDrawRows = Array.isArray(model.quickDrawRows) ? model.quickDrawRows : [];
+          const lbSort = model.leaderboardSort || { key: "score", dir: "desc" };
+          const qdSort = model.quickDrawSort || { key: "avgResponseMs", dir: "asc" };
+          const labelWithSort = (base, state, key) => {
+            if (!state || state.key !== key) return base;
+            return base + (state.dir === "asc" ? " ▲" : " ▼");
+          };
+
+          const longestStreakRows = scoreRankRows
+            .slice()
+            .sort((a, b) => Number(b.longestStreak || 0) - Number(a.longestStreak || 0) || Number(b.currentStreak || b.streak || 0) - Number(a.currentStreak || a.streak || 0) || Number(b.score || 0) - Number(a.score || 0) || Number(a.rank || 0) - Number(b.rank || 0));
+          const streakLeader = longestStreakRows[0] || null;
+
+          if (model.strikeNotice) {
+            const strikeNote = document.createElement("div");
+            strikeNote.className = "double-down-note warn mb-3";
+            strikeNote.textContent = model.strikeNotice;
+            wrap.appendChild(strikeNote);
+          }
+
+          if (model.isScoreMasked) {
+            const masked = document.createElement("div");
+            masked.className = "double-down-note warn mb-3";
+            masked.textContent = "Real score: " + formatScore(model.playerScore || 0) + " pts. Leaderboard shows: " + formatScore(model.playerDisplayedScore || 0) + " pts for " + Number(model.fakeScoreTurnsRemaining || 0) + " more turn" + (Number(model.fakeScoreTurnsRemaining || 0) === 1 ? "" : "s") + ".";
+            wrap.appendChild(masked);
+          }
+
+          if (model.phase === PHASES.FINISHED && Number(model.streakPrizeUses || 0) > 0 && model.streakPrizeAction) {
+            const actionCard = document.createElement("div");
+            actionCard.className = "final-action-summary";
+            let icon = "lni-gift";
+            let text = "Streak prize used.";
+            if (model.streakPrizeAction === STREAK_ACTION.MASK) {
+              icon = "lni-lock-alt";
+              text = "Fog Cloak used: your score was hidden for 3 turns.";
+            } else if (model.streakPrizeAction === STREAK_ACTION.STEAL) {
+              icon = "lni-target";
+              text = "Shadow Strike used: 1,000-point strike was queued for the next question.";
+            } else if (model.streakPrizeAction === STREAK_ACTION.BONUS) {
+              icon = "lni-bolt";
+              text = "Smelling Salts used: you gained 2,000 points.";
+            }
+            actionCard.innerHTML = "<i class='lni " + icon + " me-2'></i>" + safeText(text);
+            wrap.appendChild(actionCard);
+          }
+
+          const podiumWrap = document.createElement("div");
+          podiumWrap.className = "podium mb-3";
+          const top3 = scoreRankRows.slice(0, 3);
+          [1, 0, 2].forEach((orderIdx, slot) => {
+            const p = top3[orderIdx] || null;
+            const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+            const card = document.createElement("div");
+            card.className = "podium-card " + cls;
+            card.innerHTML = "<div>" + (p ? (p.rank + (p.rank === 1 ? "st" : p.rank === 2 ? "nd" : "rd")) : "-") + "</div>"
+              + "<div class='fw-bold'>" + (p ? safeText(p.playerName) : "Waiting") + "</div>"
+              + "<div class='small-note'>" + (p ? formatScore(p.score) + " pts" : "") + "</div>";
+            podiumWrap.appendChild(card);
+          });
+          wrap.appendChild(podiumWrap);
+
+          if (model.phase !== PHASES.FINISHED) {
+            const canUseStreakPrize = !!model.streakPrizeAvailable;
+            if (canUseStreakPrize || model.streakPrizeNotice) {
+              const actions = document.createElement("div");
+              actions.className = "power-action-card mb-3";
+
+              let html = "";
+              if (canUseStreakPrize) {
+                const targetOptions = (model.prizeTargets || []).map((t) => {
+                  return "<option value='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</option>";
+                }).join("");
+                html += "<div class='power-rail mt-1'>";
+                html += "<button id='lbPowerBonusBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-bolt'></i><span>Add 2000</span></button>";
+                html += "<button id='lbPowerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
+                html += "<button id='lbPowerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
+                html += "</div>";
+                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker d-none'>";
+                html += "<label class='form-label mb-1 small-note' for='lbStreakPrizeTarget'>Select target</label>";
+                html += "<select id='lbStreakPrizeTarget' class='form-control join-input'>";
+                html += "<option value=''>Choose player...</option>" + targetOptions;
+                html += "</select></div>";
+              }
+
+              html += "<div id='lbStreakPrizeNotice' class='small-note mt-2 power-notice-center'>" + safeText(model.streakPrizeNotice || "") + "</div>";
+
+              actions.innerHTML = html;
+              wrap.appendChild(actions);
+            }
+          }
+
+          const details = document.createElement("div");
+          let detailsHtml = "";
+          detailsHtml += "<div class='d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1'>";
+          detailsHtml += "<div class='fw-bold mb-0'>Leaderboard Details</div>";
+          detailsHtml += "<button id='studentResetSortsBtn' class='btn btn-sm outline-moon focus-ring'>Reset Sorts</button></div>";
+          if (!leaderboardRows.length) {
+            detailsHtml += "<div class='stats-empty mb-3'>No players yet.</div>";
+          } else {
+            detailsHtml += "<div class='stats-table-wrap mb-3'><div class='table-responsive'><table class='table table-sm stats-table'>";
+            detailsHtml += "<thead><tr>";
+            detailsHtml += "<th>Rank</th>";
+            detailsHtml += "<th><button id='studentSortLbNameBtn' class='sort-btn focus-ring'>" + labelWithSort("Player", lbSort, "playerName") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbScoreBtn' class='sort-btn focus-ring'>" + labelWithSort("Score", lbSort, "score") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbCurrentStreakBtn' class='sort-btn focus-ring'>" + labelWithSort("Streak", lbSort, "currentStreak") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbCorrectAnswersBtn' class='sort-btn focus-ring'>" + labelWithSort("Correct", lbSort, "correctAnswers") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbLongestStreakBtn' class='sort-btn focus-ring'>" + labelWithSort("Longest Streak", lbSort, "longestStreak") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbQuickBtn' class='sort-btn focus-ring'>" + labelWithSort("Quick Draw Wins", lbSort, "quickDrawWins") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortLbAttackedBtn' class='sort-btn focus-ring'>" + labelWithSort("Attacks", lbSort, "attackedCount") + "</button></th>";
+            detailsHtml += "</tr></thead><tbody>";
+            leaderboardRows.forEach((row) => {
+              detailsHtml += "<tr>";
+              detailsHtml += "<td>#" + Number(row.rank || 0) + "</td>";
+              detailsHtml += "<td>" + safeText(row.playerName || "") + "</td>";
+              detailsHtml += "<td>" + formatScore(row.score || 0) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.currentStreak || row.streak || 0) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.correctAnswers || 0) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.longestStreak || 0) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.quickDrawWins || 0) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.attackedCount || 0) + "</td>";
+              detailsHtml += "</tr>";
+            });
+            detailsHtml += "</tbody></table></div></div>";
+          }
+
+          if (streakLeader && Number(streakLeader.longestStreak || 0) > 0) {
+            detailsHtml += "<div class='small-note mb-3'>Longest streak leader: <strong>" + safeText(streakLeader.playerName || "") + "</strong> at <strong>" + formatScore(streakLeader.longestStreak || 0) + "</strong>.</div>";
+          }
+
+          detailsHtml += "<div class='fw-bold mb-1'>Quick Draw</div>";
+          detailsHtml += "<div class='small-note mb-2'>Fastest average lock-in speed across answered questions, regardless of correctness.</div>";
+          if (!quickDrawRows.length) {
+            detailsHtml += "<div class='stats-empty mb-3'>No speed data yet.</div>";
+          } else {
+            detailsHtml += "<div class='stats-table-wrap mb-3'><div class='table-responsive'><table class='table table-sm stats-table'>";
+            detailsHtml += "<thead><tr>";
+            detailsHtml += "<th><button id='studentSortQdNameBtn' class='sort-btn focus-ring'>" + labelWithSort("Player", qdSort, "playerName") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortQdAvgBtn' class='sort-btn focus-ring'>" + labelWithSort("Average", qdSort, "avgResponseMs") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortQdFastBtn' class='sort-btn focus-ring'>" + labelWithSort("Fastest", qdSort, "fastestResponseMs") + "</button></th>";
+            detailsHtml += "<th><button id='studentSortQdWinsBtn' class='sort-btn focus-ring'>" + labelWithSort("Wins", qdSort, "quickDrawWins") + "</button></th>";
+            detailsHtml += "</tr></thead><tbody>";
+            quickDrawRows.forEach((row) => {
+              detailsHtml += "<tr>";
+              detailsHtml += "<td>" + safeText(row.playerName || "") + "</td>";
+              detailsHtml += "<td>" + formatMs(row.avgResponseMs) + "</td>";
+              detailsHtml += "<td>" + formatMs(row.fastestResponseMs) + "</td>";
+              detailsHtml += "<td>" + formatScore(row.quickDrawWins || 0) + "</td>";
+              detailsHtml += "</tr>";
+            });
+            detailsHtml += "</tbody></table></div></div>";
+          }
+
+          if (model.phase === PHASES.FINISHED) {
+            const fastestGun = scoreRankRows
+              .filter((row) => Number(row.responseCount || 0) > 0)
+              .slice()
+              .sort((a, b) => Number(a.avgResponseMs || Number.MAX_SAFE_INTEGER) - Number(b.avgResponseMs || Number.MAX_SAFE_INTEGER) || Number(a.fastestResponseMs || Number.MAX_SAFE_INTEGER) - Number(b.fastestResponseMs || Number.MAX_SAFE_INTEGER) || Number(b.quickDrawWins || 0) - Number(a.quickDrawWins || 0) || Number(a.rank || 0) - Number(b.rank || 0))[0] || null;
+            const mostAttacked = scoreRankRows
+              .slice()
+              .sort((a, b) => Number(b.attackedCount || 0) - Number(a.attackedCount || 0) || Number(b.score || 0) - Number(a.score || 0) || Number(a.rank || 0) - Number(b.rank || 0))
+              .slice(0, 3);
+            const mostCorrectAnswers = scoreRankRows
+              .slice()
+              .sort((a, b) => Number(b.correctAnswers || 0) - Number(a.correctAnswers || 0) || Number(b.score || 0) - Number(a.score || 0) || Number(a.rank || 0) - Number(b.rank || 0))
+              .slice(0, 3);
+
+            detailsHtml += "<div class='fw-bold mb-1'>Final Awards</div>";
+            detailsHtml += "<div class='small-note mb-2'>Award Icons: ⚡ Fastest Gun • 🏆 Top 3 Score • ✅ Top 3 Most Correct • 🔥 Top 3 Correct Streaks • 🎯 Top 3 Most Attacked</div>";
+            if (fastestGun) {
+              detailsHtml += "<div class='glass p-2 mb-2'><strong>Fastest Gun:</strong> " + safeText(fastestGun.playerName || "") + " (avg " + formatMs(fastestGun.avgResponseMs) + ", fastest " + formatMs(fastestGun.fastestResponseMs) + ")</div>";
+            } else {
+              detailsHtml += "<div class='stats-empty mb-2'>Fastest Gun: no response-time data this game.</div>";
+            }
+
+            const topStreaks = longestStreakRows.slice(0, 3);
+            detailsHtml += "<div class='fw-bold mb-1'>Top 3 Correct Streaks</div>";
+            if (!topStreaks.length || Number(topStreaks[0].longestStreak || 0) === 0) {
+              detailsHtml += "<div class='stats-empty mb-3'>No streaks were recorded.</div>";
+            } else {
+              detailsHtml += "<div class='podium mb-3'>";
+              [1, 0, 2].forEach((orderIdx, slot) => {
+                const p = topStreaks[orderIdx] || null;
+                const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                detailsHtml += "<div class='podium-card " + cls + "'>";
+                detailsHtml += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                detailsHtml += "<div class='fw-bold'>" + (p ? safeText(p.playerName || "") : "Waiting") + "</div>";
+                detailsHtml += "<div class='small-note'>" + (p ? ("Longest " + formatScore(p.longestStreak || 0) + " • Current " + formatScore(p.currentStreak || p.streak || 0)) : "") + "</div>";
+                detailsHtml += "</div>";
+              });
+              detailsHtml += "</div>";
+            }
+
+            detailsHtml += "<div class='fw-bold mb-1'>Top 3 Most Correct</div>";
+            if (!mostCorrectAnswers.length || Number(mostCorrectAnswers[0].correctAnswers || 0) === 0) {
+              detailsHtml += "<div class='stats-empty mb-3'>No correct responses were recorded.</div>";
+            } else {
+              detailsHtml += "<div class='podium mb-3'>";
+              [1, 0, 2].forEach((orderIdx, slot) => {
+                const p = mostCorrectAnswers[orderIdx] || null;
+                const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                detailsHtml += "<div class='podium-card " + cls + "'>";
+                detailsHtml += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                detailsHtml += "<div class='fw-bold'>" + (p ? safeText(p.playerName || "") : "Waiting") + "</div>";
+                detailsHtml += "<div class='small-note'>" + (p ? ("✅ " + formatScore(p.correctAnswers || 0) + " correct") : "") + "</div>";
+                detailsHtml += "</div>";
+              });
+              detailsHtml += "</div>";
+            }
+
+            detailsHtml += "<div class='fw-bold mb-1'>Top 3 Most Attacked</div>";
+            if (!mostAttacked.length || Number(mostAttacked[0].attackedCount || 0) === 0) {
+              detailsHtml += "<div class='stats-empty mb-3'>No attacks were attempted this game.</div>";
+            } else {
+              detailsHtml += "<div class='podium mb-3'>";
+              [1, 0, 2].forEach((orderIdx, slot) => {
+                const p = mostAttacked[orderIdx] || null;
+                const cls = slot === 1 ? "first" : slot === 0 ? "second" : "third";
+                detailsHtml += "<div class='podium-card " + cls + "'>";
+                detailsHtml += "<div>" + (p ? ((orderIdx + 1) + (orderIdx === 0 ? "st" : orderIdx === 1 ? "nd" : "rd")) : "-") + "</div>";
+                detailsHtml += "<div class='fw-bold'>" + (p ? safeText(p.playerName || "") : "Waiting") + "</div>";
+                detailsHtml += "<div class='small-note'>" + (p ? ("🎯 " + formatScore(p.attackedCount || 0) + " attacks") : "") + "</div>";
+                detailsHtml += "</div>";
+              });
+              detailsHtml += "</div>";
+            }
+          }
+
+          details.innerHTML = detailsHtml;
+          wrap.appendChild(details);
+
+          if (model.phase === PHASES.FINISHED) {
+            const videoWrap = document.createElement("div");
+            videoWrap.innerHTML = this.buildPhaseVideo(STUDENT_PHASE_VIDEOS.final, "Final results outro");
+            wrap.appendChild(videoWrap);
+          }
+
+          this.app.appendChild(wrap);
+
+          const lbBonusBtn = document.getElementById("lbPowerBonusBtn");
+          if (lbBonusBtn && typeof model.onClaimStreakPrize === "function") {
+            lbBonusBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.BONUS, ""));
+          }
+          const lbCloakBtn = document.getElementById("lbPowerCloakBtn");
+          if (lbCloakBtn && typeof model.onClaimStreakPrize === "function") {
+            lbCloakBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.MASK, ""));
+          }
+          const lbStealthBtn = document.getElementById("lbPowerStealthBtn");
+          if (lbStealthBtn && typeof model.onClaimStreakPrize === "function") {
+            lbStealthBtn.addEventListener("click", () => {
+              const targetWrap = document.getElementById("lbStreakPrizeTargetWrap");
+              const msgEl = document.getElementById("lbStreakPrizeNotice");
+              if (!model.prizeTargets || !model.prizeTargets.length) {
+                if (msgEl) msgEl.textContent = "No target players are available right now.";
+                return;
+              }
+              if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
+              if (targetWrap) targetWrap.classList.toggle("d-none");
+              const targetEl = document.getElementById("lbStreakPrizeTarget");
+              if (targetEl && targetWrap && !targetWrap.classList.contains("d-none")) targetEl.focus();
+            });
+          }
+          const lbStealthTarget = document.getElementById("lbStreakPrizeTarget");
+          if (lbStealthTarget && typeof model.onClaimStreakPrize === "function") {
+            lbStealthTarget.addEventListener("change", () => {
+              const targetId = String(lbStealthTarget.value || "");
+              if (!targetId) return;
+              model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
+              lbStealthTarget.value = "";
+              const targetWrap = document.getElementById("lbStreakPrizeTargetWrap");
+              if (targetWrap) targetWrap.classList.add("d-none");
+            });
+          }
+
+          const sortLbNameBtn = document.getElementById("studentSortLbNameBtn");
+          if (sortLbNameBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbNameBtn.addEventListener("click", () => model.onSortLeaderboard("playerName"));
+          }
+          const sortLbScoreBtn = document.getElementById("studentSortLbScoreBtn");
+          if (sortLbScoreBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbScoreBtn.addEventListener("click", () => model.onSortLeaderboard("score"));
+          }
+          const sortLbCurrentStreakBtn = document.getElementById("studentSortLbCurrentStreakBtn");
+          if (sortLbCurrentStreakBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbCurrentStreakBtn.addEventListener("click", () => model.onSortLeaderboard("currentStreak"));
+          }
+          const sortLbCorrectAnswersBtn = document.getElementById("studentSortLbCorrectAnswersBtn");
+          if (sortLbCorrectAnswersBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbCorrectAnswersBtn.addEventListener("click", () => model.onSortLeaderboard("correctAnswers"));
+          }
+          const sortLbLongestStreakBtn = document.getElementById("studentSortLbLongestStreakBtn");
+          if (sortLbLongestStreakBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbLongestStreakBtn.addEventListener("click", () => model.onSortLeaderboard("longestStreak"));
+          }
+          const sortLbQuickBtn = document.getElementById("studentSortLbQuickBtn");
+          if (sortLbQuickBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbQuickBtn.addEventListener("click", () => model.onSortLeaderboard("quickDrawWins"));
+          }
+          const sortLbAttackedBtn = document.getElementById("studentSortLbAttackedBtn");
+          if (sortLbAttackedBtn && typeof model.onSortLeaderboard === "function") {
+            sortLbAttackedBtn.addEventListener("click", () => model.onSortLeaderboard("attackedCount"));
+          }
+
+          const sortQdNameBtn = document.getElementById("studentSortQdNameBtn");
+          if (sortQdNameBtn && typeof model.onSortQuickDraw === "function") {
+            sortQdNameBtn.addEventListener("click", () => model.onSortQuickDraw("playerName"));
+          }
+          const sortQdAvgBtn = document.getElementById("studentSortQdAvgBtn");
+          if (sortQdAvgBtn && typeof model.onSortQuickDraw === "function") {
+            sortQdAvgBtn.addEventListener("click", () => model.onSortQuickDraw("avgResponseMs"));
+          }
+          const sortQdFastBtn = document.getElementById("studentSortQdFastBtn");
+          if (sortQdFastBtn && typeof model.onSortQuickDraw === "function") {
+            sortQdFastBtn.addEventListener("click", () => model.onSortQuickDraw("fastestResponseMs"));
+          }
+          const sortQdWinsBtn = document.getElementById("studentSortQdWinsBtn");
+          if (sortQdWinsBtn && typeof model.onSortQuickDraw === "function") {
+            sortQdWinsBtn.addEventListener("click", () => model.onSortQuickDraw("quickDrawWins"));
+          }
+
+          const resetSortsBtn = document.getElementById("studentResetSortsBtn");
+          if (resetSortsBtn && typeof model.onResetSorts === "function") {
+            resetSortsBtn.addEventListener("click", model.onResetSorts);
+          }
+        }
+
+        animateCount(id, from, to, duration) {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reduce) {
+            el.textContent = formatScore(to);
+            return;
+          }
+          const start = nowTs();
+          const diff = to - from;
+          const frame = () => {
+            const t = Math.min(1, (nowTs() - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const val = Math.round(from + diff * eased);
+            el.textContent = formatScore(val);
+            if (t < 1) requestAnimationFrame(frame);
+          };
+          frame();
+        }
+      }
+
+      function safeText(v) {
+        return String(v == null ? "" : v)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      class StudentGameController {
+        constructor() {
+          this.ui = new StudentUI();
+          this.socketPrefs = this.loadSocketPrefs();
+          this.socketEndpointHealth = {};
+          this.socketMenuOpen = false;
+          this.connectedEndpoint = null;
+          this.socket = new SocketManager(
+            this.onMessage.bind(this),
+            this.onSocketState.bind(this),
+            this.getSocketCandidates.bind(this),
+            this.onSocketConnectedEndpoint.bind(this)
+          );
+          this.identity = LocalStore.readJson(STORAGE_KEYS.IDENTITY, null);
+          this.game = LocalStore.readJson(STORAGE_KEYS.GAME, {
+            gameId: "",
+            phase: PHASES.LOBBY,
+            question: null,
+            reveal: null,
+            leaderboard: [],
+            quizTitle: "",
+            playerScore: 0,
+            rank: null,
+            totalPlayers: 0,
+            hasSubmitted: false,
+            selectedIds: [],
+            playerRemoved: false,
+            playerScoreBeforeReveal: 0,
+            doubleDownArmed: false,
+            doubleDownUses: 0,
+            doubleDownCap: 3,
+            doubleDownPurchasedCredits: 0,
+            doubleDownEligible: true,
+            doubleDownDisabledReason: "",
+            doubleDownNotice: "",
+            canBuyDoubleDown: false,
+            doubleDownBuyCost: 3000,
+            doubleDownBuyBlockedReason: "",
+            pointShieldNext: false,
+            pointShieldMode: "NORMAL",
+            pointShieldArmedForQuestionIndex: null,
+            fiftyFiftyQuestionIndex: null,
+            fiftyFiftyRemovedOptionIds: [],
+            fiftyFiftyUsed: false,
+            fiftyFiftyNotice: "",
+            canBuyPointShield: false,
+            pointShieldCost: 2500,
+            canBuyReflectiveShield: false,
+            reflectiveShieldCost: 4000,
+            pointShieldNotice: "",
+            incomingStrikeCount: 0,
+            attackedCount: 0,
+            strikeOutcome: "",
+            strikeDelta: 0,
+            strikeCount: 0,
+            strikeAttackers: [],
+            strikeNotice: "",
+            playerDisplayedScore: 0,
+            isScoreMasked: false,
+            fakeScoreTurnsRemaining: 0,
+            fakeScorePrimed: false,
+            correctStreak: 0,
+            longestStreak: 0,
+            streakPrizeAvailable: false,
+            streakPrizeUsed: false,
+            streakPrizeUses: 0,
+            streakPrizeNextIndex: 0,
+            streakPrizeAction: "",
+            streakPrizeNotice: "",
+            prizeTargets: []
+          });
+
+          this.joinTimeoutHandle = null;
+          this.lastInstructorSeenAt = 0;
+          this.currentConnState = "disconnected";
+          this.tickTimer = null;
+          this.renderQueued = false;
+          this.pendingJoinMsg = "";
+          this.questionCloseWaitingShown = false;
+          this.leaderboardSort = { key: "score", dir: "desc" };
+          this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
+          this.fiftyFiftyInFlight = false;
+          this.joinDraft = {
+            gameId: "",
+            playerName: ""
+          };
+          this.hydrateGameState();
+        }
+
+        queueRender(joinMsg) {
+          if (typeof joinMsg === "string") this.pendingJoinMsg = joinMsg;
+          if (this.renderQueued) return;
+          this.renderQueued = true;
+          requestAnimationFrame(() => {
+            this.renderQueued = false;
+            const msg = this.pendingJoinMsg;
+            this.pendingJoinMsg = "";
+            this.render(msg);
+          });
+        }
+
+        shouldRenderAfterMessage(msgType, before) {
+          if (!before) return true;
+          const nowPhase = this.game.phase;
+          const question = this.game.question;
+          const questionIndex = question && question.questionIndex != null ? Number(question.questionIndex) : null;
+          const reveal = this.game.reveal;
+          const revealKey = reveal && reveal.questionIndex != null ? Number(reveal.questionIndex) : (reveal ? "present" : null);
+          const fiftyFiftyKey = this.game.fiftyFiftyQuestionIndex != null
+            ? String(this.game.fiftyFiftyQuestionIndex) + ":" + (Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.join(",") : "")
+            : "";
+
+          if (msgType === MSG.QUESTION_STARTED) {
+            return before.phase !== PHASES.QUESTION || before.questionIndex !== questionIndex;
+          }
+
+          if (msgType === MSG.ANSWER_REVEALED) {
+            return before.phase !== PHASES.ANSWER_REVEAL || before.revealKey !== revealKey;
+          }
+
+          if (msgType === MSG.GAME_FINISHED) {
+            return before.phase !== PHASES.FINISHED;
+          }
+
+          if (msgType === MSG.PLAYER_REMOVED) {
+            return before.playerRemoved !== !!this.game.playerRemoved;
+          }
+
+          if (msgType === MSG.QUESTION_ENDED) {
+            return before.phase !== nowPhase;
+          }
+
+          if (msgType === MSG.DOUBLE_DOWN_SET || msgType === MSG.DOUBLE_DOWN_BUY_RESULT || msgType === MSG.POINT_SHIELD_BUY_RESULT || msgType === MSG.STREAK_PRIZE_RESULT || msgType === MSG.FIFTY_FIFTY_RESULT) {
+            return false;
+          }
+
+          if (msgType === MSG.SCORE_UPDATED || msgType === MSG.SCORE_RESET) {
+            return false;
+          }
+
+          if (msgType === MSG.LEADERBOARD) {
+            return before.phase !== PHASES.LEADERBOARD;
+          }
+
+          if (msgType === MSG.STATE_SNAPSHOT) {
+            if (before.phase !== nowPhase) return true;
+            if (before.questionIndex !== questionIndex) return true;
+            if (before.revealKey !== revealKey) return true;
+            if (before.playerRemoved !== !!this.game.playerRemoved) return true;
+            return false;
+          }
+
+          return false;
+        }
+
+        applyLightweightViewUpdates(msgType) {
+          if (this.game.phase === PHASES.QUESTION) {
+            const scoreEl = document.getElementById("scoreValue");
+            if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
+
+            const fiftyFiftyBtn = document.getElementById("fiftyFiftyBtn");
+            if (fiftyFiftyBtn) {
+              const used = Number(this.game.fiftyFiftyQuestionIndex) === Number(this.game.question && this.game.question.questionIndex)
+                && Array.isArray(this.game.fiftyFiftyRemovedOptionIds)
+                && this.game.fiftyFiftyRemovedOptionIds.length >= 2;
+              fiftyFiftyBtn.disabled = !!this.game.hasSubmitted || used || !!this.fiftyFiftyInFlight || Number(this.game.playerScore || 0) < FIFTY_FIFTY_COST;
+              fiftyFiftyBtn.classList.toggle("is-on", used);
+            }
+
+            const removedIds = new Set(Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.map(String) : []);
+            document.querySelectorAll(".ans-btn[data-opt-id]").forEach((button) => {
+              const removed = removedIds.has(String(button.getAttribute("data-opt-id") || ""));
+              button.classList.toggle("fifty-fifty-removed", removed);
+              if (removed) button.classList.remove("selected");
+              button.disabled = !!this.game.hasSubmitted || removed;
+            });
+
+            const questionStatus = document.getElementById("questionStatus");
+            if (this.game.hasSubmitted) {
+              this.ui.updateLockedBanner();
+            } else if (questionStatus && this.game.fiftyFiftyNotice) {
+              questionStatus.textContent = this.game.fiftyFiftyNotice;
+            }
+
+            const submitButton = document.querySelector("#submitWrap button");
+            if (submitButton && this.game.hasSubmitted) {
+              submitButton.disabled = true;
+              submitButton.textContent = "Answer Locked";
+            }
+            return;
+          }
+
+          if (this.game.phase === PHASES.ANSWER_REVEAL) {
+            const hasNextQuestion = !!(this.game.question && this.game.question.questionNumber < this.game.question.questionCount);
+            const scoreEl = document.getElementById("countingScore");
+            if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
+
+            const streakMsg = document.getElementById("streakPrizeMsg");
+            if (streakMsg) streakMsg.textContent = this.game.streakPrizeNotice || "";
+
+            const doubleDownStatus = document.getElementById("doubleDownStatus");
+            if (doubleDownStatus) {
+              doubleDownStatus.textContent = this.getDoubleDownStatusText(hasNextQuestion);
+              doubleDownStatus.classList.toggle("ok", !!(this.game.doubleDownArmed || this.game.doubleDownEligible || this.game.canBuyDoubleDown));
+              doubleDownStatus.classList.toggle("bad", !(this.game.doubleDownArmed || this.game.doubleDownEligible || this.game.canBuyDoubleDown));
+            }
+
+            const doubleDownBtn = document.getElementById("doubleDownBtn");
+            if (doubleDownBtn) {
+              const canArm = hasNextQuestion && !this.game.doubleDownArmed && !!this.game.doubleDownEligible;
+              const canBuy = hasNextQuestion && !this.game.doubleDownArmed && !this.game.doubleDownEligible && !!this.game.canBuyDoubleDown;
+              doubleDownBtn.disabled = !canArm && !canBuy;
+              doubleDownBtn.classList.toggle("active", !!this.game.doubleDownArmed);
+              doubleDownBtn.classList.toggle("is-disabled", doubleDownBtn.disabled);
+              doubleDownBtn.textContent = this.game.doubleDownArmed
+                ? "Double Down Armed"
+                : canBuy ? "Buy Double Down " + formatScore(this.game.doubleDownBuyCost || 3000) : "Double Down";
+            }
+
+            const pointStatus = document.getElementById("pointShieldStatus");
+            if (pointStatus) {
+              pointStatus.textContent = this.getPointShieldStatusText(hasNextQuestion);
+              pointStatus.classList.toggle("ok", !!(this.game.pointShieldNext || this.game.canBuyPointShield));
+              pointStatus.classList.toggle("bad", !this.game.pointShieldNext && !this.game.canBuyPointShield);
+            }
+
+            const reflectiveStatus = document.getElementById("reflectiveShieldStatus");
+            if (reflectiveStatus) {
+              const reflectiveArmed = !!(this.game.pointShieldNext && String(this.game.pointShieldMode || "").toUpperCase() === "REFLECTIVE");
+              reflectiveStatus.textContent = this.getReflectiveShieldStatusText(hasNextQuestion);
+              reflectiveStatus.classList.toggle("ok", !!(reflectiveArmed || this.game.canBuyReflectiveShield));
+              reflectiveStatus.classList.toggle("bad", !(reflectiveArmed || this.game.canBuyReflectiveShield));
+            }
+
+            const pointNotice = document.getElementById("pointShieldNotice");
+            if (pointNotice) pointNotice.textContent = this.game.pointShieldNotice || "";
+
+            const shieldBtn = document.getElementById("buyPointShieldBtn");
+            if (shieldBtn) {
+              shieldBtn.disabled = !!this.game.pointShieldNext || !this.game.canBuyPointShield;
+              shieldBtn.classList.toggle("active", !!this.game.pointShieldNext && String(this.game.pointShieldMode || "").toUpperCase() !== "REFLECTIVE");
+            }
+
+            const reflectiveBtn = document.getElementById("buyReflectiveShieldBtn");
+            if (reflectiveBtn) {
+              reflectiveBtn.disabled = !!this.game.pointShieldNext || !this.game.canBuyReflectiveShield;
+              reflectiveBtn.classList.toggle("active", !!this.game.pointShieldNext && String(this.game.pointShieldMode || "").toUpperCase() === "REFLECTIVE");
+            }
+
+            ["powerBonusBtn", "powerCloakBtn", "powerStealthBtn"].forEach((id) => {
+              const button = document.getElementById(id);
+              if (button) button.disabled = !this.game.streakPrizeAvailable;
+            });
+
+            const maskNotice = document.getElementById("revealScoreMaskNotice");
+            if (maskNotice) {
+              maskNotice.className = this.game.isScoreMasked ? "double-down-note warn mb-3" : "d-none";
+              maskNotice.textContent = this.game.isScoreMasked
+                ? "Real score: " + formatScore(this.game.playerScore || 0) + " pts. Leaderboard shows: " + formatScore(this.game.playerDisplayedScore || 0) + " pts for " + Number(this.game.fakeScoreTurnsRemaining || 0) + " more turn" + (Number(this.game.fakeScoreTurnsRemaining || 0) === 1 ? "" : "s") + "."
+                : "";
+            }
+            return;
+          }
+
+          if (this.game.phase === PHASES.LEADERBOARD || this.game.phase === PHASES.FINISHED) {
+            const rankEl = document.getElementById("leaderboardMyRank");
+            if (rankEl) rankEl.textContent = "You're #" + (this.game.rank || "-");
+
+            const scoreEl = document.getElementById("leaderboardMyScore");
+            if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore) + " points";
+
+            const streakNoticeEl = document.getElementById("lbStreakPrizeNotice");
+            if (streakNoticeEl) streakNoticeEl.textContent = this.game.streakPrizeNotice || "";
+
+            const pointNoticeEl = document.getElementById("lbPointShieldNotice");
+            if (pointNoticeEl) pointNoticeEl.textContent = this.game.pointShieldNotice || "";
+
+            const hasNextFromBoard = !!(this.game.question && this.game.question.questionNumber < this.game.question.questionCount);
+            const pointStatusEl = document.getElementById("lbPointShieldStatus");
+            if (pointStatusEl) {
+              pointStatusEl.textContent = this.getPointShieldStatusText(hasNextFromBoard);
+              pointStatusEl.classList.toggle("ok", !!(this.game.pointShieldNext || this.game.canBuyPointShield));
+              pointStatusEl.classList.toggle("bad", !this.game.pointShieldNext && !this.game.canBuyPointShield);
+            }
+
+            const reflectiveStatusEl = document.getElementById("lbReflectiveShieldStatus");
+            if (reflectiveStatusEl) {
+              const reflectiveArmed = !!(this.game.pointShieldNext && String(this.game.pointShieldMode || "").toUpperCase() === "REFLECTIVE");
+              reflectiveStatusEl.textContent = this.getReflectiveShieldStatusText(hasNextFromBoard);
+              reflectiveStatusEl.classList.toggle("ok", !!(reflectiveArmed || this.game.canBuyReflectiveShield));
+              reflectiveStatusEl.classList.toggle("bad", !(reflectiveArmed || this.game.canBuyReflectiveShield));
+            }
+
+            const pointShieldBtn = document.getElementById("lbBuyPointShieldBtn");
+            if (pointShieldBtn) {
+              if (this.game.pointShieldNext) pointShieldBtn.textContent = "Shield Armed For Next Question";
+              else pointShieldBtn.textContent = "Shield Next Question for " + formatScore(this.game.pointShieldCost || 2500) + " pts";
+              pointShieldBtn.disabled = !!this.game.pointShieldNext || !this.game.canBuyPointShield;
+            }
+
+            const reflectiveBtn = document.getElementById("lbBuyReflectiveShieldBtn");
+            if (reflectiveBtn) {
+              const reflectiveArmed = !!(this.game.pointShieldNext && String(this.game.pointShieldMode || "").toUpperCase() === "REFLECTIVE");
+              if (reflectiveArmed) reflectiveBtn.innerHTML = "Reflective Shield Armed <span class='ms-1'>✨</span>";
+              else reflectiveBtn.innerHTML = "Reflective Shield for " + formatScore(this.game.reflectiveShieldCost || 4000) + " pts <span class='ms-1'>✨</span>";
+              reflectiveBtn.disabled = !!this.game.pointShieldNext || !this.game.canBuyReflectiveShield;
+            }
+          }
+        }
+
+        loadSocketPrefs() {
+          const raw = LocalStore.readJson(STORAGE_KEYS.SOCKET_PREFS, null) || {};
+          const selectedId = typeof raw.selectedId === "string" ? raw.selectedId : "primary";
+          const customUrl = normalizeSocketUrl(raw.customUrl || "");
+          const strictMode = !!raw.strictMode;
+          return {
+            selectedId,
+            customUrl,
+            strictMode
+          };
+        }
+
+        saveSocketPrefs() {
+          LocalStore.writeJson(STORAGE_KEYS.SOCKET_PREFS, this.socketPrefs);
+        }
+
+        getSocketEntries() {
+          const entries = SOCKET_CHOICES.slice();
+          if (this.socketPrefs.customUrl && isValidSocketUrl(this.socketPrefs.customUrl)) {
+            entries.push({ id: "custom", name: "Custom", url: this.socketPrefs.customUrl });
+          }
+          return entries;
+        }
+
+        getSocketCandidates() {
+          const entries = this.getSocketEntries();
+          const selected = entries.find((x) => x.id === this.socketPrefs.selectedId) || entries[0];
+          if (this.socketPrefs.strictMode) {
+            return selected ? [{ id: selected.id, name: selected.name, url: selected.url }] : [];
+          }
+          const ordered = [];
+          if (selected) ordered.push(selected);
+          entries.forEach((entry) => {
+            if (!selected || entry.id !== selected.id) ordered.push(entry);
+          });
+          return dedupeByUrl(ordered);
+        }
+
+        onSocketConnectedEndpoint(endpoint) {
+          this.connectedEndpoint = endpoint || null;
+          this.refreshSocketMenuState();
+        }
+
+        getSelectedSocketName() {
+          const entries = this.getSocketEntries();
+          const selected = entries.find((x) => x.id === this.socketPrefs.selectedId);
+          return selected ? selected.name : "Primary";
+        }
+
+        bindSocketPickerEvents() {
+          const ui = this.ui;
+          ui.socketPill.addEventListener("click", (evt) => {
+            evt.stopPropagation();
+            this.toggleSocketMenu();
+          });
+
+          ui.socketMenu.addEventListener("click", (evt) => evt.stopPropagation());
+
+          document.addEventListener("click", () => {
+            if (!this.socketMenuOpen) return;
+            this.socketMenuOpen = false;
+            ui.setSocketMenuOpen(false);
+          });
+
+          ui.socketOptions.addEventListener("change", (evt) => {
+            const target = evt.target;
+            if (!target || target.name !== "socketEndpoint") return;
+            this.socketPrefs.selectedId = String(target.value || "primary");
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState("Endpoint preference saved. Reconnecting...");
+            this.reconnectSocket();
+          });
+
+          ui.socketModeOptions.addEventListener("click", (evt) => {
+            const target = evt.target;
+            if (!target || target.id !== "socketStrictToggleBtn") return;
+            this.socketPrefs.strictMode = !this.socketPrefs.strictMode;
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState();
+            this.reconnectSocket();
+          });
+
+          ui.socketCustomSaveBtn.addEventListener("click", () => {
+            const val = normalizeSocketUrl(ui.socketCustomInput.value);
+            if (!isValidSocketUrl(val)) {
+              this.refreshSocketMenuState("Enter a valid ws:// or wss:// URL.");
+              return;
+            }
+            this.socketPrefs.customUrl = val;
+            this.socketPrefs.selectedId = "custom";
+            this.saveSocketPrefs();
+            this.refreshSocketMenuState("Custom endpoint saved. Reconnecting...");
+            this.reconnectSocket();
+          });
+        }
+
+        reconnectSocket() {
+          this.socket.close();
+          this.socket = new SocketManager(
+            this.onMessage.bind(this),
+            this.onSocketState.bind(this),
+            this.getSocketCandidates.bind(this),
+            this.onSocketConnectedEndpoint.bind(this)
+          );
+          this.socket.connect();
+          this.refreshSocketHealth();
+        }
+
+        async refreshSocketHealth() {
+          const entries = this.getSocketEntries();
+          entries.forEach((entry) => {
+            this.socketEndpointHealth[entry.id] = "testing";
+          });
+          this.refreshSocketMenuState();
+
+          const results = await Promise.all(entries.map(async (entry) => {
+            const ok = await probeSocketUrl(entry.url, 1800);
+            return { id: entry.id, ok };
+          }));
+
+          results.forEach((r) => {
+            this.socketEndpointHealth[r.id] = r.ok ? "ok" : "fail";
+          });
+          this.refreshSocketMenuState();
+        }
+
+        refreshSocketMenuState(msg) {
+          const entries = this.getSocketEntries();
+          if (!entries.some((x) => x.id === this.socketPrefs.selectedId)) {
+            this.socketPrefs.selectedId = entries[0] ? entries[0].id : "primary";
+            this.saveSocketPrefs();
+          }
+          this.ui.renderSocketOptions(entries, this.socketPrefs.selectedId, !!this.socketPrefs.strictMode, this.socketEndpointHealth);
+          this.ui.socketCustomInput.value = this.socketPrefs.customUrl || "";
+          if (typeof msg === "string") this.ui.socketMenuMsg.textContent = msg;
+          const label = this.connectedEndpoint && this.connectedEndpoint.name
+            ? this.connectedEndpoint.name
+            : this.getSelectedSocketName();
+          this.ui.setConnLabel(this.currentConnState, label);
+        }
+
+        toggleSocketMenu() {
+          this.socketMenuOpen = !this.socketMenuOpen;
+          this.ui.setSocketMenuOpen(this.socketMenuOpen);
+          if (this.socketMenuOpen) {
+            this.refreshSocketMenuState();
+            this.refreshSocketHealth();
+          }
+        }
+
+        hydrateGameState() {
+          if (!this.game || typeof this.game !== "object") this.game = {};
+          if (!Array.isArray(this.game.leaderboard)) this.game.leaderboard = [];
+          if (!Array.isArray(this.game.selectedIds)) this.game.selectedIds = [];
+          if (typeof this.game.doubleDownArmed !== "boolean") this.game.doubleDownArmed = false;
+          if (typeof this.game.doubleDownUses !== "number") this.game.doubleDownUses = 0;
+          if (typeof this.game.doubleDownCap !== "number") this.game.doubleDownCap = 3;
+          if (typeof this.game.doubleDownPurchasedCredits !== "number") this.game.doubleDownPurchasedCredits = 0;
+          if (typeof this.game.doubleDownEligible !== "boolean") this.game.doubleDownEligible = true;
+          if (typeof this.game.doubleDownDisabledReason !== "string") this.game.doubleDownDisabledReason = "";
+          if (typeof this.game.doubleDownNotice !== "string") this.game.doubleDownNotice = "";
+          if (typeof this.game.canBuyDoubleDown !== "boolean") this.game.canBuyDoubleDown = false;
+          if (typeof this.game.doubleDownBuyCost !== "number") this.game.doubleDownBuyCost = 3000;
+          if (typeof this.game.doubleDownBuyBlockedReason !== "string") this.game.doubleDownBuyBlockedReason = "";
+          if (typeof this.game.pointShieldNext !== "boolean") this.game.pointShieldNext = false;
+          if (typeof this.game.pointShieldMode !== "string") this.game.pointShieldMode = "NORMAL";
+          if (typeof this.game.pointShieldArmedForQuestionIndex !== "number") this.game.pointShieldArmedForQuestionIndex = null;
+          if (typeof this.game.fiftyFiftyQuestionIndex !== "number") this.game.fiftyFiftyQuestionIndex = null;
+          if (!Array.isArray(this.game.fiftyFiftyRemovedOptionIds)) this.game.fiftyFiftyRemovedOptionIds = [];
+          if (typeof this.game.fiftyFiftyUsed !== "boolean") this.game.fiftyFiftyUsed = false;
+          if (typeof this.game.fiftyFiftyNotice !== "string") this.game.fiftyFiftyNotice = "";
+          if (typeof this.game.canBuyPointShield !== "boolean") this.game.canBuyPointShield = false;
+          if (typeof this.game.pointShieldCost !== "number") this.game.pointShieldCost = 2500;
+          if (typeof this.game.canBuyReflectiveShield !== "boolean") this.game.canBuyReflectiveShield = false;
+          if (typeof this.game.reflectiveShieldCost !== "number") this.game.reflectiveShieldCost = 4000;
+          if (typeof this.game.pointShieldNotice !== "string") this.game.pointShieldNotice = "";
+          if (typeof this.game.incomingStrikeCount !== "number") this.game.incomingStrikeCount = 0;
+          if (typeof this.game.attackedCount !== "number") this.game.attackedCount = 0;
+          if (typeof this.game.strikeOutcome !== "string") this.game.strikeOutcome = "";
+          if (typeof this.game.strikeDelta !== "number") this.game.strikeDelta = 0;
+          if (typeof this.game.strikeCount !== "number") this.game.strikeCount = 0;
+          if (!Array.isArray(this.game.strikeAttackers)) this.game.strikeAttackers = [];
+          if (typeof this.game.strikeNotice !== "string") this.game.strikeNotice = "";
+          if (typeof this.game.playerDisplayedScore !== "number") this.game.playerDisplayedScore = Number(this.game.playerScore || 0);
+          if (typeof this.game.isScoreMasked !== "boolean") this.game.isScoreMasked = false;
+          if (typeof this.game.fakeScoreTurnsRemaining !== "number") this.game.fakeScoreTurnsRemaining = 0;
+          if (typeof this.game.fakeScorePrimed !== "boolean") this.game.fakeScorePrimed = false;
+          if (typeof this.game.correctStreak !== "number") this.game.correctStreak = 0;
+          if (typeof this.game.longestStreak !== "number") this.game.longestStreak = 0;
+          if (typeof this.game.streakPrizeAvailable !== "boolean") this.game.streakPrizeAvailable = false;
+          if (typeof this.game.streakPrizeUsed !== "boolean") this.game.streakPrizeUsed = false;
+          if (typeof this.game.streakPrizeUses !== "number") this.game.streakPrizeUses = 0;
+          if (typeof this.game.streakPrizeNextIndex !== "number") this.game.streakPrizeNextIndex = 0;
+          if (typeof this.game.streakPrizeAction !== "string") this.game.streakPrizeAction = "";
+          if (typeof this.game.streakPrizeNotice !== "string") this.game.streakPrizeNotice = "";
+          if (!Array.isArray(this.game.prizeTargets)) this.game.prizeTargets = [];
+          if (typeof this.game.totalPlayers !== "number") this.game.totalPlayers = 0;
+        }
+
+        refreshDoubleDownPolicy(serverReason) {
+          this.hydrateGameState();
+
+          const cap = Math.max(1, Number(this.game.doubleDownCap || 3));
+          const uses = Math.max(0, Number(this.game.doubleDownUses || 0));
+          const purchasedCredits = Math.max(0, Number(this.game.doubleDownPurchasedCredits || 0));
+          const buyCost = Math.max(1, Number(this.game.doubleDownBuyCost || 3000));
+          const rank = this.game.rank == null ? null : Number(this.game.rank);
+          const boardSize = Array.isArray(this.game.leaderboard) ? this.game.leaderboard.length : 0;
+          const totalPlayers = Math.max(Number(this.game.totalPlayers || 0), boardSize);
+
+          this.game.doubleDownCap = cap;
+          this.game.doubleDownUses = uses;
+          this.game.doubleDownPurchasedCredits = purchasedCredits;
+          this.game.doubleDownBuyCost = buyCost;
+          this.game.totalPlayers = totalPlayers;
+
+          let eligible = false;
+          let reason = "";
+          const baseUsesRemaining = Math.max(0, cap - uses);
+          const bonusEligible = rank != null && (rank === 3 || rank === 5 || rank >= Math.max(1, totalPlayers - 4));
+          const score = Number(this.game.playerScore || 0);
+          const canBuyDoubleDown = rank !== 1 && baseUsesRemaining === 0 && purchasedCredits === 0 && !bonusEligible && score >= buyCost;
+          let buyBlockedReason = "";
+
+          if (rank === 1) {
+            eligible = false;
+            reason = "Double Down is disabled while you are in 1st place.";
+          } else if (baseUsesRemaining > 0) {
+            eligible = true;
+          } else if (purchasedCredits > 0) {
+            eligible = true;
+          } else if (bonusEligible) {
+            eligible = true;
+          } else {
+            eligible = false;
+            reason = "Double Down is disabled after 3 uses unless you are in 3rd, 5th, or bottom 5.";
+          }
+
+          if (rank === 1) buyBlockedReason = "1st place cannot buy Double Down.";
+          else if (baseUsesRemaining > 0) buyBlockedReason = "Use your remaining standard Double Downs first.";
+          else if (purchasedCredits > 0) buyBlockedReason = "You already have a purchased Double Down credit ready.";
+          else if (bonusEligible) buyBlockedReason = "Your rank already unlocks bonus Double Down uses.";
+          else if (score < buyCost) buyBlockedReason = "Need at least " + formatScore(buyCost) + " points to buy one.";
+
+          if (typeof serverReason === "string" && serverReason.trim() && !eligible) {
+            reason = serverReason;
+          }
+
+          this.game.doubleDownEligible = eligible;
+          this.game.doubleDownDisabledReason = reason;
+          this.game.canBuyDoubleDown = canBuyDoubleDown;
+          this.game.doubleDownBuyBlockedReason = buyBlockedReason;
+        }
+
+        getDoubleDownStatusText(hasNextQuestion) {
+          const cap = Math.max(1, Number(this.game.doubleDownCap || 3));
+          const uses = Math.max(0, Number(this.game.doubleDownUses || 0));
+          const purchasedCredits = Math.max(0, Number(this.game.doubleDownPurchasedCredits || 0));
+          const buyCost = Math.max(1, Number(this.game.doubleDownBuyCost || 3000));
+          const remaining = Math.max(0, cap - uses);
+
+          if (!hasNextQuestion) {
+            return "No next question remains, so Double Down is unavailable.";
+          }
+          if (this.game.doubleDownArmed) {
+            return "Double Down is armed for the next question.";
+          }
+          if (this.game.rank === 1) {
+            return "1st place cannot Double Down.";
+          }
+          if (remaining > 0) {
+            return remaining + " of " + cap + " standard Double Downs remaining.";
+          }
+          if (purchasedCredits > 0) {
+            return "You have " + purchasedCredits + " purchased Double Down credit" + (purchasedCredits === 1 ? "" : "s") + " available.";
+          }
+          if (this.game.doubleDownEligible) {
+            return "Standard Double Downs are spent. Bonus Double Down is unlocked for your current rank.";
+          }
+          if (this.game.canBuyDoubleDown) {
+            return "Standard Double Downs are spent. You can buy one for " + formatScore(buyCost) + " points.";
+          }
+          return "Standard Double Downs are spent. Move into 3rd, 5th, or bottom 5 to unlock more.";
+        }
+
+        getPointShieldStatusText(hasNextQuestion) {
+          const cost = Math.max(1, Number(this.game.pointShieldCost || 2500));
+          if (!hasNextQuestion) {
+            return "No next question remains, so point shield is unavailable.";
+          }
+          if (this.game.pointShieldNext) {
+            if (String(this.game.pointShieldMode || "NORMAL").toUpperCase() === "REFLECTIVE") {
+              return "Reflective shield is armed. Point deductions bounce back to the attacker.";
+            }
+            return "Point shield is armed for the next question.";
+          }
+          if (Number(this.game.playerScore || 0) < cost) {
+            return "" + formatScore(cost) + " points needed to arm point shield.";
+          }
+          return "Spend " + formatScore(cost) + " points to protect against point attacks on the next question.";
+        }
+
+        getReflectiveShieldStatusText(hasNextQuestion) {
+          const cost = Math.max(1, Number(this.game.reflectiveShieldCost || 4000));
+          if (!hasNextQuestion) return "No next question remains, so reflective shield is unavailable.";
+          if (this.game.pointShieldNext && String(this.game.pointShieldMode || "NORMAL").toUpperCase() === "REFLECTIVE") {
+            return "Reflective shield armed: attackers take their own deduction on impact.";
+          }
+          if (this.game.pointShieldNext) return "A shield is already armed for the next question.";
+          if (Number(this.game.playerScore || 0) < cost) return "" + formatScore(cost) + " points needed to arm reflective shield.";
+          return "Spend " + formatScore(cost) + " points to arm reflective shield with blowback.";
+        }
+
+        buildStrikeNotice(outcome, delta, count) {
+          const strikeCount = Math.max(0, Number(count || 0));
+          const amount = Math.abs(Number(delta || 0));
+          if (outcome === "STRUCK") {
+            return "You were hit by " + strikeCount + " Shadow Strike" + (strikeCount === 1 ? "" : "s") + " and lost " + formatScore(amount || (strikeCount * 1000)) + " points.";
+          }
+          if (outcome === "SHIELD_BLOCK") {
+            return "Your shield blocked " + strikeCount + " Shadow Strike" + (strikeCount === 1 ? "" : "s") + ".";
+          }
+          if (outcome === "REFLECTED_BLOCK") {
+            return "Your reflective shield bounced " + strikeCount + " Shadow Strike" + (strikeCount === 1 ? "" : "s") + " back.";
+          }
+          if (outcome === "REFLECTED_HIT") {
+            return "Your Shadow Strike was reflected and you lost " + formatScore(amount || (strikeCount * 1000)) + " points.";
+          }
+          return "";
+        }
+
+        toggleSortState(scope, key) {
+          const target = scope === "leaderboard" ? this.leaderboardSort : this.quickDrawSort;
+          const prefersAsc = key === "playerName" || key === "avgResponseMs" || key === "fastestResponseMs";
+          const fallbackDir = prefersAsc ? "asc" : "desc";
+          if (target.key === key) {
+            target.dir = target.dir === "asc" ? "desc" : "asc";
+          } else {
+            target.key = key;
+            target.dir = fallbackDir;
+          }
+        }
+
+        resetSorts() {
+          this.leaderboardSort = { key: "score", dir: "desc" };
+          this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
+        }
+
+        sortRows(rows, sortState) {
+          const list = rows.slice();
+          list.sort((a, b) => {
+            if (sortState.key === "playerName") {
+              const cmpName = String(a.playerName || "").localeCompare(String(b.playerName || ""));
+              if (cmpName !== 0) return sortState.dir === "asc" ? cmpName : -cmpName;
+              return Number(a.rank || 0) - Number(b.rank || 0);
+            }
+
+            const aVal = a[sortState.key];
+            const bVal = b[sortState.key];
+            const aNil = aVal == null;
+            const bNil = bVal == null;
+            if (aNil && bNil) return Number(a.rank || 0) - Number(b.rank || 0);
+            if (aNil) return 1;
+            if (bNil) return -1;
+
+            const cmpNum = Number(aVal) - Number(bVal);
+            if (cmpNum !== 0) return sortState.dir === "asc" ? cmpNum : -cmpNum;
+            return Number(a.rank || 0) - Number(b.rank || 0);
+          });
+          return list;
+        }
+
+        buildLeaderboardStats(scoreRankRows) {
+          const leaderboardRows = this.sortRows(scoreRankRows, this.leaderboardSort);
+          const quickDrawSource = scoreRankRows.filter((row) => Number(row.responseCount || 0) > 0);
+          const quickDrawRows = this.sortRows(quickDrawSource, this.quickDrawSort);
+          return {
+            scoreRankRows,
+            leaderboardRows,
+            quickDrawRows,
+            leaderboardSort: this.leaderboardSort,
+            quickDrawSort: this.quickDrawSort
+          };
+        }
+
+        init() {
+          if (!this.identity || !this.identity.playerId) {
+            this.identity = {
+              playerId: (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : ("p-" + Math.random().toString(36).slice(2)),
+              playerName: "",
+              gameId: ""
+            };
+            LocalStore.writeJson(STORAGE_KEYS.IDENTITY, this.identity);
+          }
+
+          const qGame = readQueryGame();
+          if (qGame) this.game.gameId = qGame;
+          this.joinDraft.gameId = this.game.gameId || this.identity.gameId || "";
+          this.joinDraft.playerName = this.identity.playerName || "";
+
+          this.bindSocketPickerEvents();
+          this.socket.connect();
+          this.spawnFloaters();
+          this.startTicker();
+          this.tryAutoRejoin();
+          this.refreshSocketMenuState();
+          this.render();
+        }
+
+        onJoinInputChange(gameIdRaw, nameRaw) {
+          this.joinDraft.gameId = String(gameIdRaw || "").toUpperCase().slice(0, 12);
+          this.joinDraft.playerName = String(nameRaw || "").slice(0, 30);
+        }
+
+        onSocketState(state) {
+          this.currentConnState = state;
+          this.ui.setConn(state);
+          this.refreshSocketMenuState();
+          if (state === "connected" && this.game.gameId && this.identity.playerName) {
+            this.send(MSG.INSTRUCTOR_PRESENT, this.game.gameId, { probe: true });
+            this.sendRejoinAndSync();
+          }
+        }
+
+        send(type, gameId, payload) {
+          const msg = {
+            type,
+            gameId,
+            messageId: generateMessageId(),
+            timestamp: nowTs(),
+            senderRole: "student",
+            senderId: this.identity.playerId,
+            payload: payload || {}
+          };
+          this.socket.send(msg);
+        }
+
+        tryAutoRejoin() {
+          if (!this.identity || !this.identity.playerName || !this.identity.gameId) return;
+          if (this.game.playerRemoved) return;
+          this.game.gameId = this.identity.gameId;
+          this.sendRejoinAndSync();
+        }
+
+        sendRejoinAndSync() {
+          if (!this.identity.gameId) return;
+          this.send(MSG.PLAYER_REJOIN, this.identity.gameId, {
+            playerId: this.identity.playerId,
+            playerName: this.identity.playerName
+          });
+          this.send(MSG.SYNC_REQUEST, this.identity.gameId, {
+            playerId: this.identity.playerId
+          });
+        }
+
+        onJoin(gameIdRaw, nameRaw) {
+          const gameId = String(gameIdRaw || "").trim().toUpperCase();
+          const playerName = sanitizeName(nameRaw);
+          if (!gameId) {
+            this.queueRender("Enter a game ID.");
+            return;
+          }
+          if (!playerName) {
+            this.queueRender("Enter your handle.");
+            return;
+          }
+
+          this.identity.playerName = playerName;
+          this.identity.gameId = gameId;
+          this.joinDraft.gameId = gameId;
+          this.joinDraft.playerName = playerName;
+          this.game.gameId = gameId;
+          this.game.playerRemoved = false;
+          this.game.phase = PHASES.LOBBY;
+          this.game.hasSubmitted = false;
+          this.game.selectedIds = [];
+          this.game.doubleDownArmed = false;
+          this.game.doubleDownUses = 0;
+          this.game.doubleDownCap = 3;
+          this.game.doubleDownPurchasedCredits = 0;
+          this.game.doubleDownEligible = true;
+          this.game.doubleDownDisabledReason = "";
+          this.game.doubleDownNotice = "";
+          this.game.canBuyDoubleDown = false;
+          this.game.doubleDownBuyCost = 3000;
+          this.game.doubleDownBuyBlockedReason = "";
+          this.game.pointShieldNext = false;
+          this.game.pointShieldMode = "NORMAL";
+          this.game.pointShieldArmedForQuestionIndex = null;
+          this.game.fiftyFiftyQuestionIndex = null;
+          this.game.fiftyFiftyRemovedOptionIds = [];
+          this.game.fiftyFiftyUsed = false;
+          this.game.fiftyFiftyNotice = "";
+          this.game.canBuyPointShield = false;
+          this.game.pointShieldCost = 2500;
+          this.game.canBuyReflectiveShield = false;
+          this.game.reflectiveShieldCost = 4000;
+          this.game.pointShieldNotice = "";
+          this.game.incomingStrikeCount = 0;
+          this.game.attackedCount = 0;
+          this.game.strikeOutcome = "";
+          this.game.strikeDelta = 0;
+          this.game.strikeCount = 0;
+          this.game.strikeAttackers = [];
+          this.game.strikeNotice = "";
+          this.game.playerDisplayedScore = Number(this.game.playerScore || 0);
+          this.game.isScoreMasked = false;
+          this.game.fakeScoreTurnsRemaining = 0;
+          this.game.fakeScorePrimed = false;
+          this.game.correctStreak = 0;
+          this.game.longestStreak = 0;
+          this.game.streakPrizeAvailable = false;
+          this.game.streakPrizeUsed = false;
+          this.game.streakPrizeUses = 0;
+          this.game.streakPrizeNextIndex = 0;
+          this.game.streakPrizeAction = "";
+          this.game.streakPrizeNotice = "";
+          this.game.prizeTargets = [];
+          this.game.totalPlayers = 0;
+          this.resetSorts();
+          this.persist();
+
+          this.send(MSG.PLAYER_JOIN, gameId, {
+            playerId: this.identity.playerId,
+            playerName
+          });
+          this.send(MSG.SYNC_REQUEST, gameId, {
+            playerId: this.identity.playerId
+          });
+
+          if (this.joinTimeoutHandle) clearTimeout(this.joinTimeoutHandle);
+          this.joinTimeoutHandle = setTimeout(() => {
+            const stale = nowTs() - this.lastInstructorSeenAt > 4500;
+            if (stale && this.game.phase === PHASES.LOBBY) {
+              this.queueRender("No active game responded to that code.");
+            }
+          }, 5200);
+
+          this.queueRender("Trying to join game " + gameId + "...");
+        }
+
+        onMessage(msg) {
+          if (msg.senderRole !== "instructor") return;
+          if (!this.identity.gameId) return;
+          if (this.identity.gameId && msg.gameId !== this.identity.gameId) return;
+          if (msg.type === MSG.INSTRUCTOR_PRESENT) {
+            this.lastInstructorSeenAt = nowTs();
+            return;
+          }
+          if (!this.isMessageRelevantToLocalPlayer(msg)) return;
+
+          this.lastInstructorSeenAt = nowTs();
+          const before = {
+            phase: this.game.phase,
+            questionIndex: this.game.question && this.game.question.questionIndex != null ? Number(this.game.question.questionIndex) : null,
+            revealKey: this.game.reveal && this.game.reveal.questionIndex != null ? Number(this.game.reveal.questionIndex) : (this.game.reveal ? "present" : null),
+            fiftyFiftyKey: this.game.fiftyFiftyQuestionIndex != null
+              ? String(this.game.fiftyFiftyQuestionIndex) + ":" + (Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.join(",") : "")
+              : "",
+            playerRemoved: !!this.game.playerRemoved
+          };
+
+          switch (msg.type) {
+            case MSG.PLAYER_JOINED:
+              this.handleJoined(msg.payload);
+              break;
+            case MSG.STATE_SNAPSHOT:
+              this.handleSnapshot(msg.payload);
+              break;
+            case MSG.QUESTION_STARTED:
+              this.handleQuestionStarted(msg.payload);
+              break;
+            case MSG.ANSWER_SUBMITTED:
+              this.handleSubmissionAck(msg.payload);
+              break;
+            case MSG.FIFTY_FIFTY_RESULT:
+              this.handleFiftyFiftyResult(msg.payload);
+              break;
+            case MSG.QUESTION_ENDED:
+              this.handleQuestionEnded(msg.payload);
+              break;
+            case MSG.ANSWER_REVEALED:
+              this.handleAnswerRevealed(msg.payload);
+              break;
+            case MSG.LEADERBOARD:
+              this.handleLeaderboard(msg.payload);
+              break;
+            case MSG.SCORE_UPDATED:
+              this.handleScoreUpdated(msg.payload);
+              break;
+            case MSG.SCORE_RESET:
+              this.handleScoreReset(msg.payload);
+              break;
+            case MSG.GAME_FINISHED:
+              this.handleGameFinished(msg.payload);
+              break;
+            case MSG.PLAYER_REMOVED:
+              this.handlePlayerRemoved(msg.payload);
+              break;
+            case MSG.DOUBLE_DOWN_SET:
+              this.handleDoubleDownSet(msg.payload);
+              break;
+            case MSG.DOUBLE_DOWN_BUY_RESULT:
+              this.handleDoubleDownBuyResult(msg.payload);
+              break;
+            case MSG.POINT_SHIELD_BUY_RESULT:
+              this.handlePointShieldBuyResult(msg.payload);
+              break;
+            case MSG.STREAK_PRIZE_RESULT:
+              this.handleStreakPrizeResult(msg.payload);
+              break;
+            default:
+              return;
+          }
+          this.persist();
+          if (this.shouldRenderAfterMessage(msg.type, before)) {
+            this.queueRender();
+          } else {
+            this.applyLightweightViewUpdates(msg.type);
+          }
+        }
+
+        isMessageRelevantToLocalPlayer(msg) {
+          const payload = msg && msg.payload ? msg.payload : {};
+          if (msg.type === MSG.STATE_SNAPSHOT) {
+            return !(payload.player && payload.player.id) || payload.player.id === this.identity.playerId;
+          }
+
+          const targetedTypes = new Set([
+            MSG.PLAYER_JOINED,
+            MSG.ANSWER_SUBMITTED,
+            MSG.FIFTY_FIFTY_RESULT,
+            MSG.SCORE_RESET,
+            MSG.PLAYER_REMOVED,
+            MSG.DOUBLE_DOWN_SET,
+            MSG.DOUBLE_DOWN_BUY_RESULT,
+            MSG.POINT_SHIELD_BUY_RESULT,
+            MSG.STREAK_PRIZE_RESULT
+          ]);
+          if (!targetedTypes.has(msg.type)) return true;
+          return String(payload.playerId || "") === this.identity.playerId;
+        }
+
+        handleJoined(payload) {
+          if (!payload) return;
+          if (payload.playerId !== this.identity.playerId) return;
+          this.game.playerScore = Number(payload.score || this.game.playerScore || 0);
+        }
+
+        handleSnapshot(snapshot) {
+          if (!snapshot || snapshot.type !== MSG.STATE_SNAPSHOT) return;
+          if (snapshot.player && snapshot.player.id && snapshot.player.id !== this.identity.playerId) return;
+
+          this.game.gameId = snapshot.gameId || this.game.gameId;
+          this.identity.gameId = this.game.gameId;
+          this.game.phase = snapshot.phase || this.game.phase;
+          this.game.quizTitle = snapshot.quizTitle || this.game.quizTitle;
+          this.game.leaderboard = Array.isArray(snapshot.leaderboard) ? snapshot.leaderboard : this.game.leaderboard;
+
+          if (snapshot.player) {
+            this.game.playerScore = Number(snapshot.player.score || 0);
+            this.game.rank = snapshot.player.rank || null;
+            this.game.hasSubmitted = !!snapshot.player.hasSubmitted;
+            this.game.playerRemoved = !!snapshot.player.removed;
+            this.game.doubleDownArmed = !!snapshot.player.doubleDownArmed;
+            this.game.doubleDownUses = Number(snapshot.player.doubleDownUses || this.game.doubleDownUses || 0);
+            this.game.doubleDownCap = Number(snapshot.player.doubleDownCap || this.game.doubleDownCap || 3);
+            this.game.doubleDownPurchasedCredits = Number(snapshot.player.doubleDownPurchasedCredits || this.game.doubleDownPurchasedCredits || 0);
+            this.game.canBuyDoubleDown = !!snapshot.player.canBuyDoubleDown;
+            this.game.doubleDownBuyCost = Number(snapshot.player.doubleDownBuyCost || this.game.doubleDownBuyCost || 3000);
+            this.game.doubleDownBuyBlockedReason = String(snapshot.player.doubleDownBuyBlockedReason || this.game.doubleDownBuyBlockedReason || "");
+            this.game.pointShieldNext = !!snapshot.player.pointShieldNext;
+            this.game.pointShieldMode = String(snapshot.player.pointShieldMode || this.game.pointShieldMode || "NORMAL");
+            this.game.pointShieldArmedForQuestionIndex = snapshot.player.pointShieldArmedForQuestionIndex == null ? null : Number(snapshot.player.pointShieldArmedForQuestionIndex);
+            this.game.incomingStrikeCount = Number(snapshot.player.incomingStrikeCount || 0);
+            this.game.attackedCount = Number(snapshot.player.attackedCount || this.game.attackedCount || 0);
+            this.game.strikeOutcome = String(snapshot.player.strikeOutcome || "");
+            this.game.strikeDelta = Number(snapshot.player.strikeDelta || 0);
+            this.game.strikeCount = Number(snapshot.player.strikeCount || 0);
+            this.game.strikeAttackers = normalizeNames(snapshot.player.strikeAttackers || []);
+            this.game.canBuyPointShield = !!snapshot.player.canBuyPointShield;
+            this.game.pointShieldCost = Number(snapshot.player.pointShieldCost || this.game.pointShieldCost || 2500);
+            this.game.canBuyReflectiveShield = !!snapshot.player.canBuyReflectiveShield;
+            this.game.reflectiveShieldCost = Number(snapshot.player.reflectiveShieldCost || this.game.reflectiveShieldCost || 4000);
+            this.game.pointShieldNotice = "";
+            this.game.strikeNotice = String(snapshot.player.strikeNotice || this.buildStrikeNotice(this.game.strikeOutcome, this.game.strikeDelta, this.game.strikeCount));
+            this.game.playerDisplayedScore = Number(snapshot.player.displayedScore != null ? snapshot.player.displayedScore : this.game.playerDisplayedScore || this.game.playerScore || 0);
+            this.game.isScoreMasked = !!snapshot.player.isScoreMasked;
+            this.game.fakeScoreTurnsRemaining = Number(snapshot.player.fakeScoreTurnsRemaining || 0);
+            this.game.fakeScorePrimed = !!snapshot.player.fakeScorePrimed;
+            this.game.correctStreak = Number(snapshot.player.correctStreak || this.game.correctStreak || 0);
+            this.game.longestStreak = Number(snapshot.player.longestStreak || this.game.longestStreak || 0);
+            this.game.streakPrizeAvailable = !!snapshot.player.streakPrizeAvailable;
+            this.game.streakPrizeUsed = !!snapshot.player.streakPrizeUsed;
+            this.game.streakPrizeUses = Number(snapshot.player.streakPrizeUses || this.game.streakPrizeUses || 0);
+            this.game.streakPrizeNextIndex = Number(snapshot.player.streakPrizeNextIndex || this.game.streakPrizeNextIndex || 0);
+            this.game.streakPrizeAction = String(snapshot.player.streakPrizeAction || this.game.streakPrizeAction || "");
+            this.game.prizeTargets = Array.isArray(snapshot.player.prizeTargets) ? snapshot.player.prizeTargets : [];
+            this.game.totalPlayers = Number(snapshot.player.totalPlayers || this.game.totalPlayers || 0);
+            this.game.doubleDownDisabledReason = typeof snapshot.player.doubleDownDisabledReason === "string" ? snapshot.player.doubleDownDisabledReason : (this.game.doubleDownDisabledReason || "");
+          }
+
+          if (snapshot.question) {
+            this.game.question = snapshot.question;
+          }
+
+          if (snapshot.reveal) {
+            this.game.reveal = snapshot.reveal;
+          }
+
+          if (snapshot.player) {
+            this.game.fiftyFiftyQuestionIndex = snapshot.player.fiftyFiftyQuestionIndex == null ? null : Number(snapshot.player.fiftyFiftyQuestionIndex);
+            this.game.fiftyFiftyRemovedOptionIds = Array.isArray(snapshot.player.fiftyFiftyRemovedOptionIds) ? snapshot.player.fiftyFiftyRemovedOptionIds.slice() : [];
+            this.game.fiftyFiftyUsed = !!snapshot.player.fiftyFiftyUsed;
+          }
+
+          if (this.game.phase !== PHASES.QUESTION) {
+            this.game.selectedIds = [];
+          }
+
+          this.refreshDoubleDownPolicy(this.game.doubleDownDisabledReason);
+        }
+
+        handleQuestionStarted(payload) {
+          if (!payload) return;
+          if (this.game.phase === PHASES.QUESTION
+              && this.game.question
+              && Number(this.game.question.questionIndex) === Number(payload.questionIndex)) return;
+          this.game.phase = PHASES.QUESTION;
+          this.questionCloseWaitingShown = false;
+          this.game.question = payload;
+          this.game.reveal = null;
+          this.game.hasSubmitted = false;
+          this.game.selectedIds = [];
+          this.game.playerScoreBeforeReveal = this.game.playerScore;
+          this.game.doubleDownArmed = false;
+          this.game.fiftyFiftyQuestionIndex = null;
+          this.game.fiftyFiftyRemovedOptionIds = [];
+          this.game.fiftyFiftyUsed = false;
+          this.game.fiftyFiftyNotice = "";
+          this.game.doubleDownNotice = "";
+          this.game.streakPrizeNotice = "";
+          this.game.pointShieldNotice = "";
+          this.game.incomingStrikeCount = 0;
+          this.game.strikeOutcome = "";
+          this.game.strikeDelta = 0;
+          this.game.strikeCount = 0;
+          this.game.strikeAttackers = [];
+          this.game.strikeNotice = "";
+
+          if (this.game.pointShieldNext) {
+            this.game.pointShieldArmedForQuestionIndex = Number(payload.questionIndex);
+            this.game.pointShieldNext = false;
+          }
+
+          if (this.game.pointShieldArmedForQuestionIndex != null && Number(this.game.pointShieldArmedForQuestionIndex) < Number(payload.questionIndex)) {
+            this.game.pointShieldArmedForQuestionIndex = null;
+          }
+
+          this.game.canBuyPointShield = false;
+          this.game.canBuyReflectiveShield = false;
+
+          if (Number(this.game.fakeScoreTurnsRemaining || 0) > 0) {
+            if (this.game.fakeScorePrimed) {
+              this.game.fakeScorePrimed = false;
+            } else {
+              this.game.fakeScoreTurnsRemaining = Math.max(0, Number(this.game.fakeScoreTurnsRemaining || 0) - 1);
+            }
+          }
+
+          this.game.isScoreMasked = Number(this.game.fakeScoreTurnsRemaining || 0) > 0;
+          this.game.playerDisplayedScore = this.game.isScoreMasked
+            ? Math.trunc(Number(this.game.playerScore || 0) / 2)
+            : Number(this.game.playerScore || 0);
+
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleSubmissionAck(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          if (payload.accepted) {
+            this.game.hasSubmitted = true;
+            this.ui.updateLockedBanner();
+          }
+        }
+
+        handleQuestionEnded() {
+          if (this.game.phase === PHASES.QUESTION) {
+            this.game.phase = PHASES.ANSWER_REVEAL;
+          }
+        }
+
+        handleAnswerRevealed(payload) {
+          const nextReveal = payload ? payload.reveal : null;
+          if (this.game.phase === PHASES.ANSWER_REVEAL
+              && this.game.reveal
+              && nextReveal
+              && Number(this.game.reveal.questionIndex) === Number(nextReveal.questionIndex)) return;
+          this.game.phase = PHASES.ANSWER_REVEAL;
+          this.questionCloseWaitingShown = false;
+          this.game.reveal = nextReveal;
+          this.game.playerScoreBeforeReveal = this.game.playerScore;
+          if (this.game.reveal && this.game.reveal.playerOutcomes && this.game.reveal.playerOutcomes[this.identity.playerId]) {
+            const mine = this.game.reveal.playerOutcomes[this.identity.playerId];
+            const earned = Number(mine.earnedPoints || 0);
+            this.game.playerScore = Number(this.game.playerScoreBeforeReveal || 0) + earned;
+            this.game.playerDisplayedScore = this.game.isScoreMasked
+              ? Math.trunc(Number(this.game.playerScore || 0) / 2)
+              : Number(this.game.playerScore || 0);
+
+            this.game.correctStreak = Number(mine.streak || this.game.correctStreak || 0);
+            this.game.longestStreak = Number(mine.longestStreak || this.game.longestStreak || 0);
+            if (this.game.streakPrizeAvailable) {
+              this.game.streakPrizeNotice = "Fight Quiz Streak Prize unlocked.";
+            }
+            this.game.doubleDownArmed = false;
+          }
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleDoubleDownSet(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.game.doubleDownArmed = !!payload.active;
+          this.game.doubleDownUses = Number(payload.doubleDownUses || this.game.doubleDownUses || 0);
+          this.game.doubleDownCap = Number(payload.doubleDownCap || this.game.doubleDownCap || 3);
+          this.game.doubleDownPurchasedCredits = Number(payload.purchasedCredits || this.game.doubleDownPurchasedCredits || 0);
+          this.game.canBuyDoubleDown = !!payload.canBuyDoubleDown;
+          this.game.doubleDownBuyCost = Number(payload.buyCost || this.game.doubleDownBuyCost || 3000);
+          this.game.doubleDownBuyBlockedReason = String(payload.buyBlockedReason || this.game.doubleDownBuyBlockedReason || "");
+          if (payload.rank != null) this.game.rank = Number(payload.rank);
+          if (payload.totalPlayers != null) this.game.totalPlayers = Number(payload.totalPlayers);
+          this.game.doubleDownNotice = payload.reason ? String(payload.reason) : "";
+          this.refreshDoubleDownPolicy(payload.reason || "");
+        }
+
+        handleDoubleDownBuyResult(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.game.doubleDownNotice = payload.reason ? String(payload.reason) : "";
+          if (payload.score != null) this.game.playerScore = Number(payload.score);
+          if (payload.rank != null) this.game.rank = Number(payload.rank);
+          if (payload.totalPlayers != null) this.game.totalPlayers = Number(payload.totalPlayers);
+          if (payload.doubleDownUses != null) this.game.doubleDownUses = Number(payload.doubleDownUses);
+          if (payload.doubleDownCap != null) this.game.doubleDownCap = Number(payload.doubleDownCap);
+          if (payload.purchasedCredits != null) this.game.doubleDownPurchasedCredits = Number(payload.purchasedCredits);
+          if (payload.canBuyDoubleDown != null) this.game.canBuyDoubleDown = !!payload.canBuyDoubleDown;
+          if (payload.buyCost != null) this.game.doubleDownBuyCost = Number(payload.buyCost);
+          if (payload.buyBlockedReason != null) this.game.doubleDownBuyBlockedReason = String(payload.buyBlockedReason || "");
+          this.refreshDoubleDownPolicy(this.game.doubleDownNotice || "");
+        }
+
+        handlePointShieldBuyResult(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.game.pointShieldNotice = payload.reason ? String(payload.reason) : "";
+          if (payload.score != null) this.game.playerScore = Number(payload.score);
+          if (payload.cost != null) this.game.pointShieldCost = Number(payload.cost);
+          if (payload.mode != null) this.game.pointShieldMode = String(payload.mode || "NORMAL");
+          if (payload.pointShieldNext != null) this.game.pointShieldNext = !!payload.pointShieldNext;
+          if (payload.nextQuestionIndex != null) this.game.pointShieldArmedForQuestionIndex = Number(payload.nextQuestionIndex);
+          if (payload.hasNextQuestion === false) this.game.pointShieldArmedForQuestionIndex = null;
+          if (payload.canBuyPointShield != null) this.game.canBuyPointShield = !!payload.canBuyPointShield;
+          if (payload.canBuyReflectiveShield != null) this.game.canBuyReflectiveShield = !!payload.canBuyReflectiveShield;
+          if (payload.reflectiveShieldCost != null) this.game.reflectiveShieldCost = Number(payload.reflectiveShieldCost);
+          this.refreshDoubleDownPolicy(this.game.doubleDownNotice || "");
+        }
+
+        handleStreakPrizeResult(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.game.streakPrizeNotice = payload.reason ? String(payload.reason) : "";
+          if (payload.realScore != null) this.game.playerScore = Number(payload.realScore);
+          if (payload.displayedScore != null) this.game.playerDisplayedScore = Number(payload.displayedScore);
+          this.game.isScoreMasked = !!payload.isScoreMasked;
+          this.game.fakeScoreTurnsRemaining = Number(payload.fakeScoreTurnsRemaining || 0);
+          this.game.fakeScorePrimed = !!payload.fakeScorePrimed;
+          this.game.streakPrizeAvailable = !!payload.streakPrizeAvailable;
+          this.game.streakPrizeUsed = !!payload.streakPrizeUsed;
+          this.game.streakPrizeUses = Number(payload.streakPrizeUses || this.game.streakPrizeUses || 0);
+          this.game.streakPrizeNextIndex = Number(payload.streakPrizeNextIndex || this.game.streakPrizeNextIndex || 0);
+          this.game.streakPrizeAction = String(payload.streakPrizeAction || payload.action || this.game.streakPrizeAction || "");
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleLeaderboard(payload) {
+          this.game.phase = PHASES.LEADERBOARD;
+          this.game.leaderboard = payload && Array.isArray(payload.leaderboard) ? payload.leaderboard : this.game.leaderboard;
+          this.game.totalPlayers = Array.isArray(this.game.leaderboard) ? this.game.leaderboard.length : this.game.totalPlayers;
+          this.game.prizeTargets = this.game.leaderboard
+            .filter((x) => x && x.playerId !== this.identity.playerId)
+            .map((x) => ({ playerId: x.playerId, playerName: x.playerName }));
+          const mine = this.game.leaderboard.find((x) => x.playerId === this.identity.playerId);
+          this.game.rank = mine ? mine.rank : this.game.rank;
+          if (mine) {
+            this.game.playerDisplayedScore = Number(mine.score || this.game.playerDisplayedScore || this.game.playerScore || 0);
+            this.game.incomingStrikeCount = Number(mine.incomingStrikeCount || 0);
+            this.game.attackedCount = Number(mine.attackedCount || this.game.attackedCount || 0);
+            this.game.strikeOutcome = String(mine.strikeOutcome || "");
+            this.game.strikeDelta = Number(mine.strikeDelta || 0);
+            this.game.strikeCount = Number(mine.strikeCount || 0);
+            this.game.strikeAttackers = normalizeNames(mine.strikeAttackers || []);
+            this.game.strikeNotice = this.buildStrikeNotice(this.game.strikeOutcome, this.game.strikeDelta, this.game.strikeCount);
+            this.game.canBuyPointShield = !!mine.canBuyPointShield;
+            this.game.canBuyReflectiveShield = !!mine.canBuyReflectiveShield;
+            if (mine.pointShieldNext != null) this.game.pointShieldNext = !!mine.pointShieldNext;
+            if (mine.pointShieldMode != null) this.game.pointShieldMode = String(mine.pointShieldMode);
+            if (mine.streakPrizeReady != null) this.game.streakPrizeAvailable = !!mine.streakPrizeReady;
+            this.game.correctStreak = Number(mine.currentStreak || mine.streak || this.game.correctStreak || 0);
+            this.game.longestStreak = Number(mine.longestStreak || this.game.longestStreak || 0);
+            if (!mine.shieldActive && this.game.pointShieldArmedForQuestionIndex != null && this.game.question && Number(this.game.pointShieldArmedForQuestionIndex) <= Number(this.game.question.questionIndex || 0)) {
+              this.game.pointShieldArmedForQuestionIndex = null;
+            }
+            if (!this.game.isScoreMasked) {
+              this.game.playerScore = Number(mine.score || this.game.playerScore || 0);
+            }
+          }
+          this.game.hasSubmitted = false;
+          this.game.selectedIds = [];
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleScoreUpdated(payload) {
+          if (!payload || !Array.isArray(payload.leaderboard)) return;
+          this.game.leaderboard = payload.leaderboard;
+          this.game.totalPlayers = payload.leaderboard.length;
+          this.game.prizeTargets = payload.leaderboard
+            .filter((x) => x && x.playerId !== this.identity.playerId)
+            .map((x) => ({ playerId: x.playerId, playerName: x.playerName }));
+          const mine = payload.leaderboard.find((x) => x.playerId === this.identity.playerId);
+          if (mine) {
+            this.game.rank = mine.rank;
+            this.game.playerDisplayedScore = Number(mine.score || this.game.playerDisplayedScore || this.game.playerScore || 0);
+            this.game.incomingStrikeCount = Number(mine.incomingStrikeCount || 0);
+            this.game.attackedCount = Number(mine.attackedCount || this.game.attackedCount || 0);
+            this.game.strikeOutcome = String(mine.strikeOutcome || "");
+            this.game.strikeDelta = Number(mine.strikeDelta || 0);
+            this.game.strikeCount = Number(mine.strikeCount || 0);
+            this.game.strikeAttackers = normalizeNames(mine.strikeAttackers || []);
+            this.game.strikeNotice = this.buildStrikeNotice(this.game.strikeOutcome, this.game.strikeDelta, this.game.strikeCount);
+            this.game.canBuyPointShield = !!mine.canBuyPointShield;
+            this.game.canBuyReflectiveShield = !!mine.canBuyReflectiveShield;
+            if (mine.pointShieldNext != null) this.game.pointShieldNext = !!mine.pointShieldNext;
+            if (mine.pointShieldMode != null) this.game.pointShieldMode = String(mine.pointShieldMode);
+            if (mine.streakPrizeReady != null) this.game.streakPrizeAvailable = !!mine.streakPrizeReady;
+            this.game.correctStreak = Number(mine.currentStreak || mine.streak || this.game.correctStreak || 0);
+            this.game.longestStreak = Number(mine.longestStreak || this.game.longestStreak || 0);
+            if (!mine.shieldActive && this.game.pointShieldArmedForQuestionIndex != null && this.game.question && Number(this.game.pointShieldArmedForQuestionIndex) <= Number(this.game.question.questionIndex || 0)) {
+              this.game.pointShieldArmedForQuestionIndex = null;
+            }
+            if (!this.game.isScoreMasked) {
+              this.game.playerScore = Number(mine.score || this.game.playerScore || 0);
+            }
+          }
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleScoreReset(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.game.playerScore = 0;
+          this.game.playerDisplayedScore = 0;
+          this.game.isScoreMasked = false;
+          this.game.fakeScoreTurnsRemaining = 0;
+          this.game.fakeScorePrimed = false;
+          this.game.fiftyFiftyQuestionIndex = null;
+          this.game.fiftyFiftyRemovedOptionIds = [];
+          this.game.fiftyFiftyUsed = false;
+          this.game.fiftyFiftyNotice = "";
+          if (payload.streakPrizeAvailable != null) this.game.streakPrizeAvailable = !!payload.streakPrizeAvailable;
+          if (payload.streakPrizeUsed != null) this.game.streakPrizeUsed = !!payload.streakPrizeUsed;
+          this.game.streakPrizeAction = "";
+          this.game.streakPrizeNotice = "";
+          if (payload.doubleDownUses != null) this.game.doubleDownUses = Number(payload.doubleDownUses);
+          if (payload.doubleDownCap != null) this.game.doubleDownCap = Number(payload.doubleDownCap);
+          if (payload.purchasedCredits != null) this.game.doubleDownPurchasedCredits = Number(payload.purchasedCredits);
+          if (payload.buyCost != null) this.game.doubleDownBuyCost = Number(payload.buyCost);
+          if (payload.pointShieldNext != null) this.game.pointShieldNext = !!payload.pointShieldNext;
+          if (payload.pointShieldMode != null) this.game.pointShieldMode = String(payload.pointShieldMode || "NORMAL");
+          if (payload.pointShieldArmedForQuestionIndex != null) this.game.pointShieldArmedForQuestionIndex = Number(payload.pointShieldArmedForQuestionIndex);
+          if (payload.pointShieldCost != null) this.game.pointShieldCost = Number(payload.pointShieldCost);
+          if (payload.reflectiveShieldCost != null) this.game.reflectiveShieldCost = Number(payload.reflectiveShieldCost);
+          this.game.canBuyPointShield = false;
+          this.game.canBuyReflectiveShield = false;
+          this.game.pointShieldNotice = "";
+          this.game.incomingStrikeCount = 0;
+          this.game.attackedCount = 0;
+          this.game.strikeOutcome = "";
+          this.game.strikeDelta = 0;
+          this.game.strikeCount = 0;
+          this.game.strikeAttackers = [];
+          this.game.strikeNotice = "";
+          this.game.correctStreak = 0;
+          this.game.longestStreak = 0;
+          this.refreshDoubleDownPolicy();
+        }
+
+        handleFiftyFiftyResult(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.fiftyFiftyInFlight = false;
+          if (!payload.ok) {
+            this.game.fiftyFiftyNotice = payload.reason ? String(payload.reason) : "50/50 is currently unavailable.";
+            return;
+          }
+
+          this.game.playerScore = Number(payload.score || this.game.playerScore || 0);
+          this.game.playerDisplayedScore = this.game.isScoreMasked
+            ? Math.trunc(Number(this.game.playerScore || 0) / 2)
+            : Number(this.game.playerScore || 0);
+          this.game.fiftyFiftyQuestionIndex = payload.questionIndex == null
+            ? (this.game.question && this.game.question.questionIndex != null ? Number(this.game.question.questionIndex) : null)
+            : Number(payload.questionIndex);
+          this.game.fiftyFiftyRemovedOptionIds = Array.isArray(payload.removedOptionIds) ? payload.removedOptionIds.map(String) : [];
+          this.game.fiftyFiftyUsed = true;
+          const removed = new Set(this.game.fiftyFiftyRemovedOptionIds);
+          if (Array.isArray(this.game.selectedIds) && this.game.selectedIds.length) {
+            this.game.selectedIds = this.game.selectedIds.filter((id) => !removed.has(String(id)));
+          }
+          this.game.fiftyFiftyNotice = payload.reason ? String(payload.reason) : "50/50 used.";
+        }
+
+        handleGameFinished(payload) {
+          this.game.phase = PHASES.FINISHED;
+          if (payload && Array.isArray(payload.leaderboard)) {
+            this.game.leaderboard = payload.leaderboard;
+            this.game.totalPlayers = payload.leaderboard.length;
+            const mine = payload.leaderboard.find((x) => x.playerId === this.identity.playerId);
+            if (mine) {
+              this.game.rank = mine.rank;
+              this.game.playerScore = Number(mine.score || this.game.playerScore || 0);
+              this.game.playerDisplayedScore = Number(mine.score || this.game.playerDisplayedScore || this.game.playerScore || 0);
+              this.game.correctStreak = Number(mine.currentStreak || mine.streak || this.game.correctStreak || 0);
+              this.game.longestStreak = Number(mine.longestStreak || this.game.longestStreak || 0);
+            }
+          }
+          this.game.isScoreMasked = false;
+          this.game.fakeScoreTurnsRemaining = 0;
+          this.game.fakeScorePrimed = false;
+          this.game.pointShieldNext = false;
+          this.game.pointShieldMode = "NORMAL";
+          this.game.pointShieldArmedForQuestionIndex = null;
+          this.game.canBuyPointShield = false;
+          this.game.canBuyReflectiveShield = false;
+          this.game.strikeOutcome = "";
+          this.game.strikeDelta = 0;
+          this.game.strikeCount = 0;
+          this.game.strikeAttackers = [];
+          this.game.strikeNotice = "";
+          this.refreshDoubleDownPolicy();
+        }
+
+        handlePlayerRemoved(payload) {
+          if (!payload) return;
+          if (payload.playerId === this.identity.playerId) {
+            this.game.playerRemoved = true;
+          }
+        }
+
+        currentQuestionIsMulti() {
+          if (!this.game.reveal && this.game.question && this.game.question.options) {
+            if (this.game.reveal && Array.isArray(this.game.reveal.correctOptionIds)) {
+              return this.game.reveal.correctOptionIds.length > 1;
+            }
+            return this.game.question.options.length > 0 && this.game.question.options.some(function () { return true; });
+          }
+          if (this.game.reveal && Array.isArray(this.game.reveal.correctOptionIds)) {
+            return this.game.reveal.correctOptionIds.length > 1;
+          }
+          return false;
+        }
+
+        onOptionClick(optionId) {
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || !this.game.question) return;
+          const question = this.game.question;
+          const valid = new Set((question.options || []).map((o) => o.id));
+          if (!valid.has(optionId)) return;
+          const removed = new Set(Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.map(String) : []);
+          if (removed.has(String(optionId))) return;
+
+          const isMulti = this.isLikelyMultiSelect();
+          if (!isMulti) {
+            this.game.selectedIds = [optionId];
+            this.submitAnswer([optionId]);
+            return;
+          }
+
+          const set = new Set(this.game.selectedIds || []);
+          if (set.has(optionId)) set.delete(optionId);
+          else set.add(optionId);
+          this.game.selectedIds = Array.from(set);
+
+          const btns = document.querySelectorAll(".ans-btn[data-opt-id]");
+          btns.forEach((btn) => {
+            if (btn.getAttribute("data-opt-id") === optionId) {
+              btn.classList.toggle("selected", set.has(optionId));
+            }
+          });
+
+          this.persist();
+        }
+
+        isLikelyMultiSelect() {
+          return !!(this.game.question && this.game.question.isMultiSelect);
+        }
+
+        onSubmitMulti() {
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted) return;
+          const selected = this.game.selectedIds || [];
+          if (!selected.length) return;
+          this.submitAnswer(selected);
+        }
+
+        onFiftyFifty() {
+          if (this.fiftyFiftyInFlight) return;
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || !this.game.question) return;
+          if (nowTs() > Number(this.game.question.endsAt || 0)) {
+            this.game.fiftyFiftyNotice = "Question closed. 50/50 is unavailable.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.FIFTY_FIFTY_RESULT);
+            return;
+          }
+          if (Number(this.game.playerScore || 0) < FIFTY_FIFTY_COST) return;
+          if (Number(this.game.fiftyFiftyQuestionIndex) === Number(this.game.question.questionIndex) && Array.isArray(this.game.fiftyFiftyRemovedOptionIds) && this.game.fiftyFiftyRemovedOptionIds.length >= 2) return;
+
+          this.fiftyFiftyInFlight = true;
+          this.game.fiftyFiftyNotice = "";
+          this.send(MSG.FIFTY_FIFTY, this.game.gameId, {
+            playerId: this.identity.playerId,
+            questionIndex: Number(this.game.question.questionIndex),
+            submittedAt: nowTs()
+          });
+          this.applyLightweightViewUpdates(MSG.FIFTY_FIFTY_RESULT);
+        }
+
+        onDoubleDown() {
+          if (this.game.doubleDownArmed) return;
+          if (!this.identity.gameId) return;
+          this.refreshDoubleDownPolicy();
+          if (!this.game.doubleDownEligible) {
+            if (this.game.rank == null) {
+              this.send(MSG.DOUBLE_DOWN_NEXT, this.identity.gameId, {
+                playerId: this.identity.playerId
+              });
+              return;
+            }
+            this.game.doubleDownNotice = this.game.doubleDownDisabledReason || "Double Down is currently disabled.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.DOUBLE_DOWN_SET);
+            return;
+          }
+          this.game.doubleDownNotice = "";
+          this.send(MSG.DOUBLE_DOWN_NEXT, this.identity.gameId, {
+            playerId: this.identity.playerId
+          });
+        }
+
+        onBuyDoubleDown() {
+          if (!this.identity.gameId) return;
+          this.refreshDoubleDownPolicy();
+          if (!this.game.canBuyDoubleDown) {
+            this.game.doubleDownNotice = this.game.doubleDownBuyBlockedReason || "Double Down purchase is unavailable right now.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.DOUBLE_DOWN_BUY_RESULT);
+            return;
+          }
+          this.send(MSG.DOUBLE_DOWN_BUY, this.identity.gameId, {
+            playerId: this.identity.playerId
+          });
+        }
+
+        onBuyPointShield(mode) {
+          const shieldMode = String(mode || "NORMAL").toUpperCase() === "REFLECTIVE" ? "REFLECTIVE" : "NORMAL";
+          if (!this.identity.gameId) return;
+          const hasNextQuestion = this.game.question && this.game.question.questionNumber < this.game.question.questionCount;
+          const cost = shieldMode === "REFLECTIVE"
+            ? Math.max(1, Number(this.game.reflectiveShieldCost || 4000))
+            : Math.max(1, Number(this.game.pointShieldCost || 2500));
+
+          if (!hasNextQuestion) {
+            this.game.pointShieldNotice = "No next question remains for shield activation.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.POINT_SHIELD_BUY_RESULT);
+            return;
+          }
+
+          if (this.game.pointShieldNext) {
+            this.game.pointShieldNotice = "Shield is already armed for the next question.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.POINT_SHIELD_BUY_RESULT);
+            return;
+          }
+
+          if (shieldMode === "REFLECTIVE" && !this.game.canBuyReflectiveShield) {
+            this.game.pointShieldNotice = this.getReflectiveShieldStatusText(true);
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.POINT_SHIELD_BUY_RESULT);
+            return;
+          }
+
+          if (shieldMode !== "REFLECTIVE" && !this.game.canBuyPointShield) {
+            this.game.pointShieldNotice = this.getPointShieldStatusText(true);
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.POINT_SHIELD_BUY_RESULT);
+            return;
+          }
+
+          if (Number(this.game.playerScore || 0) < cost) {
+            this.game.pointShieldNotice = "Need at least " + formatScore(cost) + " points to arm shield.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.POINT_SHIELD_BUY_RESULT);
+            return;
+          }
+
+          this.game.pointShieldNotice = "";
+          this.send(MSG.POINT_SHIELD_BUY, this.identity.gameId, {
+            playerId: this.identity.playerId,
+            mode: shieldMode
+          });
+        }
+
+        onClaimStreakPrize(action, targetPlayerId) {
+          if (!this.identity.gameId) return;
+          if (!this.game.streakPrizeAvailable) {
+            this.game.streakPrizeNotice = "This prize is unavailable.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.STREAK_PRIZE_RESULT);
+            return;
+          }
+          const chosen = String(action || "").toUpperCase();
+          if (chosen !== STREAK_ACTION.MASK && chosen !== STREAK_ACTION.STEAL && chosen !== STREAK_ACTION.BONUS) {
+            this.game.streakPrizeNotice = "Choose a prize action first.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.STREAK_PRIZE_RESULT);
+            return;
+          }
+          if (chosen === STREAK_ACTION.STEAL && !targetPlayerId) {
+            this.game.streakPrizeNotice = "Choose a player to target first.";
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.STREAK_PRIZE_RESULT);
+            return;
+          }
+          this.game.streakPrizeNotice = "";
+          this.send(MSG.STREAK_PRIZE_CLAIM, this.identity.gameId, {
+            playerId: this.identity.playerId,
+            action: chosen,
+            targetPlayerId: chosen === STREAK_ACTION.STEAL ? String(targetPlayerId || "") : ""
+          });
+        }
+
+        joinAnotherGame() {
+          if (this.joinTimeoutHandle) {
+            clearTimeout(this.joinTimeoutHandle);
+            this.joinTimeoutHandle = null;
+          }
+          this.identity.gameId = "";
+          this.game.gameId = "";
+          this.game.phase = PHASES.LOBBY;
+          this.game.question = null;
+          this.game.reveal = null;
+          this.game.leaderboard = [];
+          this.game.rank = null;
+          this.game.hasSubmitted = false;
+          this.game.selectedIds = [];
+          this.game.playerRemoved = false;
+          this.game.doubleDownArmed = false;
+          this.game.doubleDownUses = 0;
+          this.game.doubleDownCap = 3;
+          this.game.doubleDownPurchasedCredits = 0;
+          this.game.doubleDownEligible = true;
+          this.game.doubleDownDisabledReason = "";
+          this.game.doubleDownNotice = "";
+          this.game.canBuyDoubleDown = false;
+          this.game.doubleDownBuyCost = 3000;
+          this.game.doubleDownBuyBlockedReason = "";
+          this.game.pointShieldNext = false;
+          this.game.pointShieldMode = "NORMAL";
+          this.game.pointShieldArmedForQuestionIndex = null;
+          this.game.canBuyPointShield = false;
+          this.game.pointShieldCost = 2500;
+          this.game.canBuyReflectiveShield = false;
+          this.game.reflectiveShieldCost = 4000;
+          this.game.pointShieldNotice = "";
+          this.game.incomingStrikeCount = 0;
+          this.game.attackedCount = 0;
+          this.game.strikeOutcome = "";
+          this.game.strikeDelta = 0;
+          this.game.strikeCount = 0;
+          this.game.strikeAttackers = [];
+          this.game.strikeNotice = "";
+          this.game.playerDisplayedScore = 0;
+          this.game.isScoreMasked = false;
+          this.game.fakeScoreTurnsRemaining = 0;
+          this.game.fakeScorePrimed = false;
+          this.game.correctStreak = 0;
+          this.game.longestStreak = 0;
+          this.game.streakPrizeAvailable = false;
+          this.game.streakPrizeUsed = false;
+          this.game.streakPrizeUses = 0;
+          this.game.streakPrizeNextIndex = 0;
+          this.game.streakPrizeAction = "";
+          this.game.streakPrizeNotice = "";
+          this.game.prizeTargets = [];
+          this.game.totalPlayers = 0;
+          this.fiftyFiftyInFlight = false;
+          this.joinDraft.gameId = "";
+          this.resetSorts();
+          this.persist();
+          this.queueRender();
+        }
+
+        submitAnswer(selectedIds) {
+          if (this.game.hasSubmitted) return;
+          const unique = Array.from(new Set(selectedIds)).sort();
+          this.send(MSG.ANSWER_SUBMITTED, this.game.gameId, {
+            playerId: this.identity.playerId,
+            questionIndex: Number(this.game.question.questionIndex),
+            selectedOptionIds: unique,
+            submittedAt: nowTs()
+          });
+          this.game.hasSubmitted = true;
+          this.game.selectedIds = unique;
+          this.persist();
+          this.applyLightweightViewUpdates(MSG.ANSWER_SUBMITTED);
+        }
+
+        persist() {
+          LocalStore.writeJson(STORAGE_KEYS.IDENTITY, this.identity);
+          LocalStore.writeJson(STORAGE_KEYS.GAME, this.game);
+        }
+
+        render(joinMsg) {
+          if (this.game.playerRemoved) {
+            this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+            this.ui.renderRemoved();
+            return;
+          }
+
+          if (!this.identity.playerName || !this.identity.gameId) {
+            this.ui.setNewFightVisible(false);
+            this.ui.renderJoin(this.joinDraft.gameId || this.game.gameId || readQueryGame(), this.joinDraft.playerName || this.identity.playerName || "", {
+              onJoin: this.onJoin.bind(this),
+              onJoinInputChange: this.onJoinInputChange.bind(this)
+            }, joinMsg || "");
+            return;
+          }
+
+          if (this.currentConnState !== "connected" && this.game.phase !== PHASES.QUESTION) {
+            this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+            this.ui.renderWaiting("Your connection was interrupted. Reconnecting...");
+            return;
+          }
+
+          switch (this.game.phase) {
+            case PHASES.LOBBY:
+              this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+              this.ui.renderLobby(this.game);
+              break;
+            case PHASES.QUESTION:
+              this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+              if (!this.game.question) {
+                this.ui.renderWaiting("Waiting for the current question...");
+                break;
+              }
+              this.ui.renderQuestion({
+                question: this.game.question,
+                hasSubmitted: this.game.hasSubmitted,
+                selectedIds: this.game.selectedIds,
+                playerScore: this.game.playerScore,
+                fiftyFiftyNotice: this.game.fiftyFiftyNotice || "",
+                strikeNotice: this.game.strikeNotice || "",
+                playerId: this.identity.playerId,
+                isMulti: this.isLikelyMultiSelect(),
+                doubleDownActive: this.game.doubleDownArmed,
+                strikeCount: this.game.strikeCount,
+                strikeAttackers: this.game.strikeAttackers,
+                pointShieldArmedForQuestionIndex: this.game.pointShieldArmedForQuestionIndex,
+                fiftyFiftyQuestionIndex: this.game.fiftyFiftyQuestionIndex,
+                fiftyFiftyRemovedOptionIds: this.game.fiftyFiftyRemovedOptionIds
+              }, {
+                onOptionClick: this.onOptionClick.bind(this),
+                onSubmitMulti: this.onSubmitMulti.bind(this),
+                onFiftyFifty: this.onFiftyFifty.bind(this)
+              });
+              break;
+            case PHASES.ANSWER_REVEAL:
+              this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+              if (!this.game.question || !this.game.reveal) {
+                this.ui.renderWaiting("Answer reveal incoming...");
+                break;
+              }
+              this.refreshDoubleDownPolicy(this.game.doubleDownNotice || this.game.doubleDownDisabledReason || "");
+              const hasNextQuestion = this.game.question && this.game.question.questionNumber < this.game.question.questionCount;
+              this.ui.renderReveal({
+                reveal: this.game.reveal,
+                question: this.game.question,
+                playerId: this.identity.playerId,
+                playerScore: this.game.playerScore,
+                playerDisplayedScore: this.game.playerDisplayedScore,
+                isScoreMasked: !!this.game.isScoreMasked,
+                fakeScoreTurnsRemaining: Number(this.game.fakeScoreTurnsRemaining || 0),
+                strikeNotice: this.game.strikeNotice || "",
+                playerScoreBeforeReveal: this.game.playerScoreBeforeReveal,
+                streakPrizeAvailable: !!this.game.streakPrizeAvailable,
+                streakPrizeUsed: !!this.game.streakPrizeUsed,
+                streakPrizeNotice: this.game.streakPrizeNotice || "",
+                prizeTargets: Array.isArray(this.game.prizeTargets) ? this.game.prizeTargets : [],
+                doubleDownArmed: this.game.doubleDownArmed,
+                doubleDownEligible: !!this.game.doubleDownEligible,
+                doubleDownDisabledReason: this.game.doubleDownNotice || this.game.doubleDownDisabledReason || "",
+                doubleDownStatusText: this.getDoubleDownStatusText(hasNextQuestion),
+                doubleDownUses: Number(this.game.doubleDownUses || 0),
+                doubleDownCap: Number(this.game.doubleDownCap || 3),
+                rank: this.game.rank,
+                canBuyDoubleDown: !!this.game.canBuyDoubleDown,
+                doubleDownBuyCost: Number(this.game.doubleDownBuyCost || 3000),
+                doubleDownBuyBlockedReason: this.game.doubleDownBuyBlockedReason || "",
+                pointShieldNext: !!this.game.pointShieldNext,
+                pointShieldMode: String(this.game.pointShieldMode || "NORMAL"),
+                canBuyPointShield: !!this.game.canBuyPointShield,
+                pointShieldCost: Number(this.game.pointShieldCost || 2500),
+                canBuyReflectiveShield: !!this.game.canBuyReflectiveShield,
+                reflectiveShieldCost: Number(this.game.reflectiveShieldCost || 4000),
+                pointShieldNotice: this.game.pointShieldNotice || "",
+                incomingStrikeCount: Number(this.game.incomingStrikeCount || 0),
+                pointShieldStatusText: this.getPointShieldStatusText(hasNextQuestion),
+                reflectiveShieldStatusText: this.getReflectiveShieldStatusText(hasNextQuestion),
+                hasNextQuestion,
+                onDoubleDownAction: () => {
+                  this.refreshDoubleDownPolicy();
+                  if (this.game.doubleDownEligible) this.onDoubleDown();
+                  else if (this.game.canBuyDoubleDown) this.onBuyDoubleDown();
+                },
+                onBuyPointShield: this.onBuyPointShield.bind(this),
+                onClaimStreakPrize: this.onClaimStreakPrize.bind(this)
+              });
+              break;
+            case PHASES.LEADERBOARD:
+            case PHASES.FINISHED:
+              this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+              const hasNextFromBoard = !!(this.game.question && this.game.question.questionNumber < this.game.question.questionCount);
+              const stageStats = this.buildLeaderboardStats(Array.isArray(this.game.leaderboard) ? this.game.leaderboard : []);
+              this.ui.renderLeaderboard({
+                phase: this.game.phase,
+                leaderboard: this.game.leaderboard,
+                scoreRankRows: stageStats.scoreRankRows,
+                leaderboardRows: stageStats.leaderboardRows,
+                quickDrawRows: stageStats.quickDrawRows,
+                leaderboardSort: stageStats.leaderboardSort,
+                quickDrawSort: stageStats.quickDrawSort,
+                rank: this.game.rank,
+                playerScore: this.game.playerScore,
+                playerDisplayedScore: this.game.playerDisplayedScore,
+                isScoreMasked: this.game.isScoreMasked,
+                fakeScoreTurnsRemaining: this.game.fakeScoreTurnsRemaining,
+                strikeNotice: this.game.strikeNotice || "",
+                correctStreak: Number(this.game.correctStreak || 0),
+                longestStreak: Number(this.game.longestStreak || 0),
+                streakPrizeUsed: this.game.streakPrizeUsed,
+                streakPrizeUses: Number(this.game.streakPrizeUses || 0),
+                streakPrizeAction: this.game.streakPrizeAction,
+                streakPrizeAvailable: this.game.streakPrizeAvailable,
+                streakPrizeNotice: this.game.streakPrizeNotice || "",
+                prizeTargets: Array.isArray(this.game.prizeTargets) ? this.game.prizeTargets : [],
+                doubleDownArmed: !!this.game.doubleDownArmed,
+                doubleDownEligible: !!this.game.doubleDownEligible,
+                doubleDownStatusText: this.getDoubleDownStatusText(hasNextFromBoard),
+                canBuyDoubleDown: !!this.game.canBuyDoubleDown,
+                doubleDownBuyCost: Number(this.game.doubleDownBuyCost || 3000),
+                pointShieldNext: !!this.game.pointShieldNext,
+                pointShieldMode: String(this.game.pointShieldMode || "NORMAL"),
+                canBuyPointShield: !!this.game.canBuyPointShield,
+                pointShieldCost: Number(this.game.pointShieldCost || 2500),
+                canBuyReflectiveShield: !!this.game.canBuyReflectiveShield,
+                reflectiveShieldCost: Number(this.game.reflectiveShieldCost || 4000),
+                pointShieldNotice: this.game.pointShieldNotice || "",
+                pointShieldStatusText: this.getPointShieldStatusText(hasNextFromBoard),
+                reflectiveShieldStatusText: this.getReflectiveShieldStatusText(hasNextFromBoard),
+                question: this.game.question,
+                onDoubleDown: this.onDoubleDown.bind(this),
+                onBuyDoubleDown: this.onBuyDoubleDown.bind(this),
+                onBuyPointShield: this.onBuyPointShield.bind(this),
+                onClaimStreakPrize: this.onClaimStreakPrize.bind(this),
+                onSortLeaderboard: (key) => {
+                  this.toggleSortState("leaderboard", key);
+                  this.render();
+                },
+                onSortQuickDraw: (key) => {
+                  this.toggleSortState("quickdraw", key);
+                  this.render();
+                },
+                onResetSorts: () => {
+                  this.resetSorts();
+                  this.render();
+                }
+              });
+              break;
+            default:
+              this.ui.setNewFightVisible(true, () => this.joinAnotherGame());
+              this.ui.renderWaiting("Waiting for the instructor...");
+          }
+        }
+
+        startTicker() {
+          this.tickTimer = setInterval(() => {
+            if (this.game.phase === PHASES.QUESTION && this.game.question) {
+              this.ui.refreshTimer(this.game.question);
+              if (!this.questionCloseWaitingShown && nowTs() > this.game.question.endsAt + 1200 && !this.game.reveal) {
+                this.questionCloseWaitingShown = true;
+                this.ui.renderWaiting("Question closed. Waiting for answer reveal...");
+              }
+            }
+          }, 300);
+        }
+
+        spawnFloaters() {
+          const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reduce) return;
+          const layer = document.getElementById("floatLayer");
+          for (let i = 0; i < 22; i += 1) {
+            const d = document.createElement("div");
+            d.className = "floater";
+            const size = 8 + Math.floor(Math.random() * 34);
+            d.style.width = size + "px";
+            d.style.height = size + "px";
+            d.style.left = Math.floor(Math.random() * 100) + "vw";
+            d.style.bottom = (-70 - Math.floor(Math.random() * 260)) + "px";
+            d.style.animationDuration = (17 + Math.random() * 16) + "s";
+            d.style.animationDelay = (-Math.random() * 12) + "s";
+            layer.appendChild(d);
+          }
+        }
+      }
+
+      const app = new StudentGameController();
+      app.init();
+    })();
+  </script>
+</body>
+</html>
