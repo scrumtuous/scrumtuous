@@ -46,11 +46,8 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: url("fight-landing-bg.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.12;
+      background: radial-gradient(circle at center, rgba(211, 146, 178, 0.08), transparent 62%);
+      opacity: 1;
       pointer-events: none;
       z-index: 0;
     }
@@ -88,11 +85,8 @@
       content: "";
       position: absolute;
       inset: 0;
-      background-image: url("fight-landing-bg.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.08;
+      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04), transparent 68%);
+      opacity: 1;
       filter: contrast(0.95);
       pointer-events: none;
       z-index: 0;
@@ -101,7 +95,7 @@
     .join-landing::before {
       background-image:
         linear-gradient(rgba(58, 33, 72, 0.85), rgba(58, 33, 72, 0.85)),
-        url("fight-landing-bg.svg");
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.06), transparent 68%);
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
@@ -715,6 +709,35 @@
       color: var(--pink);
     }
 
+    .leaderboard-view:not(.final-results-view) .stats-table,
+    .leaderboard-view:not(.final-results-view) .stats-table td,
+    .leaderboard-view:not(.final-results-view) .stats-table th,
+    .leaderboard-view:not(.final-results-view) .stats-table > :not(caption) > * > * {
+      color: #d2d5e0 !important;
+    }
+
+    .leaderboard-view:not(.final-results-view) .stats-table th {
+      color: #e1e4ef !important;
+    }
+
+    .leaderboard-view:not(.final-results-view) .small-note,
+    .leaderboard-view:not(.final-results-view) .fw-bold,
+    .leaderboard-view:not(.final-results-view) .stats-empty,
+    .leaderboard-view:not(.final-results-view) .podium-card {
+      color: #d2d5e0;
+    }
+
+    .leaderboard-view:not(.final-results-view) .sort-btn {
+      color: #d2d5e0;
+      border-color: rgba(214, 216, 226, 0.36);
+      background: rgba(55, 45, 72, 0.62);
+    }
+
+    .leaderboard-view:not(.final-results-view) .sort-btn:hover,
+    .leaderboard-view:not(.final-results-view) .sort-btn:focus-visible {
+      color: #f2f4fb;
+    }
+
     .final-results-view .stats-table,
     .final-results-view .stats-table th,
     .final-results-view .stats-table td,
@@ -885,11 +908,44 @@
     }
 
     .power-target-picker {
+      position: absolute;
+      top: calc(100% + 0.45rem);
+      right: 0;
+      z-index: 70;
+      width: min(88vw, 300px);
       border: 1px solid rgba(247, 221, 233, 0.28);
       border-radius: 12px;
-      background: rgba(0, 0, 0, 0.24);
+      background: rgba(24, 15, 32, 0.98);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
       padding: 0.52rem;
-      margin-top: 0.2rem;
+    }
+
+    .power-target-control {
+      position: relative;
+      min-width: 0;
+    }
+
+    .power-target-option {
+      width: 100%;
+      border: 1px solid rgba(247, 221, 233, 0.2);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #ffeaf3;
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .power-target-option + .power-target-option {
+      margin-top: 0.35rem;
+    }
+
+    .power-target-option:hover,
+    .power-target-option:focus-visible {
+      color: #fff;
+      border-color: rgba(255, 140, 165, 0.72);
+      background: rgba(123, 46, 72, 0.62);
     }
 
     .power-status-row {
@@ -1616,6 +1672,48 @@
             + "</section>";
         }
 
+        isShieldActiveForQuestion(armedForQuestionIndex, questionIndex) {
+          return armedForQuestionIndex != null && Number(armedForQuestionIndex) === Number(questionIndex);
+        }
+
+        getQuestionPowerTileState(model) {
+          const attackerNames = normalizeNames(model.strikeAttackers);
+          const attackOn = Number(model.strikeCount || 0) > 0 || attackerNames.length > 0;
+          return {
+            attackOn,
+            attackTitle: attackOn
+              ? (attackerNames.length ? "Under attack by: " + attackerNames.join(", ") : "Under attack")
+              : "No incoming attack",
+            doubleDownOn: !!model.doubleDownActive,
+            doubleDownTitle: model.doubleDownActive
+              ? "Double down is active for this question"
+              : "Double down is not active"
+          };
+        }
+
+        updateQuestionPowerTiles(model) {
+          const state = this.getQuestionPowerTileState(model);
+          const attackTile = document.getElementById("questionAttackTile");
+          if (attackTile) {
+            attackTile.classList.toggle("is-on", state.attackOn);
+            attackTile.title = state.attackTitle;
+            attackTile.setAttribute("aria-label", state.attackTitle);
+          }
+
+          const doubleDownTile = document.getElementById("questionDoubleDownTile");
+          if (doubleDownTile) {
+            doubleDownTile.classList.toggle("is-on", state.doubleDownOn);
+            doubleDownTile.title = state.doubleDownTitle;
+            doubleDownTile.setAttribute("aria-label", state.doubleDownTitle);
+          }
+
+          const strikeNotice = document.getElementById("questionStrikeNotice");
+          if (strikeNotice) {
+            strikeNotice.textContent = model.strikeNotice || "";
+            strikeNotice.classList.toggle("d-none", !model.strikeNotice);
+          }
+        }
+
         renderQuestion(model, handlers) {
           this.app.innerHTML = "";
           const q = model.question;
@@ -1646,14 +1744,8 @@
             + iconGroup(reflectiveShieldCount, "shield", "✨", "Reflective shield in play")
             + iconGroup(strikeCount, "rocket", "💥", "Shadow Strike in play");
 
-          const shieldOn = Number(model.pointShieldArmedForQuestionIndex) === Number(q.questionIndex);
-          const attackerNames = normalizeNames(model.strikeAttackers);
-          const underAttack = Number(model.strikeCount || 0) > 0 || attackerNames.length > 0;
-          const attackTitle = underAttack
-            ? (attackerNames.length
-              ? "Under attack by: " + attackerNames.join(", ")
-              : "Under attack")
-            : "No incoming attack";
+          const shieldOn = this.isShieldActiveForQuestion(model.pointShieldArmedForQuestionIndex, q.questionIndex);
+          const tileState = this.getQuestionPowerTileState(model);
 
           const wrap = document.createElement("section");
           wrap.className = "glass p-3";
@@ -1662,13 +1754,13 @@
             + "<div><div class='title-font fs-3'>Question " + q.questionNumber + " of " + q.questionCount + "</div><div class='small-note'>Worth up to " + formatScore(q.pointValue) + " points</div></div>"
             + "<div class='question-status-lane'>"
             + "<div class='status-tile is-shield" + (shieldOn ? " is-on" : "") + "' title='" + (shieldOn ? "Shield active for this question" : "No shield active") + "'><div class='status-icon'><i class='lni lni-shield'></i></div><div class='label'>Shield</div></div>"
-            + "<div class='status-tile" + (model.doubleDownActive ? " is-on" : "") + "' title='" + (model.doubleDownActive ? "Double down is active" : "Double down is not active") + "'><div class='status-icon'>x2</div><div class='label'>Double</div></div>"
-            + "<div class='status-tile is-attack" + (underAttack ? " is-on" : "") + "' title='" + safeText(attackTitle) + "'><div class='status-icon'>💥</div><div class='label'>Attack</div></div>"
+            + "<div id='questionDoubleDownTile' class='status-tile" + (tileState.doubleDownOn ? " is-on" : "") + "' title='" + safeText(tileState.doubleDownTitle) + "' aria-label='" + safeText(tileState.doubleDownTitle) + "'><div class='status-icon'>x2</div><div class='label'>Double</div></div>"
+            + "<div id='questionAttackTile' class='status-tile is-attack" + (tileState.attackOn ? " is-on" : "") + "' title='" + safeText(tileState.attackTitle) + "' aria-label='" + safeText(tileState.attackTitle) + "'><div class='status-icon'>💥</div><div class='label'>Attack</div></div>"
             + "<button id='fiftyFiftyBtn' class='score-box status-tile question-action-tile is-fifty" + (fiftyFiftyUsed ? " is-on" : "") + " focus-ring' type='button'" + (fiftyFiftyDisabled ? " disabled" : "") + " aria-label='Use 50/50 for " + formatScore(FIFTY_FIFTY_COST) + " points'><div class='small-note'>50/50</div><div class='fw-bold fs-5'>" + formatScore(FIFTY_FIFTY_COST) + " points</div></button>"
             + "<div class='score-box status-tile'><div class='small-note'>Your Score</div><div id='scoreValue' class='fw-bold fs-5'>" + formatScore(model.playerScore) + "</div></div>"
             + "</div>"
             + "</div>"
-            + (model.strikeNotice ? "<div class='double-down-note warn mb-2'>" + safeText(model.strikeNotice) + "</div>" : "")
+            + "<div id='questionStrikeNotice' class='double-down-note warn mb-2" + (model.strikeNotice ? "" : " d-none") + "'>" + safeText(model.strikeNotice || "") + "</div>"
             + "<div class='fw-bold mb-2'>" + safeText(q.query) + "</div>"
             + "<div id='timerView' class='timer " + timerClass + " mb-3'>" + formatTime(rem) + "</div>"
             + "<div id='doubleDownBanner'></div>"
@@ -1753,6 +1845,57 @@
           status.innerHTML = "<div class='lock-state'><i class='lni lni-lock-alt me-1'></i>Answer locked in! Waiting for everyone else...</div>";
         }
 
+        bindStealthTargetMenu(buttonId, menuId, messageId, model) {
+          const button = document.getElementById(buttonId);
+          const menu = document.getElementById(menuId);
+          if (!button || !menu || typeof model.onClaimStreakPrize !== "function") return;
+
+          const handleOutsideClick = () => closeMenu();
+          const closeMenu = () => {
+            document.removeEventListener("click", handleOutsideClick);
+            menu.classList.add("d-none");
+            button.setAttribute("aria-expanded", "false");
+            if (typeof model.onSetStreakTargetPickerOpen === "function") {
+              model.onSetStreakTargetPickerOpen(false);
+            }
+          };
+
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const message = document.getElementById(messageId);
+            const targets = menu.querySelectorAll(".power-target-option");
+            if (!targets.length) {
+              if (message) message.textContent = "No target players are available right now.";
+              return;
+            }
+
+            menu.classList.remove("d-none");
+            button.setAttribute("aria-expanded", "true");
+            if (message) message.textContent = "Choose a player to launch the stealth attack.";
+            if (typeof model.onSetStreakTargetPickerOpen === "function") {
+              model.onSetStreakTargetPickerOpen(true);
+            }
+            targets[0].focus();
+            document.addEventListener("click", handleOutsideClick, { once: true });
+          });
+
+          menu.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const targetButton = event.target.closest(".power-target-option");
+            if (!targetButton) return;
+            const targetId = String(targetButton.getAttribute("data-target-id") || "");
+            if (!targetId) return;
+            closeMenu();
+            model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
+          });
+
+          menu.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+            closeMenu();
+            button.focus();
+          });
+        }
+
         renderReveal(model) {
           const rv = model.reveal || {};
           const outcome = rv.playerOutcomes ? rv.playerOutcomes[model.playerId] : null;
@@ -1771,6 +1914,14 @@
           query.className = "fw-bold mb-2";
           query.textContent = model.question.query || "";
           wrap.appendChild(query);
+
+          if (model.strikeNotice) {
+            const strikeNote = document.createElement("div");
+            strikeNote.id = "revealStrikeNotice";
+            strikeNote.className = "double-down-note warn mb-3";
+            strikeNote.textContent = model.strikeNotice;
+            wrap.appendChild(strikeNote);
+          }
 
           const grid = document.createElement("div");
           grid.className = "options-grid mb-3";
@@ -1818,7 +1969,7 @@
           }
 
           const targetOptions = (model.prizeTargets || []).map((t) => {
-            return "<option value='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</option>";
+            return "<button class='power-target-option focus-ring' type='button' role='menuitem' data-target-id='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</button>";
           }).join("");
 
           const canArmDoubleDown = !!model.hasNextQuestion && !model.doubleDownArmed && !!model.doubleDownEligible;
@@ -1848,13 +1999,10 @@
             cardHtml += "<div class='power-rail mt-1'>";
             cardHtml += "<button id='powerBonusBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-bolt'></i><span>Add 2000</span></button>";
             cardHtml += "<button id='powerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
-            cardHtml += "<button id='powerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
-            cardHtml += "</div>";
-            cardHtml += "<div id='streakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "'>";
-            cardHtml += "<label class='form-label mb-1 small-note' for='streakPrizeTarget'>Select target</label>";
-            cardHtml += "<select id='streakPrizeTarget' class='form-control join-input'>";
-            cardHtml += "<option value=''>Choose player...</option>" + targetOptions;
-            cardHtml += "</select></div>";
+            cardHtml += "<div class='power-target-control'>";
+            cardHtml += "<button id='powerStealthBtn' class='power-pill-btn attack focus-ring' type='button' aria-haspopup='menu' aria-expanded='" + (model.streakTargetPickerOpen ? "true" : "false") + "' aria-controls='streakPrizeTargetWrap'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
+            cardHtml += "<div id='streakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "' role='menu' aria-label='Choose a player to attack'>" + targetOptions + "</div>";
+            cardHtml += "</div></div>";
           }
           cardHtml += "<div id='streakPrizeMsg' class='small-note mt-2 power-notice-center'>" + safeText(model.streakPrizeNotice || "") + "</div>";
           cardHtml += "<div id='pointShieldNotice' class='small-note mt-1'>" + safeText(model.pointShieldNotice || "") + "</div>";
@@ -1871,13 +2019,6 @@
           }
           wrap.appendChild(staleNote);
 
-          if (model.strikeNotice) {
-            const strikeNote = document.createElement("div");
-            strikeNote.className = "double-down-note warn mb-3";
-            strikeNote.textContent = model.strikeNotice;
-            wrap.appendChild(strikeNote);
-          }
-
           this.app.appendChild(wrap);
           const ddAction = document.getElementById("doubleDownBtn");
           if (ddAction) {
@@ -1891,34 +2032,7 @@
           if (bonusBtn) bonusBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.BONUS, ""));
           const cloakBtn = document.getElementById("powerCloakBtn");
           if (cloakBtn) cloakBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.MASK, ""));
-          const stealthBtn = document.getElementById("powerStealthBtn");
-          if (stealthBtn) {
-            stealthBtn.addEventListener("click", () => {
-              const targetWrap = document.getElementById("streakPrizeTargetWrap");
-              const msgEl = document.getElementById("streakPrizeMsg");
-              if (!model.prizeTargets || !model.prizeTargets.length) {
-                if (msgEl) msgEl.textContent = "No target players are available right now.";
-                return;
-              }
-              if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
-              model.onSetStreakTargetPickerOpen(true);
-              if (targetWrap) targetWrap.classList.remove("d-none");
-              const targetEl = document.getElementById("streakPrizeTarget");
-              if (targetEl) targetEl.focus();
-            });
-          }
-          const stealthTarget = document.getElementById("streakPrizeTarget");
-          if (stealthTarget) {
-            stealthTarget.addEventListener("change", () => {
-              const targetId = String(stealthTarget.value || "");
-              if (!targetId) return;
-              model.onSetStreakTargetPickerOpen(false);
-              model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
-              stealthTarget.value = "";
-              const targetWrap = document.getElementById("streakPrizeTargetWrap");
-              if (targetWrap) targetWrap.classList.add("d-none");
-            });
-          }
+          this.bindStealthTargetMenu("powerStealthBtn", "streakPrizeTargetWrap", "streakPrizeMsg", model);
           this.animateCount("countingScore", model.playerScoreBeforeReveal || 0, model.playerScore || 0, 850);
         }
 
@@ -2035,18 +2149,15 @@
               let html = "";
               if (canUseStreakPrize) {
                 const targetOptions = (model.prizeTargets || []).map((t) => {
-                  return "<option value='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</option>";
+                  return "<button class='power-target-option focus-ring' type='button' role='menuitem' data-target-id='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</button>";
                 }).join("");
                 html += "<div class='power-rail mt-1'>";
                 html += "<button id='lbPowerBonusBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-bolt'></i><span>Add 2000</span></button>";
                 html += "<button id='lbPowerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
-                html += "<button id='lbPowerStealthBtn' class='power-pill-btn attack focus-ring' type='button'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
-                html += "</div>";
-                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "'>";
-                html += "<label class='form-label mb-1 small-note' for='lbStreakPrizeTarget'>Select target</label>";
-                html += "<select id='lbStreakPrizeTarget' class='form-control join-input'>";
-                html += "<option value=''>Choose player...</option>" + targetOptions;
-                html += "</select></div>";
+                html += "<div class='power-target-control'>";
+                html += "<button id='lbPowerStealthBtn' class='power-pill-btn attack focus-ring' type='button' aria-haspopup='menu' aria-expanded='" + (model.streakTargetPickerOpen ? "true" : "false") + "' aria-controls='lbStreakPrizeTargetWrap'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
+                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "' role='menu' aria-label='Choose a player to attack'>" + targetOptions + "</div>";
+                html += "</div></div>";
               }
 
               html += "<div id='lbStreakPrizeNotice' class='small-note mt-2 power-notice-center'>" + safeText(model.streakPrizeNotice || "") + "</div>";
@@ -2211,34 +2322,7 @@
           if (lbCloakBtn && typeof model.onClaimStreakPrize === "function") {
             lbCloakBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.MASK, ""));
           }
-          const lbStealthBtn = document.getElementById("lbPowerStealthBtn");
-          if (lbStealthBtn && typeof model.onClaimStreakPrize === "function") {
-            lbStealthBtn.addEventListener("click", () => {
-              const targetWrap = document.getElementById("lbStreakPrizeTargetWrap");
-              const msgEl = document.getElementById("lbStreakPrizeNotice");
-              if (!model.prizeTargets || !model.prizeTargets.length) {
-                if (msgEl) msgEl.textContent = "No target players are available right now.";
-                return;
-              }
-              if (msgEl) msgEl.textContent = "Choose a player to launch the stealth attack.";
-              model.onSetStreakTargetPickerOpen(true);
-              if (targetWrap) targetWrap.classList.remove("d-none");
-              const targetEl = document.getElementById("lbStreakPrizeTarget");
-              if (targetEl) targetEl.focus();
-            });
-          }
-          const lbStealthTarget = document.getElementById("lbStreakPrizeTarget");
-          if (lbStealthTarget && typeof model.onClaimStreakPrize === "function") {
-            lbStealthTarget.addEventListener("change", () => {
-              const targetId = String(lbStealthTarget.value || "");
-              if (!targetId) return;
-              model.onSetStreakTargetPickerOpen(false);
-              model.onClaimStreakPrize(STREAK_ACTION.STEAL, targetId);
-              lbStealthTarget.value = "";
-              const targetWrap = document.getElementById("lbStreakPrizeTargetWrap");
-              if (targetWrap) targetWrap.classList.add("d-none");
-            });
-          }
+          this.bindStealthTargetMenu("lbPowerStealthBtn", "lbStreakPrizeTargetWrap", "lbStreakPrizeNotice", model);
 
           const sortLbNameBtn = document.getElementById("studentSortLbNameBtn");
           if (sortLbNameBtn && typeof model.onSortLeaderboard === "function") {
@@ -2503,6 +2587,13 @@
           if (this.game.phase === PHASES.QUESTION) {
             const scoreEl = document.getElementById("scoreValue");
             if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
+
+            this.ui.updateQuestionPowerTiles({
+              doubleDownActive: this.game.doubleDownArmed,
+              strikeCount: this.game.strikeCount,
+              strikeAttackers: this.game.strikeAttackers,
+              strikeNotice: this.game.strikeNotice
+            });
 
             const fiftyFiftyBtn = document.getElementById("fiftyFiftyBtn");
             if (fiftyFiftyBtn) {
@@ -3391,7 +3482,6 @@
           this.game.hasSubmitted = false;
           this.game.selectedIds = [];
           this.game.playerScoreBeforeReveal = this.game.playerScore;
-          this.game.doubleDownArmed = false;
           this.game.fiftyFiftyQuestionIndex = null;
           this.game.fiftyFiftyRemovedOptionIds = [];
           this.game.fiftyFiftyUsed = false;
@@ -3558,6 +3648,7 @@
             this.game.strikeCount = Number(mine.strikeCount || 0);
             this.game.strikeAttackers = normalizeNames(mine.strikeAttackers || []);
             this.game.strikeNotice = this.buildStrikeNotice(this.game.strikeOutcome, this.game.strikeDelta, this.game.strikeCount);
+            if (mine.doubleDownArmed != null) this.game.doubleDownArmed = !!mine.doubleDownArmed;
             this.game.canBuyPointShield = !!mine.canBuyPointShield;
             this.game.canBuyReflectiveShield = !!mine.canBuyReflectiveShield;
             if (mine.pointShieldNext != null) this.game.pointShieldNext = !!mine.pointShieldNext;
@@ -3595,6 +3686,7 @@
             this.game.strikeCount = Number(mine.strikeCount || 0);
             this.game.strikeAttackers = normalizeNames(mine.strikeAttackers || []);
             this.game.strikeNotice = this.buildStrikeNotice(this.game.strikeOutcome, this.game.strikeDelta, this.game.strikeCount);
+            if (mine.doubleDownArmed != null) this.game.doubleDownArmed = !!mine.doubleDownArmed;
             this.game.canBuyPointShield = !!mine.canBuyPointShield;
             this.game.canBuyReflectiveShield = !!mine.canBuyReflectiveShield;
             if (mine.pointShieldNext != null) this.game.pointShieldNext = !!mine.pointShieldNext;

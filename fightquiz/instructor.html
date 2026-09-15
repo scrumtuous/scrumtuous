@@ -47,11 +47,8 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: url("fight-landing-bg.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.08;
+      background: radial-gradient(circle at center, rgba(210, 143, 169, 0.06), transparent 64%);
+      opacity: 1;
       pointer-events: none;
       z-index: -1;
     }
@@ -414,6 +411,41 @@
     .podium-card.first { box-shadow: 0 0 18px rgba(255, 222, 140, 0.4); }
     .podium-card.second { box-shadow: 0 0 12px rgba(214, 214, 225, 0.25); }
     .podium-card.third { box-shadow: 0 0 12px rgba(214, 168, 148, 0.25); }
+
+    .leaderboard-view:not(.final-results-view) {
+      color: var(--silver);
+    }
+
+    .leaderboard-view:not(.final-results-view) .small-note {
+      color: rgba(213, 212, 219, 0.82);
+    }
+
+    .leaderboard-view:not(.final-results-view) .fw-bold,
+    .leaderboard-view:not(.final-results-view) .stats-table td,
+    .leaderboard-view:not(.final-results-view) .podium-card,
+    .leaderboard-view:not(.final-results-view) .stats-empty {
+      color: var(--silver);
+    }
+
+    .leaderboard-view:not(.final-results-view) .stats-table {
+      color: var(--silver);
+    }
+
+    .leaderboard-view:not(.final-results-view) .stats-table th {
+      color: #f0edf3;
+    }
+
+    .leaderboard-view:not(.final-results-view) .sort-btn {
+      color: var(--silver);
+      border-color: rgba(213, 212, 219, 0.28);
+      background: rgba(213, 212, 219, 0.08);
+    }
+
+    .leaderboard-view:not(.final-results-view) .sort-btn:hover,
+    .leaderboard-view:not(.final-results-view) .sort-btn:focus-visible {
+      color: #fff;
+      background: rgba(213, 212, 219, 0.14);
+    }
 
     .control-dock {
       position: sticky;
@@ -1327,6 +1359,12 @@
           }
         }
 
+        isShieldActiveForQuestion(player, questionIndex) {
+          if (!player || questionIndex == null) return false;
+          return typeof player.pointShieldQuestionIndex === "number"
+            && player.pointShieldQuestionIndex === Number(questionIndex);
+        }
+
         getDisplayedScore(player) {
           this.normalizePlayerState(player);
           if (Number(player.fakeScoreTurnsRemaining || 0) > 0) {
@@ -1961,7 +1999,7 @@
             target.strikeAttackers = attackerNames;
             powerSummary.strikeCount += validAttackerIds.length;
 
-            const shieldActive = Number(target.pointShieldQuestionIndex) === Number(nextIndex);
+            const shieldActive = this.isShieldActiveForQuestion(target, nextIndex);
             const reflective = shieldActive && String(target.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE";
 
             if (reflective) {
@@ -2003,7 +2041,7 @@
           Object.values(playerMap).forEach((p) => {
             this.normalizePlayerState(p);
             if (p.doubleDownNext) powerSummary.doubleDownCount += 1;
-            if (Number(p.pointShieldQuestionIndex) === Number(nextIndex)) {
+            if (this.isShieldActiveForQuestion(p, nextIndex)) {
               if (String(p.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE") {
                 powerSummary.reflectiveShieldCount += 1;
               } else {
@@ -2199,7 +2237,7 @@
 
             p.score += earned;
             p.doubleDownNext = false;
-            if (Number(p.pointShieldQuestionIndex) === Number(qIndex)) {
+            if (this.isShieldActiveForQuestion(p, qIndex)) {
               p.pointShieldQuestionIndex = null;
               p.pointShieldActiveMode = "NONE";
             }
@@ -2243,33 +2281,37 @@
             .filter((p) => !p.removed)
             .slice()
             .sort((a, b) => this.getDisplayedScore(b) - this.getDisplayedScore(a) || a.joinedAt - b.joinedAt)
-            .map((p, idx) => ({
-              rank: idx + 1,
-              playerId: p.id,
-              playerName: p.name,
-              score: this.getDisplayedScore(p),
-              streak: Number(p.correctStreak || 0),
-              currentStreak: Number(p.correctStreak || 0),
-              correctAnswers: Number(p.correctAnswers || 0),
-              longestStreak: Number(p.longestStreak || 0),
-              streakPrizeReady: !!p.streakPrizeAvailable,
-              canBuyPointShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= POINT_SHIELD_COST,
-              canBuyReflectiveShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= REFLECTIVE_SHIELD_COST,
-              pointShieldNext: !!p.pointShieldNext,
-              pointShieldMode: String(p.pointShieldMode || "NORMAL"),
-              shieldActive: Number(p.pointShieldQuestionIndex) === Number(this.activeGame.questionIndex),
-              shieldReflectiveActive: Number(p.pointShieldQuestionIndex) === Number(this.activeGame.questionIndex) && String(p.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE",
-              incomingStrikeCount: Number(p.incomingStrikeCount || 0),
-              attackedCount: Number(p.attackedCount || 0),
-              strikeOutcome: String(p.strikeOutcome || ""),
-              strikeDelta: Number(p.strikeDelta || 0),
-              strikeCount: Number(p.strikeCount || 0),
-              strikeAttackers: Array.isArray(p.strikeAttackers) ? p.strikeAttackers.slice() : [],
-              quickDrawWins: Number(p.quickDrawWins || 0),
-              avgResponseMs: Number(p.responseCount || 0) > 0 ? Math.round(Number(p.responseTotalMs || 0) / Number(p.responseCount || 0)) : null,
-              fastestResponseMs: p.fastestResponseMs == null ? null : Number(p.fastestResponseMs),
-              responseCount: Number(p.responseCount || 0)
-            }));
+            .map((p, idx) => {
+              const shieldActive = this.isShieldActiveForQuestion(p, this.activeGame.questionIndex);
+              return {
+                rank: idx + 1,
+                playerId: p.id,
+                playerName: p.name,
+                score: this.getDisplayedScore(p),
+                streak: Number(p.correctStreak || 0),
+                currentStreak: Number(p.correctStreak || 0),
+                correctAnswers: Number(p.correctAnswers || 0),
+                longestStreak: Number(p.longestStreak || 0),
+                streakPrizeReady: !!p.streakPrizeAvailable,
+                doubleDownArmed: !!p.doubleDownNext,
+                canBuyPointShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= POINT_SHIELD_COST,
+                canBuyReflectiveShield: hasNextQuestion && phaseAllowsShield && !p.pointShieldNext && Number(p.score || 0) >= REFLECTIVE_SHIELD_COST,
+                pointShieldNext: !!p.pointShieldNext,
+                pointShieldMode: String(p.pointShieldMode || "NORMAL"),
+                shieldActive,
+                shieldReflectiveActive: shieldActive && String(p.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE",
+                incomingStrikeCount: Number(p.incomingStrikeCount || 0),
+                attackedCount: Number(p.attackedCount || 0),
+                strikeOutcome: String(p.strikeOutcome || ""),
+                strikeDelta: Number(p.strikeDelta || 0),
+                strikeCount: Number(p.strikeCount || 0),
+                strikeAttackers: Array.isArray(p.strikeAttackers) ? p.strikeAttackers.slice() : [],
+                quickDrawWins: Number(p.quickDrawWins || 0),
+                avgResponseMs: Number(p.responseCount || 0) > 0 ? Math.round(Number(p.responseTotalMs || 0) / Number(p.responseCount || 0)) : null,
+                fastestResponseMs: p.fastestResponseMs == null ? null : Number(p.fastestResponseMs),
+                responseCount: Number(p.responseCount || 0)
+              };
+            });
           return sorted;
         }
 
@@ -2776,12 +2818,19 @@
         }
 
         renderStage(game, stageStats, handlers, quoteSet) {
+          this.el.stageContent.classList.remove("leaderboard-view", "final-results-view");
           if (!game) {
             this.el.stageContent.innerHTML = "<div class='small-note'>Start or resume a game to begin.</div>";
             return;
           }
 
           const phase = game.phase;
+          if (phase === PHASES.LEADERBOARD || phase === PHASES.FINISHED) {
+            this.el.stageContent.classList.add("leaderboard-view");
+            if (phase === PHASES.FINISHED) {
+              this.el.stageContent.classList.add("final-results-view");
+            }
+          }
           if (phase === PHASES.LOBBY) {
             this.el.stageContent.innerHTML = "";
             const block = document.createElement("div");
