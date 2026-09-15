@@ -466,6 +466,24 @@
       flex-shrink: 0;
     }
 
+    .locked-choice-badge {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      border: 1px solid rgba(255, 246, 194, 0.9);
+      border-radius: 999px;
+      background: rgba(74, 53, 19, 0.9);
+      color: #fff1c2;
+      font-size: 0.66rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0.24rem 0.45rem;
+      pointer-events: none;
+      box-shadow: 0 0 0 1px rgba(255, 216, 122, 0.18), 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+
     .ans-btn:hover,
     .ans-btn:focus-visible {
       transform: translateY(-1px) scale(1.01);
@@ -482,6 +500,29 @@
       opacity: 0.64;
       transform: none;
       filter: grayscale(0.12);
+    }
+
+    .ans-btn.locked:not(.selected) {
+      opacity: 0.45;
+      filter: grayscale(0.35) brightness(0.78);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .ans-btn.locked.selected {
+      opacity: 0.95;
+      filter: saturate(1.05);
+      cursor: default;
+    }
+
+    .ans-btn.locked:hover,
+    .ans-btn.locked:focus-visible {
+      transform: none;
+    }
+
+    .ans-btn.locked:not(.selected):hover,
+    .ans-btn.locked:not(.selected):focus-visible {
+      filter: grayscale(0.35) brightness(0.78);
     }
 
     .ans-btn.fifty-fifty-removed {
@@ -501,6 +542,31 @@
       background: linear-gradient(145deg, #54545d, #3f3f46) !important;
       filter: grayscale(0.25);
       opacity: 0.66;
+    }
+
+    .ans-btn.reveal-selected-wrong {
+      background: linear-gradient(145deg, #6c6c76, #53535b) !important;
+      border: 2px solid rgba(214, 217, 223, 0.88);
+      box-shadow: 0 0 0 3px rgba(203, 207, 214, 0.22), 0 8px 16px rgba(0, 0, 0, 0.32);
+      filter: grayscale(0.5) saturate(0.75);
+      opacity: 0.86;
+    }
+
+    .reveal-selected-note {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      border: 1px solid rgba(226, 229, 233, 0.9);
+      border-radius: 999px;
+      background: rgba(61, 64, 71, 0.92);
+      color: #eceef2;
+      font-size: 0.66rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0.24rem 0.45rem;
+      pointer-events: none;
     }
 
     .ans-btn.reveal-correct {
@@ -746,8 +812,7 @@
     .final-results-view .glass,
     .final-results-view .small-note,
     .final-results-view .fw-bold,
-    .final-results-view .stats-empty,
-    .final-results-view .final-action-summary {
+    .final-results-view .stats-empty {
       color: #d6d8e2;
     }
 
@@ -757,8 +822,7 @@
 
     .final-results-view .podium-card,
     .final-results-view .stats-table-wrap,
-    .final-results-view .stats-empty,
-    .final-results-view .final-action-summary {
+    .final-results-view .stats-empty {
       border-color: rgba(214, 216, 226, 0.24);
     }
 
@@ -817,15 +881,141 @@
       position: relative;
     }
 
-    .final-action-summary {
-      border-radius: 14px;
-      border: 1px solid rgba(255, 231, 142, 0.58);
-      background: linear-gradient(150deg, rgba(102, 64, 28, 0.44), rgba(62, 36, 53, 0.5));
-      color: #ffeecd;
-      padding: 0.7rem 0.8rem;
-      margin-bottom: 0.7rem;
-      font-weight: 700;
+    .profile-link-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 800;
+      text-align: left;
+      padding: 0;
     }
+
+    .profile-link-btn:hover,
+    .profile-link-btn:focus-visible {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 0.16em;
+    }
+
+    .profile-row-active {
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .profile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    .profile-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 4, 10, 0.72);
+      backdrop-filter: blur(6px);
+    }
+
+    .profile-card {
+      position: relative;
+      z-index: 1;
+      width: min(920px, 100%);
+      max-height: min(86vh, 860px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+
+    .profile-card-body {
+      overflow: auto;
+      padding-right: 0.15rem;
+    }
+
+    .profile-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    @media (min-width: 760px) {
+      .profile-summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .profile-summary-tile {
+      border-radius: 12px;
+      border: 1px solid rgba(247, 221, 233, 0.22);
+      background: rgba(0, 0, 0, 0.22);
+      padding: 0.7rem;
+      min-height: 74px;
+    }
+
+    .profile-summary-label {
+      color: rgba(247, 221, 233, 0.75);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.15rem;
+    }
+
+    .profile-summary-value {
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .history-timeline {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .history-entry {
+      border-radius: 12px;
+      border: 1px solid rgba(247, 221, 233, 0.2);
+      background: rgba(0, 0, 0, 0.18);
+      padding: 0.75rem 0.8rem;
+    }
+
+    .history-entry.topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .history-entry-title {
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .history-entry-note {
+      margin-top: 0.18rem;
+      color: rgba(247, 221, 233, 0.88);
+      line-height: 1.35;
+    }
+
+    .history-chip {
+      flex-shrink: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 221, 233, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.18rem 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .history-chip.answer { border-color: rgba(120, 200, 255, 0.3); color: #d9f0ff; }
+    .history-chip.attack { border-color: rgba(255, 140, 165, 0.35); color: #ffd8e2; }
+    .history-chip.purchase { border-color: rgba(255, 224, 144, 0.35); color: #fff0c7; }
+    .history-chip.power { border-color: rgba(145, 240, 211, 0.35); color: #d9ffef; }
+    .history-chip.streak { border-color: rgba(204, 177, 255, 0.35); color: #efe2ff; }
+    .history-chip.system { border-color: rgba(210, 213, 224, 0.24); color: #d2d5e0; }
 
     .power-action-card {
       border-radius: 14px;
@@ -1284,6 +1474,9 @@
       };
 
       const FIFTY_FIFTY_COST = 1000;
+      const SUBMISSION_RETRY_BASE_MS = 900;
+      const SUBMISSION_RETRY_JITTER_MS = 250;
+      const SUBMISSION_ACK_GRACE_MS = 30000;
 
       function nowTs() { return Date.now(); }
       function generateMessageId() {
@@ -1617,7 +1810,51 @@
             + "</div>"
             + "</div>";
         }
-          renderJoin(prefillGameId, savedName, handlers, stateMsg) {
+
+        buildPlayerProfileMarkup(row) {
+          if (!row) return "";
+          const history = Array.isArray(row.history) ? row.history : [];
+          const earned = history.reduce((total, entry) => total + Math.max(0, Number(entry.pointsDelta || 0)), 0);
+          const lost = history.reduce((total, entry) => total + Math.max(0, -Number(entry.pointsDelta || 0)), 0);
+          let html = "";
+
+          html += "<div class='profile-summary-grid'>";
+          html += "<div class='profile-summary-tile'><div class='profile-summary-label'>Current Total</div><div class='profile-summary-value'>" + formatScore(row.score || 0) + " pts</div></div>";
+          html += "<div class='profile-summary-tile'><div class='profile-summary-label'>Points Earned</div><div class='profile-summary-value'>+" + formatScore(earned) + "</div></div>";
+          html += "<div class='profile-summary-tile'><div class='profile-summary-label'>Points Lost</div><div class='profile-summary-value'>-" + formatScore(lost) + "</div></div>";
+          html += "<div class='profile-summary-tile'><div class='profile-summary-label'>Recorded Changes</div><div class='profile-summary-value'>" + formatScore(history.filter((entry) => Number(entry.pointsDelta || 0) !== 0).length) + "</div></div>";
+          html += "</div>";
+
+          html += "<div class='fw-bold mb-2'>Point History</div>";
+          if (!history.length) {
+            return html + "<div class='stats-empty'>No point activity has been recorded yet.</div>";
+          }
+
+          html += "<div class='history-timeline'>";
+          history.slice().reverse().forEach((entry) => {
+            const delta = Number(entry.pointsDelta || 0);
+            const deltaLabel = delta > 0 ? "+" + formatScore(delta) : formatScore(delta);
+            const category = ["answer", "attack", "purchase", "power", "streak"].includes(String(entry.category || ""))
+              ? String(entry.category)
+              : "system";
+            const timestamp = Number(entry.ts);
+            const timeLabel = Number.isFinite(timestamp) ? new Date(timestamp).toLocaleString() : "";
+
+            html += "<div class='history-entry'>";
+            html += "<div class='history-entry topline'>";
+            html += "<div><div class='history-entry-title'>" + safeText(entry.title || "Point activity") + "</div>";
+            html += "<div class='small-note'>" + safeText(timeLabel) + (entry.questionNumber != null ? " | Question " + Number(entry.questionNumber) : "") + "</div></div>";
+            html += "<span class='history-chip " + category + "'>" + safeText(deltaLabel) + " pts</span>";
+            html += "</div>";
+            if (entry.note) html += "<div class='history-entry-note'>" + safeText(entry.note) + "</div>";
+            if (entry.scoreAfter != null) html += "<div class='small-note mt-1'>Running total: " + formatScore(entry.scoreAfter) + " points</div>";
+            html += "</div>";
+          });
+          html += "</div>";
+          return html;
+        }
+
+        renderJoin(prefillGameId, savedName, handlers, stateMsg) {
           this.app.innerHTML = "";
           const wrap = document.createElement("section");
           wrap.className = "glass p-3 landing-card join-landing";
@@ -1775,6 +2012,7 @@
 
           const grid = document.getElementById("optionsGrid");
           const submitted = model.hasSubmitted;
+          const pendingSubmission = !!model.hasPendingSubmission;
           const multi = model.isMulti;
 
           if (multi) {
@@ -1788,17 +2026,25 @@
             btn.setAttribute("data-opt-id", opt.id);
             btn.setAttribute("aria-label", "Option " + opt.letter + ": " + opt.text);
             btn.innerHTML = "<span class='letter'>" + opt.letter + "</span><span>" + safeText(opt.text) + "</span>";
-            if (submitted) btn.classList.add("locked");
+            const isSelected = model.selectedIds && model.selectedIds.includes(opt.id);
+            if (submitted || pendingSubmission) btn.classList.add("locked");
             const removed = removedOptionIds.has(String(opt.id));
             if (removed) btn.classList.add("fifty-fifty-removed");
-            if (model.selectedIds && model.selectedIds.includes(opt.id) && !removed) btn.classList.add("selected");
-            btn.disabled = submitted || removed;
+            if (isSelected && !removed) btn.classList.add("selected");
+            if (submitted && isSelected && !removed) {
+              btn.insertAdjacentHTML("beforeend", "<span class='locked-choice-badge' aria-hidden='true'>Locked In</span>");
+            }
+            btn.disabled = submitted || pendingSubmission || removed;
             btn.addEventListener("click", () => handlers.onOptionClick(opt.id));
             grid.appendChild(btn);
           });
 
           if (submitted) {
             document.getElementById("questionStatus").innerHTML = "<div class='lock-state'><i class='lni lni-lock-alt me-1'></i>Answer locked in! Waiting for everyone else...</div>";
+          } else if (pendingSubmission) {
+            document.getElementById("questionStatus").innerHTML = "<div class='lock-state'><i class='lni lni-spinner-arrow me-1'></i>Submitting answer...</div>";
+          } else if (model.submissionNotice) {
+            document.getElementById("questionStatus").textContent = model.submissionNotice;
           } else if (model.fiftyFiftyNotice) {
             document.getElementById("questionStatus").textContent = model.fiftyFiftyNotice;
           } else if (!questionOpen) {
@@ -1817,8 +2063,8 @@
             const submit = document.createElement("button");
             submit.type = "button";
             submit.className = "btn moon-btn btn-lg w-100 focus-ring";
-            submit.textContent = submitted ? "Answer Locked" : "Submit Answer";
-            submit.disabled = submitted;
+            submit.textContent = submitted ? "Answer Locked" : (pendingSubmission ? "Submitting..." : "Submit Answer");
+            submit.disabled = submitted || pendingSubmission;
             submit.addEventListener("click", handlers.onSubmitMulti);
             sw.appendChild(submit);
           }
@@ -1902,6 +2148,7 @@
           const earned = outcome ? outcome.earnedPoints : 0;
           const correct = outcome ? outcome.correct : false;
           const gainedText = (correct ? "+" : "+") + formatScore(earned || 0) + " points";
+          const selectedOptionIds = new Set(Array.isArray(model.selectedIds) ? model.selectedIds.map(String) : []);
           const correctOptionIds = Array.isArray(rv.correctOptionIds)
             ? new Set(rv.correctOptionIds)
             : (rv.correctOptionId != null ? new Set([rv.correctOptionId]) : new Set());
@@ -1929,9 +2176,18 @@
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "ans-btn c-" + o.color + " focus-ring";
-            if (correctOptionIds.has(o.id)) btn.classList.add("reveal-correct");
-            else btn.classList.add("reveal-wrong", "locked");
             btn.innerHTML = "<span class='letter'>" + o.letter + "</span><span>" + safeText(o.text) + "</span>";
+            const isCorrect = correctOptionIds.has(o.id);
+            const isSelected = selectedOptionIds.has(String(o.id));
+            if (isCorrect) {
+              btn.classList.add("reveal-correct");
+            } else {
+              btn.classList.add("reveal-wrong", "locked");
+              if (isSelected) {
+                btn.classList.add("reveal-selected-wrong");
+                btn.insertAdjacentHTML("beforeend", "<span class='reveal-selected-note' aria-hidden='true'>Your choice</span>");
+              }
+            }
             btn.disabled = true;
             grid.appendChild(btn);
           });
@@ -2076,6 +2332,10 @@
           const quickDrawRows = Array.isArray(model.quickDrawRows) ? model.quickDrawRows : [];
           const lbSort = model.leaderboardSort || { key: "score", dir: "desc" };
           const qdSort = model.quickDrawSort || { key: "avgResponseMs", dir: "asc" };
+          const activeProfileId = String(model.profilePlayerId || "");
+          const profileRow = activeProfileId
+            ? (leaderboardRows.find((row) => String(row.playerId || "") === activeProfileId) || scoreRankRows.find((row) => String(row.playerId || "") === activeProfileId) || null)
+            : null;
           const labelWithSort = (base, state, key) => {
             if (!state || state.key !== key) return base;
             return base + (state.dir === "asc" ? " ▲" : " ▼");
@@ -2106,25 +2366,6 @@
             wrap.appendChild(masked);
           }
 
-          if (model.phase === PHASES.FINISHED && Number(model.streakPrizeUses || 0) > 0 && model.streakPrizeAction) {
-            const actionCard = document.createElement("div");
-            actionCard.className = "final-action-summary";
-            let icon = "lni-gift";
-            let text = "Streak prize used.";
-            if (model.streakPrizeAction === STREAK_ACTION.MASK) {
-              icon = "lni-lock-alt";
-              text = "Fog Cloak used: your score was hidden for 3 turns.";
-            } else if (model.streakPrizeAction === STREAK_ACTION.STEAL) {
-              icon = "lni-target";
-              text = "Shadow Strike used: 1,000-point strike was queued for the next question.";
-            } else if (model.streakPrizeAction === STREAK_ACTION.BONUS) {
-              icon = "lni-bolt";
-              text = "Smelling Salts used: you gained 2,000 points.";
-            }
-            actionCard.innerHTML = "<i class='lni " + icon + " me-2'></i>" + safeText(text);
-            wrap.appendChild(actionCard);
-          }
-
           const podiumWrap = document.createElement("div");
           podiumWrap.className = "podium mb-3";
           const top3 = scoreRankRows.slice(0, 3);
@@ -2139,33 +2380,6 @@
             podiumWrap.appendChild(card);
           });
           wrap.appendChild(podiumWrap);
-
-          if (model.phase !== PHASES.FINISHED) {
-            const canUseStreakPrize = !!model.streakPrizeAvailable;
-            if (canUseStreakPrize || model.streakPrizeNotice) {
-              const actions = document.createElement("div");
-              actions.className = "power-action-card mb-3";
-
-              let html = "";
-              if (canUseStreakPrize) {
-                const targetOptions = (model.prizeTargets || []).map((t) => {
-                  return "<button class='power-target-option focus-ring' type='button' role='menuitem' data-target-id='" + safeText(t.playerId) + "'>" + safeText(t.playerName) + "</button>";
-                }).join("");
-                html += "<div class='power-rail mt-1'>";
-                html += "<button id='lbPowerBonusBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-bolt'></i><span>Add 2000</span></button>";
-                html += "<button id='lbPowerCloakBtn' class='power-pill-btn ready focus-ring' type='button'><i class='lni lni-lock-alt'></i><span>Fog Cloak</span></button>";
-                html += "<div class='power-target-control'>";
-                html += "<button id='lbPowerStealthBtn' class='power-pill-btn attack focus-ring' type='button' aria-haspopup='menu' aria-expanded='" + (model.streakTargetPickerOpen ? "true" : "false") + "' aria-controls='lbStreakPrizeTargetWrap'><i class='lni lni-target'></i><span>Stealth Attack</span></button>";
-                html += "<div id='lbStreakPrizeTargetWrap' class='power-target-picker" + (model.streakTargetPickerOpen ? "" : " d-none") + "' role='menu' aria-label='Choose a player to attack'>" + targetOptions + "</div>";
-                html += "</div></div>";
-              }
-
-              html += "<div id='lbStreakPrizeNotice' class='small-note mt-2 power-notice-center'>" + safeText(model.streakPrizeNotice || "") + "</div>";
-
-              actions.innerHTML = html;
-              wrap.appendChild(actions);
-            }
-          }
 
           const details = document.createElement("div");
           let detailsHtml = "";
@@ -2187,9 +2401,11 @@
             detailsHtml += "<th><button id='studentSortLbAttackedBtn' class='sort-btn focus-ring'>" + labelWithSort("Attacks", lbSort, "attackedCount") + "</button></th>";
             detailsHtml += "</tr></thead><tbody>";
             leaderboardRows.forEach((row) => {
-              detailsHtml += "<tr>";
+              const rowId = String(row.playerId || "");
+              const rowActive = activeProfileId && activeProfileId === rowId;
+              detailsHtml += "<tr class='" + (rowActive ? "profile-row-active" : "") + "'>";
               detailsHtml += "<td>#" + Number(row.rank || 0) + "</td>";
-              detailsHtml += "<td>" + safeText(row.playerName || "") + "</td>";
+              detailsHtml += "<td><button class='profile-link-btn focus-ring' type='button' data-player-id='" + safeText(rowId) + "' aria-label='Open profile for " + safeText(row.playerName || "") + "'>" + safeText(row.playerName || "") + "</button></td>";
               detailsHtml += "<td>" + formatScore(row.score || 0) + "</td>";
               detailsHtml += "<td>" + formatScore(row.currentStreak || row.streak || 0) + "</td>";
               detailsHtml += "<td>" + formatScore(row.correctAnswers || 0) + "</td>";
@@ -2314,15 +2530,42 @@
 
           this.app.appendChild(wrap);
 
-          const lbBonusBtn = document.getElementById("lbPowerBonusBtn");
-          if (lbBonusBtn && typeof model.onClaimStreakPrize === "function") {
-            lbBonusBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.BONUS, ""));
+          this.app.querySelectorAll(".profile-link-btn").forEach((node) => {
+            const playerId = node.getAttribute("data-player-id");
+            if (!playerId || typeof model.onOpenPlayerProfile !== "function") return;
+            node.addEventListener("click", () => model.onOpenPlayerProfile(playerId));
+          });
+
+          document.querySelectorAll(".profile-overlay").forEach((node) => node.remove());
+          if (profileRow) {
+            const overlay = document.createElement("div");
+            overlay.className = "profile-overlay";
+            overlay.innerHTML = ""
+              + "<div class='profile-backdrop'></div>"
+              + "<div class='profile-card glass' role='dialog' aria-modal='true' aria-label='Player point history'>"
+              + "<div class='d-flex justify-content-between align-items-start gap-3'>"
+              + "<div>"
+              + "<div class='title-font fs-4'>" + safeText(profileRow.playerName || "Player Profile") + "</div>"
+              + "<div class='small-note'>Complete score changes, attacks, purchases, and streak events.</div>"
+              + "</div>"
+              + "<button class='btn moon-btn btn-sm focus-ring' data-inline-action='close-profile'>Close</button>"
+              + "</div>"
+              + "<div class='profile-card-body'>"
+              + this.buildPlayerProfileMarkup(profileRow)
+              + "</div>"
+              + "</div>";
+            overlay.querySelectorAll("[data-inline-action='close-profile']").forEach((node) => {
+              node.addEventListener("click", () => {
+                if (typeof model.onClosePlayerProfile === "function") model.onClosePlayerProfile();
+              });
+            });
+            overlay.querySelectorAll(".profile-backdrop").forEach((node) => {
+              node.addEventListener("click", () => {
+                if (typeof model.onClosePlayerProfile === "function") model.onClosePlayerProfile();
+              });
+            });
+            this.app.appendChild(overlay);
           }
-          const lbCloakBtn = document.getElementById("lbPowerCloakBtn");
-          if (lbCloakBtn && typeof model.onClaimStreakPrize === "function") {
-            lbCloakBtn.addEventListener("click", () => model.onClaimStreakPrize(STREAK_ACTION.MASK, ""));
-          }
-          this.bindStealthTargetMenu("lbPowerStealthBtn", "lbStreakPrizeTargetWrap", "lbStreakPrizeNotice", model);
 
           const sortLbNameBtn = document.getElementById("studentSortLbNameBtn");
           if (sortLbNameBtn && typeof model.onSortLeaderboard === "function") {
@@ -2475,7 +2718,10 @@
             streakPrizeNextIndex: 0,
             streakPrizeAction: "",
             streakPrizeNotice: "",
-            prizeTargets: []
+            prizeTargets: [],
+            pendingSubmission: null,
+            pendingActions: {},
+            submissionNotice: ""
           });
 
           this.joinTimeoutHandle = null;
@@ -2489,6 +2735,9 @@
           this.quickDrawSort = { key: "avgResponseMs", dir: "asc" };
           this.fiftyFiftyInFlight = false;
           this.streakTargetPickerPhase = null;
+          this.profilePlayerId = "";
+          this.pendingSubmissionRetryHandle = null;
+          this.pendingActionRetryHandle = null;
           this.joinDraft = {
             gameId: "",
             playerName: ""
@@ -2510,6 +2759,21 @@
 
         setStreakTargetPickerOpen(phase, open) {
           this.streakTargetPickerPhase = open ? phase : null;
+        }
+
+        openPlayerProfile(playerId) {
+          this.profilePlayerId = String(playerId || "");
+          if (this.game.phase === PHASES.LEADERBOARD || this.game.phase === PHASES.FINISHED) {
+            this.render();
+          }
+        }
+
+        closePlayerProfile() {
+          if (!this.profilePlayerId) return;
+          this.profilePlayerId = "";
+          if (this.game.phase === PHASES.LEADERBOARD || this.game.phase === PHASES.FINISHED) {
+            this.render();
+          }
         }
 
         isStreakTargetPickerOpen(phase) {
@@ -2587,6 +2851,7 @@
           if (this.game.phase === PHASES.QUESTION) {
             const scoreEl = document.getElementById("scoreValue");
             if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore);
+            const pendingSubmission = !!this.getActivePendingSubmission();
 
             this.ui.updateQuestionPowerTiles({
               doubleDownActive: this.game.doubleDownArmed,
@@ -2600,29 +2865,55 @@
               const used = Number(this.game.fiftyFiftyQuestionIndex) === Number(this.game.question && this.game.question.questionIndex)
                 && Array.isArray(this.game.fiftyFiftyRemovedOptionIds)
                 && this.game.fiftyFiftyRemovedOptionIds.length >= 2;
-              fiftyFiftyBtn.disabled = !!this.game.hasSubmitted || used || !!this.fiftyFiftyInFlight || Number(this.game.playerScore || 0) < FIFTY_FIFTY_COST;
+              fiftyFiftyBtn.disabled = !!this.game.hasSubmitted || pendingSubmission || used || !!this.fiftyFiftyInFlight || Number(this.game.playerScore || 0) < FIFTY_FIFTY_COST;
               fiftyFiftyBtn.classList.toggle("is-on", used);
             }
 
             const removedIds = new Set(Array.isArray(this.game.fiftyFiftyRemovedOptionIds) ? this.game.fiftyFiftyRemovedOptionIds.map(String) : []);
             document.querySelectorAll(".ans-btn[data-opt-id]").forEach((button) => {
-              const removed = removedIds.has(String(button.getAttribute("data-opt-id") || ""));
+              const optionId = String(button.getAttribute("data-opt-id") || "");
+              const removed = removedIds.has(optionId);
+              const selected = Array.isArray(this.game.selectedIds) && this.game.selectedIds.includes(optionId);
               button.classList.toggle("fifty-fifty-removed", removed);
-              if (removed) button.classList.remove("selected");
-              button.disabled = !!this.game.hasSubmitted || removed;
+              button.classList.toggle("locked", !!this.game.hasSubmitted || pendingSubmission);
+              if (removed) {
+                button.classList.remove("selected");
+              } else {
+                button.classList.toggle("selected", selected);
+              }
+              const existingBadge = button.querySelector(".locked-choice-badge");
+              const shouldShowBadge = !!this.game.hasSubmitted && selected && !removed;
+              if (shouldShowBadge && !existingBadge) {
+                button.insertAdjacentHTML("beforeend", "<span class='locked-choice-badge' aria-hidden='true'>Locked In</span>");
+              } else if (!shouldShowBadge && existingBadge) {
+                existingBadge.remove();
+              }
+              button.disabled = !!this.game.hasSubmitted || pendingSubmission || removed;
             });
 
             const questionStatus = document.getElementById("questionStatus");
             if (this.game.hasSubmitted) {
               this.ui.updateLockedBanner();
+            } else if (questionStatus && pendingSubmission) {
+              questionStatus.innerHTML = "<div class='lock-state'><i class='lni lni-spinner-arrow me-1'></i>" + safeText(this.game.submissionNotice || "Submitting answer...") + "</div>";
+            } else if (questionStatus && this.game.submissionNotice) {
+              questionStatus.textContent = this.game.submissionNotice;
             } else if (questionStatus && this.game.fiftyFiftyNotice) {
               questionStatus.textContent = this.game.fiftyFiftyNotice;
             }
 
             const submitButton = document.querySelector("#submitWrap button");
-            if (submitButton && this.game.hasSubmitted) {
-              submitButton.disabled = true;
-              submitButton.textContent = "Answer Locked";
+            if (submitButton) {
+              if (this.game.hasSubmitted) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Answer Locked";
+              } else if (pendingSubmission) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Submitting...";
+              } else {
+                submitButton.disabled = false;
+                submitButton.textContent = "Submit Answer";
+              }
             }
             return;
           }
@@ -2705,14 +2996,6 @@
 
             const scoreEl = document.getElementById("leaderboardMyScore");
             if (scoreEl) scoreEl.textContent = formatScore(this.game.playerScore) + " points";
-
-            const streakNoticeEl = document.getElementById("lbStreakPrizeNotice");
-            if (streakNoticeEl) streakNoticeEl.textContent = this.game.streakPrizeNotice || "";
-
-            ["lbPowerBonusBtn", "lbPowerCloakBtn", "lbPowerStealthBtn"].forEach((id) => {
-              const button = document.getElementById(id);
-              if (button) button.disabled = !this.game.streakPrizeAvailable;
-            });
 
             const maskNotice = document.getElementById("leaderboardScoreMaskNotice");
             if (maskNotice) {
@@ -2955,6 +3238,9 @@
           if (typeof this.game.streakPrizeNotice !== "string") this.game.streakPrizeNotice = "";
           if (!Array.isArray(this.game.prizeTargets)) this.game.prizeTargets = [];
           if (typeof this.game.totalPlayers !== "number") this.game.totalPlayers = 0;
+          if (!this.game.pendingSubmission || typeof this.game.pendingSubmission !== "object") this.game.pendingSubmission = null;
+          if (!this.game.pendingActions || typeof this.game.pendingActions !== "object") this.game.pendingActions = {};
+          if (typeof this.game.submissionNotice !== "string") this.game.submissionNotice = "";
         }
 
         refreshDoubleDownPolicy(serverReason) {
@@ -3179,6 +3465,8 @@
           if (state === "connected" && this.game.gameId && this.identity.playerName) {
             this.send(MSG.INSTRUCTOR_PRESENT, this.game.gameId, { probe: true });
             this.sendRejoinAndSync();
+            this.retryPendingSubmission();
+            this.retryPendingActions();
           }
         }
 
@@ -3192,7 +3480,149 @@
             senderId: this.identity.playerId,
             payload: payload || {}
           };
-          this.socket.send(msg);
+          return this.socket.send(msg);
+        }
+
+        clearSubmissionRetryHandle() {
+          if (this.pendingSubmissionRetryHandle) {
+            clearTimeout(this.pendingSubmissionRetryHandle);
+            this.pendingSubmissionRetryHandle = null;
+          }
+        }
+
+        clearPendingSubmission() {
+          this.clearSubmissionRetryHandle();
+          this.game.pendingSubmission = null;
+        }
+
+        getActivePendingSubmission() {
+          const pending = this.game.pendingSubmission;
+          if (!pending || typeof pending !== "object") return null;
+          if (String(pending.status || "") !== "pending") return null;
+          return pending;
+        }
+
+        queuePendingSubmissionRetry() {
+          const pending = this.getActivePendingSubmission();
+          if (!pending) return;
+          this.clearSubmissionRetryHandle();
+          const jitter = Math.floor(Math.random() * (SUBMISSION_RETRY_JITTER_MS + 1));
+          this.pendingSubmissionRetryHandle = setTimeout(() => {
+            this.retryPendingSubmission();
+          }, SUBMISSION_RETRY_BASE_MS + jitter);
+        }
+
+        retryPendingSubmission() {
+          const pending = this.getActivePendingSubmission();
+          if (!pending) return;
+          if (this.game.question && Number(this.game.question.questionIndex) !== Number(pending.questionIndex)) {
+            this.clearPendingSubmission();
+            return;
+          }
+
+          const now = nowTs();
+          if (now > Number(pending.deadlineAt || 0) + SUBMISSION_ACK_GRACE_MS) {
+            pending.status = "expired";
+            this.game.submissionNotice = "Unable to confirm the submission with the instructor.";
+            this.clearSubmissionRetryHandle();
+            this.persist();
+            this.applyLightweightViewUpdates(MSG.ANSWER_SUBMITTED);
+            return;
+          }
+
+          if (this.currentConnState === "connected") {
+            const sent = this.send(MSG.ANSWER_SUBMITTED, this.game.gameId, {
+              playerId: this.identity.playerId,
+              submissionId: pending.submissionId,
+              questionIndex: Number(pending.questionIndex),
+              selectedOptionIds: Array.isArray(pending.selectedOptionIds) ? pending.selectedOptionIds.slice() : [],
+              submittedAt: Number(pending.submittedAt || now)
+            });
+            if (sent) {
+              pending.lastSentAt = now;
+              pending.attemptCount = Number(pending.attemptCount || 0) + 1;
+            }
+          }
+
+          this.persist();
+          this.queuePendingSubmissionRetry();
+        }
+
+        getPendingActions() {
+          if (!this.game.pendingActions || typeof this.game.pendingActions !== "object") this.game.pendingActions = {};
+          return this.game.pendingActions;
+        }
+
+        hasPendingActionType(requestType) {
+          return Object.values(this.getPendingActions()).some((pending) => pending && pending.requestType === requestType);
+        }
+
+        clearPendingAction(actionId) {
+          const pendingActions = this.getPendingActions();
+          if (actionId && pendingActions[actionId]) delete pendingActions[actionId];
+          if (!Object.keys(pendingActions).length && this.pendingActionRetryHandle) {
+            clearTimeout(this.pendingActionRetryHandle);
+            this.pendingActionRetryHandle = null;
+          }
+        }
+
+        queuePendingActionRetry() {
+          if (!Object.keys(this.getPendingActions()).length) return;
+          if (this.pendingActionRetryHandle) clearTimeout(this.pendingActionRetryHandle);
+          const jitter = Math.floor(Math.random() * (SUBMISSION_RETRY_JITTER_MS + 1));
+          this.pendingActionRetryHandle = setTimeout(() => this.retryPendingActions(), SUBMISSION_RETRY_BASE_MS + jitter);
+        }
+
+        retryPendingActions() {
+          const pendingActions = this.getPendingActions();
+          const now = nowTs();
+          if (this.currentConnState === "connected") {
+            Object.values(pendingActions).forEach((pending) => {
+              if (!pending || !pending.requestType || !pending.actionId) return;
+              const sent = this.send(pending.requestType, this.game.gameId, Object.assign({}, pending.payload, {
+                playerId: this.identity.playerId,
+                actionId: pending.actionId
+              }));
+              if (sent) {
+                pending.lastSentAt = now;
+                pending.attemptCount = Number(pending.attemptCount || 0) + 1;
+              }
+            });
+          }
+          this.persist();
+          this.queuePendingActionRetry();
+        }
+
+        sendReliableAction(requestType, payload) {
+          if (this.hasPendingActionType(requestType)) return false;
+          const actionId = generateMessageId();
+          const pending = {
+            actionId,
+            requestType,
+            payload: Object.assign({}, payload || {}),
+            createdAt: nowTs(),
+            lastSentAt: 0,
+            attemptCount: 0
+          };
+          this.getPendingActions()[actionId] = pending;
+          const sent = this.send(requestType, this.game.gameId, Object.assign({}, pending.payload, {
+            playerId: this.identity.playerId,
+            actionId
+          }));
+          if (sent) {
+            pending.lastSentAt = pending.createdAt;
+            pending.attemptCount = 1;
+          }
+          this.persist();
+          this.queuePendingActionRetry();
+          return sent;
+        }
+
+        acknowledgeReliableAction(payload) {
+          if (!payload || payload.playerId !== this.identity.playerId || !payload.actionId) return false;
+          this.clearPendingAction(String(payload.actionId));
+          this.persist();
+          return true;
         }
 
         tryAutoRejoin() {
@@ -3276,6 +3706,8 @@
           this.game.streakPrizeAction = "";
           this.game.streakPrizeNotice = "";
           this.game.prizeTargets = [];
+          this.game.pendingSubmission = null;
+          this.game.submissionNotice = "";
           this.game.totalPlayers = 0;
           this.resetSorts();
           this.persist();
@@ -3446,6 +3878,19 @@
             this.game.prizeTargets = Array.isArray(snapshot.player.prizeTargets) ? snapshot.player.prizeTargets : [];
             this.game.totalPlayers = Number(snapshot.player.totalPlayers || this.game.totalPlayers || 0);
             this.game.doubleDownDisabledReason = typeof snapshot.player.doubleDownDisabledReason === "string" ? snapshot.player.doubleDownDisabledReason : (this.game.doubleDownDisabledReason || "");
+
+            const pending = this.getActivePendingSubmission();
+            if (pending && Number(snapshot.questionIndex) === Number(pending.questionIndex)) {
+              const acceptedSubmissionId = String(snapshot.player.acceptedSubmissionId || "");
+              if (acceptedSubmissionId && acceptedSubmissionId === String(pending.submissionId || "")) {
+                this.game.hasSubmitted = true;
+                this.game.submissionNotice = "";
+                this.clearPendingSubmission();
+              } else if (!!snapshot.player.hasSubmitted && !acceptedSubmissionId) {
+                this.game.hasSubmitted = true;
+                this.clearPendingSubmission();
+              }
+            }
           }
 
           if (snapshot.question) {
@@ -3480,6 +3925,8 @@
           this.game.question = payload;
           this.game.reveal = null;
           this.game.hasSubmitted = false;
+          this.clearPendingSubmission();
+          this.game.submissionNotice = "";
           this.game.selectedIds = [];
           this.game.playerScoreBeforeReveal = this.game.playerScore;
           this.game.fiftyFiftyQuestionIndex = null;
@@ -3526,10 +3973,26 @@
 
         handleSubmissionAck(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          const pending = this.getActivePendingSubmission();
+          if (pending && payload.submissionId && String(payload.submissionId) !== String(pending.submissionId || "")) return;
+
           if (payload.accepted) {
             this.game.hasSubmitted = true;
+            this.game.submissionNotice = "";
+            this.clearPendingSubmission();
+            this.ui.updateLockedBanner();
+            return;
+          }
+
+          this.game.hasSubmitted = false;
+          this.game.submissionNotice = String(payload.reason || "Submission not accepted.");
+          if (String(payload.reason || "") === "Duplicate submission" && payload.acceptedSubmissionId) {
+            this.game.hasSubmitted = true;
+            this.game.submissionNotice = "";
             this.ui.updateLockedBanner();
           }
+          if (pending) pending.status = "rejected";
+          this.clearPendingSubmission();
         }
 
         handleQuestionEnded() {
@@ -3569,6 +4032,7 @@
 
         handleDoubleDownSet(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.acknowledgeReliableAction(payload);
           this.game.doubleDownArmed = !!payload.active;
           this.game.doubleDownUses = Number(payload.doubleDownUses || this.game.doubleDownUses || 0);
           this.game.doubleDownCap = Number(payload.doubleDownCap || this.game.doubleDownCap || 3);
@@ -3584,6 +4048,7 @@
 
         handleDoubleDownBuyResult(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.acknowledgeReliableAction(payload);
           this.game.doubleDownNotice = payload.reason ? String(payload.reason) : "";
           if (payload.score != null) this.game.playerScore = Number(payload.score);
           if (payload.rank != null) this.game.rank = Number(payload.rank);
@@ -3599,6 +4064,7 @@
 
         handlePointShieldBuyResult(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.acknowledgeReliableAction(payload);
           this.game.pointShieldNotice = payload.reason ? String(payload.reason) : "";
           if (payload.score != null) this.game.playerScore = Number(payload.score);
           if (payload.cost != null) this.game.pointShieldCost = Number(payload.cost);
@@ -3614,6 +4080,7 @@
 
         handleStreakPrizeResult(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.acknowledgeReliableAction(payload);
           this.streakTargetPickerPhase = null;
           this.game.streakPrizeNotice = payload.reason ? String(payload.reason) : "";
           if (payload.realScore != null) this.game.playerScore = Number(payload.realScore);
@@ -3664,6 +4131,8 @@
             }
           }
           this.game.hasSubmitted = false;
+          this.clearPendingSubmission();
+          this.game.submissionNotice = "";
           this.game.selectedIds = [];
           this.refreshDoubleDownPolicy();
         }
@@ -3707,6 +4176,8 @@
         handleScoreReset(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
           this.game.playerScore = 0;
+          this.clearPendingSubmission();
+          this.game.submissionNotice = "";
           this.game.playerDisplayedScore = 0;
           this.game.isScoreMasked = false;
           this.game.fakeScoreTurnsRemaining = 0;
@@ -3745,6 +4216,7 @@
 
         handleFiftyFiftyResult(payload) {
           if (!payload || payload.playerId !== this.identity.playerId) return;
+          this.acknowledgeReliableAction(payload);
           this.fiftyFiftyInFlight = false;
           if (!payload.ok) {
             this.game.fiftyFiftyNotice = payload.reason ? String(payload.reason) : "50/50 is currently unavailable.";
@@ -3770,6 +4242,8 @@
         handleGameFinished(payload) {
           this.game.phase = PHASES.FINISHED;
           this.streakTargetPickerPhase = null;
+          this.clearPendingSubmission();
+          this.game.submissionNotice = "";
           if (payload && Array.isArray(payload.leaderboard)) {
             this.game.leaderboard = payload.leaderboard;
             this.game.totalPlayers = payload.leaderboard.length;
@@ -3819,7 +4293,7 @@
         }
 
         onOptionClick(optionId) {
-          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || !this.game.question) return;
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || this.getActivePendingSubmission() || !this.game.question) return;
           const question = this.game.question;
           const valid = new Set((question.options || []).map((o) => o.id));
           if (!valid.has(optionId)) return;
@@ -3853,15 +4327,15 @@
         }
 
         onSubmitMulti() {
-          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted) return;
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || this.getActivePendingSubmission()) return;
           const selected = this.game.selectedIds || [];
           if (!selected.length) return;
           this.submitAnswer(selected);
         }
 
         onFiftyFifty() {
-          if (this.fiftyFiftyInFlight) return;
-          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || !this.game.question) return;
+          if (this.fiftyFiftyInFlight || this.hasPendingActionType(MSG.FIFTY_FIFTY)) return;
+          if (this.game.phase !== PHASES.QUESTION || this.game.hasSubmitted || this.getActivePendingSubmission() || !this.game.question) return;
           if (nowTs() > Number(this.game.question.endsAt || 0)) {
             this.game.fiftyFiftyNotice = "Question closed. 50/50 is unavailable.";
             this.persist();
@@ -3873,8 +4347,7 @@
 
           this.fiftyFiftyInFlight = true;
           this.game.fiftyFiftyNotice = "";
-          this.send(MSG.FIFTY_FIFTY, this.game.gameId, {
-            playerId: this.identity.playerId,
+          this.sendReliableAction(MSG.FIFTY_FIFTY, {
             questionIndex: Number(this.game.question.questionIndex),
             submittedAt: nowTs()
           });
@@ -3882,14 +4355,12 @@
         }
 
         onDoubleDown() {
-          if (this.game.doubleDownArmed) return;
+          if (this.game.doubleDownArmed || this.hasPendingActionType(MSG.DOUBLE_DOWN_NEXT)) return;
           if (!this.identity.gameId) return;
           this.refreshDoubleDownPolicy();
           if (!this.game.doubleDownEligible) {
             if (this.game.rank == null) {
-              this.send(MSG.DOUBLE_DOWN_NEXT, this.identity.gameId, {
-                playerId: this.identity.playerId
-              });
+              this.sendReliableAction(MSG.DOUBLE_DOWN_NEXT, {});
               return;
             }
             this.game.doubleDownNotice = this.game.doubleDownDisabledReason || "Double Down is currently disabled.";
@@ -3898,13 +4369,11 @@
             return;
           }
           this.game.doubleDownNotice = "";
-          this.send(MSG.DOUBLE_DOWN_NEXT, this.identity.gameId, {
-            playerId: this.identity.playerId
-          });
+          this.sendReliableAction(MSG.DOUBLE_DOWN_NEXT, {});
         }
 
         onBuyDoubleDown() {
-          if (!this.identity.gameId) return;
+          if (!this.identity.gameId || this.hasPendingActionType(MSG.DOUBLE_DOWN_BUY)) return;
           this.refreshDoubleDownPolicy();
           if (!this.game.canBuyDoubleDown) {
             this.game.doubleDownNotice = this.game.doubleDownBuyBlockedReason || "Double Down purchase is unavailable right now.";
@@ -3912,14 +4381,12 @@
             this.applyLightweightViewUpdates(MSG.DOUBLE_DOWN_BUY_RESULT);
             return;
           }
-          this.send(MSG.DOUBLE_DOWN_BUY, this.identity.gameId, {
-            playerId: this.identity.playerId
-          });
+          this.sendReliableAction(MSG.DOUBLE_DOWN_BUY, {});
         }
 
         onBuyPointShield(mode) {
           const shieldMode = String(mode || "NORMAL").toUpperCase() === "REFLECTIVE" ? "REFLECTIVE" : "NORMAL";
-          if (!this.identity.gameId) return;
+          if (!this.identity.gameId || this.hasPendingActionType(MSG.POINT_SHIELD_BUY)) return;
           const hasNextQuestion = this.game.question && this.game.question.questionNumber < this.game.question.questionCount;
           const cost = shieldMode === "REFLECTIVE"
             ? Math.max(1, Number(this.game.reflectiveShieldCost || 4000))
@@ -3961,14 +4428,13 @@
           }
 
           this.game.pointShieldNotice = "";
-          this.send(MSG.POINT_SHIELD_BUY, this.identity.gameId, {
-            playerId: this.identity.playerId,
+          this.sendReliableAction(MSG.POINT_SHIELD_BUY, {
             mode: shieldMode
           });
         }
 
         onClaimStreakPrize(action, targetPlayerId) {
-          if (!this.identity.gameId) return;
+          if (!this.identity.gameId || this.hasPendingActionType(MSG.STREAK_PRIZE_CLAIM)) return;
           if (!this.game.streakPrizeAvailable) {
             this.game.streakPrizeNotice = "This prize is unavailable.";
             this.persist();
@@ -3989,8 +4455,7 @@
             return;
           }
           this.game.streakPrizeNotice = "";
-          this.send(MSG.STREAK_PRIZE_CLAIM, this.identity.gameId, {
-            playerId: this.identity.playerId,
+          this.sendReliableAction(MSG.STREAK_PRIZE_CLAIM, {
             action: chosen,
             targetPlayerId: chosen === STREAK_ACTION.STEAL ? String(targetPlayerId || "") : ""
           });
@@ -4049,6 +4514,11 @@
           this.game.streakPrizeAction = "";
           this.game.streakPrizeNotice = "";
           this.game.prizeTargets = [];
+          this.clearPendingSubmission();
+          this.game.pendingActions = {};
+          if (this.pendingActionRetryHandle) clearTimeout(this.pendingActionRetryHandle);
+          this.pendingActionRetryHandle = null;
+          this.game.submissionNotice = "";
           this.game.totalPlayers = 0;
           this.fiftyFiftyInFlight = false;
           this.streakTargetPickerPhase = null;
@@ -4059,17 +4529,40 @@
         }
 
         submitAnswer(selectedIds) {
-          if (this.game.hasSubmitted) return;
+          if (this.game.hasSubmitted || this.getActivePendingSubmission()) return;
           const unique = Array.from(new Set(selectedIds)).sort();
-          this.send(MSG.ANSWER_SUBMITTED, this.game.gameId, {
-            playerId: this.identity.playerId,
-            questionIndex: Number(this.game.question.questionIndex),
+          const submittedAt = nowTs();
+          const submissionId = generateMessageId();
+          const questionIndex = Number(this.game.question.questionIndex);
+          const pending = {
+            submissionId,
+            questionIndex,
             selectedOptionIds: unique,
-            submittedAt: nowTs()
-          });
-          this.game.hasSubmitted = true;
+            submittedAt,
+            deadlineAt: Number(this.game.question.endsAt || submittedAt),
+            attemptCount: 0,
+            lastSentAt: 0,
+            status: "pending"
+          };
+          this.game.pendingSubmission = pending;
           this.game.selectedIds = unique;
+          this.game.submissionNotice = "Submitting answer...";
+
+          const sent = this.send(MSG.ANSWER_SUBMITTED, this.game.gameId, {
+            playerId: this.identity.playerId,
+            submissionId,
+            questionIndex,
+            selectedOptionIds: unique,
+            submittedAt
+          });
+          if (sent) {
+            pending.lastSentAt = submittedAt;
+            pending.attemptCount = 1;
+          } else {
+            this.game.submissionNotice = "Connection interrupted. Retrying submission...";
+          }
           this.persist();
+          this.queuePendingSubmissionRetry();
           this.applyLightweightViewUpdates(MSG.ANSWER_SUBMITTED);
         }
 
@@ -4125,7 +4618,9 @@
                 strikeAttackers: this.game.strikeAttackers,
                 pointShieldArmedForQuestionIndex: this.game.pointShieldArmedForQuestionIndex,
                 fiftyFiftyQuestionIndex: this.game.fiftyFiftyQuestionIndex,
-                fiftyFiftyRemovedOptionIds: this.game.fiftyFiftyRemovedOptionIds
+                fiftyFiftyRemovedOptionIds: this.game.fiftyFiftyRemovedOptionIds,
+                hasPendingSubmission: !!this.getActivePendingSubmission(),
+                submissionNotice: this.game.submissionNotice || ""
               }, {
                 onOptionClick: this.onOptionClick.bind(this),
                 onSubmitMulti: this.onSubmitMulti.bind(this),
@@ -4199,6 +4694,7 @@
                 quickDrawRows: stageStats.quickDrawRows,
                 leaderboardSort: stageStats.leaderboardSort,
                 quickDrawSort: stageStats.quickDrawSort,
+                profilePlayerId: this.profilePlayerId,
                 rank: this.game.rank,
                 playerScore: this.game.playerScore,
                 playerDisplayedScore: this.game.playerDisplayedScore,
@@ -4245,6 +4741,12 @@
                 onResetSorts: () => {
                   this.resetSorts();
                   this.render();
+                },
+                onOpenPlayerProfile: (playerId) => {
+                  this.openPlayerProfile(playerId);
+                },
+                onClosePlayerProfile: () => {
+                  this.closePlayerProfile();
                 }
               });
               break;

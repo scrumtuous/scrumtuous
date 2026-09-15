@@ -279,6 +279,18 @@
       animation: pop-in 350ms ease both;
     }
 
+    .player-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.65rem;
+    }
+
+    .player-actions .btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
     @keyframes pop-in {
       from { transform: translateY(8px) scale(0.97); opacity: 0; }
       to { transform: translateY(0) scale(1); opacity: 1; }
@@ -1306,6 +1318,8 @@
             questions: JSON.parse(JSON.stringify(quiz.questions)),
             players: {},
             submissions: {},
+            submissionReceipts: {},
+            actionReceipts: {},
             currentQuestionPowerSummary: null,
             revealedAnswer: null,
             updatedAt: nowTs()
@@ -1317,7 +1331,42 @@
         ensureMaps() {
           if (!this.activeGame.players || typeof this.activeGame.players !== "object") this.activeGame.players = {};
           if (!this.activeGame.submissions || typeof this.activeGame.submissions !== "object") this.activeGame.submissions = {};
+          if (!this.activeGame.submissionReceipts || typeof this.activeGame.submissionReceipts !== "object") this.activeGame.submissionReceipts = {};
+          if (!this.activeGame.actionReceipts || typeof this.activeGame.actionReceipts !== "object") this.activeGame.actionReceipts = {};
           Object.values(this.activeGame.players).forEach((p) => this.normalizePlayerState(p));
+        }
+
+        runReliableAction(msg, operation) {
+          const payload = msg && msg.payload ? msg.payload : {};
+          const playerId = String(payload.playerId || "");
+          const actionId = String(payload.actionId || msg && msg.messageId || "").trim();
+          const requestType = String(msg && msg.type || "");
+          if (!actionId) {
+            return { actionId: "", replay: false, result: { ok: false, playerId, reason: "Missing action id" } };
+          }
+
+          this.ensureMaps();
+          const playerReceipts = this.activeGame.actionReceipts[playerId] || {};
+          const existing = playerReceipts[actionId] || null;
+          if (existing) {
+            if (String(existing.requestType || "") !== requestType) {
+              return { actionId, replay: false, result: { ok: false, playerId, reason: "Action id was already used for another action" } };
+            }
+            return { actionId, replay: true, result: JSON.parse(JSON.stringify(existing.result || {})) };
+          }
+
+          const result = operation();
+          playerReceipts[actionId] = {
+            actionId,
+            requestType,
+            completedAt: nowTs(),
+            result: JSON.parse(JSON.stringify(result || {}))
+          };
+          const receiptIds = Object.keys(playerReceipts);
+          if (receiptIds.length > 200) delete playerReceipts[receiptIds[0]];
+          this.activeGame.actionReceipts[playerId] = playerReceipts;
+          this.saveGame();
+          return { actionId, replay: false, result };
         }
 
         normalizePlayerState(player) {
@@ -1357,6 +1406,44 @@
           if (player.fastestResponseMs != null && typeof player.fastestResponseMs !== "number") {
             player.fastestResponseMs = null;
           }
+          if (!Array.isArray(player.history)) player.history = [];
+        }
+
+        recordPlayerHistory(playerId, entry) {
+          if (!this.activeGame) return null;
+          const player = this.activeGame.players[playerId];
+          if (!player || player.removed) return null;
+          this.normalizePlayerState(player);
+
+          const historyEntry = {
+            id: generateMessageId(),
+            ts: nowTs(),
+            phase: this.activeGame.phase,
+            questionIndex: this.activeGame.questionIndex,
+            questionNumber: this.activeGame.questionIndex + 1,
+            kind: String(entry && entry.kind ? entry.kind : entry && entry.type ? entry.type : "EVENT"),
+            category: String(entry && entry.category ? entry.category : "system"),
+            title: String(entry && entry.title ? entry.title : entry && entry.note ? entry.note : "Event"),
+            note: String(entry && entry.note ? entry.note : ""),
+            pointsDelta: Number(entry && entry.pointsDelta != null ? entry.pointsDelta : 0),
+            scoreBefore: entry && entry.scoreBefore != null ? Number(entry.scoreBefore) : null,
+            scoreAfter: entry && entry.scoreAfter != null ? Number(entry.scoreAfter) : Number(player.score || 0)
+          };
+
+          if (entry && entry.payload && typeof entry.payload === "object") {
+            historyEntry.payload = Object.assign({}, entry.payload);
+          }
+
+          player.history.push(historyEntry);
+          return historyEntry;
+        }
+
+        getPlayerHistory(playerId) {
+          if (!this.activeGame) return [];
+          const player = this.activeGame.players[playerId];
+          if (!player) return [];
+          this.normalizePlayerState(player);
+          return player.history.slice();
         }
 
         isShieldActiveForQuestion(player, questionIndex) {
@@ -1539,6 +1626,15 @@
               fastestResponseMs: null
             };
             this.activeGame.players[playerId] = p;
+            this.recordPlayerHistory(playerId, {
+              kind: "JOINED",
+              category: "system",
+              title: "Joined game",
+              note: playerName + " joined the fight.",
+              pointsDelta: 0,
+              scoreBefore: 0,
+              scoreAfter: 0
+            });
           } else {
             p.name = playerName;
             p.lastSeenAt = nowTs();
@@ -1562,6 +1658,7 @@
         resetScore(playerId) {
           const p = this.activeGame.players[playerId];
           if (!p || p.removed) return false;
+          const scoreBefore = Number(p.score || 0);
           p.score = 0;
           p.doubleDownNext = false;
           p.doubleDownUses = 0;
@@ -1596,6 +1693,15 @@
           p.responseTotalMs = 0;
           p.responseCount = 0;
           p.fastestResponseMs = null;
+          this.recordPlayerHistory(playerId, {
+            kind: "SCORE_RESET",
+            category: "system",
+            title: "Score reset",
+            note: "The instructor reset the player's score to zero.",
+            pointsDelta: -scoreBefore,
+            scoreBefore,
+            scoreAfter: 0
+          });
           this.saveGame();
           return true;
         }
@@ -1630,6 +1736,18 @@
           p.doubleDownNext = true;
           p.doubleDownUses = Number(p.doubleDownUses || 0) + 1;
           p.lastSeenAt = nowTs();
+          this.recordPlayerHistory(playerId, {
+            kind: "DOUBLE_DOWN_ARMED",
+            category: "power",
+            title: "Double Down armed",
+            note: policy.source === "purchased"
+              ? "A purchased Double Down credit was used for the next question."
+              : "Double Down was armed for the next question.",
+            pointsDelta: 0,
+            scoreBefore: Number(p.score || 0),
+            scoreAfter: Number(p.score || 0),
+            payload: { source: policy.source }
+          });
           this.saveGame();
 
           const nextPolicy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
@@ -1697,6 +1815,16 @@
           p.score = Number(p.score || 0) - DOUBLE_DOWN_BUY_COST;
           p.doubleDownPurchasedCredits = Number(p.doubleDownPurchasedCredits || 0) + 1;
           p.lastSeenAt = nowTs();
+          this.recordPlayerHistory(playerId, {
+            kind: "DOUBLE_DOWN_PURCHASED",
+            category: "purchase",
+            title: "Bought Double Down",
+            note: "Purchased 1 Double Down credit for " + formatScore(DOUBLE_DOWN_BUY_COST) + " points.",
+            pointsDelta: -DOUBLE_DOWN_BUY_COST,
+            scoreBefore: Number(p.score || 0) + DOUBLE_DOWN_BUY_COST,
+            scoreAfter: Number(p.score || 0),
+            payload: { buyCost: DOUBLE_DOWN_BUY_COST }
+          });
           this.saveGame();
 
           const nextPolicy = this.getDoubleDownPolicy(playerId, { enforcePhase: false, requireNextQuestion: true });
@@ -1813,6 +1941,18 @@
           p.pointShieldNext = true;
           p.pointShieldMode = shieldMode;
           p.lastSeenAt = nowTs();
+          this.recordPlayerHistory(playerId, {
+            kind: shieldMode === "REFLECTIVE" ? "REFLECTIVE_SHIELD_PURCHASED" : "POINT_SHIELD_PURCHASED",
+            category: "purchase",
+            title: shieldMode === "REFLECTIVE" ? "Bought Reflective Shield" : "Bought Point Shield",
+            note: shieldMode === "REFLECTIVE"
+              ? "Reflective shield armed for the next question for " + formatScore(cost) + " points."
+              : "Point shield armed for the next question for " + formatScore(cost) + " points.",
+            pointsDelta: -cost,
+            scoreBefore: Number(p.score || 0) + cost,
+            scoreAfter: Number(p.score || 0),
+            payload: { mode: shieldMode, cost }
+          });
           this.saveGame();
 
           const nextPolicy = this.getPointShieldPolicy(playerId, { enforcePhase: false, requireNextQuestion: true }, shieldMode);
@@ -1876,15 +2016,57 @@
             target.incomingStrikeCount = Number(target.pendingIncomingStrikes.length || 0);
             target.attackedCount = Number(target.attackedCount || 0) + 1;
             target.lastSeenAt = nowTs();
+            this.recordPlayerHistory(playerId, {
+              kind: "STREAK_PRIZE_ATTACK_QUEUED",
+              category: "attack",
+              title: "Shadow Strike queued",
+              note: "Shadow Strike queued against " + target.name + ".",
+              pointsDelta: 0,
+              scoreBefore: Number(actor.score || 0),
+              scoreAfter: Number(actor.score || 0),
+              payload: { targetPlayerId: target.id, targetPlayerName: target.name }
+            });
           }
 
           if (chosen === STREAK_ACTION.BONUS) {
+            const before = Number(actor.score || 0);
             actor.score = Number(actor.score || 0) + STREAK_PRIZE_SELF_BONUS;
+            this.recordPlayerHistory(playerId, {
+              kind: "STREAK_PRIZE_BONUS",
+              category: "streak",
+              title: "Streak prize bonus",
+              note: "You gained " + formatScore(STREAK_PRIZE_SELF_BONUS) + " points.",
+              pointsDelta: STREAK_PRIZE_SELF_BONUS,
+              scoreBefore: before,
+              scoreAfter: Number(actor.score || 0)
+            });
           }
 
           if (chosen === STREAK_ACTION.MASK) {
             actor.fakeScoreTurnsRemaining = STREAK_PRIZE_FAKE_TURNS;
             actor.fakeScorePrimed = true;
+            this.recordPlayerHistory(playerId, {
+              kind: "STREAK_PRIZE_MASK",
+              category: "streak",
+              title: "Score masked",
+              note: "Your leaderboard score is masked for " + STREAK_PRIZE_FAKE_TURNS + " turns.",
+              pointsDelta: 0,
+              scoreBefore: Number(actor.score || 0),
+              scoreAfter: Number(actor.score || 0)
+            });
+          }
+
+          if (chosen === STREAK_ACTION.STEAL) {
+            this.recordPlayerHistory(playerId, {
+              kind: "STREAK_PRIZE_ATTACK",
+              category: "attack",
+              title: "Shadow Strike claimed",
+              note: "Shadow Strike will resolve against " + (target ? target.name : "another player") + " on the next question.",
+              pointsDelta: 0,
+              scoreBefore: Number(actor.score || 0),
+              scoreAfter: Number(actor.score || 0),
+              payload: { targetPlayerId: target ? target.id : null, targetPlayerName: target ? target.name : "" }
+            });
           }
 
           actor.streakPrizeUsed = false;
@@ -2001,10 +2183,12 @@
 
             const shieldActive = this.isShieldActiveForQuestion(target, nextIndex);
             const reflective = shieldActive && String(target.pointShieldActiveMode || "").toUpperCase() === "REFLECTIVE";
+            const strikeLoss = validAttackerIds.length * STREAK_PRIZE_TARGET_PENALTY;
 
             if (reflective) {
               validAttackerIds.forEach((attackerId) => {
                 const attacker = playerMap[attackerId];
+                const attackerBefore = Number(attacker.score || 0);
                 this.normalizePlayerState(attacker);
                 attacker.score = Number(attacker.score || 0) - STREAK_PRIZE_TARGET_PENALTY;
                 attacker.strikeOutcome = "REFLECTED_HIT";
@@ -2012,12 +2196,32 @@
                 attacker.strikeCount = Number(attacker.strikeCount || 0) + 1;
                 attacker.lastSeenAt = nowTs();
                 appendNotice(attacker, "Your Shadow Strike was reflected for " + formatScore(STREAK_PRIZE_TARGET_PENALTY) + " points.");
+                this.recordPlayerHistory(attackerId, {
+                  kind: "ATTACK_REFLECTED",
+                  category: "attack",
+                  title: "Shadow Strike reflected",
+                  note: "Your Shadow Strike was reflected back for " + formatScore(STREAK_PRIZE_TARGET_PENALTY) + " points.",
+                  pointsDelta: -STREAK_PRIZE_TARGET_PENALTY,
+                  scoreBefore: attackerBefore,
+                  scoreAfter: Number(attacker.score || 0),
+                  payload: { targetPlayerId: target.id, targetPlayerName: target.name }
+                });
               });
 
               if (!target.strikeOutcome) target.strikeOutcome = "REFLECTED_BLOCK";
               target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
               appendNotice(target, "Reflective shield bounced " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".");
               target.lastSeenAt = nowTs();
+              this.recordPlayerHistory(target.id, {
+                kind: "ATTACK_REFLECTED_BLOCK",
+                category: "attack",
+                title: "Attack reflected",
+                note: "Reflective shield bounced " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".",
+                pointsDelta: 0,
+                scoreBefore: Number(target.score || 0),
+                scoreAfter: Number(target.score || 0),
+                payload: { attackerNames }
+              });
               return;
             }
 
@@ -2026,16 +2230,37 @@
               target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
               appendNotice(target, "Shield blocked " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".");
               target.lastSeenAt = nowTs();
+              this.recordPlayerHistory(target.id, {
+                kind: "ATTACK_BLOCKED",
+                category: "attack",
+                title: "Attack blocked",
+                note: "Shield blocked " + validAttackerIds.length + " incoming strike" + (validAttackerIds.length === 1 ? "" : "s") + ".",
+                pointsDelta: 0,
+                scoreBefore: Number(target.score || 0),
+                scoreAfter: Number(target.score || 0),
+                payload: { attackerNames }
+              });
               return;
             }
 
-            const loss = validAttackerIds.length * STREAK_PRIZE_TARGET_PENALTY;
+            const loss = strikeLoss;
+            const targetBefore = Number(target.score || 0);
             target.score = Number(target.score || 0) - loss;
             target.strikeOutcome = "STRUCK";
             target.strikeDelta = Number(target.strikeDelta || 0) - loss;
             target.strikeCount = Number(target.strikeCount || 0) + validAttackerIds.length;
             appendNotice(target, "Shadow Strike hit: you lost " + formatScore(loss) + " points.");
             target.lastSeenAt = nowTs();
+            this.recordPlayerHistory(target.id, {
+              kind: "ATTACK_HIT",
+              category: "attack",
+              title: "Shadow Strike hit",
+              note: "Shadow Strike hit: you lost " + formatScore(loss) + " points.",
+              pointsDelta: -loss,
+              scoreBefore: targetBefore,
+              scoreAfter: Number(target.score || 0),
+              payload: { attackerNames }
+            });
           });
 
           Object.values(playerMap).forEach((p) => {
@@ -2059,6 +2284,7 @@
           this.activeGame.revealedAnswer = null;
           const key = String(nextIndex);
           if (!this.activeGame.submissions[key]) this.activeGame.submissions[key] = {};
+          if (!this.activeGame.submissionReceipts[key]) this.activeGame.submissionReceipts[key] = {};
           Object.values(playerMap).forEach((p) => {
             p.currentSubmission = null;
           });
@@ -2071,16 +2297,41 @@
         }
 
         acceptSubmission(msg) {
-          if (!this.activeGame || this.activeGame.phase !== PHASES.QUESTION) return { ok: false, reason: "Not in question phase" };
-          if (!this.isSubmissionOpen()) return { ok: false, reason: "Question closed" };
-
           const payload = msg.payload || {};
           const playerId = String(payload.playerId || "");
+          const submissionIdRaw = payload.submissionId == null ? msg.messageId : payload.submissionId;
+          const submissionId = String(submissionIdRaw || "").trim();
+          const requestedQuestionIndex = Number(payload.questionIndex);
+          const key = String(requestedQuestionIndex);
+          const receiptMap = this.activeGame && this.activeGame.submissionReceipts
+            ? (this.activeGame.submissionReceipts[key] || {})
+            : {};
+          const existingReceipt = receiptMap[playerId] || null;
+          if (existingReceipt && existingReceipt.submission && String(existingReceipt.submissionId || "") === submissionId) {
+            return { ok: true, replay: true, submission: existingReceipt.submission, submissionId, questionIndex: requestedQuestionIndex, acceptedAt: Number(existingReceipt.acceptedAt || 0) };
+          }
+
+          if (!this.activeGame || this.activeGame.phase !== PHASES.QUESTION) return { ok: false, reason: "Not in question phase", submissionId, questionIndex: requestedQuestionIndex };
+          if (!this.isSubmissionOpen()) return { ok: false, reason: "Question closed", submissionId, questionIndex: requestedQuestionIndex };
+
           const player = this.activeGame.players[playerId];
-          if (!player || player.removed) return { ok: false, reason: "Removed or unknown player" };
+          if (!player || player.removed) return { ok: false, reason: "Removed or unknown player", submissionId, questionIndex: requestedQuestionIndex };
 
           const qIndex = this.activeGame.questionIndex;
-          if (Number(payload.questionIndex) !== qIndex) return { ok: false, reason: "Wrong question index" };
+          if (requestedQuestionIndex !== qIndex) return { ok: false, reason: "Wrong question index", submissionId, questionIndex: requestedQuestionIndex };
+          if (!submissionId) return { ok: false, reason: "Missing submission id", questionIndex: qIndex };
+
+          const submissionMap = this.activeGame.submissions[key] || {};
+          if (existingReceipt && existingReceipt.submission) {
+            return {
+              ok: false,
+              reason: "Duplicate submission",
+              submissionId,
+              questionIndex: qIndex,
+              acceptedSubmissionId: String(existingReceipt.submissionId || ""),
+              acceptedAt: Number(existingReceipt.acceptedAt || 0)
+            };
+          }
 
           const submittedAt = Number(payload.submittedAt || 0);
           if (!submittedAt || submittedAt > this.activeGame.questionEndsAt + 500) return { ok: false, reason: "Invalid timestamp" };
@@ -2092,24 +2343,29 @@
           if (selected.length < 1) return { ok: false, reason: "No option selected" };
           if (selected.some((id) => !validIds.has(id))) return { ok: false, reason: "Invalid option id" };
           if (selected.some((id) => removedIds.has(id))) return { ok: false, reason: "Option removed by 50/50" };
-
-          const key = String(qIndex);
-          const submissionMap = this.activeGame.submissions[key] || {};
           if (submissionMap[playerId]) return { ok: false, reason: "Duplicate submission" };
 
           const record = {
             playerId,
             questionIndex: qIndex,
+            submissionId,
             selectedOptionIds: Array.from(new Set(selected)).sort(),
             submittedAt
           };
 
           submissionMap[playerId] = record;
           this.activeGame.submissions[key] = submissionMap;
+          const acceptedAt = nowTs();
+          receiptMap[playerId] = {
+            submissionId,
+            acceptedAt,
+            submission: record
+          };
+          this.activeGame.submissionReceipts[key] = receiptMap;
           player.currentSubmission = record;
           player.lastSeenAt = nowTs();
           this.saveGame();
-          return { ok: true, submission: record };
+          return { ok: true, replay: false, submission: record, submissionId, questionIndex: qIndex, acceptedAt };
         }
 
         handleFiftyFifty(msg) {
@@ -2157,11 +2413,22 @@
           }
 
           const removedOptionIds = pool.slice(0, 2);
+          const before = Number(player.score || 0);
           player.score = Number(player.score || 0) - FIFTY_FIFTY_COST;
           player.fiftyFiftyQuestionIndex = qIndex;
           player.fiftyFiftyRemovedOptionIds = removedOptionIds.slice();
           player.fiftyFiftyUsed = true;
           player.lastSeenAt = nowTs();
+          this.recordPlayerHistory(playerId, {
+            kind: "FIFTY_FIFTY_USED",
+            category: "purchase",
+            title: "Used 50/50",
+            note: "50/50 removed two incorrect answers for " + formatScore(FIFTY_FIFTY_COST) + " points.",
+            pointsDelta: -FIFTY_FIFTY_COST,
+            scoreBefore: before,
+            scoreAfter: Number(player.score || 0),
+            payload: { questionIndex: qIndex, removedOptionIds: removedOptionIds.slice(), cost: FIFTY_FIFTY_COST }
+          });
           this.saveGame();
 
           return {
@@ -2199,6 +2466,7 @@
             let correct = false;
             let earned = 0;
             const usedDoubleDown = !!p.doubleDownNext;
+            const scoreBefore = Number(p.score || 0);
             if (sub) {
               const selectedSet = new Set(sub.selectedOptionIds);
               const exactMatch = selectedSet.size === correctSet.size && [...selectedSet].every((id) => correctSet.has(id));
@@ -2241,6 +2509,30 @@
               p.pointShieldQuestionIndex = null;
               p.pointShieldActiveMode = "NONE";
             }
+            this.recordPlayerHistory(p.id, {
+              kind: "QUESTION_RESULT",
+              category: "answer",
+              title: sub ? (correct ? "Correct answer" : "Wrong answer") : "No answer submitted",
+              note: sub
+                ? (correct
+                  ? "Earned " + formatScore(earned) + " points."
+                  : (usedDoubleDown ? "Lost " + formatScore(Math.abs(earned)) + " points from Double Down." : "No points earned."))
+                : (usedDoubleDown
+                  ? "Double Down caused a penalty of " + formatScore(Math.abs(earned)) + "."
+                  : "No answer submitted."),
+              pointsDelta: earned,
+              scoreBefore,
+              scoreAfter: Number(p.score || 0),
+              payload: {
+                correct,
+                selectedOptionIds: sub ? sub.selectedOptionIds.slice() : [],
+                correctOptionIds: [...correctSet],
+                usedDoubleDown,
+                questionIndex: qIndex,
+                questionNumber: qIndex + 1,
+                pointValue: Number(question.pointValue || 0)
+              }
+            });
             playerOutcomes[p.id] = {
               playerId: p.id,
               correct,
@@ -2309,7 +2601,8 @@
                 quickDrawWins: Number(p.quickDrawWins || 0),
                 avgResponseMs: Number(p.responseCount || 0) > 0 ? Math.round(Number(p.responseTotalMs || 0) / Number(p.responseCount || 0)) : null,
                 fastestResponseMs: p.fastestResponseMs == null ? null : Number(p.fastestResponseMs),
-                responseCount: Number(p.responseCount || 0)
+                responseCount: Number(p.responseCount || 0),
+                history: this.getPlayerHistory(p.id)
               };
             });
           return sorted;
@@ -2399,6 +2692,8 @@
             this.activeGame.submissions[String(this.activeGame.questionIndex)] &&
             this.activeGame.submissions[String(this.activeGame.questionIndex)][playerId]
           );
+          const currentReceiptMap = this.activeGame.submissionReceipts[String(this.activeGame.questionIndex)] || {};
+          const acceptedReceipt = currentReceiptMap[playerId] || null;
 
           const base = {
             type: MSG.STATE_SNAPSHOT,
@@ -2425,6 +2720,8 @@
               prizeTargets,
               rank: rankObj ? rankObj.rank : null,
               hasSubmitted,
+              acceptedSubmissionId: acceptedReceipt ? String(acceptedReceipt.submissionId || "") : "",
+              acceptedSubmissionAt: acceptedReceipt ? Number(acceptedReceipt.acceptedAt || 0) : 0,
               removed: !!(player && player.removed),
               totalPlayers: board.length,
               doubleDownArmed: !!(player && player.doubleDownNext),
@@ -2622,12 +2919,12 @@
 
           players.forEach((p) => {
             const col = document.createElement("div");
-            col.className = "col-12 col-md-6";
+            col.className = "col-12";
             const card = document.createElement("div");
             card.className = "player-card";
 
             const top = document.createElement("div");
-            top.className = "d-flex justify-content-between align-items-start gap-2";
+            top.className = "d-flex flex-column";
 
             const left = document.createElement("div");
             const name = document.createElement("div");
@@ -2642,7 +2939,7 @@
             left.appendChild(status);
 
             const right = document.createElement("div");
-            right.className = "d-flex gap-1";
+            right.className = "player-actions";
             const resetBtn = document.createElement("button");
             resetBtn.className = "btn btn-sm outline-moon focus-ring";
             resetBtn.setAttribute("aria-label", "Reset score for " + p.name);
@@ -2787,7 +3084,6 @@
 
           if (game.phase === PHASES.QUESTION) {
             addBtn("End Question", "btn danger-btn focus-ring", handlers.onEndQuestionNow, false);
-            addBtn("Reveal Answer", "btn outline-moon focus-ring", handlers.onEndQuestionNow, false);
             addEndGameButton();
             return;
           }
@@ -2864,10 +3160,9 @@
               html += "<div class='col-12 col-md-6'><div class='q-option'><strong>" + o.letter + "</strong> - " + escapeHtml(o.text) + "</div></div>";
             });
             html += "</div>";
-            html += "<div class='d-flex gap-2'><button id='endQuestionNowBtn' class='btn danger-btn focus-ring'>End Question Now</button><button id='revealNowBtn' class='btn outline-moon focus-ring'>Reveal Answer</button></div>";
+            html += "<div class='d-flex gap-2'><button id='endQuestionNowBtn' class='btn danger-btn focus-ring'>End Question Now</button></div>";
             this.el.stageContent.innerHTML = html;
             document.getElementById("endQuestionNowBtn").addEventListener("click", handlers.onEndQuestionNow);
-            document.getElementById("revealNowBtn").addEventListener("click", handlers.onEndQuestionNow);
             return;
           }
 
@@ -3534,8 +3829,11 @@
             case MSG.FIFTY_FIFTY:
               {
                 const trustedMsg = this.getTrustedPlayerMessage(msg);
-                const result = trustedMsg ? this.game.handleFiftyFifty(trustedMsg) : null;
-                if (result) {
+                const reliable = trustedMsg
+                  ? this.game.runReliableAction(trustedMsg, () => this.game.handleFiftyFifty(trustedMsg))
+                  : null;
+                if (reliable) {
+                  const result = Object.assign({}, reliable.result, { actionId: reliable.actionId, replay: reliable.replay });
                   this.send(MSG.FIFTY_FIFTY_RESULT, this.game.activeGame.gameId, "instructor-main", result);
                   if (result.ok) {
                     this.send(MSG.SCORE_UPDATED, this.game.activeGame.gameId, "instructor-main", {
@@ -3620,13 +3918,22 @@
           const trustedMsg = this.getTrustedPlayerMessage(msg);
           if (!trustedMsg) return;
           const accepted = this.game.acceptSubmission(trustedMsg);
-          if (!accepted.ok) return;
-
+          const questionIndex = accepted.questionIndex != null
+            ? Number(accepted.questionIndex)
+            : Number(trustedMsg.payload && trustedMsg.payload.questionIndex != null ? trustedMsg.payload.questionIndex : this.game.activeGame.questionIndex);
+          const submissionId = String((accepted.submissionId != null ? accepted.submissionId : trustedMsg.payload && trustedMsg.payload.submissionId) || "");
           this.send(MSG.ANSWER_SUBMITTED, this.game.activeGame.gameId, "instructor-main", {
-            playerId: accepted.submission.playerId,
-            questionIndex: accepted.submission.questionIndex,
-            accepted: true
+            playerId: trustedMsg.payload.playerId,
+            questionIndex,
+            submissionId,
+            accepted: !!accepted.ok,
+            replay: !!accepted.replay,
+            reason: accepted.ok ? "" : String(accepted.reason || "Submission rejected"),
+            acceptedSubmissionId: String(accepted.acceptedSubmissionId || submissionId || ""),
+            acceptedAt: Number(accepted.acceptedAt || 0)
           });
+
+          if (!accepted.ok) return;
 
           this.game.saveGame();
         }
@@ -3636,8 +3943,12 @@
           const trustedMsg = this.getTrustedPlayerMessage(msg);
           if (!trustedMsg) return;
           const playerId = trustedMsg.payload.playerId;
-          const result = this.game.setDoubleDownNext(playerId);
+          const reliable = this.game.runReliableAction(trustedMsg, () => this.game.setDoubleDownNext(playerId));
+          const result = reliable.result;
           this.send(MSG.DOUBLE_DOWN_SET, this.game.activeGame.gameId, "instructor-main", {
+            actionId: reliable.actionId,
+            replay: reliable.replay,
+            ok: !!result.ok,
             playerId: result.playerId || playerId,
             armedForQuestionIndex: result.armedForQuestionIndex,
             active: !!result.ok,
@@ -3661,8 +3972,11 @@
           if (!trustedMsg) return;
           const playerId = trustedMsg.payload.playerId;
 
-          const result = this.game.purchaseDoubleDown(playerId);
+          const reliable = this.game.runReliableAction(trustedMsg, () => this.game.purchaseDoubleDown(playerId));
+          const result = reliable.result;
           this.send(MSG.DOUBLE_DOWN_BUY_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            actionId: reliable.actionId,
+            replay: reliable.replay,
             ok: !!result.ok,
             playerId,
             reason: String(result.reason || ""),
@@ -3694,8 +4008,11 @@
           const playerId = payload.playerId;
           const mode = String(payload.mode || "NORMAL").toUpperCase();
 
-          const result = this.game.purchasePointShield(playerId, mode);
+          const reliable = this.game.runReliableAction(trustedMsg, () => this.game.purchasePointShield(playerId, mode));
+          const result = reliable.result;
           this.send(MSG.POINT_SHIELD_BUY_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            actionId: reliable.actionId,
+            replay: reliable.replay,
             ok: !!result.ok,
             playerId,
             reason: String(result.reason || ""),
@@ -3726,8 +4043,11 @@
           const action = String(payload.action || "").toUpperCase();
           const targetPlayerId = String(payload.targetPlayerId || "");
 
-          const result = this.game.claimStreakPrize(playerId, action, targetPlayerId);
+          const reliable = this.game.runReliableAction(trustedMsg, () => this.game.claimStreakPrize(playerId, action, targetPlayerId));
+          const result = reliable.result;
           this.send(MSG.STREAK_PRIZE_RESULT, this.game.activeGame.gameId, "instructor-main", {
+            actionId: reliable.actionId,
+            replay: reliable.replay,
             ok: !!result.ok,
             playerId,
             action: result.action || action,
