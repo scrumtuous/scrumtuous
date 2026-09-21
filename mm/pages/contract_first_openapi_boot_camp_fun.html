@@ -109,11 +109,50 @@ body > div.nav-shell { display:none !important; }
 }
 </style>
 
+
+<style id="course-unified-nav-v3">
+.course-global-nav{position:sticky!important;top:0!important;z-index:9999!important;background:linear-gradient(180deg,#15371c,#0b2210)!important;border-bottom:2px solid rgba(255,255,255,.12)!important;box-shadow:0 10px 24px rgba(0,0,0,.22)!important;font-family:Inter,Segoe UI,Arial,sans-serif!important}
+.course-global-inner{width:min(1420px,96vw)!important;margin:auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:10px 0!important;position:relative!important}
+.course-global-brand{display:flex!important;align-items:center!important;gap:10px!important;color:#fff!important;text-decoration:none!important;min-width:250px!important}
+.course-global-logo{width:44px!important;height:44px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#6db33f!important;color:#0d1f10!important;font-size:1.4rem!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)!important;flex:0 0 auto!important}
+.course-global-brand strong{display:block!important;font-size:1.02rem!important;line-height:1.1!important;color:#fff!important}
+.course-global-brand small{display:block!important;color:#d8ecd2!important;font-size:.72rem!important;line-height:1.25!important;margin-top:2px!important}
+.course-global-toggle{display:none!important;border:0!important;background:#6db33f!important;color:#0b1f0e!important;border-radius:10px!important;padding:8px 11px!important;font-size:1.15rem!important;font-weight:900!important;cursor:pointer!important}
+.course-global-links{display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important;justify-content:flex-end!important}
+.course-global-links>a,.course-global-group>summary{display:block!important;color:#f5fff2!important;text-decoration:none!important;font-weight:800!important;font-size:.79rem!important;padding:10px 10px!important;border-radius:11px!important;cursor:pointer!important;list-style:none!important;white-space:nowrap!important}
+.course-global-group>summary::-webkit-details-marker{display:none!important}
+.course-global-home:hover,.course-global-quiz:hover,.course-global-group>summary:hover,.course-global-home.is-active,.course-global-quiz.is-active{background:rgba(255,255,255,.14)!important}
+.course-global-group{position:relative!important;margin:0!important}
+.course-global-dropdown{position:absolute!important;top:calc(100% + 9px)!important;left:0!important;display:none!important;min-width:295px!important;background:#f8fbf4!important;color:#15351b!important;padding:10px!important;border-radius:16px!important;box-shadow:0 18px 45px rgba(0,0,0,.24)!important;border:1px solid #d8e9d1!important}
+.course-global-group[open]>.course-global-dropdown{display:grid!important;gap:5px!important}
+.course-global-dropdown a{display:flex!important;gap:9px!important;align-items:center!important;padding:9px 10px!important;border-radius:11px!important;color:#15351b!important;text-decoration:none!important;font-weight:750!important;font-size:.86rem!important;line-height:1.2!important}
+.course-global-dropdown a:hover,.course-global-dropdown a.is-active{background:#e2f4d7!important;color:#173c1c!important}
+.course-global-number{display:inline-grid!important;place-items:center!important;width:25px!important;height:25px!important;border-radius:50%!important;background:#214a28!important;color:#fff!important;font-size:.77rem!important;flex:0 0 auto!important}
+.course-global-quiz{background:#6db33f!important;color:#0e2010!important}
+@media (max-width:1180px){
+ .course-global-toggle{display:inline-block!important}
+ .course-global-links{display:none!important;position:absolute!important;left:0!important;right:0!important;top:calc(100% + 7px)!important;background:#102a15!important;padding:12px!important;border-radius:16px!important;box-shadow:0 18px 38px rgba(0,0,0,.28)!important;align-items:stretch!important}
+ .course-global-links.course-global-open{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+ .course-global-group{position:static!important}
+ .course-global-dropdown{position:static!important;margin-top:6px!important;min-width:0!important;box-shadow:none!important}
+ .course-global-links>a,.course-global-group>summary{font-size:.9rem!important}
+}
+@media (max-width:650px){
+ .course-global-brand small{display:none!important}
+ .course-global-brand{min-width:0!important}
+ .course-global-links.course-global-open{grid-template-columns:1fr!important}
+}
+.course-resource-footer{margin-top:28px!important;background:linear-gradient(180deg,#132919,#0b1b0f)!important;color:#edf8e9!important;border-top:3px solid #6db33f!important;padding:24px 18px 28px!important;font-family:Inter,Segoe UI,Arial,sans-serif!important;text-align:center!important}
+.course-resource-footer strong{display:block!important;margin-bottom:10px!important;font-size:1rem!important;color:#fff8d9!important}
+.course-resource-footer .course-resource-links{display:flex!important;gap:12px!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important}
+.course-resource-footer a{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:9px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.09)!important;color:#f2fff0!important;text-decoration:none!important;font-weight:800!important}
+.course-resource-footer a:hover{background:#6db33f!important;color:#102010!important}
+</style>
 </head>
 <body>
-<nav class="course-global-nav" aria-label="Course navigation"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button class="course-global-toggle" type="button" aria-label="Toggle course navigation" aria-expanded="false">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group" open><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="is-active" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><a class="course-global-quiz" href="https://www.theserverside.com/fightquiz">Quiz</a></div></div></nav>
+<nav class="course-global-nav" aria-label="Course navigation"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button class="course-global-toggle" type="button" aria-label="Toggle course navigation" aria-expanded="false">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group" open><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="is-active" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group"><summary>Capstone</summary><div class="course-global-dropdown"><a class="" href="final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
 
-<header class="nav"><div class="wrap"><div class="brand"><span class="mark">🥾</span><div>SPRING BOOT BOOT CAMP<br><small>Contract First. Code Second.</small></div></div><nav class="links"><a href="../index.html">Home</a><a href="rest_api_design_principles_boot_camp_fun.html">REST API Design</a><a class="active" href="#spec">OpenAPI</a><a href="https://www.theserverside.com/fightquiz">Quiz</a></nav></div></header>
+<header class="nav"><div class="wrap"><div class="brand"><span class="mark">🥾</span><div>SPRING BOOT BOOT CAMP<br><small>Contract First. Code Second.</small></div></div><nav class="links"><a href="../index.html">Home</a><a href="rest_api_design_principles_boot_camp_fun.html">REST API Design</a><a class="active" href="#spec">OpenAPI</a><a href="https://theserverside.com/fightquiz">Quiz</a></nav></div></header>
 
 <main>
 <section class="hero"><div class="wrap hero-grid">
@@ -515,6 +554,38 @@ document.getElementById('showBroken').addEventListener('click',()=>{document.get
     if(window.innerWidth>1180 && !e.target.closest('.course-global-group')){
       document.querySelectorAll('.course-global-group[open]').forEach(g=>g.open=false);
     }
+  });
+})();
+</script>
+
+<footer class="course-resource-footer">
+  <strong>Course resources</strong>
+  <div class="course-resource-links">
+    <a href="https://theserverside.com/" target="_blank" rel="noopener">TheServerSide.com</a>
+    <a href="https://github.com/scrumtuous/shapes" target="_blank" rel="noopener">Starter Code on GitHub</a>
+    <a href="https://start.spring.io/" target="_blank" rel="noopener">Spring Initializr</a>
+  </div>
+</footer>
+
+<script id="course-unified-nav-script-v3">
+(() => {
+  const nav = document.querySelector('.course-global-nav');
+  if (!nav) return;
+  const toggle = nav.querySelector('.course-global-toggle');
+  const links = nav.querySelector('.course-global-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('course-global-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  nav.querySelectorAll('.course-global-group').forEach(group => {
+    group.addEventListener('toggle', () => {
+      if (!group.open) return;
+      nav.querySelectorAll('.course-global-group').forEach(other => {
+        if (other !== group) other.removeAttribute('open');
+      });
+    });
   });
 })();
 </script>
