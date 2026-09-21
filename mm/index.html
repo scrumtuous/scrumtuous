@@ -313,6 +313,162 @@ body > div.nav-shell { display:none !important; }
 .course-resource-footer a{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:9px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.09)!important;color:#f2fff0!important;text-decoration:none!important;font-weight:800!important}
 .course-resource-footer a:hover{background:#6db33f!important;color:#102010!important}
 </style>
+
+<style id="course-image-carousel-styles">
+/* Course image carousel. Images are expected beside index.html. */
+.showcase-carousel {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg,#0a2914,#123d22 55%,#0a2914);
+  border-bottom: 3px solid #6db33f;
+  overflow: hidden;
+  box-shadow: inset 0 -10px 28px rgba(0,0,0,.18);
+}
+.showcase-carousel-inner {
+  position: relative;
+  width: min(1600px,100%);
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  max-height: 640px;
+  min-height: 280px;
+  background: #07160c;
+  overflow: hidden;
+}
+.showcase-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.025);
+  transition: opacity .7s ease, transform .8s ease, visibility .7s;
+  display: grid;
+  place-items: center;
+}
+.showcase-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+.showcase-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  background: #07160c;
+}
+.showcase-carousel-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 42px 22px 18px;
+  pointer-events: none;
+  background: linear-gradient(180deg,transparent,rgba(4,19,8,.82));
+}
+.showcase-carousel-title {
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.75);
+}
+.showcase-carousel-title strong {
+  display: block;
+  font-size: clamp(1.05rem,2vw,1.55rem);
+  letter-spacing: .02em;
+}
+.showcase-carousel-title span {
+  display: block;
+  margin-top: 4px;
+  color: #d9f2d4;
+  font-size: .86rem;
+  font-weight: 700;
+}
+.showcase-counter {
+  color: #fff7d3;
+  font-weight: 900;
+  background: rgba(10,46,20,.78);
+  border: 1px solid rgba(255,255,255,.26);
+  border-radius: 999px;
+  padding: 7px 11px;
+  white-space: nowrap;
+}
+.showcase-carousel-button {
+  position: absolute;
+  top: 50%;
+  z-index: 8;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgba(255,255,255,.65);
+  border-radius: 50%;
+  background: rgba(8,37,15,.76);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+  transition: .2s ease;
+}
+.showcase-carousel-button:hover,
+.showcase-carousel-button:focus-visible {
+  background: #6db33f;
+  color: #102010;
+  transform: translateY(-50%) scale(1.07);
+  outline: none;
+}
+.showcase-prev { left: 18px; }
+.showcase-next { right: 18px; }
+.showcase-dots {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  max-width: 58%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.showcase-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  cursor: pointer;
+  transition: .2s ease;
+}
+.showcase-dot.is-active {
+  width: 26px;
+  border-radius: 999px;
+  background: #8eea68;
+  border-color: #fff;
+}
+.showcase-carousel:hover .showcase-carousel-button { opacity: 1; }
+@media (max-width: 760px) {
+  .showcase-carousel-inner { min-height: 210px; }
+  .showcase-carousel-button { width: 42px;height: 42px;font-size: 1.55rem; }
+  .showcase-prev { left: 8px; }
+  .showcase-next { right: 8px; }
+  .showcase-carousel-overlay { padding: 30px 12px 12px; }
+  .showcase-carousel-title span { display: none; }
+  .showcase-dots { bottom: 10px; max-width: 52%; gap: 5px; }
+  .showcase-dot { width: 8px; height: 8px; }
+  .showcase-dot.is-active { width: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-slide { transition: none; transform: none; }
+}
+</style>
+
 </head>
 <body>
 <nav class="course-global-nav" aria-label="Course navigation"><div class="course-global-inner"><a class="course-global-brand" href="index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button class="course-global-toggle" type="button" aria-label="Toggle course navigation" aria-expanded="false">☰</button><div class="course-global-links"><a class="course-global-home is-active" href="index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="pages/microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="pages/spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="pages/spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="pages/spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="pages/spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="pages/jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="pages/mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="pages/mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group"><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="pages/rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="" href="pages/contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="pages/validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="pages/jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group"><summary>Capstone</summary><div class="course-global-dropdown"><a class="" href="pages/final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
@@ -340,6 +496,20 @@ body > div.nav-shell { display:none !important; }
 </header>
 
 <main id="home">
+
+<section class="showcase-carousel" aria-label="Course artwork carousel">
+  <div class="showcase-carousel-inner" tabindex="0" aria-roledescription="carousel" aria-label="Spring Boot Wild REST course artwork">
+    <figure class="showcase-slide is-active" data-title="Spring Boot: The Wild REST" data-description="Course landing page and the boot-filled frontier" aria-hidden="false"><img src="01.png" alt="Spring Boot: The Wild REST course artwork"></figure><figure class="showcase-slide" data-title="Layered Architecture" data-description="Controllers, services, repositories, and clean team roles" aria-hidden="true"><img src="03.png" alt="Layered Architecture course artwork"></figure><figure class="showcase-slide" data-title="REST API Design Principles" data-description="Resources, HTTP verbs, status codes, and API discipline" aria-hidden="true"><img src="05.png" alt="REST API Design Principles course artwork"></figure><figure class="showcase-slide" data-title="Contract-First OpenAPI" data-description="Design the contract first, then generate and implement" aria-hidden="true"><img src="07.png" alt="Contract-First OpenAPI course artwork"></figure><figure class="showcase-slide" data-title="REST API Design Boot Camp" data-description="A visual review of resources, verbs, and status codes" aria-hidden="true"><img src="08.png" alt="REST API Design Boot Camp course artwork"></figure><figure class="showcase-slide" data-title="Persistence with MyBatis" data-description="Real SQL, real databases, real control" aria-hidden="true"><img src="09.png" alt="Persistence with MyBatis course artwork"></figure><figure class="showcase-slide" data-title="MyBatis in Context" data-description="Compare MyBatis with Spring Data JPA" aria-hidden="true"><img src="10.png" alt="MyBatis in Context course artwork"></figure><figure class="showcase-slide" data-title="Persistence with MyBatis" data-description="Wild West persistence with horses, boots, and Spring" aria-hidden="true"><img src="11.png" alt="Persistence with MyBatis course artwork"></figure><figure class="showcase-slide" data-title="Validation and Error Handling" data-description="Sheriffs, judges, helpful responses, and friendly APIs" aria-hidden="true"><img src="12.png" alt="Validation and Error Handling course artwork"></figure><figure class="showcase-slide" data-title="JWT Security" data-description="Tokens, signatures, local validation, and a mech horse" aria-hidden="true"><img src="13.png" alt="JWT Security course artwork"></figure>
+    <button class="showcase-carousel-button showcase-prev" type="button" aria-label="Previous image">‹</button>
+    <button class="showcase-carousel-button showcase-next" type="button" aria-label="Next image">›</button>
+    <div class="showcase-carousel-overlay" aria-live="polite">
+      <div class="showcase-carousel-title"><strong id="showcaseCarouselTitle">Spring Boot: The Wild REST</strong><span id="showcaseCarouselDescription">Course landing page and the boot-filled frontier</span></div>
+      <div class="showcase-counter"><span id="showcaseCarouselIndex">1</span> / 10</div>
+    </div>
+    <div class="showcase-dots" aria-label="Choose carousel image"><button class="showcase-dot is-active" type="button" aria-label="Show image 1" aria-current="true" data-slide="0"></button><button class="showcase-dot" type="button" aria-label="Show image 2" aria-current="false" data-slide="1"></button><button class="showcase-dot" type="button" aria-label="Show image 3" aria-current="false" data-slide="2"></button><button class="showcase-dot" type="button" aria-label="Show image 4" aria-current="false" data-slide="3"></button><button class="showcase-dot" type="button" aria-label="Show image 5" aria-current="false" data-slide="4"></button><button class="showcase-dot" type="button" aria-label="Show image 6" aria-current="false" data-slide="5"></button><button class="showcase-dot" type="button" aria-label="Show image 7" aria-current="false" data-slide="6"></button><button class="showcase-dot" type="button" aria-label="Show image 8" aria-current="false" data-slide="7"></button><button class="showcase-dot" type="button" aria-label="Show image 9" aria-current="false" data-slide="8"></button><button class="showcase-dot" type="button" aria-label="Show image 10" aria-current="false" data-slide="9"></button></div>
+  </div>
+</section>
+
 <section class="hero">
   <svg class="hero-bg" viewBox="0 0 1672 516" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -596,6 +766,76 @@ body > div.nav-shell { display:none !important; }
       });
     });
   });
+})();
+</script>
+
+
+<script id="course-image-carousel-script">
+(() => {
+  const carousel = document.querySelector('.showcase-carousel-inner');
+  if (!carousel) return;
+
+  const slides = Array.from(carousel.querySelectorAll('.showcase-slide'));
+  const dots = Array.from(carousel.querySelectorAll('.showcase-dot'));
+  const prev = carousel.querySelector('.showcase-prev');
+  const next = carousel.querySelector('.showcase-next');
+  const title = document.getElementById('showcaseCarouselTitle');
+  const description = document.getElementById('showcaseCarouselDescription');
+  const indexText = document.getElementById('showcaseCarouselIndex');
+  let current = 0;
+  let timer = null;
+
+  function showSlide(index) {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const active = i === current;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    dots.forEach((dot, i) => {
+      const active = i === current;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-current', active ? 'true' : 'false');
+    });
+    const activeSlide = slides[current];
+    title.textContent = activeSlide.dataset.title || '';
+    description.textContent = activeSlide.dataset.description || '';
+    indexText.textContent = String(current + 1);
+  }
+
+  function startTimer() {
+    stopTimer();
+    timer = window.setInterval(() => showSlide(current + 1), 5000);
+  }
+
+  function stopTimer() {
+    if (timer) window.clearInterval(timer);
+    timer = null;
+  }
+
+  prev.addEventListener('click', () => { showSlide(current - 1); startTimer(); });
+  next.addEventListener('click', () => { showSlide(current + 1); startTimer(); });
+  dots.forEach(dot => dot.addEventListener('click', () => { showSlide(Number(dot.dataset.slide)); startTimer(); }));
+
+  carousel.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(current - 1); startTimer(); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(current + 1); startTimer(); }
+  });
+  carousel.addEventListener('mouseenter', stopTimer);
+  carousel.addEventListener('mouseleave', startTimer);
+  carousel.addEventListener('focusin', stopTimer);
+  carousel.addEventListener('focusout', startTimer);
+
+  let touchStartX = 0;
+  carousel.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; stopTimer(); }, {passive:true});
+  carousel.addEventListener('touchend', event => {
+    const delta = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) > 45) showSlide(current + (delta < 0 ? 1 : -1));
+    startTimer();
+  }, {passive:true});
+
+  showSlide(0);
+  startTimer();
 })();
 </script>
 
