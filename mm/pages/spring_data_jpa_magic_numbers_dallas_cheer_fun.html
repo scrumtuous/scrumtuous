@@ -291,7 +291,7 @@ public class MagicNumber {
     public Instant getInstant() { return instant; }
     public int getRandomNumber() { return randomNumber; }
 }</code></pre></div><div class="grid3"><div class="card accent"><div class="number">1</div><h3>@Entity</h3><p>This class participates in JPA persistence.</p></div><div class="card silver"><div class="number">2</div><h3>@Id</h3><p>This property is the entity's primary key.</p></div><div class="card gold"><div class="number">3</div><h3>@GeneratedValue</h3><p>The database creates the key value for us.</p></div></div></div></section>
-<section class="section navy"><div class="wrap"><span class="eyebrow">Step 3</span><h2>Spring Data gives us a repository</h2><p class="lead">By extending <code>CrudRepository&lt;MagicNumber, Long&gt;</code>, the repository already knows how to save, find, and delete <code>MagicNumber</code> entities.</p><div class="code-block"><button class="copy" onclick="copyCode(this)">Copy</button><div class="code-title">MagicNumberRepository</div><pre><code>package com.mcnz.random;
+<section class="section navy"><div class="wrap"><span class="eyebrow">Step 3</span><h2>Spring Data gives us a repository</h2><p class="lead">By extending <code>CrudRepository&lt;MagicNumber, Long&gt;</code>, the repository already knows how to save, find, and delete <code>MagicNumber</code> entities.</p><p> NOTE: Make sure you include the @Autowired annotation on the repository and service objects here so Spring knows to inject them in.</p><div class="code-block"><button class="copy" onclick="copyCode(this)">Copy</button><div class="code-title">MagicNumberRepository</div><pre><code>package com.mcnz.random;
 
 import org.springframework.data.repository.*;
 
@@ -304,7 +304,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class NumberController {
 
+    @Autowired
     private final RandomNumberService service;
+	@Autowired
     private final MagicNumberRepository repository;
 
     public NumberController(
