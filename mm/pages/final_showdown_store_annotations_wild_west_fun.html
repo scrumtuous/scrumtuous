@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Final Showdown Challenge | Spring Boot Wild REST</title>
 <style>
 :root {
@@ -100,7 +101,6 @@ footer{padding:18px 0 30px;text-align:center;color:#d8e5d0}
   .course-global-links.open{display:grid}
 }
 </style>
-
 <style id="course-unified-nav-v3">
 .course-global-nav{position:sticky!important;top:0!important;z-index:9999!important;background:linear-gradient(180deg,#15371c,#0b2210)!important;border-bottom:2px solid rgba(255,255,255,.12)!important;box-shadow:0 10px 24px rgba(0,0,0,.22)!important;font-family:Inter,Segoe UI,Arial,sans-serif!important}
 .course-global-inner{width:min(1420px,96vw)!important;margin:auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:10px 0!important;position:relative!important}
@@ -141,212 +141,494 @@ footer{padding:18px 0 30px;text-align:center;color:#d8e5d0}
 </style>
 </head>
 <body>
-<nav class="course-global-nav" aria-label="Course navigation"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button class="course-global-toggle" type="button" aria-label="Toggle course navigation" aria-expanded="false">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group"><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group" open><summary>Capstone</summary><div class="course-global-dropdown"><a class="is-active" href="final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
+<nav aria-label="Course navigation" class="course-global-nav"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button aria-expanded="false" aria-label="Toggle course navigation" class="course-global-toggle" type="button">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group"><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group" open=""><summary>Capstone</summary><div class="course-global-dropdown"><a class="is-active" href="final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
 <header class="hero">
-  <div class="hero-inner">
-    <div class="scene" aria-hidden="true">
-      <div class="sun"></div>
-      <div class="mesa"></div><div class="mesa2"></div><div class="ground"></div>
-      <div class="ladder"></div><div class="cube"></div>
-      <div class="cowboy">🤠</div>
-      <div class="cowboy2">🐎</div>
-      <div class="dog">🐕</div>
-      <div class="mech">🦾🐎</div>
-      <div class="alien">👽</div>
-      <div class="gunsmoke">💨</div>
-      <div class="dust"></div>
-      <div class="weed">🌀</div>
-    </div>
-    <div class="hero-panel">
-      <span class="kicker">🤠 Final challenge · high noon debugging</span>
-      <h1>The Final Showdown at Gunsmoke Gulch</h1>
-      <p class="tagline">This capstone challenge turns you loose in a half-finished Spring Boot store app. The data loader runs, the H2 database is waiting, Swagger is pointing at a broken API, and a pile of missing annotations is standing in the street like a gang of outlaws. Your job is to put the codebase back together and make the API ride.</p>
-      <div class="chip-row">
-        <span class="chip">Wild West theme</span>
-        <span class="chip">JPA mappings</span>
-        <span class="chip">REST endpoints</span>
-        <span class="chip">Swagger + H2</span>
-        <span class="chip">CommandLineRunner</span>
-      </div>
-      <div class="callout"><strong>Run command:</strong> <code>mvn spring-boot:run</code><br>This launches the app, triggers the <code>CommandLineRunner</code>, processes the CSV-style purchase rows, and loads the H2 database so you can inspect the data.</div>
-      <div class="cta-row">
-        <a class="btn" href="#challenge">Jump to the challenge</a>
-        <a class="btn alt" href="https://github.com/scrumtuous/shapes">Starter code on GitHub</a>
-      </div>
-    </div>
-  </div>
+<div class="hero-inner">
+<div aria-hidden="true" class="scene">
+<div class="sun"></div>
+<div class="mesa"></div><div class="mesa2"></div><div class="ground"></div>
+<div class="ladder"></div><div class="cube"></div>
+<div class="cowboy">🤠</div>
+<div class="cowboy2">🐎</div>
+<div class="dog">🐕</div>
+<div class="mech">🦾🐎</div>
+<div class="alien">👽</div>
+<div class="gunsmoke">💨</div>
+<div class="dust"></div>
+<div class="weed">🌀</div>
+</div>
+<div class="hero-panel">
+<span class="kicker">🤠 Final challenge · Copilot at high noon</span>
+<h1>The Final REST Showdown</h1>
+<p class="tagline">
+  The database is loaded, the JPA mappings are already in place, and the starter REST controller shows one working repository-backed example.
+  Your job is to build the real API twice with GitHub Copilot: first under a strict one-repository constraint, then again using a more conventional Spring Data design.
+</p>
+<div class="chip-row">
+<span class="chip">GitHub Copilot</span>
+<span class="chip">Spring Data JPA</span>
+<span class="chip">REST + OpenAPI</span>
+<span class="chip">V1 vs V2</span>
+<span class="chip">No Streams in V1</span>
+</div>
+<div class="callout">
+<strong>Start here:</strong> run <code>mvn spring-boot:run</code>, confirm the imported data in H2, and inspect the existing
+  <code>/customers/by-name</code> method. That method is only a reference example. You do <strong>not</strong> need to recreate it in V1 or V2.
+</div>
+<div class="cta-row">
+<a class="btn" href="#challenge">Jump to the challenge</a>
+<a class="btn alt" href="#v2">Skip ahead to V2</a>
+</div>
+</div>
+</div>
 </header>
 <main>
-  <section class="section two-col" id="challenge">
-    <div class="card">
-      <h2>What makes this showdown fun?</h2>
-      <p>You are not starting from nothing. You already have a model, a repository, a service, a data loader, and a mostly sketched REST controller. That means the challenge is about reading code, placing the right annotations, testing assumptions, and making the pieces work together.</p>
-      <ul class="list">
-        <li><strong>Step 1.</strong> Add the missing annotations to the domain classes, service class, application class, and REST controller.</li>
-        <li><strong>Step 2.</strong> Run the app with <code>mvn spring-boot:run</code>.</li>
-        <li><strong>Step 3.</strong> Verify that the app starts and that the <code>CommandLineRunner</code> loads the CSV data through <code>StoreService</code>.</li>
-        <li><strong>Step 4.</strong> Open Swagger UI at <code>http://localhost:8080/swagger-ui/index.html</code>. Only the customer-by-name endpoint works correctly at first.</li>
-        <li><strong>Step 5.</strong> Open H2 Console at <code>http://localhost:8080/h2-console/</code> and confirm the data exists.</li>
-        <li><strong>Step 6.</strong> Update the broken REST API, but only use <code>CustomerRepository</code>. Navigate the object graph from customers to purchases to products.</li>
-        <li><strong>Step 7.</strong> If JSON recursion gets messy, temporarily simplify or remove some bidirectional mappings for the API phase, then re-add them later.</li>
-        <li><strong>Step 8.</strong> Add create methods, such as creating a customer, address, or product, after the read-only API works.</li>
-      </ul>
+<section class="section two-col" id="challenge">
+<div class="card">
+<h2>The challenge</h2>
+<p>
+      The model, JPA mappings, repository, startup loader, H2 database, and starter REST code are already provided.
+      This exercise is now entirely about <strong>building the API with Copilot</strong> and understanding the design decisions Copilot proposes.
+    </p>
+<ul class="list">
+<li><strong>V1:</strong> create a new controller at <code>/v1</code> and use <code>CustomerRepository</code> as the only repository.</li>
+<li><strong>V1:</strong> navigate from Customer → Purchase → Product with ordinary Java loops.</li>
+<li><strong>V1:</strong> do not use streams, lambdas, Collectors, or additional repository classes.</li>
+<li><strong>V2:</strong> create a second controller at <code>/v2</code> and remove the repository restriction.</li>
+<li><strong>V2:</strong> let Copilot propose repositories, DTOs, services, queries, validation, and a better persisted refund model.</li>
+<li><strong>Both versions:</strong> keep <code>openapi.yaml</code> synchronized with the API you actually build.</li>
+</ul>
+</div>
+<div class="card dark">
+<div class="stamp">THE RULES</div>
+<h2>Rules of engagement</h2>
+<div class="checklist">
+<div class="check"><strong>V1:</strong> only <code>CustomerRepository</code> may access persistence.</div>
+<div class="check"><strong>V1:</strong> ordinary loops only. No streams or lambdas.</div>
+<div class="check"><strong>V1:</strong> Copilot may add new <code>find...</code> methods to <code>CustomerRepository</code>.</div>
+<div class="check"><strong>V2:</strong> Copilot may create any sensible repository or supporting type.</div>
+<div class="check"><code>/customers/by-name</code> is reference code only. Do not recreate it.</div>
+<div class="check">Never invent refund history that the current model did not persist.</div>
+</div>
+<div class="note" style="margin-top:14px;color:#1b2619">
+<strong>Core idea:</strong> V1 asks, “How much can I do through one aggregate root?”
+      V2 asks, “Now that I understand the object graph, how should this application normally be designed?”
     </div>
-    <div class="card dark">
-      <div class="stamp">TOP BOUNTY</div>
-      <h2>Rules of engagement</h2>
-      <div class="checklist">
-        <div class="check">Use only <strong>CustomerRepository</strong> for data access in the REST API.</div>
-        <div class="check">Use object navigation for related data, not a new repository for every table.</div>
-        <div class="check">Confirm database success first, then fix API behavior.</div>
-        <div class="check">Treat Swagger and H2 as proof that your boot camp outpost is alive.</div>
-        <div class="check">Only <strong>/customers/by-name</strong> is working at the start.</div>
-        <div class="check">After the GET endpoints work, add POST endpoints as a stretch goal.</div>
-      </div>
-      <div class="note" style="margin-top:14px;color:#1b2619"><strong>Quiz hint:</strong> Be ready to explain why <code>@Entity</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Embedded</code>, <code>@OneToMany</code>, <code>@ManyToOne</code>, <code>@Service</code>, <code>@RestController</code>, and <code>@RequestMapping</code> matter. Also be ready to explain what <code>CommandLineRunner</code> does during application startup.</div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>Starter project</h2>
+<table>
+<tr><th>File</th><th>Role in this exercise</th></tr>
+<tr><td>Customer.java</td><td>Root object. Contains Address and a collection of Purchase objects.</td></tr>
+<tr><td>Purchase.java</td><td>Belongs to a Customer and contains Product objects.</td></tr>
+<tr><td>Product.java</td><td>Line item with name, quantity, price, and parent Purchase.</td></tr>
+<tr><td>CustomerRepository.java</td><td>The only persistence entry point allowed in V1.</td></tr>
+<tr><td>StoreRestController.java</td><td>Reference controller. Its by-name method demonstrates real repository access.</td></tr>
+<tr><td>StoreRestMockData.java</td><td>Old stub data. Do not use it in your new V1 or V2 controller.</td></tr>
+<tr><td>StoreService.java</td><td>Loads the store data and also exposes the important refund-history limitation.</td></tr>
+<tr><td>openapi.yaml</td><td>The API contract you must update for V1 and V2.</td></tr>
+</table>
+<div class="success" style="margin-top:14px">
+<strong>Run first:</strong> use <code>mvn spring-boot:run</code>, open H2, and confirm that customers, purchases, and products were loaded before you begin changing the REST API.
     </div>
-  </section>
-
-  <section class="section section-grid">
-    <div class="card">
-      <h2>Starter files</h2>
-      <table>
-        <tr><th>File</th><th>Purpose</th></tr>
-        <tr><td>App.java</td><td>Application entry point and <code>CommandLineRunner</code> bootstrapping.</td></tr>
-        <tr><td>Address.java</td><td>Embeddable address value object with zip and city.</td></tr>
-        <tr><td>Customer.java</td><td>Customer root object that owns purchases and an embedded address.</td></tr>
-        <tr><td>Purchase.java</td><td>A dated purchase that belongs to one customer and holds products.</td></tr>
-        <tr><td>Product.java</td><td>Product line item with quantity and price, tied to a purchase.</td></tr>
-        <tr><td>StoreService.java</td><td>Imports purchase and refund rows and prints a report.</td></tr>
-        <tr><td>StoreRestController.java</td><td>The broken API that you must repair.</td></tr>
-        <tr><td>CustomerRepository.java</td><td>Your only repository for the API challenge.</td></tr>
-        <tr><td>StorePurchasesData.java</td><td>The built-in CSV-style data rows used on startup.</td></tr>
-      </table>
-      <div class="success" style="margin-top:14px"><strong>Run first:</strong> When the application starts, <code>App</code> calls <code>storeService.processPurchases()</code> and <code>storeService.printReport()</code>. That means the first victory is simple: get the app to boot cleanly and confirm data appears in H2.</div>
+</div>
+<div class="card">
+<h2>Important URLs</h2>
+<ul class="list">
+<li><strong>Swagger UI:</strong> <code>http://localhost:8080/swagger-ui/index.html</code></li>
+<li><strong>H2 Console:</strong> <code>http://localhost:8080/h2-console/</code></li>
+<li><strong>V1 root:</strong> <code>http://localhost:8080/v1</code></li>
+<li><strong>V2 root:</strong> <code>http://localhost:8080/v2</code></li>
+</ul>
+<div class="warning">
+<strong>Reference only:</strong> inspect the existing customer-by-name method to see how a controller calls
+      <code>CustomerRepository</code> and returns 404 when a customer is missing. Use the existing by-name method only as a reference example; do not reimplement it in either version.
     </div>
-    <div class="card">
-      <h2>Important URLs</h2>
-      <ul class="list">
-        <li><strong>Swagger UI:</strong> <code>http://localhost:8080/swagger-ui/index.html</code></li>
-        <li><strong>H2 Console:</strong> <code>http://localhost:8080/h2-console/</code></li>
-        <li><strong>Starter repo:</strong> <a href="https://github.com/scrumtuous/shapes">https://github.com/scrumtuous/shapes</a></li>
-      </ul>
-      <div class="warning"><strong>Current state:</strong> the API is intentionally broken. Only customer-by-name behaves correctly. The rest of the controller is your frontier repair mission.</div>
-      <h3 style="margin-top:16px">The endpoint roster</h3>
-      <table>
-        <tr><th>Resource area</th><th>Expected endpoints</th></tr>
-        <tr><td>Customers</td><td><code>/api/customers</code>, <code>/api/customers/by-name</code>, <code>/api/customers/{id}</code>, <code>/api/customers/{id}/purchases</code>, <code>/api/customers/{id}/refunds</code></td></tr>
-        <tr><td>Cities</td><td><code>/api/cities</code>, <code>/api/cities/{city}/purchases</code>, <code>/api/cities/{city}/refunds</code></td></tr>
-        <tr><td>Products</td><td><code>/api/products</code>, <code>/api/products/{productId}</code></td></tr>
-        <tr><td>Purchases</td><td><code>/api/purchases</code>, <code>/api/purchases/{purchaseId}</code></td></tr>
-        <tr><td>Refunds</td><td><code>/api/refunds</code>, <code>/api/refunds/{refundId}</code></td></tr>
-        <tr><td>Summary</td><td><code>/api/summary</code></td></tr>
-      </table>
-    </div>
-  </section>
+</div>
+</section>
+<section class="section two-col">
+<div class="card">
+<h2>Object model at high noon</h2>
+<p class="small">
+      V1 is built around this path. You begin with <code>CustomerRepository</code>, obtain Customer objects,
+      then navigate their purchases and each purchase's products.
+    </p>
+<div class="canvas-wrap"><canvas aria-label="UML diagram canvas" height="520" id="umlCanvas" width="920"></canvas></div>
+</div>
+<div class="card dark">
+<h2>V1 Copilot starter prompt</h2>
+<div class="code-wrap"><button class="copy-btn" data-copy="v1prompt">Copy</button><pre id="v1prompt">I am creating a Spring Boot REST API using JPA.
 
-  
+For Version 1, I am only allowed to access persistence through CustomerRepository.
 
-  <section class="section two-col">
-    <div class="card">
-      <h2>Canvas UML: the object model at high noon</h2>
-      <p class="small">This is the model you will be navigating through <code>CustomerRepository</code>. Customer owns purchases. Purchase owns products. Customer also embeds Address. The API challenge gets easier as soon as you see this shape clearly.</p>
-      <div class="canvas-wrap"><canvas id="umlCanvas" width="920" height="520" aria-label="UML diagram canvas"></canvas></div>
-    </div>
-    <div class="card dark">
-      <h2>How to think through the API using one repository</h2>
-      <ul class="list">
-        <li>Find customers with <code>customerRepository.findAll()</code> or <code>findByName()</code>.</li>
-        <li>Filter in memory when the endpoint is asking about a city or a customer id.</li>
-        <li>From each <strong>Customer</strong>, navigate to <strong>purchases</strong>.</li>
-        <li>From each <strong>Purchase</strong>, navigate to <strong>products</strong>.</li>
-        <li>Refunds are represented by the state of the remaining product and purchase data after refunds are processed. Your mock data helper shows one possible output shape.</li>
-        <li>Use DTO-like maps or custom response objects if you want to avoid returning the raw graph directly.</li>
-      </ul>
-      <div class="warning"><strong>Serialization caution:</strong> Bidirectional JPA mappings can produce recursion or noisy JSON. It is completely fair to simplify the graph at the API boundary first, then tighten the model later.</div>
-    </div>
-  </section>
+Customer contains purchases and each Purchase contains products.
 
-  <section class="section section-grid">
-    <div class="card">
-      <h2>Challenge steps, detailed</h2>
-      <ol class="list">
-        <li><strong>Fix the bootstrapping.</strong> Add <code>@SpringBootApplication</code> to <code>App</code> so Spring Boot can start.</li>
-        <li><strong>Fix the model.</strong> Mark the entities and relationships so JPA can create the schema.</li>
-        <li><strong>Fix the service layer.</strong> Add <code>@Service</code> and <code>@Transactional</code> so the data-loading flow is managed correctly.</li>
-        <li><strong>Run the app.</strong> Use <code>mvn spring-boot:run</code>.</li>
-        <li><strong>Inspect the evidence.</strong> Use the H2 console and confirm customers, purchases, and products exist.</li>
-        <li><strong>Repair the REST controller.</strong> Add the controller annotations and fill in the null-returning methods.</li>
-        <li><strong>Test through Swagger.</strong> Use the UI to verify each endpoint.</li>
-        <li><strong>Add creates.</strong> Once reads work, add methods to create a customer, create an address, create a purchase, or add a product.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h2>Suggested GET mapping layout</h2>
-      <div class="code-wrap"><button class="copy-btn" data-copy="mappings">Copy</button><pre id="mappings">@RestController
-@RequestMapping("/api")
-public class StoreRestController {
+Do not create ProductRepository, PurchaseRepository, RefundRepository, EntityManager code, or any other repository.
 
-  @GetMapping
-  public Map&lt;String,String&gt; apiIndex() { ... }
+Do not use StoreRestMockData.
 
-  @GetMapping("/customers")
-  public List&lt;Map&lt;String,Object&gt;&gt; customers(...) { ... }
+When I need purchases or products, start with CustomerRepository and navigate the associated Java objects.
 
-  @GetMapping("/customers/by-name")
-  public Map&lt;String,Object&gt; customerByName(...) { ... }
+Do not use streams, lambdas, Collectors, map(), filter(), flatMap(), or reduce().
 
-  @GetMapping("/customers/{customerId:\d+}")
-  public Map&lt;String,Object&gt; customer(...) { ... }
+Use ordinary for loops, if statements, ArrayList and LinkedHashMap so the code is easy for beginning Java programmers to understand.
 
-  @GetMapping("/customers/{customerId:\d+}/purchases")
-  @GetMapping("/customers/{customerId:\d+}/refunds")
-  @GetMapping("/cities")
-  @GetMapping("/cities/{city}/purchases")
-  @GetMapping("/cities/{city}/refunds")
-  @GetMapping("/products")
-  @GetMapping("/products/{productId}")
-  @GetMapping("/purchases")
-  @GetMapping("/purchases/{purchaseId}")
-  @GetMapping("/refunds")
-  @GetMapping("/refunds/{refundId}")
-  @GetMapping("/summary")
+You may add useful Spring Data find methods to CustomerRepository.
+
+Do not implement customers/by-name. That existing method is only a reference example.</pre></div>
+</div>
+</section>
+<section class="section" id="v1">
+<div class="card">
+<h2>V1 · The one-repository challenge</h2>
+<p>Create a new controller:</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="v1controller">Copy</button><pre id="v1controller">@RestController
+@RequestMapping("/v1")
+public class MyRestController {
+
+    private final CustomerRepository customerRepository;
+
+    public MyRestController(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 }</pre></div>
+<h3 style="margin-top:18px">V1 endpoint roster</h3>
+<table>
+<tr><th>Area</th><th>Implement</th><th>Main learning goal</th></tr>
+<tr><td>Customers</td><td><code>GET /v1/customers</code><br/><code>GET /v1/customers/{customerId}</code><br/><code>GET /v1/customers/{customerId}/purchases</code></td><td><code>findAll()</code>, <code>findById()</code>, object navigation</td></tr>
+<tr><td>Cities</td><td><code>GET /v1/cities</code><br/><code>GET /v1/cities/{city}/customers</code><br/><code>GET /v1/cities/{city}/purchases</code></td><td>Filtering and grouping with loops</td></tr>
+<tr><td>Products</td><td><code>GET /v1/products</code><br/><code>GET /v1/products/{productId}</code></td><td>Nested Customer → Purchase → Product traversal</td></tr>
+<tr><td>Purchases</td><td><code>GET /v1/purchases</code><br/><code>GET /v1/purchases/{purchaseId}</code></td><td>Searching nested collections without a PurchaseRepository</td></tr>
+<tr><td>Summary</td><td><code>GET /v1/summary</code></td><td>Calculate counts and totals manually</td></tr>
+<tr><td>Refunds</td><td>Analyze first; do not invent results</td><td>Recognize when the data model cannot answer the API question</td></tr>
+</table>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V1 · Customers and cities</h2>
+<ol class="list">
+<li>Implement <code>GET /v1/customers</code> using <code>customerRepository.findAll()</code>.</li>
+<li>Support optional <code>?city=Boston</code> filtering with a normal loop.</li>
+<li>Ask Copilot whether <code>findByAddressCityIgnoreCase(...)</code> would be a useful derived query in <code>CustomerRepository</code>.</li>
+<li>Implement <code>GET /v1/customers/{customerId}</code> using <code>findById(...)</code> and 404 handling.</li>
+<li>Implement <code>GET /v1/cities</code> with unique city names and customer counts.</li>
+<li>Implement <code>GET /v1/cities/{city}/customers</code>.</li>
+<li>Implement <code>GET /v1/cities/{city}/purchases</code> by finding customers in the city and then walking their purchases.</li>
+</ol>
+</div>
+<div class="card">
+<h2>V1 · Purchases and products</h2>
+<ol class="list">
+<li>Implement <code>GET /v1/customers/{customerId}/purchases</code>.</li>
+<li>Implement <code>GET /v1/purchases</code> with optional <code>customerId</code> and <code>city</code> filters.</li>
+<li>Implement <code>GET /v1/purchases/{purchaseId}</code> using nested loops.</li>
+<li>Implement <code>GET /v1/products</code> with optional case-insensitive <code>?name=mouse</code> filtering.</li>
+<li>Implement <code>GET /v1/products/{productId}</code> by walking customers, purchases, then products.</li>
+<li>Calculate purchase totals as <code>quantity * price</code> with loops.</li>
+</ol>
+<div class="note">
+      Ask Copilot whether methods such as <code>findDistinctByPurchasesId(...)</code> or
+      <code>findDistinctByPurchasesProductsId(...)</code> could make lookup easier while still keeping
+      <code>CustomerRepository</code> as the only repository.
     </div>
-  </section>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card dark">
+<h2>V1 · Response design challenge</h2>
+<p>For at least three endpoints, ask Copilot to compare these approaches:</p>
+<pre>return customer;</pre>
+<p>versus a deliberately shaped response:</p>
+<pre>Map&lt;String, Object&gt; response = new LinkedHashMap&lt;&gt;();
+response.put("id", customer.id);
+response.put("name", customer.name);
+response.put("zip", customer.address.zip);
+response.put("city", customer.address.city);</pre>
+<ul class="list">
+<li>Ask what JSON each approach produces.</li>
+<li>Ask whether bidirectional JPA links can cause recursive or noisy JSON.</li>
+<li>Ask why a REST representation does not need to match a JPA entity.</li>
+</ul>
+</div>
+<div class="card">
+<h2>V1 · The refund trap</h2>
+<p>
+      Do not immediately implement the refund endpoints. Ask Copilot whether the current database actually stores historical refunds.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="refundprompt">Copy</button><pre id="refundprompt">Examine Customer, Purchase, Product and the existing refund-processing code.
 
-  <section class="section section-grid">
-    <div class="card dark">
-      <h2>Stretch goals after the shootout</h2>
-      <ul class="list">
-        <li>Add POST methods to create a <strong>Customer</strong>.</li>
-        <li>Add a method to attach an <strong>Address</strong> to a customer.</li>
-        <li>Add a method to create a <strong>Purchase</strong> for a customer.</li>
-        <li>Add a method to create a <strong>Product</strong> under a purchase.</li>
-        <li>Return cleaner response DTOs instead of raw maps.</li>
-        <li>Reintroduce any bidirectional mappings or serialization helpers you removed while debugging.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h2>Victory conditions</h2>
-      <div class="checklist">
-        <div class="check">The app starts with <code>mvn spring-boot:run</code>.</div>
-        <div class="check">The H2 console shows imported data.</div>
-        <div class="check">Swagger UI loads and routes are visible.</div>
-        <div class="check">The broken GET endpoints now return real data.</div>
-        <div class="check">You can explain how the object graph is traversed from Customer to Product.</div>
-        <div class="check">You have at least one POST or create-style endpoint added.</div>
-      </div>
-      <div class="success" style="margin-top:14px"><strong>Teacher note:</strong> This page is intentionally a little dramatic. That is the point. The final lesson should feel like a showdown, but the reasoning remains practical and beginner-friendly.</div>
-    </div>
-  </section>
+Can the persisted database reconstruct historical refunds after the refund has already been applied?
 
-  <section class="section">
-    <div class="footer-banner">
-      <h2 style="margin:0 0 8px;font-family:Georgia,serif;color:#fff7d8">Final word from the sheriff</h2>
-      <p style="margin:0;line-height:1.65">Boot the app. Check the database. Fix the annotations. Make the API tell the truth. Use one repository, trust the object model, and turn this outlaw codebase into a well-behaved Spring Boot town.</p>
+Do not invent data. Explain what information is lost and what the REST API should do in V1.</pre></div>
+<div class="warning" style="margin-top:14px">
+      A partial refund reduces Product.quantity. A full refund can remove the Product entirely.
+      Current state is not the same thing as historical transaction data.
     </div>
-  </section>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>V1 · Ask about write operations</h2>
+<p>For every GET endpoint, ask Copilot whether a sensible POST, PUT, or DELETE operation belongs with that resource.</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="writeprompt">Copy</button><pre id="writeprompt">Is there a sensible POST, PUT or DELETE operation related to this resource?
+
+Do not add an operation simply because REST supports that verb.
+
+Only recommend an operation if it makes sense for the domain.
+
+For V1, any implementation must still use CustomerRepository as the only repository.</pre></div>
+<p>Reasonable examples may include:</p>
+<table>
+<tr><th>Operation</th><th>V1 idea</th></tr>
+<tr><td><code>POST /v1/customers</code></td><td>Create a Customer and save with CustomerRepository.</td></tr>
+<tr><td><code>PUT /v1/customers/{id}</code></td><td>Find the Customer, update it, save the Customer.</td></tr>
+<tr><td><code>POST /v1/customers/{id}/purchases</code></td><td>Find the Customer, add a Purchase, save the Customer.</td></tr>
+<tr><td><code>POST /v1/customers/{id}/purchases/{purchaseId}/products</code></td><td>Walk to the Purchase, add a Product, save the Customer.</td></tr>
+<tr><td><code>PUT /v1/products/{productId}</code></td><td>Walk the graph, update the Product, save the owning Customer.</td></tr>
+<tr><td><code>DELETE /v1/products/{productId}</code></td><td>Walk the graph, remove the Product, save the Customer.</td></tr>
+</table>
+</div>
+</section>
+<section class="section" id="v2">
+<div class="card dark">
+<div class="stamp">ROUND TWO</div>
+<h2>V2 · Remove the repository restriction</h2>
+<p>
+      V1 proves that related data can be reached through the Customer object graph.
+      V2 asks how the application should be designed when that artificial restriction is removed.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="v2prompt">Copy</button><pre id="v2prompt">I already implemented V1 using CustomerRepository as the only repository.
+
+For V2, remove that artificial restriction.
+
+Create a new controller rooted at /v2.
+
+You may create additional repositories, services, DTOs, request objects, response objects, derived queries, JPQL queries, validation, transaction boundaries, and new persistent entities when they improve the design.
+
+Do not change things merely to make the architecture bigger.
+
+Explain why each new abstraction is useful.
+
+Do not implement customers/by-name. That existing method is only a reference example.</pre></div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Let Copilot propose the architecture</h2>
+<p>Before asking for code, ask Copilot what it would introduce and why.</p>
+<ul class="list">
+<li><code>PurchaseRepository</code>?</li>
+<li><code>ProductRepository</code>?</li>
+<li><code>RefundRepository</code>?</li>
+<li>Service layer?</li>
+<li>DTOs or Java records?</li>
+<li>Request objects?</li>
+<li>Custom queries?</li>
+</ul>
+<div class="note">
+      Do not automatically accept every class Copilot proposes. Ask:
+      <strong>“What problem does this class solve, and is it worth the extra abstraction?”</strong>
+</div>
+</div>
+<div class="card">
+<h2>V2 · Build resource-specific repositories</h2>
+<p>Compare V1 traversal with direct V2 repository access.</p>
+<pre>// V1 idea
+for (Customer customer : customerRepository.findAll()) {
+    for (Purchase purchase : customer.purchases) {
+        // locate a purchase
+    }
+}
+
+// V2 idea
+purchaseRepository.findById(purchaseId);</pre>
+<p>Ask Copilot to create useful query methods such as:</p>
+<pre>findByCustomerId(...)
+findByCustomerAddressCityIgnoreCase(...)
+findByNameContainingIgnoreCase(...)</pre>
+<p>Then ask which are derived queries, which need JPQL, and which should simply use inherited JpaRepository methods.</p>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Replace Maps with typed API models</h2>
+<p>V1 deliberately used maps to make response construction obvious. V2 should consider typed responses.</p>
+<pre>public record CustomerResponse(
+    Long id,
+    String name,
+    String zip,
+    String city
+) {}</pre>
+<p>Ask Copilot to consider:</p>
+<ul class="list">
+<li><code>CustomerResponse</code></li>
+<li><code>PurchaseResponse</code></li>
+<li><code>ProductResponse</code></li>
+<li><code>CityResponse</code></li>
+<li><code>StoreSummaryResponse</code></li>
+<li>separate create/update request objects</li>
+</ul>
+</div>
+<div class="card">
+<h2>V2 · Add a service layer where it helps</h2>
+<p>Ask Copilot whether controllers are doing too much.</p>
+<pre>Controller
+    |
+    v
+Service
+    |
+    +--&gt; CustomerRepository
+    +--&gt; PurchaseRepository
+    +--&gt; ProductRepository
+    +--&gt; RefundRepository</pre>
+<p>
+      Move business logic, validation, calculations, and transactional write operations out of the controller when that makes responsibilities clearer.
+    </p>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Solve refunds properly</h2>
+<p>
+      The current model changes or deletes Products when a refund occurs, so historical refund information is not retained.
+      V2 may change the data model.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="refundv2">Copy</button><pre id="refundv2">Design a persistent Refund model.
+
+A refund should preserve enough historical information to answer the REST API later, even if the Product is changed or removed.
+
+Explain which values should be relationships and which should be historical snapshot fields.
+
+Then create the repository and update refund processing so successful refunds are persisted.</pre></div>
+<p>Then implement real V2 refund endpoints such as:</p>
+<pre>GET /v2/refunds
+GET /v2/refunds/{refundId}
+GET /v2/customers/{customerId}/refunds
+GET /v2/cities/{city}/refunds</pre>
+</div>
+<div class="card">
+<h2>V2 · Go beyond CRUD</h2>
+<ul class="list">
+<li>Ask whether summary totals should be calculated in Java or with database aggregation.</li>
+<li>Ask Copilot to explain the N+1 query problem using Customer, Purchase, and Product.</li>
+<li>Investigate <code>JOIN FETCH</code> or <code>@EntityGraph</code> only if needed.</li>
+<li>Revisit whether every association should still be EAGER.</li>
+<li>Ask where <code>@Transactional</code> belongs.</li>
+<li>Add request validation such as <code>@NotBlank</code>, <code>@Positive</code>, and <code>@Valid</code>.</li>
+<li>Consider centralized exception handling with <code>@RestControllerAdvice</code>.</li>
+</ul>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>OpenAPI is part of the assignment</h2>
+<p>
+      Update the root <code>openapi.yaml</code> as you build the API. Keep both versions documented.
+    </p>
+<table>
+<tr><th>Version</th><th>Contract purpose</th></tr>
+<tr><td><code>/v1/...</code></td><td>Educational implementation constrained to CustomerRepository and manual object traversal.</td></tr>
+<tr><td><code>/v2/...</code></td><td>Conventional Spring Data design using appropriate repositories and supporting types.</td></tr>
+</table>
+<p style="margin-top:14px">For every operation verify:</p>
+<div class="checklist">
+<div class="check">HTTP method and path</div>
+<div class="check">Path and query parameters</div>
+<div class="check">Request body schema</div>
+<div class="check">Response schema</div>
+<div class="check">Status codes</div>
+<div class="check">Operation actually exists in Java</div>
+</div>
+<div class="code-wrap" style="margin-top:14px"><button class="copy-btn" data-copy="contractreview">Copy</button><pre id="contractreview">Compare my controller code against openapi.yaml.
+
+Identify every mismatch involving:
+- endpoint paths
+- HTTP methods
+- path variables
+- query parameters
+- request bodies
+- response schemas
+- HTTP status codes
+
+Do not change anything yet. Give me a discrepancy list first.</pre></div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card dark">
+<h2>Test V1 and V2 side by side</h2>
+<pre>GET /v1/products?name=mouse
+GET /v2/products?name=mouse
+
+GET /v1/purchases
+GET /v2/purchases
+
+GET /v1/cities/Boston/purchases
+GET /v2/cities/Boston/purchases</pre>
+<p>
+      The responses should be functionally similar even though the implementations are different.
+    </p>
+</div>
+<div class="card">
+<h2>Compare the implementations</h2>
+<table>
+<tr><th>Question</th><th>V1</th><th>V2</th></tr>
+<tr><td>Repository access</td><td>CustomerRepository only</td><td>Resource-appropriate repositories</td></tr>
+<tr><td>Traversal</td><td>Manual nested loops</td><td>Mostly repository queries</td></tr>
+<tr><td>Response shape</td><td>Maps encouraged</td><td>Typed DTOs/records encouraged</td></tr>
+<tr><td>Purpose</td><td>Understand the object graph</td><td>Improve application design</td></tr>
+<tr><td>Refunds</td><td>Expose persistence limitation</td><td>Fix persistence model</td></tr>
+</table>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>Final Copilot review</h2>
+<p>Once V2 works, make Copilot critique its own work.</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="selfreview">Copy</button><pre id="selfreview">Review the code you generated.
+
+Identify:
+- unnecessary duplication
+- unnecessary repositories
+- unnecessary DTOs or services
+- overly complicated methods
+- poor names
+- inefficient database access
+- assumptions you made about the project
+
+Do not rewrite anything yet. Give me the review first.</pre></div>
+<p>Then ask:</p>
+<pre>Looking back over our conversation, what suggestions did you make that were unnecessary, incorrect, or more complicated than needed?
+
+How could I have written better prompts to avoid those mistakes?</pre>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>Victory conditions</h2>
+<div class="checklist">
+<div class="check">The application starts and H2 contains the imported data.</div>
+<div class="check">A new <code>MyRestController</code> exposes the V1 API.</div>
+<div class="check">V1 uses only <code>CustomerRepository</code>.</div>
+<div class="check">V1 uses loops rather than streams.</div>
+<div class="check">A V2 controller exposes the same core resources with a less constrained design.</div>
+<div class="check">V2 introduces only abstractions you can explain and justify.</div>
+<div class="check">Refund history is not fabricated in V1 and is properly modeled if implemented in V2.</div>
+<div class="check"><code>openapi.yaml</code> accurately documents both versions.</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="footer-banner">
+<h2 style="margin:0 0 8px;font-family:Georgia,serif;color:#fff7d8">Final word from the sheriff</h2>
+<p style="margin:0;line-height:1.65">
+      V1 proves you understand the JPA object graph. V2 proves you can improve the design without blindly accepting whatever Copilot generates.
+      Build it, test it, compare it, and make the AI explain itself.
+    </p>
+</div>
+</section>
 </main>
 <footer>Spring Boot: The Wild REST · Final Showdown Challenge</footer>
 <script>
@@ -367,26 +649,25 @@ function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#f8
  drawClass(340,80,240,145,'Address',['+ zip : String','+ city : String'],'#fff8ef','#8a5f2f');
  drawClass(40,320,260,165,'Purchase',['+ id : Long','+ date : LocalDate','+ customer : Customer','+ products : List<Product>'],'#eff8ea','#4c7e3d');
  drawClass(380,305,260,180,'Product',['+ id : Long','+ name : String','+ quantity : int','+ price : double','+ purchase : Purchase'],'#fff8ef','#8a5f2f');
- roundRect(690,94,190,135,18,'#213320','#6db33f'); ctx.fillStyle='#f8ffe8'; ctx.font='bold 19px Segoe UI'; ctx.fillText('Repository Rule', 718, 126); ctx.font='16px Segoe UI'; ['Use CustomerRepository only','Traverse customer -> purchase','Then purchase -> product'].forEach((t,i)=>ctx.fillText('• '+t,710,158+i*24));
- roundRect(680,290,200,170,18,'#fff1dc','#8a5f2f'); ctx.fillStyle='#5a371d'; ctx.font='bold 19px Segoe UI'; ctx.fillText('Annotations', 733, 322); ctx.font='16px Segoe UI'; ['@Entity','@OneToMany','@ManyToOne','@Embedded','@RestController'].forEach((t,i)=>ctx.fillText('• '+t,702,352+i*23));
+ roundRect(690,94,190,135,18,'#213320','#6db33f'); ctx.fillStyle='#f8ffe8'; ctx.font='bold 19px Segoe UI'; ctx.fillText('V1 Rule', 742, 126); ctx.font='16px Segoe UI'; ['CustomerRepository only','Customer -> Purchase','Purchase -> Product'].forEach((t,i)=>ctx.fillText('• '+t,704,158+i*24));
+ roundRect(680,290,200,170,18,'#fff1dc','#8a5f2f'); ctx.fillStyle='#5a371d'; ctx.font='bold 19px Segoe UI'; ctx.fillText('V2 Freedom', 724, 322); ctx.font='16px Segoe UI'; ['More repositories','DTOs + services','Better queries','Persist refunds'].forEach((t,i)=>ctx.fillText('• '+t,702,352+i*27));
  arrow(280,155,340,155,'embeds');
  arrow(160,260,170,320,'1..*');
  arrow(300,400,380,400,'1..*');
  arrow(460,305,220,220,'many-to-one');
  ctx.font='28px Segoe UI Emoji'; ctx.fillText('🤠', 800, 65); ctx.fillText('👽', 842, 260); ctx.fillText('🦾🐎', 772, 274); ctx.fillText('🐕', 70, 60); ctx.fillText('🌀', 616, 84);
- ctx.fillStyle='#214523'; ctx.font='bold 17px Segoe UI'; ctx.fillText('Object model for the showdown', 36, 40);
+ ctx.fillStyle='#214523'; ctx.font='bold 17px Segoe UI'; ctx.fillText('V1 object graph — V2 redesigns around it', 36, 40);
 }
 draw();
 </script>
 <footer class="course-resource-footer">
-  <strong>Course resources</strong>
-  <div class="course-resource-links">
-    <a href="https://theserverside.com/" target="_blank" rel="noopener">TheServerSide.com</a>
-    <a href="https://github.com/scrumtuous/shapes" target="_blank" rel="noopener">Starter Code on GitHub</a>
-    <a href="https://start.spring.io/" target="_blank" rel="noopener">Spring Initializr</a>
-  </div>
+<strong>Course resources</strong>
+<div class="course-resource-links">
+<a href="https://theserverside.com/" rel="noopener" target="_blank">TheServerSide.com</a>
+<a href="https://github.com/scrumtuous/shapes" rel="noopener" target="_blank">Starter Code on GitHub</a>
+<a href="https://start.spring.io/" rel="noopener" target="_blank">Spring Initializr</a>
+</div>
 </footer>
-
 <script id="course-unified-nav-script-v3">
 (() => {
   const nav = document.querySelector('.course-global-nav');
@@ -409,6 +690,5 @@ draw();
   });
 })();
 </script>
-
 </body>
 </html>

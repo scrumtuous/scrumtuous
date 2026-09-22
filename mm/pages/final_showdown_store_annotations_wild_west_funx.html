@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final Showdown Challenge | Spring Boot Wild REST</title>
+<style>
+:root {
+  --bg:#0f140f; --panel:#1b2619; --panel2:#22331d; --spring:#6db33f; --spring2:#96da65;
+  --dust:#efe4c7; --paper:#fff8e7; --wood:#6f472a; --wood2:#925f37; --gold:#f4cb70; --danger:#d86845;
+  --sky:#cce7ff; --ink:#182117; --muted:#d8e5d0; --white:#ffffff; --shadow:0 20px 50px rgba(0,0,0,.28);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:#f5f7ef;background:linear-gradient(180deg,#0d110d 0,#152216 18%,#213322 100%);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.course-global-nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#122013,#0b110b);border-bottom:2px solid rgba(255,255,255,.08);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.course-global-inner{width:min(1380px,95vw);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0}
+.course-global-brand{display:flex;align-items:center;gap:12px;color:#fff}
+.course-global-logo{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#6db33f;color:#112013;font-size:1.5rem;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+.course-global-brand strong{display:block;font-size:1.12rem}
+.course-global-brand small{display:block;color:#cfe9c1}
+.course-global-toggle{display:none;border:0;background:#6db33f;color:#0c160d;border-radius:10px;padding:8px 12px;font-size:1.2rem;font-weight:900}
+.course-global-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.course-global-links>a,.course-global-group summary{padding:10px 14px;border-radius:12px;color:#eff8ea;font-weight:800;list-style:none;cursor:pointer}
+.course-global-home:hover,.course-global-quiz:hover,.course-global-group summary:hover{background:rgba(255,255,255,.08)}
+.course-global-dropdown{position:absolute;display:none;min-width:300px;background:#f8fbf4;color:#143016;padding:12px;border-radius:16px;box-shadow:var(--shadow);margin-top:10px}
+.course-global-group{position:relative}
+.course-global-group[open] .course-global-dropdown{display:grid;gap:8px}
+.course-global-dropdown a{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;font-weight:700}
+.course-global-dropdown a:hover,.course-global-dropdown a.is-active{background:#e3f4d8}
+.course-global-number{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#18341c;color:#fff;font-size:.86rem}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 18% 25%, rgba(255,223,136,.32) 0 12%, transparent 13%),radial-gradient(circle at 82% 18%, rgba(125,200,80,.35) 0 11%, transparent 12%),linear-gradient(180deg,#244024 0,#1b2f19 55%,#132113 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.18),rgba(0,0,0,.18)), repeating-linear-gradient(90deg, transparent 0 160px, rgba(255,255,255,.015) 160px 162px)}
+.hero-inner{position:relative;width:min(1380px,95vw);margin:auto;padding:30px 0 28px;display:grid;grid-template-columns:1.08fr .92fr;gap:20px;align-items:stretch}
+.scene{background:linear-gradient(180deg,#dfeef7 0 41%,#a1c86a 41% 66%,#5f8140 66% 100%);border-radius:30px;border:4px solid rgba(255,255,255,.3);box-shadow:var(--shadow);position:relative;overflow:hidden;min-height:590px}
+.scene .sun{position:absolute;right:38px;top:28px;width:106px;height:106px;border-radius:50%;background:radial-gradient(circle,#fff7be 0,#ffd76a 54%,#ffb84b 100%);box-shadow:0 0 55px rgba(255,222,120,.55)}
+.scene .mesa{position:absolute;left:-3%;bottom:49%;width:45%;height:16%;background:#b56c42;border-radius:50% 50% 0 0;filter:brightness(.92)}
+.scene .mesa2{position:absolute;right:6%;bottom:52%;width:24%;height:11%;background:#9f5635;border-radius:42% 42% 0 0}
+.scene .ground{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#6fa54d,#436132 55%,#2f4424)}
+.scene .weed{position:absolute;bottom:18%;left:50%;font-size:3.2rem;animation:spinweed 7s linear infinite;transform-origin:center}
+@keyframes spinweed{to{transform:rotate(360deg)}}
+.scene .dust{position:absolute;bottom:17%;right:18%;width:140px;height:80px;background:radial-gradient(circle,rgba(255,244,204,.9) 0,rgba(255,244,204,.22) 70%,transparent 72%);filter:blur(2px);animation:dust 2.6s ease-in-out infinite alternate}
+@keyframes dust{from{transform:translateX(0)}to{transform:translateX(18px)}}
+.scene .cowboy{position:absolute;left:4%;bottom:8%;font-size:14.2rem;filter:drop-shadow(0 18px 18px rgba(0,0,0,.22));animation:bob 3.4s ease-in-out infinite}
+.scene .cowboy2{position:absolute;left:23%;bottom:10%;font-size:8rem;animation:bob 3.8s ease-in-out infinite .2s}
+.scene .alien{position:absolute;right:5%;bottom:9%;font-size:8rem;animation:bob 3.2s ease-in-out infinite .4s}
+.scene .mech{position:absolute;right:24%;bottom:10%;font-size:11rem;animation:bob 3.6s ease-in-out infinite .1s}
+.scene .dog{position:absolute;left:44%;bottom:9%;font-size:7rem;animation:bob 3.1s ease-in-out infinite .15s}
+.scene .ladder{position:absolute;left:40%;bottom:36%;width:52px;height:150px;border-left:6px solid #8a5f2f;border-right:6px solid #8a5f2f;transform:rotate(-10deg);opacity:.9}
+.scene .ladder::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 18px,#8a5f2f 18px 24px)}
+.scene .cube{position:absolute;right:18%;top:15%;width:82px;height:82px;border-radius:12px;background:conic-gradient(#ff595e 0 25%,#ffca3a 0 50%,#8ac926 0 75%,#1982c4 0);transform:rotate(17deg);box-shadow:0 12px 25px rgba(0,0,0,.25)}
+.scene .gunsmoke{position:absolute;left:30%;bottom:29%;font-size:5.5rem;opacity:.65;filter:blur(1px);animation:smoke 4s ease-in-out infinite}
+@keyframes smoke{0%{transform:translateY(0) scale(1);opacity:.3}50%{opacity:.85}100%{transform:translateY(-40px) scale(1.2);opacity:.2}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-panel{position:relative;background:linear-gradient(180deg,#fff8e9 0,#fff0cf 100%);color:#1b2619;border-radius:30px;padding:26px 26px 22px;border:4px solid rgba(255,255,255,.28);box-shadow:var(--shadow)}
+.kicker{display:inline-flex;gap:10px;align-items:center;padding:8px 12px;background:#234223;color:#edffe8;border-radius:999px;font-size:.84rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2.8rem,5vw,5rem);line-height:.93;margin:16px 0 14px;color:#214523;text-shadow:2px 2px 0 #f7e2a0}
+.hero .tagline{font-size:1.18rem;line-height:1.55;max-width:62ch}
+.chip-row{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.chip{padding:9px 12px;border-radius:999px;background:#e3f6d8;border:2px solid #bdddaf;font-weight:800}
+.callout{background:#fff;border-left:8px solid var(--spring);border-radius:18px;padding:14px 16px;box-shadow:0 12px 28px rgba(0,0,0,.12);margin-top:16px}
+.callout strong{color:#214523}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;background:#214523;color:#fff;font-weight:900;box-shadow:0 10px 22px rgba(33,69,35,.24)}
+.btn.alt{background:#8f5d34}
+main{width:min(1380px,95vw);margin:auto;padding:26px 0 44px}
+.section{margin:20px 0 28px}
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:linear-gradient(180deg,#fffdf8,#f6f0de);color:#162117;border-radius:24px;padding:20px;border:2px solid rgba(154,124,74,.35);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card.dark{background:linear-gradient(180deg,#1e2d1d,#172117);color:#eef7ec;border-color:#2c4b2a}
+.card h2{margin:0 0 12px;color:#214523;font-size:2rem;font-family:Georgia,serif}
+.card.dark h2,.card.dark h3{color:#fff5d3}
+.card h3{margin:0 0 10px;color:#214523;font-size:1.3rem}
+.list{padding-left:1.1rem;line-height:1.64}
+.list li{margin:.36rem 0}
+pre{margin:0;background:#121a13;color:#eff8ec;border:3px solid #334635;border-radius:18px;padding:16px;overflow:auto;white-space:pre-wrap;font:14px/1.48 Consolas,monospace}
+.code-wrap{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;border:0;background:#6db33f;color:#102010;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer}
+.two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{background:#fff;border:2px solid #d8e8d4;border-radius:16px;padding:14px;font-weight:800;box-shadow:0 10px 18px rgba(0,0,0,.06)}
+.canvas-wrap{background:#fff;border-radius:24px;padding:12px;border:2px solid rgba(154,124,74,.35);box-shadow:var(--shadow)}
+#umlCanvas{width:100%;height:520px;background:linear-gradient(180deg,#f5faef,#f8f4e8);border-radius:18px;display:block}
+table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #d9e6d1;border-radius:18px;overflow:hidden}
+th,td{padding:12px 13px;vertical-align:top;text-align:left;border-bottom:1px solid #e5eee0}
+th{background:#214523;color:#fff}tr:last-child td{border-bottom:none}
+.note{background:#fff6d9;border:2px solid #efcf7a;border-radius:18px;padding:14px}
+.warning{background:#ffe9df;border:2px solid #ec9b79;border-radius:18px;padding:14px}
+.success{background:#e8f8df;border:2px solid #9ed184;border-radius:18px;padding:14px}
+.footer-banner{background:linear-gradient(90deg,#214523,#3e6f35);color:#fff;border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+footer{padding:18px 0 30px;text-align:center;color:#d8e5d0}
+.stamp{position:absolute;right:16px;top:14px;padding:9px 10px;border:3px dashed rgba(255,255,255,.35);border-radius:14px;color:#fff3c9;font-weight:900;transform:rotate(4deg)}
+.small{font-size:.93rem;line-height:1.55}
+@media (max-width:1100px){
+  .hero-inner,.section-grid,.two-col,.checklist{grid-template-columns:1fr}
+  .course-global-toggle{display:inline-block}
+  .course-global-links{display:none;position:absolute;left:2.5vw;right:2.5vw;top:70px;background:#102010;padding:14px;border-radius:18px;box-shadow:var(--shadow)}
+  .course-global-links.open{display:grid}
+}
+</style>
+
+<style id="course-unified-nav-v3">
+.course-global-nav{position:sticky!important;top:0!important;z-index:9999!important;background:linear-gradient(180deg,#15371c,#0b2210)!important;border-bottom:2px solid rgba(255,255,255,.12)!important;box-shadow:0 10px 24px rgba(0,0,0,.22)!important;font-family:Inter,Segoe UI,Arial,sans-serif!important}
+.course-global-inner{width:min(1420px,96vw)!important;margin:auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:10px 0!important;position:relative!important}
+.course-global-brand{display:flex!important;align-items:center!important;gap:10px!important;color:#fff!important;text-decoration:none!important;min-width:250px!important}
+.course-global-logo{width:44px!important;height:44px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#6db33f!important;color:#0d1f10!important;font-size:1.4rem!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)!important;flex:0 0 auto!important}
+.course-global-brand strong{display:block!important;font-size:1.02rem!important;line-height:1.1!important;color:#fff!important}
+.course-global-brand small{display:block!important;color:#d8ecd2!important;font-size:.72rem!important;line-height:1.25!important;margin-top:2px!important}
+.course-global-toggle{display:none!important;border:0!important;background:#6db33f!important;color:#0b1f0e!important;border-radius:10px!important;padding:8px 11px!important;font-size:1.15rem!important;font-weight:900!important;cursor:pointer!important}
+.course-global-links{display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important;justify-content:flex-end!important}
+.course-global-links>a,.course-global-group>summary{display:block!important;color:#f5fff2!important;text-decoration:none!important;font-weight:800!important;font-size:.79rem!important;padding:10px 10px!important;border-radius:11px!important;cursor:pointer!important;list-style:none!important;white-space:nowrap!important}
+.course-global-group>summary::-webkit-details-marker{display:none!important}
+.course-global-home:hover,.course-global-quiz:hover,.course-global-group>summary:hover,.course-global-home.is-active,.course-global-quiz.is-active{background:rgba(255,255,255,.14)!important}
+.course-global-group{position:relative!important;margin:0!important}
+.course-global-dropdown{position:absolute!important;top:calc(100% + 9px)!important;left:0!important;display:none!important;min-width:295px!important;background:#f8fbf4!important;color:#15351b!important;padding:10px!important;border-radius:16px!important;box-shadow:0 18px 45px rgba(0,0,0,.24)!important;border:1px solid #d8e9d1!important}
+.course-global-group[open]>.course-global-dropdown{display:grid!important;gap:5px!important}
+.course-global-dropdown a{display:flex!important;gap:9px!important;align-items:center!important;padding:9px 10px!important;border-radius:11px!important;color:#15351b!important;text-decoration:none!important;font-weight:750!important;font-size:.86rem!important;line-height:1.2!important}
+.course-global-dropdown a:hover,.course-global-dropdown a.is-active{background:#e2f4d7!important;color:#173c1c!important}
+.course-global-number{display:inline-grid!important;place-items:center!important;width:25px!important;height:25px!important;border-radius:50%!important;background:#214a28!important;color:#fff!important;font-size:.77rem!important;flex:0 0 auto!important}
+.course-global-quiz{background:#6db33f!important;color:#0e2010!important}
+@media (max-width:1180px){
+ .course-global-toggle{display:inline-block!important}
+ .course-global-links{display:none!important;position:absolute!important;left:0!important;right:0!important;top:calc(100% + 7px)!important;background:#102a15!important;padding:12px!important;border-radius:16px!important;box-shadow:0 18px 38px rgba(0,0,0,.28)!important;align-items:stretch!important}
+ .course-global-links.course-global-open{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+ .course-global-group{position:static!important}
+ .course-global-dropdown{position:static!important;margin-top:6px!important;min-width:0!important;box-shadow:none!important}
+ .course-global-links>a,.course-global-group>summary{font-size:.9rem!important}
+}
+@media (max-width:650px){
+ .course-global-brand small{display:none!important}
+ .course-global-brand{min-width:0!important}
+ .course-global-links.course-global-open{grid-template-columns:1fr!important}
+}
+.course-resource-footer{margin-top:28px!important;background:linear-gradient(180deg,#132919,#0b1b0f)!important;color:#edf8e9!important;border-top:3px solid #6db33f!important;padding:24px 18px 28px!important;font-family:Inter,Segoe UI,Arial,sans-serif!important;text-align:center!important}
+.course-resource-footer strong{display:block!important;margin-bottom:10px!important;font-size:1rem!important;color:#fff8d9!important}
+.course-resource-footer .course-resource-links{display:flex!important;gap:12px!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important}
+.course-resource-footer a{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:9px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.09)!important;color:#f2fff0!important;text-decoration:none!important;font-weight:800!important}
+.course-resource-footer a:hover{background:#6db33f!important;color:#102010!important}
+</style>
+</head>
+<body>
+<nav class="course-global-nav" aria-label="Course navigation"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button class="course-global-toggle" type="button" aria-label="Toggle course navigation" aria-expanded="false">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group"><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group" open><summary>Capstone</summary><div class="course-global-dropdown"><a class="is-active" href="final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="scene" aria-hidden="true">
+      <div class="sun"></div>
+      <div class="mesa"></div><div class="mesa2"></div><div class="ground"></div>
+      <div class="ladder"></div><div class="cube"></div>
+      <div class="cowboy">🤠</div>
+      <div class="cowboy2">🐎</div>
+      <div class="dog">🐕</div>
+      <div class="mech">🦾🐎</div>
+      <div class="alien">👽</div>
+      <div class="gunsmoke">💨</div>
+      <div class="dust"></div>
+      <div class="weed">🌀</div>
+    </div>
+    <div class="hero-panel">
+      <span class="kicker">🤠 Final challenge · high noon debugging</span>
+      <h1>The Final Showdown at Gunsmoke Gulch</h1>
+      <p class="tagline">This capstone challenge turns you loose in a half-finished Spring Boot store app. The data loader runs, the H2 database is waiting, Swagger is pointing at a broken API, and a pile of missing annotations is standing in the street like a gang of outlaws. Your job is to put the codebase back together and make the API ride.</p>
+      <div class="chip-row">
+        <span class="chip">Wild West theme</span>
+        <span class="chip">JPA mappings</span>
+        <span class="chip">REST endpoints</span>
+        <span class="chip">Swagger + H2</span>
+        <span class="chip">CommandLineRunner</span>
+      </div>
+      <div class="callout"><strong>Run command:</strong> <code>mvn spring-boot:run</code><br>This launches the app, triggers the <code>CommandLineRunner</code>, processes the CSV-style purchase rows, and loads the H2 database so you can inspect the data.</div>
+      <div class="cta-row">
+        <a class="btn" href="#challenge">Jump to the challenge</a>
+        <a class="btn alt" href="https://github.com/scrumtuous/shapes">Starter code on GitHub</a>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="section two-col" id="challenge">
+    <div class="card">
+      <h2>What makes this showdown fun?</h2>
+      <p>You are not starting from nothing. You already have a model, a repository, a service, a data loader, and a mostly sketched REST controller. That means the challenge is about reading code, placing the right annotations, testing assumptions, and making the pieces work together.</p>
+      <ul class="list">
+        <li><strong>Step 1.</strong> Add the missing annotations to the domain classes, service class, application class, and REST controller.</li>
+        <li><strong>Step 2.</strong> Run the app with <code>mvn spring-boot:run</code>.</li>
+        <li><strong>Step 3.</strong> Verify that the app starts and that the <code>CommandLineRunner</code> loads the CSV data through <code>StoreService</code>.</li>
+        <li><strong>Step 4.</strong> Open Swagger UI at <code>http://localhost:8080/swagger-ui/index.html</code>. Only the customer-by-name endpoint works correctly at first.</li>
+        <li><strong>Step 5.</strong> Open H2 Console at <code>http://localhost:8080/h2-console/</code> and confirm the data exists.</li>
+        <li><strong>Step 6.</strong> Update the broken REST API, but only use <code>CustomerRepository</code>. Navigate the object graph from customers to purchases to products.</li>
+        <li><strong>Step 7.</strong> If JSON recursion gets messy, temporarily simplify or remove some bidirectional mappings for the API phase, then re-add them later.</li>
+        <li><strong>Step 8.</strong> Add create methods, such as creating a customer, address, or product, after the read-only API works.</li>
+      </ul>
+    </div>
+    <div class="card dark">
+      <div class="stamp">TOP BOUNTY</div>
+      <h2>Rules of engagement</h2>
+      <div class="checklist">
+        <div class="check">Use only <strong>CustomerRepository</strong> for data access in the REST API.</div>
+        <div class="check">Use object navigation for related data, not a new repository for every table.</div>
+        <div class="check">Confirm database success first, then fix API behavior.</div>
+        <div class="check">Treat Swagger and H2 as proof that your boot camp outpost is alive.</div>
+        <div class="check">Only <strong>/customers/by-name</strong> is working at the start.</div>
+        <div class="check">After the GET endpoints work, add POST endpoints as a stretch goal.</div>
+      </div>
+      <div class="note" style="margin-top:14px;color:#1b2619"><strong>Quiz hint:</strong> Be ready to explain why <code>@Entity</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Embedded</code>, <code>@OneToMany</code>, <code>@ManyToOne</code>, <code>@Service</code>, <code>@RestController</code>, and <code>@RequestMapping</code> matter. Also be ready to explain what <code>CommandLineRunner</code> does during application startup.</div>
+    </div>
+  </section>
+
+  <section class="section section-grid">
+    <div class="card">
+      <h2>Starter files</h2>
+      <table>
+        <tr><th>File</th><th>Purpose</th></tr>
+        <tr><td>App.java</td><td>Application entry point and <code>CommandLineRunner</code> bootstrapping.</td></tr>
+        <tr><td>Address.java</td><td>Embeddable address value object with zip and city.</td></tr>
+        <tr><td>Customer.java</td><td>Customer root object that owns purchases and an embedded address.</td></tr>
+        <tr><td>Purchase.java</td><td>A dated purchase that belongs to one customer and holds products.</td></tr>
+        <tr><td>Product.java</td><td>Product line item with quantity and price, tied to a purchase.</td></tr>
+        <tr><td>StoreService.java</td><td>Imports purchase and refund rows and prints a report.</td></tr>
+        <tr><td>StoreRestController.java</td><td>The broken API that you must repair.</td></tr>
+        <tr><td>CustomerRepository.java</td><td>Your only repository for the API challenge.</td></tr>
+        <tr><td>StorePurchasesData.java</td><td>The built-in CSV-style data rows used on startup.</td></tr>
+      </table>
+      <div class="success" style="margin-top:14px"><strong>Run first:</strong> When the application starts, <code>App</code> calls <code>storeService.processPurchases()</code> and <code>storeService.printReport()</code>. That means the first victory is simple: get the app to boot cleanly and confirm data appears in H2.</div>
+    </div>
+    <div class="card">
+      <h2>Important URLs</h2>
+      <ul class="list">
+        <li><strong>Swagger UI:</strong> <code>http://localhost:8080/swagger-ui/index.html</code></li>
+        <li><strong>H2 Console:</strong> <code>http://localhost:8080/h2-console/</code></li>
+        <li><strong>Starter repo:</strong> <a href="https://github.com/scrumtuous/shapes">https://github.com/scrumtuous/shapes</a></li>
+      </ul>
+      <div class="warning"><strong>Current state:</strong> the API is intentionally broken. Only customer-by-name behaves correctly. The rest of the controller is your frontier repair mission.</div>
+      <h3 style="margin-top:16px">The endpoint roster</h3>
+      <table>
+        <tr><th>Resource area</th><th>Expected endpoints</th></tr>
+        <tr><td>Customers</td><td><code>/api/customers</code>, <code>/api/customers/by-name</code>, <code>/api/customers/{id}</code>, <code>/api/customers/{id}/purchases</code>, <code>/api/customers/{id}/refunds</code></td></tr>
+        <tr><td>Cities</td><td><code>/api/cities</code>, <code>/api/cities/{city}/purchases</code>, <code>/api/cities/{city}/refunds</code></td></tr>
+        <tr><td>Products</td><td><code>/api/products</code>, <code>/api/products/{productId}</code></td></tr>
+        <tr><td>Purchases</td><td><code>/api/purchases</code>, <code>/api/purchases/{purchaseId}</code></td></tr>
+        <tr><td>Refunds</td><td><code>/api/refunds</code>, <code>/api/refunds/{refundId}</code></td></tr>
+        <tr><td>Summary</td><td><code>/api/summary</code></td></tr>
+      </table>
+    </div>
+  </section>
+
+  
+
+  <section class="section two-col">
+    <div class="card">
+      <h2>Canvas UML: the object model at high noon</h2>
+      <p class="small">This is the model you will be navigating through <code>CustomerRepository</code>. Customer owns purchases. Purchase owns products. Customer also embeds Address. The API challenge gets easier as soon as you see this shape clearly.</p>
+      <div class="canvas-wrap"><canvas id="umlCanvas" width="920" height="520" aria-label="UML diagram canvas"></canvas></div>
+    </div>
+    <div class="card dark">
+      <h2>How to think through the API using one repository</h2>
+      <ul class="list">
+        <li>Find customers with <code>customerRepository.findAll()</code> or <code>findByName()</code>.</li>
+        <li>Filter in memory when the endpoint is asking about a city or a customer id.</li>
+        <li>From each <strong>Customer</strong>, navigate to <strong>purchases</strong>.</li>
+        <li>From each <strong>Purchase</strong>, navigate to <strong>products</strong>.</li>
+        <li>Refunds are represented by the state of the remaining product and purchase data after refunds are processed. Your mock data helper shows one possible output shape.</li>
+        <li>Use DTO-like maps or custom response objects if you want to avoid returning the raw graph directly.</li>
+      </ul>
+      <div class="warning"><strong>Serialization caution:</strong> Bidirectional JPA mappings can produce recursion or noisy JSON. It is completely fair to simplify the graph at the API boundary first, then tighten the model later.</div>
+    </div>
+  </section>
+
+  <section class="section section-grid">
+    <div class="card">
+      <h2>Challenge steps, detailed</h2>
+      <ol class="list">
+        <li><strong>Fix the bootstrapping.</strong> Add <code>@SpringBootApplication</code> to <code>App</code> so Spring Boot can start.</li>
+        <li><strong>Fix the model.</strong> Mark the entities and relationships so JPA can create the schema.</li>
+        <li><strong>Fix the service layer.</strong> Add <code>@Service</code> and <code>@Transactional</code> so the data-loading flow is managed correctly.</li>
+        <li><strong>Run the app.</strong> Use <code>mvn spring-boot:run</code>.</li>
+        <li><strong>Inspect the evidence.</strong> Use the H2 console and confirm customers, purchases, and products exist.</li>
+        <li><strong>Repair the REST controller.</strong> Add the controller annotations and fill in the null-returning methods.</li>
+        <li><strong>Test through Swagger.</strong> Use the UI to verify each endpoint.</li>
+        <li><strong>Add creates.</strong> Once reads work, add methods to create a customer, create an address, create a purchase, or add a product.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>Suggested GET mapping layout</h2>
+      <div class="code-wrap"><button class="copy-btn" data-copy="mappings">Copy</button><pre id="mappings">@RestController
+@RequestMapping("/api")
+public class StoreRestController {
+
+  @GetMapping
+  public Map&lt;String,String&gt; apiIndex() { ... }
+
+  @GetMapping("/customers")
+  public List&lt;Map&lt;String,Object&gt;&gt; customers(...) { ... }
+
+  @GetMapping("/customers/by-name")
+  public Map&lt;String,Object&gt; customerByName(...) { ... }
+
+  @GetMapping("/customers/{customerId:\d+}")
+  public Map&lt;String,Object&gt; customer(...) { ... }
+
+  @GetMapping("/customers/{customerId:\d+}/purchases")
+  @GetMapping("/customers/{customerId:\d+}/refunds")
+  @GetMapping("/cities")
+  @GetMapping("/cities/{city}/purchases")
+  @GetMapping("/cities/{city}/refunds")
+  @GetMapping("/products")
+  @GetMapping("/products/{productId}")
+  @GetMapping("/purchases")
+  @GetMapping("/purchases/{purchaseId}")
+  @GetMapping("/refunds")
+  @GetMapping("/refunds/{refundId}")
+  @GetMapping("/summary")
+}</pre></div>
+    </div>
+  </section>
+
+  <section class="section section-grid">
+    <div class="card dark">
+      <h2>Stretch goals after the shootout</h2>
+      <ul class="list">
+        <li>Add POST methods to create a <strong>Customer</strong>.</li>
+        <li>Add a method to attach an <strong>Address</strong> to a customer.</li>
+        <li>Add a method to create a <strong>Purchase</strong> for a customer.</li>
+        <li>Add a method to create a <strong>Product</strong> under a purchase.</li>
+        <li>Return cleaner response DTOs instead of raw maps.</li>
+        <li>Reintroduce any bidirectional mappings or serialization helpers you removed while debugging.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Victory conditions</h2>
+      <div class="checklist">
+        <div class="check">The app starts with <code>mvn spring-boot:run</code>.</div>
+        <div class="check">The H2 console shows imported data.</div>
+        <div class="check">Swagger UI loads and routes are visible.</div>
+        <div class="check">The broken GET endpoints now return real data.</div>
+        <div class="check">You can explain how the object graph is traversed from Customer to Product.</div>
+        <div class="check">You have at least one POST or create-style endpoint added.</div>
+      </div>
+      <div class="success" style="margin-top:14px"><strong>Teacher note:</strong> This page is intentionally a little dramatic. That is the point. The final lesson should feel like a showdown, but the reasoning remains practical and beginner-friendly.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="footer-banner">
+      <h2 style="margin:0 0 8px;font-family:Georgia,serif;color:#fff7d8">Final word from the sheriff</h2>
+      <p style="margin:0;line-height:1.65">Boot the app. Check the database. Fix the annotations. Make the API tell the truth. Use one repository, trust the object model, and turn this outlaw codebase into a well-behaved Spring Boot town.</p>
+    </div>
+  </section>
+</main>
+<footer>Spring Boot: The Wild REST · Final Showdown Challenge</footer>
+<script>
+const toggle=document.querySelector('.course-global-toggle');
+const links=document.querySelector('.course-global-links');
+if(toggle) toggle.addEventListener('click',()=>{const open=links.classList.toggle('open');toggle.setAttribute('aria-expanded', open ? 'true':'false');});
+document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+ const target=document.getElementById(btn.dataset.copy);
+ try{await navigator.clipboard.writeText(target.innerText); const t=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=t,1200);}catch(e){btn.textContent='Copy manually'; setTimeout(()=>btn.textContent='Copy',1500);}
+}));
+const canvas=document.getElementById('umlCanvas');
+const ctx=canvas.getContext('2d');
+function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=3;ctx.strokeStyle=stroke;ctx.stroke();}
+function drawClass(x,y,w,h,title,lines,bg='#fffdf6',border='#325c31'){roundRect(x,y,w,h,18,bg,border);ctx.fillStyle='#1d2c1e';ctx.font='bold 20px Segoe UI';ctx.fillText(title,x+16,y+30);ctx.beginPath();ctx.moveTo(x,y+42);ctx.lineTo(x+w,y+42);ctx.strokeStyle='#c7d9be';ctx.lineWidth=2;ctx.stroke();ctx.font='16px Consolas'; lines.forEach((line,i)=>ctx.fillText(line,x+16,y+70+i*26));}
+function arrow(x1,y1,x2,y2,label){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle='#8a5f2f';ctx.lineWidth=4;ctx.stroke();const ang=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-16*Math.cos(ang-Math.PI/6), y2-16*Math.sin(ang-Math.PI/6));ctx.lineTo(x2-16*Math.cos(ang+Math.PI/6), y2-16*Math.sin(ang+Math.PI/6));ctx.closePath();ctx.fillStyle='#8a5f2f';ctx.fill(); if(label){ctx.fillStyle='#6a4321';ctx.font='bold 15px Segoe UI';ctx.fillText(label,(x1+x2)/2-18,(y1+y2)/2-10);}}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#f8f5e7';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(109,179,63,.08)'; for(let i=0;i<12;i++){ctx.beginPath();ctx.arc(60+i*80, 60+(i%3)*120, 26, 0, Math.PI*2); ctx.fill();}
+ drawClass(40,80,240,180,'Customer',['+ id : Long','+ name : String','+ address : Address','+ purchases : List<Purchase>']);
+ drawClass(340,80,240,145,'Address',['+ zip : String','+ city : String'],'#fff8ef','#8a5f2f');
+ drawClass(40,320,260,165,'Purchase',['+ id : Long','+ date : LocalDate','+ customer : Customer','+ products : List<Product>'],'#eff8ea','#4c7e3d');
+ drawClass(380,305,260,180,'Product',['+ id : Long','+ name : String','+ quantity : int','+ price : double','+ purchase : Purchase'],'#fff8ef','#8a5f2f');
+ roundRect(690,94,190,135,18,'#213320','#6db33f'); ctx.fillStyle='#f8ffe8'; ctx.font='bold 19px Segoe UI'; ctx.fillText('Repository Rule', 718, 126); ctx.font='16px Segoe UI'; ['Use CustomerRepository only','Traverse customer -> purchase','Then purchase -> product'].forEach((t,i)=>ctx.fillText('• '+t,710,158+i*24));
+ roundRect(680,290,200,170,18,'#fff1dc','#8a5f2f'); ctx.fillStyle='#5a371d'; ctx.font='bold 19px Segoe UI'; ctx.fillText('Annotations', 733, 322); ctx.font='16px Segoe UI'; ['@Entity','@OneToMany','@ManyToOne','@Embedded','@RestController'].forEach((t,i)=>ctx.fillText('• '+t,702,352+i*23));
+ arrow(280,155,340,155,'embeds');
+ arrow(160,260,170,320,'1..*');
+ arrow(300,400,380,400,'1..*');
+ arrow(460,305,220,220,'many-to-one');
+ ctx.font='28px Segoe UI Emoji'; ctx.fillText('🤠', 800, 65); ctx.fillText('👽', 842, 260); ctx.fillText('🦾🐎', 772, 274); ctx.fillText('🐕', 70, 60); ctx.fillText('🌀', 616, 84);
+ ctx.fillStyle='#214523'; ctx.font='bold 17px Segoe UI'; ctx.fillText('Object model for the showdown', 36, 40);
+}
+draw();
+</script>
+<footer class="course-resource-footer">
+  <strong>Course resources</strong>
+  <div class="course-resource-links">
+    <a href="https://theserverside.com/" target="_blank" rel="noopener">TheServerSide.com</a>
+    <a href="https://github.com/scrumtuous/shapes" target="_blank" rel="noopener">Starter Code on GitHub</a>
+    <a href="https://start.spring.io/" target="_blank" rel="noopener">Spring Initializr</a>
+  </div>
+</footer>
+
+<script id="course-unified-nav-script-v3">
+(() => {
+  const nav = document.querySelector('.course-global-nav');
+  if (!nav) return;
+  const toggle = nav.querySelector('.course-global-toggle');
+  const links = nav.querySelector('.course-global-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('course-global-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  nav.querySelectorAll('.course-global-group').forEach(group => {
+    group.addEventListener('toggle', () => {
+      if (!group.open) return;
+      nav.querySelectorAll('.course-global-group').forEach(other => {
+        if (other !== group) other.removeAttribute('open');
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
