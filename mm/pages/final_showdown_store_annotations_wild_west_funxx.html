@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Final Showdown Challenge | Spring Boot Wild REST</title>
+<style>
+:root {
+  --bg:#0f140f; --panel:#1b2619; --panel2:#22331d; --spring:#6db33f; --spring2:#96da65;
+  --dust:#efe4c7; --paper:#fff8e7; --wood:#6f472a; --wood2:#925f37; --gold:#f4cb70; --danger:#d86845;
+  --sky:#cce7ff; --ink:#182117; --muted:#d8e5d0; --white:#ffffff; --shadow:0 20px 50px rgba(0,0,0,.28);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:#f5f7ef;background:linear-gradient(180deg,#0d110d 0,#152216 18%,#213322 100%);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.course-global-nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#122013,#0b110b);border-bottom:2px solid rgba(255,255,255,.08);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.course-global-inner{width:min(1380px,95vw);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0}
+.course-global-brand{display:flex;align-items:center;gap:12px;color:#fff}
+.course-global-logo{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#6db33f;color:#112013;font-size:1.5rem;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+.course-global-brand strong{display:block;font-size:1.12rem}
+.course-global-brand small{display:block;color:#cfe9c1}
+.course-global-toggle{display:none;border:0;background:#6db33f;color:#0c160d;border-radius:10px;padding:8px 12px;font-size:1.2rem;font-weight:900}
+.course-global-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.course-global-links>a,.course-global-group summary{padding:10px 14px;border-radius:12px;color:#eff8ea;font-weight:800;list-style:none;cursor:pointer}
+.course-global-home:hover,.course-global-quiz:hover,.course-global-group summary:hover{background:rgba(255,255,255,.08)}
+.course-global-dropdown{position:absolute;display:none;min-width:300px;background:#f8fbf4;color:#143016;padding:12px;border-radius:16px;box-shadow:var(--shadow);margin-top:10px}
+.course-global-group{position:relative}
+.course-global-group[open] .course-global-dropdown{display:grid;gap:8px}
+.course-global-dropdown a{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;font-weight:700}
+.course-global-dropdown a:hover,.course-global-dropdown a.is-active{background:#e3f4d8}
+.course-global-number{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#18341c;color:#fff;font-size:.86rem}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 18% 25%, rgba(255,223,136,.32) 0 12%, transparent 13%),radial-gradient(circle at 82% 18%, rgba(125,200,80,.35) 0 11%, transparent 12%),linear-gradient(180deg,#244024 0,#1b2f19 55%,#132113 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.18),rgba(0,0,0,.18)), repeating-linear-gradient(90deg, transparent 0 160px, rgba(255,255,255,.015) 160px 162px)}
+.hero-inner{position:relative;width:min(1380px,95vw);margin:auto;padding:30px 0 28px;display:grid;grid-template-columns:1.08fr .92fr;gap:20px;align-items:stretch}
+.scene{background:linear-gradient(180deg,#dfeef7 0 41%,#a1c86a 41% 66%,#5f8140 66% 100%);border-radius:30px;border:4px solid rgba(255,255,255,.3);box-shadow:var(--shadow);position:relative;overflow:hidden;min-height:590px}
+.scene .sun{position:absolute;right:38px;top:28px;width:106px;height:106px;border-radius:50%;background:radial-gradient(circle,#fff7be 0,#ffd76a 54%,#ffb84b 100%);box-shadow:0 0 55px rgba(255,222,120,.55)}
+.scene .mesa{position:absolute;left:-3%;bottom:49%;width:45%;height:16%;background:#b56c42;border-radius:50% 50% 0 0;filter:brightness(.92)}
+.scene .mesa2{position:absolute;right:6%;bottom:52%;width:24%;height:11%;background:#9f5635;border-radius:42% 42% 0 0}
+.scene .ground{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#6fa54d,#436132 55%,#2f4424)}
+.scene .weed{position:absolute;bottom:18%;left:50%;font-size:3.2rem;animation:spinweed 7s linear infinite;transform-origin:center}
+@keyframes spinweed{to{transform:rotate(360deg)}}
+.scene .dust{position:absolute;bottom:17%;right:18%;width:140px;height:80px;background:radial-gradient(circle,rgba(255,244,204,.9) 0,rgba(255,244,204,.22) 70%,transparent 72%);filter:blur(2px);animation:dust 2.6s ease-in-out infinite alternate}
+@keyframes dust{from{transform:translateX(0)}to{transform:translateX(18px)}}
+.scene .cowboy{position:absolute;left:4%;bottom:8%;font-size:14.2rem;filter:drop-shadow(0 18px 18px rgba(0,0,0,.22));animation:bob 3.4s ease-in-out infinite}
+.scene .cowboy2{position:absolute;left:23%;bottom:10%;font-size:8rem;animation:bob 3.8s ease-in-out infinite .2s}
+.scene .alien{position:absolute;right:5%;bottom:9%;font-size:8rem;animation:bob 3.2s ease-in-out infinite .4s}
+.scene .mech{position:absolute;right:24%;bottom:10%;font-size:11rem;animation:bob 3.6s ease-in-out infinite .1s}
+.scene .dog{position:absolute;left:44%;bottom:9%;font-size:7rem;animation:bob 3.1s ease-in-out infinite .15s}
+.scene .ladder{position:absolute;left:40%;bottom:36%;width:52px;height:150px;border-left:6px solid #8a5f2f;border-right:6px solid #8a5f2f;transform:rotate(-10deg);opacity:.9}
+.scene .ladder::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 18px,#8a5f2f 18px 24px)}
+.scene .cube{position:absolute;right:18%;top:15%;width:82px;height:82px;border-radius:12px;background:conic-gradient(#ff595e 0 25%,#ffca3a 0 50%,#8ac926 0 75%,#1982c4 0);transform:rotate(17deg);box-shadow:0 12px 25px rgba(0,0,0,.25)}
+.scene .gunsmoke{position:absolute;left:30%;bottom:29%;font-size:5.5rem;opacity:.65;filter:blur(1px);animation:smoke 4s ease-in-out infinite}
+@keyframes smoke{0%{transform:translateY(0) scale(1);opacity:.3}50%{opacity:.85}100%{transform:translateY(-40px) scale(1.2);opacity:.2}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-panel{position:relative;background:linear-gradient(180deg,#fff8e9 0,#fff0cf 100%);color:#1b2619;border-radius:30px;padding:26px 26px 22px;border:4px solid rgba(255,255,255,.28);box-shadow:var(--shadow)}
+.kicker{display:inline-flex;gap:10px;align-items:center;padding:8px 12px;background:#234223;color:#edffe8;border-radius:999px;font-size:.84rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2.8rem,5vw,5rem);line-height:.93;margin:16px 0 14px;color:#214523;text-shadow:2px 2px 0 #f7e2a0}
+.hero .tagline{font-size:1.18rem;line-height:1.55;max-width:62ch}
+.chip-row{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.chip{padding:9px 12px;border-radius:999px;background:#e3f6d8;border:2px solid #bdddaf;font-weight:800}
+.callout{background:#fff;border-left:8px solid var(--spring);border-radius:18px;padding:14px 16px;box-shadow:0 12px 28px rgba(0,0,0,.12);margin-top:16px}
+.callout strong{color:#214523}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;background:#214523;color:#fff;font-weight:900;box-shadow:0 10px 22px rgba(33,69,35,.24)}
+.btn.alt{background:#8f5d34}
+main{width:min(1380px,95vw);margin:auto;padding:26px 0 44px}
+.section{margin:20px 0 28px}
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:linear-gradient(180deg,#fffdf8,#f6f0de);color:#162117;border-radius:24px;padding:20px;border:2px solid rgba(154,124,74,.35);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card.dark{background:linear-gradient(180deg,#1e2d1d,#172117);color:#eef7ec;border-color:#2c4b2a}
+.card h2{margin:0 0 12px;color:#214523;font-size:2rem;font-family:Georgia,serif}
+.card.dark h2,.card.dark h3{color:#fff5d3}
+.card h3{margin:0 0 10px;color:#214523;font-size:1.3rem}
+.list{padding-left:1.1rem;line-height:1.64}
+.list li{margin:.36rem 0}
+pre{margin:0;background:#121a13;color:#eff8ec;border:3px solid #334635;border-radius:18px;padding:16px;overflow:auto;white-space:pre-wrap;font:14px/1.48 Consolas,monospace}
+.code-wrap{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;border:0;background:#6db33f;color:#102010;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer}
+.two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{background:#fff;border:2px solid #d8e8d4;border-radius:16px;padding:14px;font-weight:800;box-shadow:0 10px 18px rgba(0,0,0,.06)}
+.canvas-wrap{background:#fff;border-radius:24px;padding:12px;border:2px solid rgba(154,124,74,.35);box-shadow:var(--shadow)}
+#umlCanvas{width:100%;height:520px;background:linear-gradient(180deg,#f5faef,#f8f4e8);border-radius:18px;display:block}
+table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #d9e6d1;border-radius:18px;overflow:hidden}
+th,td{padding:12px 13px;vertical-align:top;text-align:left;border-bottom:1px solid #e5eee0}
+th{background:#214523;color:#fff}tr:last-child td{border-bottom:none}
+.note{background:#fff6d9;border:2px solid #efcf7a;border-radius:18px;padding:14px}
+.warning{background:#ffe9df;border:2px solid #ec9b79;border-radius:18px;padding:14px}
+.success{background:#e8f8df;border:2px solid #9ed184;border-radius:18px;padding:14px}
+.footer-banner{background:linear-gradient(90deg,#214523,#3e6f35);color:#fff;border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+footer{padding:18px 0 30px;text-align:center;color:#d8e5d0}
+.stamp{position:absolute;right:16px;top:14px;padding:9px 10px;border:3px dashed rgba(255,255,255,.35);border-radius:14px;color:#fff3c9;font-weight:900;transform:rotate(4deg)}
+.small{font-size:.93rem;line-height:1.55}
+@media (max-width:1100px){
+  .hero-inner,.section-grid,.two-col,.checklist{grid-template-columns:1fr}
+  .course-global-toggle{display:inline-block}
+  .course-global-links{display:none;position:absolute;left:2.5vw;right:2.5vw;top:70px;background:#102010;padding:14px;border-radius:18px;box-shadow:var(--shadow)}
+  .course-global-links.open{display:grid}
+}
+</style>
+<style id="course-unified-nav-v3">
+.course-global-nav{position:sticky!important;top:0!important;z-index:9999!important;background:linear-gradient(180deg,#15371c,#0b2210)!important;border-bottom:2px solid rgba(255,255,255,.12)!important;box-shadow:0 10px 24px rgba(0,0,0,.22)!important;font-family:Inter,Segoe UI,Arial,sans-serif!important}
+.course-global-inner{width:min(1420px,96vw)!important;margin:auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:10px 0!important;position:relative!important}
+.course-global-brand{display:flex!important;align-items:center!important;gap:10px!important;color:#fff!important;text-decoration:none!important;min-width:250px!important}
+.course-global-logo{width:44px!important;height:44px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#6db33f!important;color:#0d1f10!important;font-size:1.4rem!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)!important;flex:0 0 auto!important}
+.course-global-brand strong{display:block!important;font-size:1.02rem!important;line-height:1.1!important;color:#fff!important}
+.course-global-brand small{display:block!important;color:#d8ecd2!important;font-size:.72rem!important;line-height:1.25!important;margin-top:2px!important}
+.course-global-toggle{display:none!important;border:0!important;background:#6db33f!important;color:#0b1f0e!important;border-radius:10px!important;padding:8px 11px!important;font-size:1.15rem!important;font-weight:900!important;cursor:pointer!important}
+.course-global-links{display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important;justify-content:flex-end!important}
+.course-global-links>a,.course-global-group>summary{display:block!important;color:#f5fff2!important;text-decoration:none!important;font-weight:800!important;font-size:.79rem!important;padding:10px 10px!important;border-radius:11px!important;cursor:pointer!important;list-style:none!important;white-space:nowrap!important}
+.course-global-group>summary::-webkit-details-marker{display:none!important}
+.course-global-home:hover,.course-global-quiz:hover,.course-global-group>summary:hover,.course-global-home.is-active,.course-global-quiz.is-active{background:rgba(255,255,255,.14)!important}
+.course-global-group{position:relative!important;margin:0!important}
+.course-global-dropdown{position:absolute!important;top:calc(100% + 9px)!important;left:0!important;display:none!important;min-width:295px!important;background:#f8fbf4!important;color:#15351b!important;padding:10px!important;border-radius:16px!important;box-shadow:0 18px 45px rgba(0,0,0,.24)!important;border:1px solid #d8e9d1!important}
+.course-global-group[open]>.course-global-dropdown{display:grid!important;gap:5px!important}
+.course-global-dropdown a{display:flex!important;gap:9px!important;align-items:center!important;padding:9px 10px!important;border-radius:11px!important;color:#15351b!important;text-decoration:none!important;font-weight:750!important;font-size:.86rem!important;line-height:1.2!important}
+.course-global-dropdown a:hover,.course-global-dropdown a.is-active{background:#e2f4d7!important;color:#173c1c!important}
+.course-global-number{display:inline-grid!important;place-items:center!important;width:25px!important;height:25px!important;border-radius:50%!important;background:#214a28!important;color:#fff!important;font-size:.77rem!important;flex:0 0 auto!important}
+.course-global-quiz{background:#6db33f!important;color:#0e2010!important}
+@media (max-width:1180px){
+ .course-global-toggle{display:inline-block!important}
+ .course-global-links{display:none!important;position:absolute!important;left:0!important;right:0!important;top:calc(100% + 7px)!important;background:#102a15!important;padding:12px!important;border-radius:16px!important;box-shadow:0 18px 38px rgba(0,0,0,.28)!important;align-items:stretch!important}
+ .course-global-links.course-global-open{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+ .course-global-group{position:static!important}
+ .course-global-dropdown{position:static!important;margin-top:6px!important;min-width:0!important;box-shadow:none!important}
+ .course-global-links>a,.course-global-group>summary{font-size:.9rem!important}
+}
+@media (max-width:650px){
+ .course-global-brand small{display:none!important}
+ .course-global-brand{min-width:0!important}
+ .course-global-links.course-global-open{grid-template-columns:1fr!important}
+}
+.course-resource-footer{margin-top:28px!important;background:linear-gradient(180deg,#132919,#0b1b0f)!important;color:#edf8e9!important;border-top:3px solid #6db33f!important;padding:24px 18px 28px!important;font-family:Inter,Segoe UI,Arial,sans-serif!important;text-align:center!important}
+.course-resource-footer strong{display:block!important;margin-bottom:10px!important;font-size:1rem!important;color:#fff8d9!important}
+.course-resource-footer .course-resource-links{display:flex!important;gap:12px!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important}
+.course-resource-footer a{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:9px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.09)!important;color:#f2fff0!important;text-decoration:none!important;font-weight:800!important}
+.course-resource-footer a:hover{background:#6db33f!important;color:#102010!important}
+</style>
+</head>
+<body>
+<nav aria-label="Course navigation" class="course-global-nav"><div class="course-global-inner"><a class="course-global-brand" href="../index.html"><span class="course-global-logo">🥾</span><span><strong>Spring Boot: The Wild REST</strong><small>Boots, APIs, persistence, security, and a lot of Spring</small></span></a><button aria-expanded="false" aria-label="Toggle course navigation" class="course-global-toggle" type="button">☰</button><div class="course-global-links"><a class="course-global-home" href="../index.html">Home</a><details class="course-global-group"><summary>Foundations</summary><div class="course-global-dropdown"><a class="" href="microservices_vs_monoliths_wild_rest_fun.html"><span class="course-global-number">1</span>Microservices vs Monoliths</a><a class="" href="spring_inversion_of_control_wild_rest_fun.html"><span class="course-global-number">2</span>Inversion of Control</a><a class="" href="spring_dependency_injection_wild_rest_fun.html"><span class="course-global-number">3</span>Dependency Injection</a><a class="" href="spring_layered_architecture_dallas_cheer_fun.html"><span class="course-global-number">4</span>Layered Architecture</a></div></details><details class="course-global-group"><summary>Persistence</summary><div class="course-global-dropdown"><a class="" href="spring_data_jpa_magic_numbers_dallas_cheer_fun.html"><span class="course-global-number">5</span>Spring Data JPA + H2</a><a class="" href="jpa_annotations_dallas_cheer_fun.html"><span class="course-global-number">6</span>JPA Annotations + UML</a><a class="" href="mybatis_persistence_wild_west_fun.html"><span class="course-global-number">7</span>Persistence with MyBatis</a><a class="" href="mybatis_in_context_wild_west_fun.html"><span class="course-global-number">8</span>MyBatis vs Spring Data JPA</a></div></details><details class="course-global-group"><summary>REST &amp; API Design</summary><div class="course-global-dropdown"><a class="" href="rest_api_design_principles_boot_camp_fun.html"><span class="course-global-number">9</span>REST API Design Principles</a><a class="" href="contract_first_openapi_boot_camp_fun.html"><span class="course-global-number">10</span>Contract-First OpenAPI</a></div></details><details class="course-global-group"><summary>Security &amp; Reliability</summary><div class="course-global-dropdown"><a class="" href="validation_error_handling_law_order_wild_west_fun.html"><span class="course-global-number">11</span>Validation + Error Handling</a><a class="" href="jwt_security_law_order_wild_west_fun.html"><span class="course-global-number">12</span>JWT Security</a></div></details><details class="course-global-group" open=""><summary>Capstone</summary><div class="course-global-dropdown"><a class="is-active" href="final_showdown_store_annotations_wild_west_fun.html"><span class="course-global-number">13</span>Final Showdown Challenge</a></div></details><a class="course-global-quiz" href="https://theserverside.com/fightquiz">Quiz</a></div></div></nav>
+<header class="hero">
+<div class="hero-inner">
+<div aria-hidden="true" class="scene">
+<div class="sun"></div>
+<div class="mesa"></div><div class="mesa2"></div><div class="ground"></div>
+<div class="ladder"></div><div class="cube"></div>
+<div class="cowboy">🤠</div>
+<div class="cowboy2">🐎</div>
+<div class="dog">🐕</div>
+<div class="mech">🦾🐎</div>
+<div class="alien">👽</div>
+<div class="gunsmoke">💨</div>
+<div class="dust"></div>
+<div class="weed">🌀</div>
+</div>
+<div class="hero-panel">
+<span class="kicker">🤠 Final challenge · Copilot at high noon</span>
+<h1>The Final REST Showdown</h1>
+<p class="tagline">
+  The database is loaded, the JPA mappings are already in place, and the starter REST controller shows one working repository-backed example.
+  Your job is to build the real API twice with GitHub Copilot: first under a strict one-repository constraint, then again using a more conventional Spring Data design.
+</p>
+<div class="chip-row">
+<span class="chip">GitHub Copilot</span>
+<span class="chip">Spring Data JPA</span>
+<span class="chip">REST + OpenAPI</span>
+<span class="chip">V1 vs V2</span>
+<span class="chip">No Streams in V1</span>
+</div>
+<div class="callout">
+<strong>Start here:</strong> run <code>mvn spring-boot:run</code>, confirm the imported data in H2, and inspect the existing
+  <code>/customers/by-name</code> method. That method is only a reference example. You do <strong>not</strong> need to recreate it in V1 or V2.
+</div>
+<div class="cta-row">
+<a class="btn" href="#challenge">Jump to the challenge</a>
+<a class="btn alt" href="#v2">Skip ahead to V2</a>
+</div>
+</div>
+</div>
+</header>
+<main>
+<section class="section two-col" id="challenge">
+<div class="card">
+<h2>The challenge</h2>
+<p>
+      The model, JPA mappings, repository, startup loader, H2 database, and starter REST code are already provided.
+      This exercise is now entirely about <strong>building the API with Copilot</strong> and understanding the design decisions Copilot proposes.
+    </p>
+<ul class="list">
+<li><strong>V1:</strong> create a new controller at <code>/v1</code> and use <code>CustomerRepository</code> as the only repository.</li>
+<li><strong>V1:</strong> navigate from Customer → Purchase → Product with ordinary Java loops.</li>
+<li><strong>V1:</strong> do not use streams, lambdas, Collectors, or additional repository classes.</li>
+<li><strong>V2:</strong> create a second controller at <code>/v2</code> and remove the repository restriction.</li>
+<li><strong>V2:</strong> let Copilot propose repositories, DTOs, services, queries, validation, and a better persisted refund model.</li>
+<li><strong>Both versions:</strong> keep <code>openapi.yaml</code> synchronized with the API you actually build.</li>
+</ul>
+</div>
+<div class="card dark">
+<div class="stamp">THE RULES</div>
+<h2>Rules of engagement</h2>
+<div class="checklist">
+<div class="check"><strong>V1:</strong> only <code>CustomerRepository</code> may access persistence.</div>
+<div class="check"><strong>V1:</strong> ordinary loops only. No streams or lambdas.</div>
+<div class="check"><strong>V1:</strong> Copilot may add new <code>find...</code> methods to <code>CustomerRepository</code>.</div>
+<div class="check"><strong>V2:</strong> Copilot may create any sensible repository or supporting type.</div>
+<div class="check"><code>/customers/by-name</code> is reference code only. Do not recreate it.</div>
+<div class="check">Never invent refund history that the current model did not persist.</div>
+</div>
+<div class="note" style="margin-top:14px;color:#1b2619">
+<strong>Core idea:</strong> V1 asks, “How much can I do through one aggregate root?”
+      V2 asks, “Now that I understand the object graph, how should this application normally be designed?”
+    </div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>Starter project</h2>
+<table>
+<tr><th>File</th><th>Role in this exercise</th></tr>
+<tr><td>Customer.java</td><td>Root object. Contains Address and a collection of Purchase objects.</td></tr>
+<tr><td>Purchase.java</td><td>Belongs to a Customer and contains Product objects.</td></tr>
+<tr><td>Product.java</td><td>Line item with name, quantity, price, and parent Purchase.</td></tr>
+<tr><td>CustomerRepository.java</td><td>The only persistence entry point allowed in V1.</td></tr>
+<tr><td>StoreRestController.java</td><td>Reference controller. Its by-name method demonstrates real repository access.</td></tr>
+<tr><td>StoreRestMockData.java</td><td>Old stub data. Do not use it in your new V1 or V2 controller.</td></tr>
+<tr><td>StoreService.java</td><td>Loads the store data and also exposes the important refund-history limitation.</td></tr>
+<tr><td>openapi.yaml</td><td>The API contract you must update for V1 and V2.</td></tr>
+</table>
+<div class="success" style="margin-top:14px">
+<strong>Run first:</strong> use <code>mvn spring-boot:run</code>, open H2, and confirm that customers, purchases, and products were loaded before you begin changing the REST API.
+    </div>
+</div>
+<div class="card">
+<h2>Important URLs</h2>
+<ul class="list">
+<li><strong>Swagger UI:</strong> <code>http://localhost:8080/swagger-ui/index.html</code></li>
+<li><strong>H2 Console:</strong> <code>http://localhost:8080/h2-console/</code></li>
+<li><strong>V1 root:</strong> <code>http://localhost:8080/v1</code></li>
+<li><strong>V2 root:</strong> <code>http://localhost:8080/v2</code></li>
+</ul>
+<div class="warning">
+<strong>Reference only:</strong> inspect the existing customer-by-name method to see how a controller calls
+      <code>CustomerRepository</code> and returns 404 when a customer is missing. Use the existing by-name method only as a reference example; do not reimplement it in either version.
+    </div>
+</div>
+</section>
+<section class="section two-col">
+<div class="card">
+<h2>Object model at high noon</h2>
+<p class="small">
+      V1 is built around this path. You begin with <code>CustomerRepository</code>, obtain Customer objects,
+      then navigate their purchases and each purchase's products.
+    </p>
+<div class="canvas-wrap"><canvas aria-label="UML diagram canvas" height="520" id="umlCanvas" width="920"></canvas></div>
+</div>
+<div class="card dark">
+<h2>V1 Copilot starter prompt</h2>
+<div class="code-wrap"><button class="copy-btn" data-copy="v1prompt">Copy</button><pre id="v1prompt">I am creating a Spring Boot REST API using JPA.
+
+For Version 1, I am only allowed to access persistence through CustomerRepository.
+
+Customer contains purchases and each Purchase contains products.
+
+Do not create ProductRepository, PurchaseRepository, RefundRepository, EntityManager code, or any other repository.
+
+Do not use StoreRestMockData.
+
+When I need purchases or products, start with CustomerRepository and navigate the associated Java objects.
+
+Do not use streams, lambdas, Collectors, map(), filter(), flatMap(), or reduce().
+
+Use ordinary for loops, if statements, ArrayList and LinkedHashMap so the code is easy for beginning Java programmers to understand.
+
+You may add useful Spring Data find methods to CustomerRepository.
+
+Do not implement customers/by-name. That existing method is only a reference example.</pre></div>
+</div>
+</section>
+<section class="section" id="v1">
+<div class="card">
+<h2>V1 · The one-repository challenge</h2>
+<p>Create a new controller:</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="v1controller">Copy</button><pre id="v1controller">@RestController
+@RequestMapping("/v1")
+public class MyRestController {
+
+    private final CustomerRepository customerRepository;
+
+    public MyRestController(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+}</pre></div>
+<h3 style="margin-top:18px">V1 endpoint roster</h3>
+<table>
+<tr><th>Area</th><th>Implement</th><th>Main learning goal</th></tr>
+<tr><td>Customers</td><td><code>GET /v1/customers</code><br/><code>GET /v1/customers/{customerId}</code><br/><code>GET /v1/customers/{customerId}/purchases</code></td><td><code>findAll()</code>, <code>findById()</code>, object navigation</td></tr>
+<tr><td>Cities</td><td><code>GET /v1/cities</code><br/><code>GET /v1/cities/{city}/customers</code><br/><code>GET /v1/cities/{city}/purchases</code></td><td>Filtering and grouping with loops</td></tr>
+<tr><td>Products</td><td><code>GET /v1/products</code><br/><code>GET /v1/products/{productId}</code></td><td>Nested Customer → Purchase → Product traversal</td></tr>
+<tr><td>Purchases</td><td><code>GET /v1/purchases</code><br/><code>GET /v1/purchases/{purchaseId}</code></td><td>Searching nested collections without a PurchaseRepository</td></tr>
+<tr><td>Summary</td><td><code>GET /v1/summary</code></td><td>Calculate counts and totals manually</td></tr>
+<tr><td>Refunds</td><td>Analyze first; do not invent results</td><td>Recognize when the data model cannot answer the API question</td></tr>
+</table>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V1 · Customers and cities</h2>
+<ol class="list">
+<li>Implement <code>GET /v1/customers</code> using <code>customerRepository.findAll()</code>.</li>
+<li>Support optional <code>?city=Boston</code> filtering with a normal loop.</li>
+<li>Ask Copilot whether <code>findByAddressCityIgnoreCase(...)</code> would be a useful derived query in <code>CustomerRepository</code>.</li>
+<li>Implement <code>GET /v1/customers/{customerId}</code> using <code>findById(...)</code> and 404 handling.</li>
+<li>Implement <code>GET /v1/cities</code> with unique city names and customer counts.</li>
+<li>Implement <code>GET /v1/cities/{city}/customers</code>.</li>
+<li>Implement <code>GET /v1/cities/{city}/purchases</code> by finding customers in the city and then walking their purchases.</li>
+</ol>
+</div>
+<div class="card">
+<h2>V1 · Purchases and products</h2>
+<ol class="list">
+<li>Implement <code>GET /v1/customers/{customerId}/purchases</code>.</li>
+<li>Implement <code>GET /v1/purchases</code> with optional <code>customerId</code> and <code>city</code> filters.</li>
+<li>Implement <code>GET /v1/purchases/{purchaseId}</code> using nested loops.</li>
+<li>Implement <code>GET /v1/products</code> with optional case-insensitive <code>?name=mouse</code> filtering.</li>
+<li>Implement <code>GET /v1/products/{productId}</code> by walking customers, purchases, then products.</li>
+<li>Calculate purchase totals as <code>quantity * price</code> with loops.</li>
+</ol>
+<div class="note">
+      Ask Copilot whether methods such as <code>findDistinctByPurchasesId(...)</code> or
+      <code>findDistinctByPurchasesProductsId(...)</code> could make lookup easier while still keeping
+      <code>CustomerRepository</code> as the only repository.
+    </div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card dark">
+<h2>V1 · Response design challenge</h2>
+<p>For at least three endpoints, ask Copilot to compare these approaches:</p>
+<pre>return customer;</pre>
+<p>versus a deliberately shaped response:</p>
+<pre>Map&lt;String, Object&gt; response = new LinkedHashMap&lt;&gt;();
+response.put("id", customer.id);
+response.put("name", customer.name);
+response.put("zip", customer.address.zip);
+response.put("city", customer.address.city);</pre>
+<ul class="list">
+<li>Ask what JSON each approach produces.</li>
+<li>Ask whether bidirectional JPA links can cause recursive or noisy JSON.</li>
+<li>Ask why a REST representation does not need to match a JPA entity.</li>
+</ul>
+</div>
+<div class="card">
+<h2>V1 · The refund trap</h2>
+<p>
+      Do not immediately implement the refund endpoints. Ask Copilot whether the current database actually stores historical refunds.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="refundprompt">Copy</button><pre id="refundprompt">Examine Customer, Purchase, Product and the existing refund-processing code.
+
+Can the persisted database reconstruct historical refunds after the refund has already been applied?
+
+Do not invent data. Explain what information is lost and what the REST API should do in V1.</pre></div>
+<div class="warning" style="margin-top:14px">
+      A partial refund reduces Product.quantity. A full refund can remove the Product entirely.
+      Current state is not the same thing as historical transaction data.
+    </div>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>V1 · Ask about write operations</h2>
+<p>For every GET endpoint, ask Copilot whether a sensible POST, PUT, or DELETE operation belongs with that resource.</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="writeprompt">Copy</button><pre id="writeprompt">Is there a sensible POST, PUT or DELETE operation related to this resource?
+
+Do not add an operation simply because REST supports that verb.
+
+Only recommend an operation if it makes sense for the domain.
+
+For V1, any implementation must still use CustomerRepository as the only repository.</pre></div>
+<p>Reasonable examples may include:</p>
+<table>
+<tr><th>Operation</th><th>V1 idea</th></tr>
+<tr><td><code>POST /v1/customers</code></td><td>Create a Customer and save with CustomerRepository.</td></tr>
+<tr><td><code>PUT /v1/customers/{id}</code></td><td>Find the Customer, update it, save the Customer.</td></tr>
+<tr><td><code>POST /v1/customers/{id}/purchases</code></td><td>Find the Customer, add a Purchase, save the Customer.</td></tr>
+<tr><td><code>POST /v1/customers/{id}/purchases/{purchaseId}/products</code></td><td>Walk to the Purchase, add a Product, save the Customer.</td></tr>
+<tr><td><code>PUT /v1/products/{productId}</code></td><td>Walk the graph, update the Product, save the owning Customer.</td></tr>
+<tr><td><code>DELETE /v1/products/{productId}</code></td><td>Walk the graph, remove the Product, save the Customer.</td></tr>
+</table>
+</div>
+</section>
+<section class="section" id="v2">
+<div class="card dark">
+<div class="stamp">ROUND TWO</div>
+<h2>V2 · Remove the repository restriction</h2>
+<p>
+      V1 proves that related data can be reached through the Customer object graph.
+      V2 asks how the application should be designed when that artificial restriction is removed.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="v2prompt">Copy</button><pre id="v2prompt">I already implemented V1 using CustomerRepository as the only repository.
+
+For V2, remove that artificial restriction.
+
+Create a new controller rooted at /v2.
+
+You may create additional repositories, services, DTOs, request objects, response objects, derived queries, JPQL queries, validation, transaction boundaries, and new persistent entities when they improve the design.
+
+Do not change things merely to make the architecture bigger.
+
+Explain why each new abstraction is useful.
+
+Do not implement customers/by-name. That existing method is only a reference example.</pre></div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Let Copilot propose the architecture</h2>
+<p>Before asking for code, ask Copilot what it would introduce and why.</p>
+<ul class="list">
+<li><code>PurchaseRepository</code>?</li>
+<li><code>ProductRepository</code>?</li>
+<li><code>RefundRepository</code>?</li>
+<li>Service layer?</li>
+<li>DTOs or Java records?</li>
+<li>Request objects?</li>
+<li>Custom queries?</li>
+</ul>
+<div class="note">
+      Do not automatically accept every class Copilot proposes. Ask:
+      <strong>“What problem does this class solve, and is it worth the extra abstraction?”</strong>
+</div>
+</div>
+<div class="card">
+<h2>V2 · Build resource-specific repositories</h2>
+<p>Compare V1 traversal with direct V2 repository access.</p>
+<pre>// V1 idea
+for (Customer customer : customerRepository.findAll()) {
+    for (Purchase purchase : customer.purchases) {
+        // locate a purchase
+    }
+}
+
+// V2 idea
+purchaseRepository.findById(purchaseId);</pre>
+<p>Ask Copilot to create useful query methods such as:</p>
+<pre>findByCustomerId(...)
+findByCustomerAddressCityIgnoreCase(...)
+findByNameContainingIgnoreCase(...)</pre>
+<p>Then ask which are derived queries, which need JPQL, and which should simply use inherited JpaRepository methods.</p>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Replace Maps with typed API models</h2>
+<p>V1 deliberately used maps to make response construction obvious. V2 should consider typed responses.</p>
+<pre>public record CustomerResponse(
+    Long id,
+    String name,
+    String zip,
+    String city
+) {}</pre>
+<p>Ask Copilot to consider:</p>
+<ul class="list">
+<li><code>CustomerResponse</code></li>
+<li><code>PurchaseResponse</code></li>
+<li><code>ProductResponse</code></li>
+<li><code>CityResponse</code></li>
+<li><code>StoreSummaryResponse</code></li>
+<li>separate create/update request objects</li>
+</ul>
+</div>
+<div class="card">
+<h2>V2 · Add a service layer where it helps</h2>
+<p>Ask Copilot whether controllers are doing too much.</p>
+<pre>Controller
+    |
+    v
+Service
+    |
+    +--&gt; CustomerRepository
+    +--&gt; PurchaseRepository
+    +--&gt; ProductRepository
+    +--&gt; RefundRepository</pre>
+<p>
+      Move business logic, validation, calculations, and transactional write operations out of the controller when that makes responsibilities clearer.
+    </p>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card">
+<h2>V2 · Solve refunds properly</h2>
+<p>
+      The current model changes or deletes Products when a refund occurs, so historical refund information is not retained.
+      V2 may change the data model.
+    </p>
+<div class="code-wrap"><button class="copy-btn" data-copy="refundv2">Copy</button><pre id="refundv2">Design a persistent Refund model.
+
+A refund should preserve enough historical information to answer the REST API later, even if the Product is changed or removed.
+
+Explain which values should be relationships and which should be historical snapshot fields.
+
+Then create the repository and update refund processing so successful refunds are persisted.</pre></div>
+<p>Then implement real V2 refund endpoints such as:</p>
+<pre>GET /v2/refunds
+GET /v2/refunds/{refundId}
+GET /v2/customers/{customerId}/refunds
+GET /v2/cities/{city}/refunds</pre>
+</div>
+<div class="card">
+<h2>V2 · Go beyond CRUD</h2>
+<ul class="list">
+<li>Ask whether summary totals should be calculated in Java or with database aggregation.</li>
+<li>Ask Copilot to explain the N+1 query problem using Customer, Purchase, and Product.</li>
+<li>Investigate <code>JOIN FETCH</code> or <code>@EntityGraph</code> only if needed.</li>
+<li>Revisit whether every association should still be EAGER.</li>
+<li>Ask where <code>@Transactional</code> belongs.</li>
+<li>Add request validation such as <code>@NotBlank</code>, <code>@Positive</code>, and <code>@Valid</code>.</li>
+<li>Consider centralized exception handling with <code>@RestControllerAdvice</code>.</li>
+</ul>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>OpenAPI is part of the assignment</h2>
+<p>
+      Update the root <code>openapi.yaml</code> as you build the API. Keep both versions documented.
+    </p>
+<table>
+<tr><th>Version</th><th>Contract purpose</th></tr>
+<tr><td><code>/v1/...</code></td><td>Educational implementation constrained to CustomerRepository and manual object traversal.</td></tr>
+<tr><td><code>/v2/...</code></td><td>Conventional Spring Data design using appropriate repositories and supporting types.</td></tr>
+</table>
+<p style="margin-top:14px">For every operation verify:</p>
+<div class="checklist">
+<div class="check">HTTP method and path</div>
+<div class="check">Path and query parameters</div>
+<div class="check">Request body schema</div>
+<div class="check">Response schema</div>
+<div class="check">Status codes</div>
+<div class="check">Operation actually exists in Java</div>
+</div>
+<div class="code-wrap" style="margin-top:14px"><button class="copy-btn" data-copy="contractreview">Copy</button><pre id="contractreview">Compare my controller code against openapi.yaml.
+
+Identify every mismatch involving:
+- endpoint paths
+- HTTP methods
+- path variables
+- query parameters
+- request bodies
+- response schemas
+- HTTP status codes
+
+Do not change anything yet. Give me a discrepancy list first.</pre></div>
+</div>
+</section>
+<section class="section section-grid">
+<div class="card dark">
+<h2>Test V1 and V2 side by side</h2>
+<pre>GET /v1/products?name=mouse
+GET /v2/products?name=mouse
+
+GET /v1/purchases
+GET /v2/purchases
+
+GET /v1/cities/Boston/purchases
+GET /v2/cities/Boston/purchases</pre>
+<p>
+      The responses should be functionally similar even though the implementations are different.
+    </p>
+</div>
+<div class="card">
+<h2>Compare the implementations</h2>
+<table>
+<tr><th>Question</th><th>V1</th><th>V2</th></tr>
+<tr><td>Repository access</td><td>CustomerRepository only</td><td>Resource-appropriate repositories</td></tr>
+<tr><td>Traversal</td><td>Manual nested loops</td><td>Mostly repository queries</td></tr>
+<tr><td>Response shape</td><td>Maps encouraged</td><td>Typed DTOs/records encouraged</td></tr>
+<tr><td>Purpose</td><td>Understand the object graph</td><td>Improve application design</td></tr>
+<tr><td>Refunds</td><td>Expose persistence limitation</td><td>Fix persistence model</td></tr>
+</table>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>Final Copilot review</h2>
+<p>Once V2 works, make Copilot critique its own work.</p>
+<div class="code-wrap"><button class="copy-btn" data-copy="selfreview">Copy</button><pre id="selfreview">Review the code you generated.
+
+Identify:
+- unnecessary duplication
+- unnecessary repositories
+- unnecessary DTOs or services
+- overly complicated methods
+- poor names
+- inefficient database access
+- assumptions you made about the project
+
+Do not rewrite anything yet. Give me the review first.</pre></div>
+<p>Then ask:</p>
+<pre>Looking back over our conversation, what suggestions did you make that were unnecessary, incorrect, or more complicated than needed?
+
+How could I have written better prompts to avoid those mistakes?</pre>
+</div>
+</section>
+<section class="section">
+<div class="card">
+<h2>Victory conditions</h2>
+<div class="checklist">
+<div class="check">The application starts and H2 contains the imported data.</div>
+<div class="check">A new <code>MyRestController</code> exposes the V1 API.</div>
+<div class="check">V1 uses only <code>CustomerRepository</code>.</div>
+<div class="check">V1 uses loops rather than streams.</div>
+<div class="check">A V2 controller exposes the same core resources with a less constrained design.</div>
+<div class="check">V2 introduces only abstractions you can explain and justify.</div>
+<div class="check">Refund history is not fabricated in V1 and is properly modeled if implemented in V2.</div>
+<div class="check"><code>openapi.yaml</code> accurately documents both versions.</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="footer-banner">
+<h2 style="margin:0 0 8px;font-family:Georgia,serif;color:#fff7d8">Final word from the sheriff</h2>
+<p style="margin:0;line-height:1.65">
+      V1 proves you understand the JPA object graph. V2 proves you can improve the design without blindly accepting whatever Copilot generates.
+      Build it, test it, compare it, and make the AI explain itself.
+    </p>
+</div>
+</section>
+</main>
+<footer>Spring Boot: The Wild REST · Final Showdown Challenge</footer>
+<script>
+const toggle=document.querySelector('.course-global-toggle');
+const links=document.querySelector('.course-global-links');
+if(toggle) toggle.addEventListener('click',()=>{const open=links.classList.toggle('open');toggle.setAttribute('aria-expanded', open ? 'true':'false');});
+document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+ const target=document.getElementById(btn.dataset.copy);
+ try{await navigator.clipboard.writeText(target.innerText); const t=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=t,1200);}catch(e){btn.textContent='Copy manually'; setTimeout(()=>btn.textContent='Copy',1500);}
+}));
+const canvas=document.getElementById('umlCanvas');
+const ctx=canvas.getContext('2d');
+function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=3;ctx.strokeStyle=stroke;ctx.stroke();}
+function drawClass(x,y,w,h,title,lines,bg='#fffdf6',border='#325c31'){roundRect(x,y,w,h,18,bg,border);ctx.fillStyle='#1d2c1e';ctx.font='bold 20px Segoe UI';ctx.fillText(title,x+16,y+30);ctx.beginPath();ctx.moveTo(x,y+42);ctx.lineTo(x+w,y+42);ctx.strokeStyle='#c7d9be';ctx.lineWidth=2;ctx.stroke();ctx.font='16px Consolas'; lines.forEach((line,i)=>ctx.fillText(line,x+16,y+70+i*26));}
+function arrow(x1,y1,x2,y2,label){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle='#8a5f2f';ctx.lineWidth=4;ctx.stroke();const ang=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-16*Math.cos(ang-Math.PI/6), y2-16*Math.sin(ang-Math.PI/6));ctx.lineTo(x2-16*Math.cos(ang+Math.PI/6), y2-16*Math.sin(ang+Math.PI/6));ctx.closePath();ctx.fillStyle='#8a5f2f';ctx.fill(); if(label){ctx.fillStyle='#6a4321';ctx.font='bold 15px Segoe UI';ctx.fillText(label,(x1+x2)/2-18,(y1+y2)/2-10);}}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#f8f5e7';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(109,179,63,.08)'; for(let i=0;i<12;i++){ctx.beginPath();ctx.arc(60+i*80, 60+(i%3)*120, 26, 0, Math.PI*2); ctx.fill();}
+ drawClass(40,80,240,180,'Customer',['+ id : Long','+ name : String','+ address : Address','+ purchases : List<Purchase>']);
+ drawClass(340,80,240,145,'Address',['+ zip : String','+ city : String'],'#fff8ef','#8a5f2f');
+ drawClass(40,320,260,165,'Purchase',['+ id : Long','+ date : LocalDate','+ customer : Customer','+ products : List<Product>'],'#eff8ea','#4c7e3d');
+ drawClass(380,305,260,180,'Product',['+ id : Long','+ name : String','+ quantity : int','+ price : double','+ purchase : Purchase'],'#fff8ef','#8a5f2f');
+ roundRect(690,94,190,135,18,'#213320','#6db33f'); ctx.fillStyle='#f8ffe8'; ctx.font='bold 19px Segoe UI'; ctx.fillText('V1 Rule', 742, 126); ctx.font='16px Segoe UI'; ['CustomerRepository only','Customer -> Purchase','Purchase -> Product'].forEach((t,i)=>ctx.fillText('• '+t,704,158+i*24));
+ roundRect(680,290,200,170,18,'#fff1dc','#8a5f2f'); ctx.fillStyle='#5a371d'; ctx.font='bold 19px Segoe UI'; ctx.fillText('V2 Freedom', 724, 322); ctx.font='16px Segoe UI'; ['More repositories','DTOs + services','Better queries','Persist refunds'].forEach((t,i)=>ctx.fillText('• '+t,702,352+i*27));
+ arrow(280,155,340,155,'embeds');
+ arrow(160,260,170,320,'1..*');
+ arrow(300,400,380,400,'1..*');
+ arrow(460,305,220,220,'many-to-one');
+ ctx.font='28px Segoe UI Emoji'; ctx.fillText('🤠', 800, 65); ctx.fillText('👽', 842, 260); ctx.fillText('🦾🐎', 772, 274); ctx.fillText('🐕', 70, 60); ctx.fillText('🌀', 616, 84);
+ ctx.fillStyle='#214523'; ctx.font='bold 17px Segoe UI'; ctx.fillText('V1 object graph — V2 redesigns around it', 36, 40);
+}
+draw();
+</script>
+<footer class="course-resource-footer">
+<strong>Course resources</strong>
+<div class="course-resource-links">
+<a href="https://theserverside.com/" rel="noopener" target="_blank">TheServerSide.com</a>
+<a href="https://github.com/scrumtuous/shapes" rel="noopener" target="_blank">Starter Code on GitHub</a>
+<a href="https://start.spring.io/" rel="noopener" target="_blank">Spring Initializr</a>
+</div>
+</footer>
+<script id="course-unified-nav-script-v3">
+(() => {
+  const nav = document.querySelector('.course-global-nav');
+  if (!nav) return;
+  const toggle = nav.querySelector('.course-global-toggle');
+  const links = nav.querySelector('.course-global-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('course-global-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  nav.querySelectorAll('.course-global-group').forEach(group => {
+    group.addEventListener('toggle', () => {
+      if (!group.open) return;
+      nav.querySelectorAll('.course-global-group').forEach(other => {
+        if (other !== group) other.removeAttribute('open');
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
