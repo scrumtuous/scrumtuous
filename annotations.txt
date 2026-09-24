@@ -1,0 +1,38 @@
+@GetMapping("/refunds/{refundId}")
+@GetMapping("/purchases/{purchaseId}")
+@GetMapping("/refunds")
+@GetMapping("/customers/{customerId:\d+}/purchases")
+@SpringBootApplication
+@Id
+@GetMapping
+@GetMapping("/customers/by-name")
+@GetMapping("/summary")
+@GetMapping("/products/{productId}")
+@GetMapping("/customers")
+@Service
+@GetMapping("/customers/{customerId:\d+}/refunds")
+@OneToMany(mappedBy = "purchase",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+@RequestMapping("/api")
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@ManyToOne
+@Service
+@Embedded
+@Override
+@Entity
+@ManyToOne
+@GetMapping("/purchases")
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity
+@GetMapping("/cities/{city}/purchases")
+@Id
+@Embeddable
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity
+@GetMapping("/products")
+@Id
+@GetMapping("/customers/{customerId:\d+}")
+@GetMapping("/cities")
+@GetMapping("/cities/{city}/refunds")
+@OneToMany(mappedBy = "customer",cascade = {CascadeType.PERSIST, CascadeType.MERGE},orphanRemoval = true,fetch = FetchType.EAGER)
+@RestController
+@Transactional
