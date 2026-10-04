@@ -121,7 +121,25 @@
     padding:8px 10px;
   }
 }
-</style></head>
+</style>
+<style id="bruges-bottom-image-style">
+.bruges-bottom-image{
+  width:min(1180px,calc(100% - 30px));
+  margin:30px auto 24px;
+  border-radius:24px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 42px rgba(0,0,0,.18);
+  background:#111;
+}
+.bruges-bottom-image img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+</style>
+
+</head>
 <body><nav aria-label="Course pages" class="universal-course-nav">
 <div class="universal-course-nav-inner">
 <a class="" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a aria-current="page" class="active" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a class="" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a>
@@ -573,7 +591,6 @@ curl http://localhost:8080/api/cartel/users \
 <strong>Same canals. Bigger horizons.</strong>
 <span>And then it hits you: if you had to spend all eternity in this place, it would be beautiful, haunting, and maybe a little unbearable — which is a fitting mood for thinking about revocation, CRUD, and role management after a long day with JWTs.</span>
 </div>
-<img src="bruges.jpg"/>
 <a class="btn btn-outline-light fw-bold" href="#top"><i class="lni lni-arrow-upward me-1"></i>Back to top</a>
 </div>
 </footer>
@@ -606,10 +623,15 @@ updateProgress();
 <h2 id="course-video-title">Course Video</h2>
 <p>Finish this page with the shared course video, then use the navigation above to continue through the lesson set.</p>
 <div class="course-video-wrap">
-<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/dPaU4Gymt3E" title="Course video">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/p-gG2qo_l_A" title="In Bruges theme video">
 </iframe>
 </div>
-</section><footer class="universal-course-footer">
+</section>
+<section class="bruges-bottom-image" aria-label="Bruges closing image">
+  <img src="bruges.jpg" alt="Bruges cityscape">
+</section>
+
+<footer class="universal-course-footer">
 <strong>Authentication Training Journey</strong>
 <div class="universal-course-footer-links">
 <a href="https://github.com/scrumtuous" rel="noopener" target="_blank">GitHub: scrumtuous</a>
