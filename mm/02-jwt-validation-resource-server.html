@@ -70,6 +70,23 @@
     .footer-overlay strong{font-size:clamp(1.15rem,2.2vw,1.85rem)} .footer-overlay span{display:block;color:#dae7ef;margin-top:.2rem;max-width:760px}
     .small-footer{background:#030a11;color:#8095a7;text-align:center;padding:1rem;font-size:.82rem} .small-footer b{color:#d6e5ef}
   </style>
+
+<style id="bruges-bottom-image-style">
+.bruges-bottom-image{
+  width:min(1180px,calc(100% - 30px));
+  margin:30px auto 24px;
+  border-radius:24px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 42px rgba(0,0,0,.18);
+  background:#111;
+}
+.bruges-bottom-image img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+</style>
 <style id="universal-course-nav-style">
 .universal-course-nav{
   width:100%;
@@ -78,7 +95,7 @@
   border-bottom:1px solid #46484d;
   box-shadow:0 6px 18px rgba(0,0,0,.18);
   position:relative;
-  z-index:5000;
+  z-index:6000;
 }
 .universal-course-nav-inner{
   width:min(1480px,calc(100% - 24px));
@@ -100,7 +117,6 @@
   background:#3a3c41;
   border:1px solid #4b4d53;
   white-space:nowrap;
-  transition:background .16s ease,color .16s ease,border-color .16s ease;
 }
 .universal-course-nav a:hover{
   background:#474950;
@@ -113,38 +129,11 @@
   border-color:#6a6d74;
 }
 @media(max-width:800px){
-  .universal-course-nav-inner{
-    width:calc(100% - 16px);
-  }
-  .universal-course-nav a{
-    font-size:12px;
-    padding:8px 10px;
-  }
+  .universal-course-nav-inner{width:calc(100% - 16px)}
+  .universal-course-nav a{font-size:12px;padding:8px 10px}
 }
-</style>
-<style id="bruges-bottom-image-style">
-.bruges-bottom-image{
-  width:min(1180px,calc(100% - 30px));
-  margin:30px auto 24px;
-  border-radius:24px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 18px 42px rgba(0,0,0,.18);
-  background:#111;
-}
-.bruges-bottom-image img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-</style>
-
-</head>
-<body><nav aria-label="Course pages" class="universal-course-nav">
-<div class="universal-course-nav-inner">
-<a class="" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a aria-current="page" class="active" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a class="" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a>
-</div>
-</nav>
+</style></head>
+<body><nav aria-label="Course pages" class="universal-course-nav"><div class="universal-course-nav-inner"><a class="" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a aria-current="page" class="active" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="fun.html">fun</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a class="" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a></div></nav>
 <div class="progress-line" id="progress"></div>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 <div class="container-fluid px-lg-5">
@@ -627,10 +616,9 @@ updateProgress();
 </iframe>
 </div>
 </section>
-<section class="bruges-bottom-image" aria-label="Bruges closing image">
-  <img src="bruges.jpg" alt="Bruges cityscape">
+<section aria-label="Bruges closing image" class="bruges-bottom-image">
+<img alt="Bruges cityscape" src="bruges.jpg"/>
 </section>
-
 <footer class="universal-course-footer">
 <strong>Authentication Training Journey</strong>
 <div class="universal-course-footer-links">

@@ -93,7 +93,7 @@ pre{margin:0;padding:1rem;overflow:auto;max-height:570px;white-space:pre-wrap;fo
   border-bottom:1px solid #46484d;
   box-shadow:0 6px 18px rgba(0,0,0,.18);
   position:relative;
-  z-index:5000;
+  z-index:6000;
 }
 .universal-course-nav-inner{
   width:min(1480px,calc(100% - 24px));
@@ -115,7 +115,6 @@ pre{margin:0;padding:1rem;overflow:auto;max-height:570px;white-space:pre-wrap;fo
   background:#3a3c41;
   border:1px solid #4b4d53;
   white-space:nowrap;
-  transition:background .16s ease,color .16s ease,border-color .16s ease;
 }
 .universal-course-nav a:hover{
   background:#474950;
@@ -128,20 +127,11 @@ pre{margin:0;padding:1rem;overflow:auto;max-height:570px;white-space:pre-wrap;fo
   border-color:#6a6d74;
 }
 @media(max-width:800px){
-  .universal-course-nav-inner{
-    width:calc(100% - 16px);
-  }
-  .universal-course-nav a{
-    font-size:12px;
-    padding:8px 10px;
-  }
+  .universal-course-nav-inner{width:calc(100% - 16px)}
+  .universal-course-nav a{font-size:12px;padding:8px 10px}
 }
 </style></head>
-<body><nav aria-label="Course pages" class="universal-course-nav">
-<div class="universal-course-nav-inner">
-<a class="" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a class="" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a aria-current="page" class="active" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a>
-</div>
-</nav>
+<body><nav aria-label="Course pages" class="universal-course-nav"><div class="universal-course-nav-inner"><a class="" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a class="" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="fun.html">fun</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a aria-current="page" class="active" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a></div></nav>
 <div class="progress-line" id="progress"></div>
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark">
 <div class="container-fluid px-lg-4">

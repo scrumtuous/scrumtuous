@@ -448,7 +448,7 @@
   border-bottom:1px solid #46484d;
   box-shadow:0 6px 18px rgba(0,0,0,.18);
   position:relative;
-  z-index:5000;
+  z-index:6000;
 }
 .universal-course-nav-inner{
   width:min(1480px,calc(100% - 24px));
@@ -470,7 +470,6 @@
   background:#3a3c41;
   border:1px solid #4b4d53;
   white-space:nowrap;
-  transition:background .16s ease,color .16s ease,border-color .16s ease;
 }
 .universal-course-nav a:hover{
   background:#474950;
@@ -483,20 +482,11 @@
   border-color:#6a6d74;
 }
 @media(max-width:800px){
-  .universal-course-nav-inner{
-    width:calc(100% - 16px);
-  }
-  .universal-course-nav a{
-    font-size:12px;
-    padding:8px 10px;
-  }
+  .universal-course-nav-inner{width:calc(100% - 16px)}
+  .universal-course-nav a{font-size:12px;padding:8px 10px}
 }
 </style></head>
-<body><nav aria-label="Course pages" class="universal-course-nav">
-<div class="universal-course-nav-inner">
-<a aria-current="page" class="active" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a class="" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a class="" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a>
-</div>
-</nav>
+<body><nav aria-label="Course pages" class="universal-course-nav"><div class="universal-course-nav-inner"><a aria-current="page" class="active" href="index.html">Home</a><a class="" href="00-auth-reconstruction-lab.html">Scramble</a><a class="" href="01-java-jwt-auth-server.html">JWT</a><a class="" href="02-jwt-validation-resource-server.html">JWT Client</a><a class="" href="03-javascript-fundamentals.html">JavaScript</a><a class="" href="fun.html">fun</a><a class="" href="04-asynchronous-javascript.html">Async</a><a class="" href="05-typescript-node-fundamentals.html">TypeScript</a><a class="" href="06-nestjs-auth-service.html">NestJS</a><a class="" href="07-jwt-testing-openapi.html">Jesting</a><a class="" href="08-java-vs-typescript-javascript-comparison.html">Java vs JS</a></div></nav>
 <div class="progress-line" id="progress"></div>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
 <div class="container-fluid px-lg-4">
@@ -604,8 +594,8 @@
 <section id="modules">
 <div class="section-head">
 <span class="label">Your course modules</span>
-<h2>Nine connected lessons</h2>
-<p>The landing page now connects the complete nine-page sequence. The reconstruction lab comes first, followed by the Java JWT foundation, JWT validation, JavaScript, asynchronous JavaScript, TypeScript and Node, NestJS authentication, testing/OpenAPI, and the final Java vs TypeScript/JavaScript comparison.</p>
+<h2>Ten connected lessons</h2>
+<p>The landing page now connects the complete ten-lesson sequence, including the new fun JavaScript functions page between JavaScript fundamentals and asynchronous JavaScript.</p>
 </div>
 <div class="modules-grid"><article class="lesson-card featured-first">
 <div class="lesson-top">
@@ -648,10 +638,21 @@
 <p>Move from Java into JavaScript with objects, arrays, destructuring, spread and rest, arrow functions, template literals and ES modules.</p>
 <div class="chip-row"><span>JavaScript</span><span>ES Modules</span><span>Modern Syntax</span><span>Arrays</span></div>
 <a class="launch-btn" href="03-javascript-fundamentals.html">Open Lesson <span>→</span></a>
+</article><article class="lesson-card">
+<div class="lesson-top">
+<div class="lesson-badge">05</div>
+<i class="lni lni-code-alt lesson-icon"></i>
+</div>
+<h3>fun • JavaScript Functions</h3>
+<p>Learn function declarations, functions stored in const, arrow functions, callbacks, object methods, passing functions as parameters, runtime reassignment, and first-class functions using editable, runnable browser examples.</p>
+<div class="chip-row">
+<span>Functions</span><span>const</span><span>Callbacks</span><span>Arrow Functions</span>
+</div>
+<a class="launch-btn" href="fun.html">Open fun <span>→</span></a>
 </article>
 <article class="lesson-card">
 <div class="lesson-top">
-<div class="lesson-badge">05</div>
+<div class="lesson-badge">06</div>
 <i class="lni lni-timer lesson-icon"></i>
 </div>
 <h3>Asynchronous JavaScript</h3>
@@ -661,7 +662,7 @@
 </article>
 <article class="lesson-card">
 <div class="lesson-top">
-<div class="lesson-badge">06</div>
+<div class="lesson-badge">07</div>
 <i class="lni lni-code-alt lesson-icon"></i>
 </div>
 <h3>TypeScript and Node.js Fundamentals</h3>
@@ -671,7 +672,7 @@
 </article>
 <article class="lesson-card">
 <div class="lesson-top">
-<div class="lesson-badge">07</div>
+<div class="lesson-badge">08</div>
 <i class="lni lni-network lesson-icon"></i>
 </div>
 <h3>NestJS Auth Service</h3>
@@ -681,7 +682,7 @@
 </article>
 <article class="lesson-card">
 <div class="lesson-top">
-<div class="lesson-badge">08</div>
+<div class="lesson-badge">09</div>
 <i class="lni lni-graph lesson-icon"></i>
 </div>
 <h3>JWTs, Testing and OpenAPI</h3>
@@ -691,7 +692,7 @@
 </article>
 <article class="lesson-card">
 <div class="lesson-top">
-<div class="lesson-badge">09</div>
+<div class="lesson-badge">10</div>
 <i class="lni lni-stats-up lesson-icon"></i>
 </div>
 <h3>Java vs TypeScript/JavaScript Auth Comparison</h3>
@@ -708,7 +709,7 @@
 <p>Every module pushes the story forward. The learning path moves from core concepts, to hands-on implementation, to verification, documentation and deployment-minded thinking.</p>
 </div>
 <div class="path-panel">
-<div class="roadmap"><span class="step">1. Reconstruct the broken auth system</span><span class="arrow">→</span><span class="step">2. Build Java JWT auth</span><span class="arrow">→</span><span class="step">3. Validate JWTs</span><span class="arrow">→</span><span class="step">4. Learn JavaScript</span><span class="arrow">→</span><span class="step">5. Master async JavaScript</span><span class="arrow">→</span><span class="step">6. Learn TypeScript + Node</span><span class="arrow">→</span><span class="step">7. Build NestJS auth</span><span class="arrow">→</span><span class="step">8. Test + document</span><span class="arrow">→</span><span class="step">9. Compare both implementations</span></div>
+<div class="roadmap"><span class="step">1. Reconstruct the broken auth system</span><span class="arrow">→</span><span class="step">2. Build Java JWT auth</span><span class="arrow">→</span><span class="step">3. Validate JWTs</span><span class="arrow">→</span><span class="step">4. Learn JavaScript</span><span class="arrow">→</span><span class="step">5. Learn JavaScript functions</span><span class="arrow">→</span><span class="step">6. Master async JavaScript</span><span class="arrow">→</span><span class="step">7. Learn TypeScript + Node</span><span class="arrow">→</span><span class="step">8. Build NestJS auth</span><span class="arrow">→</span><span class="step">9. Test + document</span><span class="arrow">→</span><span class="step">10. Compare both implementations</span></div>
 </div>
 </section>
 <div class="image-band">
