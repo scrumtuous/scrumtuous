@@ -9,3 +9,12 @@ Angular/backend source examples require their actual toolchains and services;
 offline browser teaching models are labeled within lessons.
 The navbar uses Bootstrap 5.3.8, bundled locally with its MIT license.
 Bootstrap CSS is scoped to the navigation header so it does not restyle lesson content.
+
+## Graphics and video update
+Every lesson's hero, footer and section artwork uses local image files under assets/images.
+Extract the entire ZIP before opening index.html; keep assets/ beside pages/.
+All twelve pages include the requested YouTube video and a direct watch link.
+The course graphics work offline. YouTube playback needs an internet connection;
+if a local-file browser blocks the embed, use the Watch on YouTube link.
+Navigation labels: Home, HTML, CSS, JS, HTTP, Angular, Components, Services,
+Spring, Forms, Routes, Auth.
