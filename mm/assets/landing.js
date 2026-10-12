@@ -1,0 +1,3 @@
+const cards=[...document.querySelectorAll('.lesson-card')];
+function filterLessons(){const q=document.getElementById('lesson-search').value.trim().toLowerCase();const category=document.getElementById('lesson-category').value;let visible=0;for(const card of cards){const match=card.dataset.search.includes(q)&&(category==='all'||card.dataset.category===category);card.hidden=!match;if(match)visible++;}document.getElementById('lesson-count').textContent=visible?`${visible} of ${cards.length} lessons shown`:'No lessons match. Try another search or stage.';}
+document.getElementById('lesson-search').addEventListener('input',filterLessons);document.getElementById('lesson-category').addEventListener('change',filterLessons);

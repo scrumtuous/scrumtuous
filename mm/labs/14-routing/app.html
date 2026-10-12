@@ -1,0 +1,8 @@
+<header><h1>Mission Control</h1><app-portfolio-badge /></header>
+<nav aria-label="Mission navigation">
+  <a routerLink="/holdings" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Holdings</a>
+  <a routerLink="/orders" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Place Order</a>
+</nav>
+<main><router-outlet /></main>

@@ -1,0 +1,17 @@
+<h2>Holdings summary</h2>
+<ul>
+  @for (holding of holdings(); track holding.ticker) {
+    <li>
+      {{ holding.ticker }} - {{ holding.quantity }}
+      <button type="button" (click)="removeHolding(holding.ticker)">
+        Remove
+      </button>
+    </li>
+  } @empty {
+    <li>No holdings.</li>
+  }
+</ul>
+<p>Total: {{ totalValue() | number: '1.2-2' }}</p>
+<button type="button" (click)="addHolding()" [disabled]="hasBP()">
+  Add BP.L
+</button>

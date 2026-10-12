@@ -1,0 +1,6 @@
+form { max-width: 32rem; display: grid; gap: .65rem; }
+input, select, button { font: inherit; padding: .7rem; }
+.field-error, .api-error { color: #9b1737; }
+.field-error { margin: 0 0 .7rem; }
+button:disabled { opacity: .6; }
+:focus-visible { outline: 3px solid #a36612; outline-offset: 3px; }

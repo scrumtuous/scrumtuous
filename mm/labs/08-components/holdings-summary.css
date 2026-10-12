@@ -1,0 +1,1 @@
+ul {padding:0;list-style:none} li {display:flex;justify-content:space-between;gap:1rem;padding:.8rem;border-bottom:1px solid #ddd} button {padding:.5rem 1rem} button:disabled {opacity:.5}

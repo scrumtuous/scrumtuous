@@ -1,0 +1,4 @@
+nav { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+a { padding: .5rem; }
+a.active { color: #713b65; font-weight: bold; text-decoration-thickness: .2em; }
+a:focus-visible { outline: 3px solid #a36612; outline-offset: 3px; }

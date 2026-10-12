@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mission Control - Login</title><style>body { font: 16px/1.6 system-ui; color: #2e1732; background: #fff8ed; padding: 18px; }
+button { background: #713b65; color: white; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; font: inherit; }
+button:disabled { opacity: .55; cursor: wait; }
+label { display:block; margin-top:10px; }
+input, select { display:block; padding:8px; font:inherit; max-width:100%; }
+.done { text-decoration: line-through; color: #4b763f; }
+.invalid { border: 3px solid #b51d3a; }
+.error { color:#a61431; } .success { color:#286e40; }
+#message { min-height:2em; }</style></head><body><h1>Mission Control</h1>
+<form id="login-form" novalidate action="about:blank">
+  <label for="username">Username</label>
+  <input id="username" name="username" required minlength="3" autocomplete="username">
+  <label for="password">Password</label>
+  <input id="password" type="password" required minlength="8" autocomplete="current-password">
+  <button type="submit">Log In</button>
+</form>
+<p id="message" role="status" aria-live="polite"></p>
+<footer>LEAP Mission Control</footer><script>const form = document.getElementById("login-form");
+const usernameInput = document.querySelector("#username");
+const passwordInput = document.querySelector("#password");
+const message = document.getElementById("message");
+function markInvalid(input, invalid) {
+  input.classList.toggle("invalid", invalid);
+  input.setAttribute("aria-invalid", String(invalid));
+}
+function showMessage(text, kind) {
+  message.textContent = text;
+  message.className = kind;
+}
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); // every path stays on this page
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+  const usernameOk = username.length >= 3;
+  const passwordOk = password.length >= 8;
+  markInvalid(usernameInput, !usernameOk);
+  markInvalid(passwordInput, !passwordOk);
+  if (!usernameOk || !passwordOk) {
+    showMessage("Username needs 3+ characters, password needs 8+.", "error");
+    return;
+  }
+  showMessage(`Welcome, ${username}. (No real request sent yet.)`, "success");
+  form.reset();
+});
+usernameInput.addEventListener("input", () => {
+  if (usernameInput.value.length >= 3) markInvalid(usernameInput, false);
+});</script></body></html>

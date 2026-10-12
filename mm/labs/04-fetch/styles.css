@@ -1,0 +1,9 @@
+body { font: 16px/1.6 system-ui; color: #2e1732; background: #fff8ed; padding: 18px; }
+button { background: #713b65; color: white; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; font: inherit; }
+button:disabled { opacity: .55; cursor: wait; }
+label { display:block; margin-top:10px; }
+input, select { display:block; padding:8px; font:inherit; max-width:100%; }
+.done { text-decoration: line-through; color: #4b763f; }
+.invalid { border: 3px solid #b51d3a; }
+.error { color:#a61431; } .success { color:#286e40; }
+#message { min-height:2em; }

@@ -1,0 +1,15 @@
+<h2>Log in to Mission Control</h2>
+<form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <label for="username">Username</label>
+  <input id="username" formControlName="username" autocomplete="username" aria-describedby="username-error" />
+  @if (loginForm.controls.username.invalid && loginForm.controls.username.touched) {
+    <p id="username-error">Enter your username.</p>
+  }
+  <label for="password">Password</label>
+  <input id="password" type="password" formControlName="password" autocomplete="current-password" aria-describedby="password-error" />
+  @if (loginForm.controls.password.invalid && loginForm.controls.password.touched) {
+    <p id="password-error">Enter your password.</p>
+  }
+  <button type="submit" [disabled]="pending()">{{ pending() ? 'Logging in...' : 'Log in' }}</button>
+</form>
+@if (error()) { <p role="alert">{{ error() }}</p> }

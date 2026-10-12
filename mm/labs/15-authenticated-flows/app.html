@@ -1,0 +1,13 @@
+<header><h1>Mission Control</h1>@if (isAuthenticated()) {
+  <p>Logged in as {{ currentUsername() }}</p>
+  <app-portfolio-badge />
+  <button type="button" (click)="logout()">Log out</button>
+}</header>
+<nav aria-label="Mission navigation">
+  <a routerLink="/holdings" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Holdings</a>
+  <a routerLink="/orders" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Place Order</a>
+  <a routerLink="/login">Login</a>
+</nav>
+<main><router-outlet /></main>

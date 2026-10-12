@@ -1,0 +1,43 @@
+/* 1. Reset */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  color: #2e1732;
+  background: #fff9ed;
+}
+/* 2. Layout */
+header, footer { padding: 16px 24px; }
+header { background: #713b65; color: white; }
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+/* 3. Components */
+form {
+  width: 100%;
+  max-width: 360px;
+  padding: 32px;
+  border: 2px solid #ddc8a9;
+  border-radius: 20px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+input, button { font: inherit; }
+input { width: 100%; padding: 10px; border: 1px solid #8b748e; border-radius: 6px; }
+button { padding: 12px; border: 0; border-radius: 8px; background: #713b65; color: white; }
+input:focus-visible, button:focus-visible { outline: 3px solid #a36612; outline-offset: 3px; }
+/* 4. Responsive overrides */
+@media (max-width: 480px) {
+  main { padding: 0; }
+  form { max-width: none; border: none; border-radius: 0; }
+}

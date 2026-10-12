@@ -1,0 +1,48 @@
+<h2>Place an order</h2>
+<form [formGroup]="orderForm" (ngSubmit)="submit()">
+  <label for="ticker">Ticker</label>
+  <input id="ticker" formControlName="ticker" aria-describedby="ticker-error" />
+  @if (orderForm.controls.ticker.invalid && orderForm.controls.ticker.touched) {
+    <p id="ticker-error" class="field-error">Enter a ticker.</p>
+  }
+
+  <label for="instrumentType">Instrument type</label>
+  <select id="instrumentType" formControlName="instrumentType" aria-describedby="type-error">
+    <option value="EQUITY">Equity</option><option value="BOND">Bond</option>
+  </select>
+  @if (orderForm.controls.instrumentType.invalid && orderForm.controls.instrumentType.touched) {
+    <p id="type-error" class="field-error">Choose an instrument type.</p>
+  }
+
+  <label for="quantity">Quantity</label>
+  <input id="quantity" type="number" step="any" formControlName="quantity"
+    aria-describedby="quantity-error" [attr.aria-invalid]="orderForm.controls.quantity.invalid && orderForm.controls.quantity.touched" />
+  @if (orderForm.controls.quantity.invalid && orderForm.controls.quantity.touched) {
+    <p id="quantity-error" class="field-error">
+      {{ orderForm.controls.quantity.hasError('required') ? 'Quantity is required.' : 'Quantity must be at least 0.01.' }}
+    </p>
+  }
+
+  <label for="price">Price</label>
+  <input id="price" type="number" step="any" formControlName="price" aria-describedby="price-error" />
+  @if (orderForm.controls.price.invalid && orderForm.controls.price.touched) {
+    <p id="price-error" class="field-error">
+      {{ orderForm.controls.price.hasError('required') ? 'Price is required.' : 'Price must be at least 0.01.' }}
+    </p>
+  }
+
+  <label for="side">Side</label>
+  <select id="side" formControlName="side" aria-describedby="side-error">
+    <option value="BUY">Buy</option><option value="SELL">Sell</option>
+  </select>
+  @if (orderForm.controls.side.invalid && orderForm.controls.side.touched) {
+    <p id="side-error" class="field-error">Choose BUY or SELL.</p>
+  }
+  <button type="submit" [disabled]="pending()">{{ pending() ? 'Submitting...' : 'Submit order' }}</button>
+  <button type="button" (click)="reset()" [disabled]="pending()">Reset form</button>
+</form>
+@if (error()) { <p class="api-error" role="alert">{{ error() }}</p> }
+@if (lastOrder(); as response) {
+  <p role="status">Order response received.</p>
+  <pre>{{ response | json }}</pre>
+}
