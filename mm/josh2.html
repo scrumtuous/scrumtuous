@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PSM II Scrum Exam</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e0e8;
+      --primary: #1769aa;
+      --primary-dark: #0f4f85;
+      --secondary: #667085;
+      --success: #16803c;
+      --success-bg: #eaf8ef;
+      --danger: #b42318;
+      --danger-bg: #fff0ee;
+      --warning: #9a6700;
+      --warning-bg: #fff7d6;
+      --shadow: 0 10px 28px rgba(23, 32, 51, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: .62rem .92rem;
+      cursor: pointer;
+      font-weight: 650;
+      transition: transform .08s ease, background .15s ease, opacity .15s ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-secondary { background: #e8edf3; color: var(--text); }
+    .btn-warning { background: #ffd96a; color: #4b3500; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-success { background: var(--success); color: white; }
+
+    .page-shell {
+      width: min(1040px, calc(100% - 28px));
+      margin: 28px auto 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #12243b, #1e4f79);
+      color: white;
+      border-radius: 18px;
+      padding: 24px 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 { margin: 0 0 6px; font-size: clamp(1.65rem, 4vw, 2.35rem); }
+    .hero p { margin: 0; opacity: .88; }
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.1);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .9rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-weight: 750;
+    }
+
+    .card-body { padding: 18px; }
+
+    .results {
+      border-left: 5px solid var(--primary);
+    }
+    .results strong { font-size: 1.1rem; }
+
+    .query {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .choose-note {
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 0 0 16px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 11px 12px;
+      margin: 8px 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+    }
+
+    .option input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      flex: 0 0 auto;
+    }
+
+    .option.reveal-correct {
+      border-color: #75c991;
+      background: var(--success-bg);
+    }
+
+    .option.reveal-wrong-selected {
+      border-color: #e9a7a0;
+      background: var(--danger-bg);
+    }
+
+    .option small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .answer-panel {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: var(--warning-bg);
+      border: 1px solid #f0d783;
+    }
+
+    .answer-panel p:first-child { margin-top: 0; }
+    .answer-panel ul { margin-bottom: 0; }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .collapsible-title { cursor: pointer; user-select: none; }
+    .chevron { font-size: .9rem; color: var(--muted); }
+
+    .jumper-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .jump-btn {
+      min-width: 38px;
+      padding: 7px 9px;
+      background: #eef2f6;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .jump-btn.viewed { background: #d7dee7; }
+    .jump-btn.current { background: var(--primary); color: white; border-color: var(--primary); }
+    .jump-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+    .jump-btn.incorrect { background: var(--danger); color: white; border-color: var(--danger); }
+
+    .history-empty { color: var(--muted); margin: 0; }
+    .history-exam {
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+    }
+    .history-exam:first-child { border-top: 0; padding-top: 0; }
+    .history-summary {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 9px;
+    }
+    .history-dots { display: flex; flex-wrap: wrap; gap: 5px; }
+    .history-dot {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: grid; place-items: center;
+      font-size: .76rem; color: white;
+      background: var(--danger);
+    }
+    .history-dot.correct { background: var(--success); }
+
+    .status-line {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-top: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .88rem;
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 640px) {
+      .page-shell { width: min(100% - 16px, 1040px); margin-top: 8px; }
+      .hero { border-radius: 12px; padding: 19px 17px; }
+      .card-body { padding: 14px; }
+      .card-header { padding: 12px 14px; }
+      .controls { align-items: stretch; }
+      .control-group { width: 100%; }
+      .control-group button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <scrum-exam-app></scrum-exam-app>
+
+  <script>
+    const QUESTION_BANK = [{"query": "Which statements are true about the Sprint Goal?", "type": "multiple-choice", "options": [{"text": "The use of Sprint Goals is optional in the Scrum Framework.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "During Sprint Planning, the Scrum Team crafts a Sprint Goal based on an objective that the Product Owner would like to achieve that Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Sprint Goals often change during the Sprint as new insights emerge during the work.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Sprint Goals give Developers flexibility and creativity on how to implement functionality during the Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>During Sprint Planning, the Scrum Team crafts a Sprint Goal based on an objective that the Product Owner would like to achieve that Sprint\u003c/b> and \u003cb>Sprint Goals give Developers flexibility and creativity on how to implement functionality during the Sprint\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 1 of 30."}, {"query": "Scrum requires a Definition of Done. Which phrases describe the purpose of the Definition of Done?", "type": "multiple-choice", "options": [{"text": "It serves to track the percent completeness of a Product Backlog item during the Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "During the Sprint it helps the Developers identify the work remaining for an Increment to be ready for release by the end of a Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "It guides the Developers when creating a forecast at the Sprint Planning.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "It provides a template for the documentation of the product Increment.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "It creates transparency into the state of the Increment when it is inspected at the Sprint Review.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "It is a checklist to inspect whether the Developers have performed their tasks by the end of a Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>During the Sprint it helps the Developers identify the work remaining for an Increment to be ready for release by the end of a Sprint\u003c/b>, \u003cb>It guides the Developers when creating a forecast at the Sprint Planning\u003c/b>, and \u003cb>It creates transparency into the state of the Increment when it is inspected at the Sprint Review\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best three answers.\u003c/p>", "reference": "Source screenshot: Question 2 of 30."}, {"query": "Several Sprints into a project, the Product Owner tells the Scrum Master that a key stakeholder just started using the product. The stakeholder is unhappy with the slow performance, a complaint that the Product Owner agrees with. As the Scrum Master how will you move this forward?", "type": "multiple-choice", "options": [{"text": "Encourage the Product Owner to bring the performance concerns to the rest of the Scrum Team and work together to improve the Definition of Done.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Wait to bring this up in the next Sprint Retrospective as this is the appropriate time for the Developers to re-consider the Definition of Done.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Bring the concern to the quality assurance members of the Scrum Team and ask them to improve how the system is tested.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Explain to the Product Owner that it is up to the Developers to decide on acceptable performance standards as they own the Definition of Done.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>Encourage the Product Owner to bring the performance concerns to the rest of the Scrum Team and work together to improve the Definition of Done.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 3 of 30."}, {"query": "You have just been hired as a Scrum Master by a company new to Scrum. The company wants to use Scrum to build a new product that was conceived by the product management department. You will be the Scrum Master of two new teams that will build a first version of the product. The product management department assigns two new Product Owners, but wants more advice about the required participation with the new Scrum Teams. Which two suggestions would you offer?", "type": "multiple-choice", "options": [{"text": "Each Scrum Team has a separate Product Backlog, holding each team's assigned requirements.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "A single Product Backlog should be maintained holding all requirements for the new product.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Two Product Owners are necessary, one for each Scrum Team. They report to an overarching chief Product Owner.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Having one Product Owner will improve the clarity of accountability to the teams and to the product management department.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>A single Product Backlog should be maintained holding all requirements for the new product\u003c/b> and \u003cb>Having one Product Owner will improve the clarity of accountability to the teams and to the product management department\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 4 of 30."}, {"query": "A Scrum Team is struggling over the fact that not all Developers work full time and that other Developers regularly work from home. To solve the difficulties in aligning daily, at the Sprint Retrospective two Developers suggest having the Daily Scrum every three days, when everyone is in the office. What would be three key concerns if the frequency of the Daily Scrum were to be lowered?", "type": "multiple-choice", "options": [{"text": "Less progress information will be shared, causing the plan for the Sprint to become inaccurate and transparency over progress toward the Sprint Goal is reduced.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Impediments are raised and resolved more slowly which might impact productivity and progress.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Opportunities to inspect and adapt the Sprint Backlog are reduced. Re-aligning is bound to become even more difficult.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "The Product Owner cannot accurately report progress about the state of the forecasted work to the stakeholders.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The Scrum Master loses the ability to update the Gantt chart properly, thereby obscuring the Scrum Master's tracking of Sprint progress.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>Less progress information will be shared...\u003c/b>, \u003cb>Impediments are raised and resolved more slowly...\u003c/b>, and \u003cb>Opportunities to inspect and adapt the Sprint Backlog are reduced...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best three answers.\u003c/p>", "reference": "Source screenshot: Question 5 of 30."}, {"query": "During Sprint Planning, Developers work with the Product Owner to create a forecast for the Sprint. A forecast is a selection of Product Backlog items that the Developers believe are possible to get done by the end of the Sprint. Select two things that explain what done means.", "type": "multiple-choice", "options": [{"text": "All work performed meets the Definition of Done.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "All work for which enough expertise and skills are present in the Scrum Team.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "All work to create an Increment that is ready for testing.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "All work to create an Increment that is ready for acceptance testing by the Product Owner.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Having an Increment that could be released to end users.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>All work performed meets the Definition of Done\u003c/b> and \u003cb>Having an Increment that could be released to end users\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 6 of 30."}, {"query": "Towards the end of Sprint Planning, the Product Owner and the Developers have not been able to reach a clear, mutual understanding about the highest order Product Backlog items. Because of this, the Developers could not figure out how many Product Backlog items they could forecast for the upcoming Sprint. The Product Owner did make it clear what business objective he is hoping to achieve with this Sprint. Which of the following two actions would you support?", "type": "multiple-choice", "options": [{"text": "The Developers forecast the most likely Product Backlog items to meet the business objective and create a Sprint Backlog based on a likely initial design and plan. Once the timebox for the Sprint Planning event is over, they start the Sprint and continue to analyze, decompose, and create additional functionality during the Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "They discuss in the upcoming Sprint Retrospective why this happened and what changes will make it less likely to recur.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "If all agree, they can continue the Sprint Planning meeting as a team past its timebox, until an adequate number of Product Backlog items are well enough understood for the Developers to make a complete forecast. Then start the Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The team splits up and everybody takes as much time as they need to study the Product Backlog items first. The Product Owner should be available to answer individual questions. The group reconvenes when all team members are better prepared and restart the Sprint Planning meeting before the Sprint can start.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>The Developers forecast the most likely Product Backlog items...\u003c/b> and \u003cb>They discuss in the upcoming Sprint Retrospective why this happened...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 7 of 30."}, {"query": "Your organization always stresses the importance of on-time delivery and reliability. A manager has detected that your team's progress is too slow. They feel that your team's velocity needs to be 10% higher. The organization expects you, as the Scrum Master, to make it happen. How do you respond?", "type": "multiple-choice", "options": [{"text": "You tell management that this is not your accountability in Scrum. You direct them to the Product Owner to determine whether the forecast is accurate.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You help management understand that it typically takes a few Sprints for a team to gradually increase the velocity up to the level expected. Meanwhile you present this to the team as a challenge and a company goal, leaving it however up to them to figure out exactly how to achieve this.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You explain how a Scrum Team uses the velocity of a Sprint primarily to forecast work for the next Sprint, not to perfectly predict future productivity. You refer management to the Product Owner for all information concerning the progress of development.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You inform management of organizational impediments that prevent the Scrum Team from being more productive. You enlist their help to remove these impediments.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You educate management that it is the Scrum Team's responsibility to improve their velocity. You invite management to the next Sprint Retrospective to brainstorm on how they can improve.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>You explain how a Scrum Team uses the velocity of a Sprint primarily to forecast work for the next Sprint...\u003c/b> and \u003cb>You inform management of organizational impediments that prevent the Scrum Team from being more productive...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 8 of 30."}, {"query": "Self-management is more effective when it happens within boundaries. Select two relevant boundaries for self-management provided by the Scrum framework.", "type": "multiple-choice", "options": [{"text": "Timeboxing work to allow for frequent inspection.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Creating a valuable and useful Increment by the end of each Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Clearly defining sub-responsibilities and handovers within the Scrum Team.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Having an even number of members in a Scrum Team to be able to do pair programming and be more productive.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>Timeboxing work to allow for frequent inspection\u003c/b> and \u003cb>Creating a valuable and useful Increment by the end of each Sprint\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 9 of 30."}, {"query": "You are a Scrum Master entering an organization that wants to \"evolve\" their product development to Scrum. The organization's teams are organized into component teams. This means that teams address one single application layer only (for example, front end, middle tier, back end, and interfaces). You introduce the concept of feature teams, where teams have the skills to work on multiple layers throughout a Sprint and deliver working software every Sprint. What are two things you take into consideration when moving away from component teams toward feature teams?", "type": "multiple-choice", "options": [{"text": "Feature teams will require time to become productive as people from the different layers and components become accustomed to working and delivering unified functionality together, as one Scrum Team.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "With feature teams, it is easier to calculate and compare the productivity per team. Incentives on productivity are likely to speed up the transition to feature teams, and therefore the adoption of Scrum.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Productivity, in terms of lines of code or story points, will probably suffer during the transition, although even then delivery of business value is still likely to increase.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You cannot do Scrum without feature teams. Do not continue adopting Scrum until teams are reorganized in feature teams.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>Feature teams will require time to become productive...\u003c/b> and \u003cb>Productivity, in terms of lines of code or story points, will probably suffer during the transition...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 10 of 30."}, {"query": "You are the Scrum Master for a Scrum Team whose Daily Scrum is scheduled to start at 10:00 each day. Developers routinely turn up late and once everyone has assembled, the Daily Scrum starts. By then it is typically 4 to 5 minutes later than scheduled. Other meetings in the organization typically allow 4 to 5 minutes for people to transport within the building. Some Developers complain that it is now hard to achieve the purpose of the Daily Scrum within the timebox, since there is only 10 or 11 minutes left after waiting for people to show up. The Developers ask for your advice.", "type": "multiple-choice", "options": [{"text": "To incentivize showing up on time, you tell the Developers that when people come late to the Daily Scrum, they will pay a small fee.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You turn the question back to the Developers and ask what they think should be done to ensure their Daily Scrum is effective and meets its purpose.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You suggest that when someone shows up late they cannot join that day's Daily Scrum.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You escalate this issue to management since you are responsible for ensuring Scrum is understood and enacted.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You suggest an experiment: moving the event to a time that better suits the team.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>You turn the question back to the Developers and ask what they think should be done to ensure their Daily Scrum is effective and meets its purpose.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 11 of 30."}, {"query": "A multi-national company is using Scrum for product development of their five major products. What alternatives should the company consider to decide how many Product Owners are needed for these five products?", "type": "multiple-choice", "options": [{"text": "There is one Product Owner for each product (five in total). Each Product Owner may delegate to others for specific value, capabilities, and functionality within their product. The five Product Owners share and align work via Product Backlog.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "There is one Product Owner responsible for all five products. This person may delegate work to others for specific value, capabilities, and functionality within each product to scale their accountability.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "There is one Product Owner for all five products. This person may not delegate work to others for specific value, capabilities, and functionality, given these are all the Product Owner's individual responsibility.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "There are as many Product Owners as needed to analyze, document, and explain expectations and requirements with all Scrum Teams.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>There is one Product Owner for each product...\u003c/b> and \u003cb>There is one Product Owner responsible for all five products...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 12 of 30."}, {"query": "Eight months ago your company started developing a new product consisting of several major components. You are the Scrum Master on the team building the \"core\" component of the product; your component also integrates all the other components. The Scrum Teams work in monthly Sprints, and the team has forecast that it will deliver the integrated product in three Sprints. Recently the team's progress slowed because of changes to the other components that they integrate. They find out that the team will need two more Sprints. The project managers of the other components confirm their adherence to the original forecast. As a Scrum Master, what could you do to help the Product Owner?", "type": "multiple-choice", "options": [{"text": "You remove all items from the Product Backlog for which development is forecast to be beyond the expected date.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You suggest working with the program manager and the project managers of the other components on the ordering and the value of your open Product Backlog items to redefine the possible delivery date.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You lengthen your Sprints to accommodate the delays.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You calculate how many additional developers it would take to increase velocity to make the original date. You inform the program manager of the additional budget for these developers. This would then allow meeting the original forecast.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>You suggest working with the program manager and the project managers of the other components on the ordering and the value of your open Product Backlog items to redefine the possible delivery date.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 13 of 30."}, {"query": "What are two ways in which technical debt relates to velocity?", "type": "multiple-choice", "options": [{"text": "They are not related, technical debt should be resolved by the support or operations department, not by the Developers.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Adding technical debt items to the Product Backlog to get estimated and added to your velocity forecasts can guarantee predictability.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Developers can artificially increase velocity by incurring technical debt.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Velocity may unexpectedly drop when the Developers run into technical debt while attempting to complete new Product Backlog items.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Developers can artificially increase velocity by incurring technical debt\u003c/b> and \u003cb>Velocity may unexpectedly drop when the Developers run into technical debt while attempting to complete new Product Backlog items\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 14 of 30."}, {"query": "Five new Scrum Teams have been created to build one product. A few of the Developers ask the Scrum Master who will coordinate the work between the different Scrum Teams. What should the Scrum Master do?", "type": "multiple-choice", "options": [{"text": "Teach the Product Owner to work with the lead developers on ordering Product Backlog in a way to avoid too much technical and development overlap during a Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Teach them that it is their responsibility to form Scrum Teams with the skills and knowledge to create an Increment by the end of every Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Visit the five Scrum Teams each day to facilitate alignment and synchronization of their Sprint Backlogs.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Advise the teams to reduce interdependence by working in separate branches and organizing a specific Sprint every four development Sprints to manage integration.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Collect the Sprint tasks from the teams at the end of their Sprint Planning and merge that into a consolidated plan for the entire Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>Teach them that it is their responsibility to form Scrum Teams with the skills and knowledge to create an Increment by the end of every Sprint.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 15 of 30."}, {"query": "You are the Scrum Master of a Scrum Team that has one Developer who disagrees with team decisions. Their disagreements are becoming disruptive and slowing progress. The Developer often returns to earlier team decisions and re-opens the issue. What are two ways to go about this problem?", "type": "multiple-choice", "options": [{"text": "At the Sprint Retrospective you observe whether the topic is raised. If it does not happen, you check on how comfortable everybody is with the way team decisions are made.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You go to the Human Resources department and ask them to have a conversation with the Developer based on the issues the team has raised.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "To every team member expressing this concern you suggest raising this with the full team. You offer to help initiate the conversation but not to resolve the concern yourself.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You take the Developer aside to express your concern over their disagreements and tell them to act as a team player and to comply with the team's decision.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You organize an off-site team building activity to establish a foundation of trust. You observe whether the problem persists after the offsite activity.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>At the Sprint Retrospective you observe whether the topic is raised...\u003c/b> and \u003cb>To every team member expressing this concern you suggest raising this with the full team...\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 16 of 30."}, {"query": "Where should the Daily Scrum be held according to the Scrum Guide?", "type": "multiple-choice", "options": [{"text": "Wherever the Developers think is best.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "In a room where management can listen in.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Around the Scrum board.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "In the room that is reserved by the Scrum Master.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "In the coffee corner to confirm this is an informal gathering.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>Wherever the Developers think is best.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 17 of 30."}, {"query": "What are two signs that a Scrum Team is self-managing?", "type": "multiple-choice", "options": [{"text": "The Developers always know the status of the assigned work needed to deliver the tasks committed in the Sprint Plan.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The Scrum Team can resolve conflicts and continue working.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Management understands the team's daily tasks at all times.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Creativity flourishes and new possibilities are explored.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>The Scrum Team can resolve conflicts and continue working\u003c/b> and \u003cb>Creativity flourishes and new possibilities are explored\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 18 of 30."}, {"query": "An important aspect of Scrum are timeboxes. Select two ways in which timeboxing reinforces the creation of value.", "type": "multiple-choice", "options": [{"text": "Timeboxing assures that a Product Owner does not interrupt the Developers during a Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Timeboxes encourage the people who are closest to the problem to create the best possible result in the time allotted, given the current context.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Scrum Teams can determine on their own how much overtime is acceptable for a timebox, generally expressed as a percentage of the timebox.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Timeboxes help everyone focus on the same problem at the same time.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Timeboxes encourage the people who are closest to the problem to create the best possible result in the time allotted, given the current context\u003c/b> and \u003cb>Timeboxes help everyone focus on the same problem at the same time\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 19 of 30."}, {"query": "During a Sprint Review, the Product Owner determines that she is going to release the current Increment to production. The stakeholders ask to stop the Sprint to react more quickly to the user feedback that is expected after this release. The Product Owner prefers to continue the Sprint to make progress with the next release. You facilitate a discussion on how to proceed. What are two acceptable results of this discussion?", "type": "multiple-choice", "options": [{"text": "Continue sprinting and include the customer feedback in the Product Backlog.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Stop sprinting and let the Developers work on new customer requests as they arise.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Continue sprinting but allow customer feedback to change the Sprint Goal within the Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Continue sprinting but shorten the Sprint length to allow for shorter feedback loops.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Continue sprinting and include the customer feedback in the Product Backlog\u003c/b> and \u003cb>Continue sprinting but shorten the Sprint length to allow for shorter feedback loops\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 20 of 30."}, {"query": "A Scrum Team selected a Product Backlog item during Sprint Planning. However, at the end of the Sprint the work does not meet the Definition of Done. What two things should happen with this incomplete Product Backlog item?", "type": "multiple-choice", "options": [{"text": "Only the stakeholders decide over acceptance of undone work and whether to release it.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Review the item, add the done part of the estimate to the velocity and create a Story for the remaining work.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The item is not included in the Increment for this Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "It is put on the Product Backlog for the Product Owner to decide what to do with it.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>The item is not included in the Increment for this Sprint\u003c/b> and \u003cb>It is put on the Product Backlog for the Product Owner to decide what to do with it\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 21 of 30."}, {"query": "The Developers are waiting for an external supplier to deliver a specific product component that they need to integrate and use. Without that component there will not be enough work in the next Sprint to occupy the full team. They ask their Product Owner to re-order the Product Backlog. The Product Owner asks the Scrum Master for help. What would be good advice for the Product Owner?", "type": "multiple-choice", "options": [{"text": "Tell the Product Owner to remove all work involving the external component from the Product Backlog and create a new backlog for it. The work can then be planned in one or more separate Sprints as soon as the component is available.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Tell the Product Owner that the Product Backlog needs to be re-ordered to maximize utilization of the Developers. It is important to keep productivity high through proper use of the capacity available.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Tell the Product Owner that his primary concern is the flow of value reflected in the ordering of the Product Backlog. Timeline of the flow might be influenced by such dependencies and require some level of Product Backlog re-ordering.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct option is \u003cb>Tell the Product Owner that his primary concern is the flow of value reflected in the ordering of the Product Backlog. Timeline of the flow might be influenced by such dependencies and require some level of Product Backlog re-ordering.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 22 of 30."}, {"query": "You are the Scrum Master of a Scrum Team that is new to Scrum. The Product Owner comes to you halfway through the Sprint and says, \"I do not feel like the Developers will be able to meet the forecast that they developed during Sprint Planning.\" What should you do in this situation?", "type": "multiple-choice", "options": [{"text": "Agree to help the Product Owner by having a discussion with the Developers about the importance of meeting their forecast.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Coach the Product Owner that achieving the Sprint Goal is the Scrum Team's objective. A forecast is only used to initially estimate the effort required to reach the Sprint Goal.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Add more people to the Scrum Team to meet the Product Owner's expectations.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Talk to the Developers. Challenge and inspire them to complete all of the work so that they meet their forecast.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>Coach the Product Owner that achieving the Sprint Goal is the Scrum Team's objective. A forecast is only used to initially estimate the effort required to reach the Sprint Goal.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 23 of 30."}, {"query": "A few members of the Scrum Team discuss work that is not being done. Some say it is part of the Definition of Done, others say it is not. After an hour of angry discussion, someone starts making personal insults and anger levels rise. What is the best action for the Scrum Master to take?", "type": "multiple-choice", "options": [{"text": "End the discussion. Make the call whether the work is or is not part of the Definition of Done. Identify who is involved in the conflict and decide on their further presence on the Scrum Team.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Conduct a session to help the Scrum Team resolve the conflict and create a uniform Definition of Done. Remind the other members of the Scrum Team that conflicting ideas are natural, but making it personal does not help.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Take the people involved aside. Ask them to resolve the situation outside of the Scrum Team, if required through their managers. The goal is to maintain stability in the team.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Defuse the conflict. Take the Definition of Done and tell the other members of the Scrum Team how to interpret it, so they can autonomously decide whether the debated work is or is not part of it.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct option is \u003cb>Conduct a session to help the Scrum Team resolve the conflict and create a uniform Definition of Done. Remind the other members of the Scrum Team that conflicting ideas are natural, but making it personal does not help.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best answer.\u003c/p>", "reference": "Source screenshot: Question 24 of 30."}, {"query": "You are the Scrum Master for four Scrum Teams working from the same Product Backlog. Several of the Developers come to you complaining that work identified for the upcoming two Sprints will require full time commitment from Stella, an external specialist who is not a member of any of the four Scrum Teams. What would you consider acceptable solutions for the problem?", "type": "multiple-choice", "options": [{"text": "Investigate whether additional techniques or frameworks for scaling Scrum would be appropriate for these Scrum Teams.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Have the Developers re-order the Product Backlog so Stella can serve one team full-time in a Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Merge the Scrum Teams into one large Scrum Team for the next two Sprints. When the need for Stella's expertise is over, the teams can separate again.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Create a team with Stella and identify people from the Scrum Teams to temporarily work in Stella's domain to learn to better serve the existing teams.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Organize a release Sprint in which Stella can thoroughly check and complete all the work done in her domain before considering the work releasable.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Developers with an interest in Stella's domain could volunteer to take on this work in their respective Scrum Teams.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Ask Stella for a plan to hire and train additional people in her domain, and in the meantime work with the Product Owner and Scrum Teams to re-prioritize the work so that tasks not depending on Stella can be done first.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Create a team with Stella and identify people from the Scrum Teams to temporarily work in Stella's domain to learn to better serve the existing teams\u003c/b>, \u003cb>Developers with an interest in Stella's domain could volunteer to take on this work in their respective Scrum Teams\u003c/b>, and \u003cb>Ask Stella for a plan to hire and train additional people in her domain, and in the meantime work with the Product Owner and Scrum Teams to re-prioritize the work so that tasks not depending on Stella can be done first\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best three answers.\u003c/p>", "reference": "Source screenshot: Question 25 of 30."}, {"query": "In the Sprint Review, one of the stakeholders highlights the money spent this year, and that due to market changes, the funding may run out. An argument follows this statement, with raised voices and strong emotional statements. As a Scrum Master, what are your two best options?", "type": "multiple-choice", "options": [{"text": "Encourage the stakeholders to focus on delivering the highest value items for the next Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "It is the Product Owner's meeting, so do nothing.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Defend the budget, asking the stakeholders to support the funding of the work.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Argue that the Scrum Team needs to be kept busy while the funding is confirmed.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Ask for a short break for people to calm down and be objective.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Encourage the stakeholders to focus on delivering the highest value items for the next Sprint\u003c/b> and \u003cb>Ask for a short break for people to calm down and be objective\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 26 of 30."}, {"query": "In the Sprint Retrospective, there is discussion that the quality of the Increment is not sufficient for going to production. In response, a Scrum Team member points out the high velocity reached by the team. What are the two best actions for the Scrum Master to take?", "type": "multiple-choice", "options": [{"text": "Facilitate a discussion on how to improve the quality to a level sufficient for production, even if the measured velocity will drop in the next Sprint.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Acknowledge the hard work, but remind the Developers that they need to improve to do even more in the next Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Stress the value of working product over measured velocity.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Agree and praise the Developers for their hard work, so they are motivated to do even more in the next Sprint.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The selected correct options are \u003cb>Facilitate a discussion on how to improve the quality to a level sufficient for production, even if the measured velocity will drop in the next Sprint\u003c/b> and \u003cb>Stress the value of working product over measured velocity\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 27 of 30."}, {"query": "At the seventh Sprint Review, the stakeholders seem disappointed and angry. When asked about it, they say the product being built will not meet their needs and will cost more than they anticipated spending. What factors may have led to this?", "type": "multiple-choice", "options": [{"text": "The Project Management Office (PMO) and its project managers have not been adequately engaged, causing the project plan to become inaccurate.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Changes to the project plan were not adequately documented and shared. The change request procedure was not diligently followed.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The stakeholders have not been using the Sprint Reviews to actively engage, and inspect and evaluate progress.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "The Scrum Master has not ensured transparency.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "The stakeholders were not allowed to enter the development area, or be present at the Daily Scrum.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "The Product Owner has not been interacting frequently with the stakeholders and kept them aware of the progress of the project.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>The stakeholders have not been using the Sprint Reviews to actively engage, and inspect and evaluate progress\u003c/b>, \u003cb>The Scrum Master has not ensured transparency\u003c/b>, and \u003cb>The Product Owner has not been interacting frequently with the stakeholders and kept them aware of the progress of the project\u003c/b>.\u003c/p>", "tip": "\u003cp>Choose the best three answers.\u003c/p>", "reference": "Source screenshot: Question 28 of 30."}, {"query": "You are the Scrum Master for three Scrum Teams working on the same product. There is a single Product Backlog that all three Scrum Teams select from. Management is eager to improve the productivity of the teams and wants to standardize velocity across all three teams so that they can see how each team is delivering value. When responding to management, which two statements are appropriate?", "type": "multiple-choice", "options": [{"text": "Incentivizing teams based on velocity can boost the Scrum Team's motivation to create more value.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Velocity has no direct relationship with value.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "Standardizing velocity across teams can help with understanding which teams are creating more value.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "Velocity is the amount of business functionality that a Scrum Team creates in a Sprint. It is unique to that team and used as an input to Sprint Planning.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}], "answer": "\u003cp>The selected correct options are \u003cb>Velocity has no direct relationship with value\u003c/b> and \u003cb>Velocity is the amount of business functionality that a Scrum Team creates in a Sprint. It is unique to that team and used as an input to Sprint Planning.\u003c/b>\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 29 of 30."}, {"query": "After some small experiments with Scrum, your company decides to do a complete project with Scrum. As Scrum Master, you have been invited to the \"project kick-off meeting\" with IT and product management. The Product Owner asks how many Sprints IT will need to first figure out architecture and infrastructure issues. What are two options to explain how such work is managed using Scrum?", "type": "multiple-choice", "options": [{"text": "You explain that product management should not worry about such typical IT work. You inform them that you will assure that the team members reach out to the right people within the IT organization when needed. During each Sprint Planning event they will keep the Product Owner updated about the additional effort it will take for that Sprint. That effort will come on top of the effort for the forecasted functional development.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You educate the Product Owner to add this work to the Product Backlog to uphold transparency. Ask the Developers to plan work during the first several Sprints to estimate these items, while also creating some business functionality in these early Sprints.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}, {"text": "You explain that technical risks are best controlled when architecture and infrastructure emerge alongside the development of functionality. The additional advantage is that business value is created faster and sooner.", "explanation": "Selected as a correct answer in the source screenshot.", "correct": true}, {"text": "You thank product management for understanding that these efforts indeed require effort and budget. You confirm that architecture and infrastructure are best addressed before starting Scrum, but that the exact budget is difficult to calculate upfront. You say you will organize this work in timeboxed Sprints of no more than 30 days to limit risk and be transparent toward product management on the actual progress.", "explanation": "Not selected as a correct answer in the source screenshot.", "correct": false}], "answer": "\u003cp>The screenshot selected \u003cb>the first\u003c/b> and \u003cb>the third\u003c/b> options.\u003c/p>", "tip": "\u003cp>Choose the best two answers.\u003c/p>", "reference": "Source screenshot: Question 30 of 30. This screenshot selection is discussed separately because it appears to contain an incorrect answer."}];
+
+    const CURRENT_KEY = "josh2CurrentExam";
+    const HISTORY_KEY = "josh2ExamHistory";
+    const EXAM_NAME = "PSM II Scrum Exam";
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function isCorrect(question) {
+      return question.options.every(option => Boolean(option.selected) === Boolean(option.correct));
+    }
+
+    function correctCount(question) {
+      return question.options.filter(option => option.correct).length;
+    }
+
+    function formatDuration(ms) {
+      if (!Number.isFinite(ms) || ms < 0) return "0:00";
+      const total = Math.floor(ms / 1000);
+      const minutes = Math.floor(total / 60);
+      const seconds = total % 60;
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    class ExamQuestion extends HTMLElement {
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        if (!this._state) return;
+        const { question, index, total, graded, cheating } = this._state;
+        const reveal = graded || cheating;
+        const choose = correctCount(question);
+
+        this.innerHTML = `
+          <section class="card" aria-labelledby="question-title">
+            <div class="card-header">
+              <span>Question ${index + 1} of ${total}</span>
+              <span>${question.viewed ? "Viewed" : "New"}</span>
+            </div>
+            <div class="card-body">
+              <p class="query" id="question-title"></p>
+              <p class="choose-note">Choose ${choose}</p>
+              <div class="options"></div>
+              ${reveal ? `<div class="answer-panel"><strong>Answer</strong><div class="answer-html"></div></div>` : ""}
+            </div>
+          </section>
+        `;
+
+        this.querySelector(".query").textContent = question.query;
+        const options = this.querySelector(".options");
+
+        question.options.forEach((option, optionIndex) => {
+          const label = document.createElement("label");
+          label.className = "option";
+          if (reveal && option.correct) label.classList.add("reveal-correct");
+          if (reveal && option.selected && !option.correct) label.classList.add("reveal-wrong-selected");
+
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.checked = Boolean(option.selected);
+          input.disabled = Boolean(graded);
+          input.addEventListener("change", () => {
+            this.dispatchEvent(new CustomEvent("option-toggle", {
+              bubbles: true,
+              detail: { optionIndex }
+            }));
+          });
+
+          const textWrap = document.createElement("span");
+          const text = document.createElement("span");
+          text.textContent = option.text;
+          textWrap.appendChild(text);
+
+          if (reveal && option.explanation) {
+            const explanation = document.createElement("small");
+            explanation.textContent = option.explanation;
+            textWrap.appendChild(explanation);
+          }
+
+          label.append(input, textWrap);
+          options.appendChild(label);
+        });
+
+        const answer = this.querySelector(".answer-html");
+        if (answer) answer.innerHTML = question.answer || "";
+      }
+    }
+    customElements.define("exam-question", ExamQuestion);
+
+    class QuestionJumper extends HTMLElement {
+      constructor() {
+        super();
+        this.collapsed = false;
+      }
+
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        if (!this._state) return;
+        const { questions, current, graded, cheating } = this._state;
+        const reveal = graded || cheating;
+
+        this.innerHTML = `
+          <section class="card">
+            <div class="card-header collapsible-title" role="button" tabindex="0">
+              <span>Question Jumper</span>
+              <span class="chevron">${this.collapsed ? "▼" : "▲"}</span>
+            </div>
+            <div class="card-body jumper-body" ${this.collapsed ? 'hidden' : ''}>
+              <div class="jumper-grid"></div>
+            </div>
+          </section>
+        `;
+
+        const title = this.querySelector(".collapsible-title");
+        const toggle = () => {
+          this.collapsed = !this.collapsed;
+          this.render();
+        };
+        title.addEventListener("click", toggle);
+        title.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
+
+        const grid = this.querySelector(".jumper-grid");
+        questions.forEach((question, index) => {
+          const button = document.createElement("button");
+          button.className = "jump-btn";
+          button.textContent = String(index + 1);
+          button.title = question.query;
+
+          if (question.viewed) button.classList.add("viewed");
+          if (index === current) button.classList.add("current");
+
+          if (reveal) {
+            button.classList.remove("viewed", "current");
+            button.classList.add(isCorrect(question) ? "correct" : "incorrect");
+            if (index === current) button.style.outline = "3px solid #111827";
+          }
+
+          button.addEventListener("click", () => {
+            this.dispatchEvent(new CustomEvent("jump", {
+              bubbles: true,
+              detail: { index }
+            }));
+          });
+          grid.appendChild(button);
+        });
+      }
+    }
+    customElements.define("question-jumper", QuestionJumper);
+
+    class ExamHistoryPanel extends HTMLElement {
+      constructor() {
+        super();
+        this.collapsed = false;
+      }
+
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        const history = this._state?.history || { exams: [] };
+        const exams = Array.isArray(history.exams) ? history.exams : [];
+
+        this.innerHTML = `
+          <section class="card">
+            <div class="card-header">
+              <span class="collapsible-title" role="button" tabindex="0">Exam History</span>
+              <div class="control-group">
+                <button class="btn-secondary toggle-history">${this.collapsed ? "Show" : "Hide"}</button>
+                <button class="btn-danger clear-history" ${exams.length ? "" : "disabled"}>Clear History</button>
+              </div>
+            </div>
+            <div class="card-body history-body" ${this.collapsed ? "hidden" : ""}></div>
+          </section>
+        `;
+
+        const doToggle = () => {
+          this.collapsed = !this.collapsed;
+          this.render();
+        };
+        this.querySelector(".toggle-history").addEventListener("click", doToggle);
+        this.querySelector(".collapsible-title").addEventListener("click", doToggle);
+        this.querySelector(".clear-history").addEventListener("click", () => {
+          this.dispatchEvent(new CustomEvent("history-clear", { bubbles: true }));
+        });
+
+        const body = this.querySelector(".history-body");
+        if (!exams.length) {
+          body.innerHTML = `<p class="history-empty">No completed exams are stored on this device.</p>`;
+          return;
+        }
+
+        [...exams].reverse().forEach((exam, reverseIndex) => {
+          const questions = Array.isArray(exam.questions) ? exam.questions : [];
+          const score = questions.filter(isCorrect).length;
+          const number = exams.length - reverseIndex;
+          const finish = Number(exam.finish || exam.completedAt || 0);
+          const start = Number(exam.start || 0);
+          const stamp = finish ? new Date(finish).toLocaleString() : "Completed exam";
+          const duration = finish && start ? formatDuration(finish - start) : "";
+
+          const wrap = document.createElement("div");
+          wrap.className = "history-exam";
+
+          const summary = document.createElement("div");
+          summary.className = "history-summary";
+          summary.innerHTML = `<strong>Attempt ${number}: ${score} / ${questions.length}</strong><span>${stamp}${duration ? ` · ${duration}` : ""}</span>`;
+          wrap.appendChild(summary);
+
+          const dots = document.createElement("div");
+          dots.className = "history-dots";
+          questions.forEach((question, i) => {
+            const dot = document.createElement("span");
+            dot.className = "history-dot" + (isCorrect(question) ? " correct" : "");
+            dot.textContent = String(i + 1);
+            dot.title = question.query;
+            dots.appendChild(dot);
+          });
+          wrap.appendChild(dots);
+          body.appendChild(wrap);
+        });
+      }
+    }
+    customElements.define("exam-history-panel", ExamHistoryPanel);
+
+    class ScrumExamApp extends HTMLElement {
+      constructor() {
+        super();
+        this.state = null;
+        this.timerHandle = null;
+      }
+
+      connectedCallback() {
+        this.load();
+        this.addEventListener("option-toggle", e => this.toggleOption(e.detail.optionIndex));
+        this.addEventListener("jump", e => this.setCurrentQuestion(e.detail.index));
+        this.addEventListener("history-clear", () => this.clearHistory());
+        this.render();
+        this.timerHandle = setInterval(() => this.updateTimer(), 1000);
+      }
+
+      disconnectedCallback() {
+        clearInterval(this.timerHandle);
+      }
+
+      load() {
+        let saved = null;
+        try {
+          saved = JSON.parse(localStorage.getItem(CURRENT_KEY));
+        } catch (_) {}
+
+        if (saved && Array.isArray(saved.questions) && saved.questions.length === QUESTION_BANK.length && !saved.graded) {
+          this.state = saved;
+        } else {
+          const questions = clone(QUESTION_BANK).map(q => ({
+            ...q,
+            viewed: false,
+            options: q.options.map(o => ({ ...o, selected: false }))
+          }));
+          questions[0].viewed = true;
+          this.state = {
+            name: EXAM_NAME,
+            graded: false,
+            start: Date.now(),
+            finish: 0,
+            questions,
+            currentQuestionNumber: 0,
+            cheating: new URLSearchParams(location.search).get("page") === "answer"
+          };
+          this.saveCurrent();
+        }
+      }
+
+      saveCurrent() {
+        if (!this.state.graded) {
+          localStorage.setItem(CURRENT_KEY, JSON.stringify(this.state));
+        }
+      }
+
+      getHistory() {
+        try {
+          const existing = JSON.parse(localStorage.getItem(HISTORY_KEY));
+          if (existing && Array.isArray(existing.exams)) return existing;
+        } catch (_) {}
+        const history = { name: "Exam History", exams: [] };
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        return history;
+      }
+
+      clearHistory() {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify({ name: "Exam History", exams: [] }));
+        this.render();
+      }
+
+      toggleOption(optionIndex) {
+        if (this.state.graded) return;
+        const q = this.state.questions[this.state.currentQuestionNumber];
+        q.options[optionIndex].selected = !q.options[optionIndex].selected;
+        q.viewed = true;
+        this.saveCurrent();
+        this.render();
+      }
+
+      setCurrentQuestion(index) {
+        const next = Math.max(0, Math.min(index, this.state.questions.length - 1));
+        this.state.currentQuestionNumber = next;
+        this.state.questions[next].viewed = true;
+        this.saveCurrent();
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      toggleCheat() {
+        this.state.cheating = !this.state.cheating;
+        this.saveCurrent();
+        this.render();
+      }
+
+      grade() {
+        if (this.state.graded) return;
+        this.state.graded = true;
+        this.state.cheating = true;
+        this.state.finish = Date.now();
+
+        const history = this.getHistory();
+        history.exams.push(clone(this.state));
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        localStorage.removeItem(CURRENT_KEY);
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      restart() {
+        localStorage.removeItem(CURRENT_KEY);
+        this.load();
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      score() {
+        return this.state.questions.filter(isCorrect).length;
+      }
+
+      answeredCount() {
+        return this.state.questions.filter(q => q.options.some(o => o.selected)).length;
+      }
+
+      updateTimer() {
+        const el = this.querySelector("[data-timer]");
+        if (!el || !this.state) return;
+        const end = this.state.finish || Date.now();
+        el.textContent = formatDuration(end - this.state.start);
+      }
+
+      render() {
+        if (!this.state) return;
+        const qIndex = this.state.currentQuestionNumber;
+        const total = this.state.questions.length;
+        const answered = this.answeredCount();
+        const score = this.score();
+
+        this.innerHTML = `
+          <main class="page-shell">
+            <header class="hero">
+              <div class="hero-top">
+                <div>
+                  <h1>PSM II Scrum Exam</h1>
+                  <p>30-question PSM II practice exam · standalone Web Components edition</p>
+                </div>
+                <div class="pill">Elapsed <span data-timer>${formatDuration((this.state.finish || Date.now()) - this.state.start)}</span></div>
+              </div>
+              <div class="meta-row">
+                <span class="pill">${total} questions</span>
+                <span class="pill">${answered} answered</span>
+                <span class="pill">${this.state.questions.filter(q => q.viewed).length} viewed</span>
+                ${this.state.graded ? `<span class="pill">Score ${score} / ${total}</span>` : ""}
+              </div>
+            </header>
+
+            ${this.state.graded ? `
+              <section class="card results">
+                <div class="card-body">
+                  <strong>Your grade is ${score} out of ${total}.</strong>
+                  <div class="status-line">Correct answers and option explanations are now visible. Your completed attempt has been saved to local storage.</div>
+                </div>
+              </section>
+            ` : ""}
+
+            <exam-question></exam-question>
+
+            <div class="controls">
+              <div class="control-group">
+                <button class="btn-secondary previous" ${qIndex === 0 ? "disabled" : ""}>&lt;&lt; Back</button>
+                <button class="btn-primary next" ${qIndex === total - 1 ? "disabled" : ""}>Next &gt;&gt;</button>
+              </div>
+              <div class="control-group">
+                <button class="btn-warning cheat">${this.state.cheating ? "Be Honest" : "Cheat"}</button>
+                ${this.state.graded
+                  ? `<button class="btn-primary restart">Start New Attempt</button>`
+                  : `<button class="btn-primary finish">Finish</button>`}
+              </div>
+            </div>
+
+            <question-jumper></question-jumper>
+            <exam-history-panel></exam-history-panel>
+
+            <p class="footer-note">Progress and completed attempts are stored only in this browser's localStorage.</p>
+          </main>
+        `;
+
+        const questionEl = this.querySelector("exam-question");
+        questionEl.state = {
+          question: this.state.questions[qIndex],
+          index: qIndex,
+          total,
+          graded: this.state.graded,
+          cheating: this.state.cheating
+        };
+
+        const jumper = this.querySelector("question-jumper");
+        jumper.state = {
+          questions: this.state.questions,
+          current: qIndex,
+          graded: this.state.graded,
+          cheating: this.state.cheating
+        };
+
+        const history = this.querySelector("exam-history-panel");
+        history.state = { history: this.getHistory() };
+
+        this.querySelector(".previous").addEventListener("click", () => this.setCurrentQuestion(qIndex - 1));
+        this.querySelector(".next").addEventListener("click", () => this.setCurrentQuestion(qIndex + 1));
+        this.querySelector(".cheat").addEventListener("click", () => this.toggleCheat());
+
+        const finish = this.querySelector(".finish");
+        if (finish) finish.addEventListener("click", () => this.grade());
+
+        const restart = this.querySelector(".restart");
+        if (restart) restart.addEventListener("click", () => this.restart());
+      }
+    }
+    customElements.define("scrum-exam-app", ScrumExamApp);
+  </script>
+</body>
+</html>
