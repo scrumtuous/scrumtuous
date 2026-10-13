@@ -21,3 +21,6 @@ Spring, Forms, Routes, Auth.
 
 ## Bonus: S3 website setup
 Open pages/s3_website_setup.html. A local bucket-name checker updates the public-read policy live; no AWS calls are made. This beginner path uses standard shared-global general purpose bucket names in commercial AWS Regions. All navbars include s3. S3 page uses the requested 42KTiSgok1I video.
+
+## AWS store deployment lab
+Open pages/aws_store_deployment_lab.html. Includes the complete supplied student instructions, contents navigation, copyable code blocks, Québec hero/footer artwork and the standard course video. Original lab Markdown is under resources/. Every course navbar includes aws.

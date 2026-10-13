@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Student AWS deployment lab: S3 website, Route 53, Lightsail PostgreSQL, Kafka topics, Spring profiles and Beanstalk."><title>AWS Store Deployment Lab | The Full Stack Breakfast Club</title><link rel="stylesheet" href="../assets/bootstrap/bootstrap-navbar-scoped.min.css"><link rel="stylesheet" href="../assets/landing.css"><link rel="stylesheet" href="../assets/course-nav.css"><link rel="stylesheet" href="../assets/graphics-video.css"><link rel="stylesheet" href="../assets/aws-lab.css"></head><body><a class="skip" href="#main">Skip to lab</a><header class="course-nav"><nav class="navbar navbar-expand-xl" aria-label="Course navigation"><div class="container-fluid"><a class="navbar-brand" href="../index.html"><span aria-hidden="true">🥞</span> Angular Week</a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#courseMenu" aria-controls="courseMenu" aria-expanded="false" aria-label="Toggle course menu"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="courseMenu"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="../pages/html_fundamentals_maple_fun.html">HTML</a></li><li class="nav-item"><a class="nav-link" href="../pages/css_fundamentals_maple_fun.html">CSS</a></li><li class="nav-item"><a class="nav-link" href="../pages/javascript_dom_muskoka_fun.html">JS</a></li><li class="nav-item"><a class="nav-link" href="../pages/fetch_http_muskoka_fun.html">HTTP</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_fundamentals_boston_slide_fun.html">Angular</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_components_templates_new_hampshire_fun.html">Components</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_services_quebec_winter_fun.html">Services</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_http_spring_boot_rhode_island_fun.html">Spring</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_reactive_forms_new_england_summer_fun.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_routing_boston_breakfast_fun.html">Routes</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_authenticated_flows_toronto_fun.html">Auth</a></li><li class="nav-item"><a class="nav-link" href="../pages/s3_website_setup.html">s3</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="../pages/aws_store_deployment_lab.html">aws</a></li></ul></div></div></nav></header><figure class="aws-hero"><img src="../assets/images/art-432eb4f67934ec13.png" alt="Raccoon, Beaver and Narwhal enjoy a pancake picnic in snowy Québec City"></figure><main id="main"><section class="aws-intro"><div class="eyebrow">AWS deployment lab · From local store to cloud</div><h1>Deploy Your Store</h1><p class="lead">Take your Spring Boot store from local development to S3, Route 53, PostgreSQL, Kafka and Beanstalk. The Québec breakfast crew brought pancakes; you bring the working deployment.</p><div class="aws-roadmap"><a href="#your-deployment-map">Plan your names</a><a href="#1-publish-the-static-frontend-to-s3">Publish the frontend</a><a href="#7-test-the-aws-profile-locally-before-deploying">Test the AWS profile</a><a href="#submit-your-evidence">Collect your evidence</a></div><p class="small">Use the lowercase <code>roflgator</code> examples as a naming pattern and replace them with your own token. Keep framework property keys unchanged and complete every <code>xxxx</code> placeholder. <a href="../resources/aws-store-deployment-lab.md" download>Download the lab instructions</a>.</p></section><div class="aws-layout"><aside class="aws-toc" aria-label="Lab contents"><h2>Lab contents</h2><div class="toc">
+<ul>
+<li><a href="#starting-point-infrastructure-is-already-provisioned">Starting point: infrastructure is already provisioned</a><ul>
+<li><a href="#already-done-for-you">Already Done For You</a></li>
+</ul>
+</li>
+<li><a href="#your-deployment-map">Your deployment map</a></li>
+<li><a href="#1-publish-the-static-frontend-to-s3">1. Publish the static frontend to S3</a><ul>
+<li><a href="#11-inspect-the-project">1.1 Inspect the project</a></li>
+<li><a href="#12-create-and-configure-the-bucket">1.2 Create and configure the bucket</a></li>
+</ul>
+</li>
+<li><a href="#2-give-the-s3-website-its-own-route-53-name">2. Give the S3 website its own Route 53 name</a><ul>
+<li><a href="#cname-fallback-for-this-subdomain">CNAME fallback for this subdomain</a></li>
+</ul>
+</li>
+<li><a href="#3-create-your-database-inside-the-existing-postgresql-server">3. Create your database inside the existing PostgreSQL server</a><ul>
+<li><a href="#31-connect-to-the-shared-server">3.1 Connect to the shared server</a></li>
+<li><a href="#32-create-a-database-cname">3.2 Create a database CNAME</a></li>
+</ul>
+</li>
+<li><a href="#4-name-and-verify-the-shared-kafka-broker">4. Name and verify the shared Kafka broker</a><ul>
+<li><a href="#41-create-your-kafka-cname">4.1 Create your Kafka CNAME</a></li>
+<li><a href="#42-ssh-into-the-existing-linux-instance">4.2 SSH into the existing Linux instance</a></li>
+</ul>
+</li>
+<li><a href="#5-create-your-two-kafka-topics-and-update-the-source-code">5. Create your two Kafka topics and update the source code</a><ul>
+<li><a href="#source-code-investigation">Source-code investigation</a></li>
+<li><a href="#prevent-embedded-kafka-from-starting-in-aws">Prevent embedded Kafka from starting in AWS</a></li>
+</ul>
+</li>
+<li><a href="#6-complete-the-spring-properties">6. Complete the Spring properties</a></li>
+<li><a href="#7-test-the-aws-profile-locally-before-deploying">7. Test the AWS profile locally before deploying</a></li>
+<li><a href="#8-prepare-the-api-for-an-s3-frontend">8. Prepare the API for an S3 frontend</a></li>
+<li><a href="#9-build-and-deploy-the-executable-jar-to-beanstalk">9. Build and deploy the executable JAR to Beanstalk</a></li>
+<li><a href="#10-add-the-beanstalk-route-53-record">10. Add the Beanstalk Route 53 record</a></li>
+<li><a href="#11-point-the-s3-javascript-at-your-deployed-api">11. Point the S3 JavaScript at your deployed API</a></li>
+<li><a href="#troubleshooting-checkpoints">Troubleshooting checkpoints</a></li>
+<li><a href="#submit-your-evidence">Submit your evidence</a></li>
+<li><a href="#cleanup">Cleanup</a></li>
+<li><a href="#official-references">Official references</a></li>
+</ul>
+</div>
+</aside><article class="aws-lab" aria-label="Deployment lab instructions"><h2 id="starting-point-infrastructure-is-already-provisioned">Starting point: infrastructure is already provisioned</h2>
+<p><strong>The Lightsail Linux instance and Lightsail managed PostgreSQL database have already been provisioned in AWS. Docker is installed and Kafka is ready to use.</strong> You will create your own logical database, Kafka topics, DNS records and application deployment. Do not create another shared server, replace the broker, or delete another student's resources.</p>
+<p>Examples use <code>roflgator</code>. Replace that token with your lowercase name. </p>
+<p>Fields marked <code>xxxx</code> must be corrected before running the application.</p>
+<p>The shared resources for this class are:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Provided value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS Region</td>
+<td><code>us-east-1</code></td>
+</tr>
+<tr>
+<td>Route 53 public hosted zone</td>
+<td><code>livefree.click</code></td>
+</tr>
+<tr>
+<td>Linux static IPv4 address</td>
+<td><code>32.199.0.184</code></td>
+</tr>
+<tr>
+<td>PostgreSQL endpoint</td>
+<td><code>ls-de1b46cf51b8647cb2b1b43ccbacbb06433f584c.citm64k00r0w.us-east-1.rds.amazonaws.com</code></td>
+</tr>
+<tr>
+<td>PostgreSQL port</td>
+<td><code>5432</code></td>
+</tr>
+<tr>
+<td>Database username</td>
+<td><code>dbmasteruser</code></td>
+</tr>
+<tr>
+<td>Database password</td>
+<td>Supplied separately</td>
+</tr>
+</tbody>
+</table>
+<p>Use the current connection details shown in your AWS console if a resource has been replaced. Never put the database password in S3 or JavaScript.</p>
+<h3 id="already-done-for-you">Already Done For You</h3>
+<p>Docker is installed on the Linux VM, and the Kafka container is ready to use. <strong>The Docker setup commands below were run during environment preparation. Do not run them again.</strong> </p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-1" data-copy-reference="true" aria-describedby="aws-copy-status-1">Copy reference</button></div><pre><code id="aws-code-1" class="language-bash">sudo apt-get update
+sudo apt-get install -y curl
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo systemctl enable --now docker
+sudo docker run --rm hello-world
+</code></pre><p id="aws-copy-status-1" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>The existing Kafka container is named <code>kafka</code>. Its client port is 9092, its internal command-line listener is 19092, and its controller listener is 9093.</p>
+<p>The PostgreSQL server is a <strong>managed Lightsail database</strong>, so AWS installed PostgreSQL when the database resource was provisioned. Your task will be to create a named database inside that existing server using the Postgres Admin tool (pgAdmin).</p>
+<h2 id="your-deployment-map">Your deployment map</h2>
+<p>Complete the right-hand column before starting. Use a unique short lowercase name with letters and digits. Keep the hyphens and dots in the examples in their designated positions.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Example</th>
+<th>Your value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Student token</td>
+<td><code>roflgator</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>S3 bucket and website hostname</td>
+<td><code>www-roflgator.livefree.click</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Logical PostgreSQL database</td>
+<td><code>roflgator-store</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Database DNS hostname</td>
+<td><code>roflgator-postgres.livefree.click</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Kafka DNS hostname</td>
+<td><code>roflgator-linux.livefree.click</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Validation topic</td>
+<td><code>roflgator-purchases.validate</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Processing topic</td>
+<td><code>roflgator-purchases.process</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Validator consumer group</td>
+<td><code>roflgator-validators</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Processor consumer group</td>
+<td><code>roflgator-processors</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+<tr>
+<td>Backend DNS hostname</td>
+<td><code>app-roflgator.livefree.click</code></td>
+<td><strong><em>_</em></strong>___</td>
+</tr>
+</tbody>
+</table>
+<p>The frontend will live in S3. Its JavaScript calls the Beanstalk API. The API reads/writes PostgreSQL and sends/consumes Kafka messages. Browsers do not connect directly to PostgreSQL or Kafka.</p>
+<p><strong>Naming challenge:</strong> Which strings are yours to rename, and which are framework property keys that must remain unchanged?</p>
+<h2 id="1-publish-the-static-frontend-to-s3">1. Publish the static frontend to S3</h2>
+<h3 id="11-inspect-the-project">1.1 Inspect the project</h3>
+<p>Locate <code>src/main/resources/static</code> in the full Spring Boot project. Upload the <strong>contents</strong> of this directory to S3, preserving relative paths; do not place everything underneath a new <code>static/</code> directory.</p>
+<p>The supplied pages reference <code>styles.css</code>, <code>common.js</code> and several navigation targets. The attachments are only a subset of the website. Collect all HTML, CSS, JavaScript, images and other assets from the full project. If using the timestamped attached home page, give the deployed file the normal name <code>index.html</code>.</p>
+<p>Keep a local copy in the project initially so you can test the pages from Spring Boot later. Copying them to S3 is sufficient to migrate their hosting; deleting your local source files is unnecessary.</p>
+<h3 id="12-create-and-configure-the-bucket">1.2 Create and configure the bucket</h3>
+<ol>
+<li>Create a general-purpose S3 bucket named <code>www-roflgator.livefree.click</code>, replacing <code>roflgator</code> first.</li>
+<li>Use the lab Region, <code>us-east-1</code>.</li>
+<li>Keep ACLs disabled; use a bucket policy for public reads.</li>
+<li>Enable <strong>Static website hosting</strong> and set the index document to <code>index.html</code>.</li>
+<li>Upload all static assets to the bucket root.</li>
+<li>Adjust the bucket's Block Public Access settings to permit the intended public-read bucket policy. Account or organization restrictions can still prevent this; a bucket setting cannot override a higher-level restriction. Verify that your lab account permits public website hosting before continuing.</li>
+<li>Add this policy after replacing the example bucket name:</li>
+</ol>
+<div class="aws-code-block"><div class="aws-code-bar"><span>JSON</span><button type="button" data-copy-code="aws-code-2" aria-describedby="aws-copy-status-2">Copy code</button></div><pre><code id="aws-code-2" class="language-json">{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [
+    {
+      &quot;Sid&quot;: &quot;PublicReadWebsiteObjects&quot;,
+      &quot;Effect&quot;: &quot;Allow&quot;,
+      &quot;Principal&quot;: &quot;*&quot;,
+      &quot;Action&quot;: &quot;s3:GetObject&quot;,
+      &quot;Resource&quot;: &quot;arn:aws:s3:::www-roflgator.livefree.click/*&quot;
+    }
+  ]
+}
+</code></pre><p id="aws-copy-status-2" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>This grants public object reads, not uploads or bucket administration. Upload only public website assets: no JAR, properties file, credentials or Java source.</p>
+<p>Open the <strong>website endpoint</strong> copied from the bucket's Properties tab. Use <code>http://</code> for this stage. Direct S3 website endpoints do not support HTTPS. [3][4]</p>
+<p><strong>Checkpoint:</strong> The home page, stylesheet and navigation load. API requests may fail now because the backend is not connected yet.</p>
+<h2 id="2-give-the-s3-website-its-own-route-53-name">2. Give the S3 website its own Route 53 name</h2>
+<p>In the existing public hosted zone <code>livefree.click</code>, create:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Student task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Record name</td>
+<td><code>www-roflgator</code> with your token</td>
+</tr>
+<tr>
+<td>Type</td>
+<td><code>A</code></td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Target</td>
+<td>S3 website endpoint in your bucket's Region</td>
+</tr>
+<tr>
+<td>Routing policy</td>
+<td>Simple</td>
+</tr>
+<tr>
+<td>Evaluate target health</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>The complete hostname must <strong>exactly match the bucket name</strong>. <code>www-roflgator.livefree.click</code> and <code>www.roflgator.livefree.click</code> are different names. An ordinary A record takes an IP address; an AWS alias A record can target an eligible AWS service. [3]</p>
+<p>If the bucket is missing from the alias selector, check the account, Region, website hosting and exact name first. Do not select an unrelated bucket.</p>
+<h3 id="cname-fallback-for-this-subdomain">CNAME fallback for this subdomain</h3>
+<p>If you cannot select the correct alias target, use a <strong>CNAME</strong> at the same subdomain pointing to the bucket's exact website endpoint hostname copied from AWS. Remove <code>http://</code> and any trailing path. Do not use the S3 REST endpoint or an <code>s3://</code> address.</p>
+<p>Remove the conflicting A record before creating the CNAME: a CNAME cannot coexist with other record types at the same name. This fallback works for this subdomain, not the hosted-zone apex <code>livefree.click</code>. It does not fix a wrong bucket name, permissions or disabled website hosting. [3][4]</p>
+<p>Verify in Windows PowerShell:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-3" aria-describedby="aws-copy-status-3">Copy code</button></div><pre><code id="aws-code-3" class="language-powershell">Resolve-DnsName www-roflgator.livefree.click
+</code></pre><p id="aws-copy-status-3" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Open <code>http://www-roflgator.livefree.click</code> using your replacement name.</p>
+<p><strong>Explain:</strong> Why does a successful DNS lookup not guarantee that S3 will return <code>index.html</code>?</p>
+<h2 id="3-create-your-database-inside-the-existing-postgresql-server">3. Create your database inside the existing PostgreSQL server</h2>
+<h3 id="31-connect-to-the-shared-server">3.1 Connect to the shared server</h3>
+<p>Use the <strong>Postgres Admin tool (pgAdmin)</strong> to connect to the existing server:</p>
+<ol>
+<li>Open pgAdmin and choose <strong>Register -&gt; Server</strong>.</li>
+<li>On <strong>General</strong>, give the connection a recognizable name, such as <code>My AWS Store</code>.</li>
+<li>On <strong>Connection</strong>, enter the AWS PostgreSQL endpoint from the starting table, port <code>5432</code>, maintenance database <code>postgres</code>, and username <code>dbmasteruser</code>.</li>
+<li>Enter the supplied database password. In the SSL settings, select SSL mode <strong>Require</strong>. The tab or field location varies by pgAdmin version.</li>
+<li>Save the connection and expand the server in the Browser tree.</li>
+</ol>
+<p>The Lightsail resource name, such as <code>thornton-db</code>, is not necessarily a SQL database name. Every Lightsail PostgreSQL server has a <code>postgres</code> database you can connect to initially. [5]</p>
+<p><strong>Create your database with the pgAdmin interface:</strong> right-click <strong>Databases</strong>, select <strong>Create -&gt; Database</strong>, enter <code>roflgator-store</code> with your own token, and save. Keep the appropriate database owner, normally the connected lab user. In this name field, do not type SQL double quotes.</p>
+<p>Alternatively, open pgAdmin's <strong>Query Tool</strong> against the maintenance database and use the SQL statement below. Choose either the interface or SQL method; you do not need to create the database twice.</p>
+<p>Create your logical database. Replace the token before executing:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>SQL</span><button type="button" data-copy-code="aws-code-4" aria-describedby="aws-copy-status-4">Copy code</button></div><pre><code id="aws-code-4" class="language-sql">CREATE DATABASE &quot;roflgator-store&quot;;
+</code></pre><p id="aws-copy-status-4" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>The double quotes matter because the name contains a hyphen. Run this as a standalone statement with autocommit enabled, not inside a transaction block. If it already exists, inspect it rather than dropping it.</p>
+<h3 id="32-create-a-database-cname">3.2 Create a database CNAME</h3>
+<p>Create <code>roflgator-postgres</code> in the hosted zone, replacing the token. Use type <strong>CNAME</strong>, targeting the full AWS PostgreSQL endpoint hostname above.</p>
+<p>Do not include <code>jdbc:postgresql://</code>, a port, database name or query parameters in DNS. Do not copy the database's current resolved IP into an A record; its address can change.</p>
+<p>Test your CNAME and connect through it to your new database:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-5" aria-describedby="aws-copy-status-5">Copy code</button></div><pre><code id="aws-code-5" class="language-powershell">Resolve-DnsName roflgator-postgres.livefree.click
+Test-NetConnection roflgator-postgres.livefree.click -Port 5432
+</code></pre><p id="aws-copy-status-5" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Complete this connection template in the AWS profile later:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>PROPERTIES</span><button type="button" data-copy-code="aws-code-6" aria-describedby="aws-copy-status-6">Copy code</button></div><pre><code id="aws-code-6" class="language-properties">spring.datasource.url=jdbc:postgresql://roflgator-postgres.livefree.click:xxxx/xxxx?sslmode=require
+</code></pre><p id="aws-copy-status-6" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p><strong>Checkpoint:</strong> Through your CNAME, run <code>SELECT current_database();</code> and confirm your student database name. A successful port test alone does not prove password or database access.</p>
+<p>The supplied lab uses public mode on the managed database. Confirm it is enabled if testing from outside Lightsail. Do not attempt to fix managed-database access by opening port 5432 on the separate Kafka VM.</p>
+<p><code>sslmode=require</code> encrypts the JDBC connection but does not verify the certificate identity/hostname. A production setup should use verified TLS; a custom CNAME may not match the managed database certificate. [6]</p>
+<h2 id="4-name-and-verify-the-shared-kafka-broker">4. Name and verify the shared Kafka broker</h2>
+<h3 id="41-create-your-kafka-cname">4.1 Create your Kafka CNAME</h3>
+<p>To practice both A and CNAME records without relying on another pre-existing Linux hostname, create these two records in <code>livefree.click</code>. Replace <code>roflgator</code> in both names:</p>
+<table>
+<thead>
+<tr>
+<th>Record name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>roflgator-broker</code></td>
+<td>Ordinary A, alias disabled</td>
+<td><code>32.199.0.184</code></td>
+</tr>
+<tr>
+<td><code>roflgator-linux</code></td>
+<td>CNAME</td>
+<td><code>roflgator-broker.livefree.click</code></td>
+</tr>
+</tbody>
+</table>
+<p>Your application uses <code>roflgator-linux.livefree.click</code>. DNS follows that CNAME to your A record and then to the VM's static IP. A CNAME takes a hostname, never an IP address. Do not create both an A record and CNAME at <code>roflgator-linux</code>.</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-7" aria-describedby="aws-copy-status-7">Copy code</button></div><pre><code id="aws-code-7" class="language-powershell">Resolve-DnsName roflgator-linux.livefree.click
+Test-NetConnection roflgator-linux.livefree.click -Port 9092
+</code></pre><p id="aws-copy-status-7" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Kafka has two relevant addresses: the bootstrap address your application uses first, and the broker address returned in Kafka metadata. Your CNAME controls the initial lookup; it does not rewrite Kafka metadata. Inspect the existing advertised address:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-8" aria-describedby="aws-copy-status-8">Copy code</button></div><pre><code id="aws-code-8" class="language-bash">sudo docker inspect kafka --format '{{range .Config.Env}}{{println .}}{{end}}' | grep KAFKA_ADVERTISED_LISTENERS
+</code></pre><p id="aws-copy-status-8" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>The advertised external address must also be reachable from your application. It can differ from your student alias. Do not recreate the shared broker to give it a different hostname for every student. If its advertised address is unreachable, record that finding as the connection problem before proceeding.</p>
+<h3 id="42-ssh-into-the-existing-linux-instance">4.2 SSH into the existing Linux instance</h3>
+<p>Use <strong>Lightsail -&gt; Instances -&gt; the assigned Linux instance -&gt; Connect using SSH</strong>. Check:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-9" aria-describedby="aws-copy-status-9">Copy code</button></div><pre><code id="aws-code-9" class="language-bash">sudo docker ps --filter name=kafka
+sudo docker logs --tail 30 kafka
+</code></pre><p id="aws-copy-status-9" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>If Kafka is absent or stopped, inspect the container status and logs before continuing. Do not launch a second broker on port 9092 or replace the shared container.</p>
+<p>Verify that the Lightsail firewall allows TCP 9092 from the public outbound addresses used by local development machines and Beanstalk. For Beanstalk this could be EC2 public IPs or a NAT gateway Elastic IP; it is not necessarily the IP returned by the application's public URL. Ports 19092 and 9093 remain internal. This broker uses unauthenticated plaintext, so limit the allowed sources.</p>
+<h2 id="5-create-your-two-kafka-topics-and-update-the-source-code">5. Create your two Kafka topics and update the source code</h2>
+<p>Kafka calls these <strong>topics</strong>, even though the application uses queue-like processing. Create your own pair; do not use another student's topics.</p>
+<p>Replace <code>roflgator</code> in each command, then run it in the Lightsail SSH terminal. Each command is one line. The small heap override avoids starting another 512 MB Java process on the shared VM.</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-10" aria-describedby="aws-copy-status-10">Copy code</button></div><pre><code id="aws-code-10" class="language-bash">sudo docker exec -e KAFKA_HEAP_OPTS=&quot;-Xms32m -Xmx128m&quot; kafka /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic roflgator-purchases.validate --bootstrap-server localhost:19092 --partitions 3 --replication-factor 1
+</code></pre><p id="aws-copy-status-10" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-11" aria-describedby="aws-copy-status-11">Copy code</button></div><pre><code id="aws-code-11" class="language-bash">sudo docker exec -e KAFKA_HEAP_OPTS=&quot;-Xms32m -Xmx128m&quot; kafka /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic roflgator-purchases.process --bootstrap-server localhost:19092 --partitions 3 --replication-factor 1
+</code></pre><p id="aws-copy-status-11" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Verify:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-12" aria-describedby="aws-copy-status-12">Copy code</button></div><pre><code id="aws-code-12" class="language-bash">sudo docker exec -e KAFKA_HEAP_OPTS=&quot;-Xms32m -Xmx128m&quot; kafka /opt/kafka/bin/kafka-topics.sh --describe --topic roflgator-purchases.validate --bootstrap-server localhost:19092
+</code></pre><p id="aws-copy-status-12" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-13" aria-describedby="aws-copy-status-13">Copy code</button></div><pre><code id="aws-code-13" class="language-bash">sudo docker exec -e KAFKA_HEAP_OPTS=&quot;-Xms32m -Xmx128m&quot; kafka /opt/kafka/bin/kafka-topics.sh --describe --topic roflgator-purchases.process --bootstrap-server localhost:19092
+</code></pre><p id="aws-copy-status-13" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p><code>--if-not-exists</code> does not correct an existing topic's partition count. Confirm three partitions and replication factor one in the output.</p>
+<h3 id="source-code-investigation">Source-code investigation</h3>
+<p>Search the full project for <code>roflgator</code>, <code>kafka.send</code>, <code>@KafkaListener</code> and <code>FakeKafka.start</code>.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What you must inspect and change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StoreProducers.java</code></td>
+<td>The topic passed to <code>kafka.send</code> in <code>submit</code></td>
+</tr>
+<tr>
+<td><code>StoreConsumers.java</code></td>
+<td>Both listener topic names and the forwarding <code>kafka.send</code> topic</td>
+</tr>
+<tr>
+<td><code>StoreConsumers.java</code></td>
+<td>Give <code>validators</code> and <code>processors</code> student-specific group IDs</td>
+</tr>
+<tr>
+<td><code>FakeKafka.java</code></td>
+<td>Topic names used by the embedded development broker</td>
+</tr>
+<tr>
+<td><code>application.properties</code></td>
+<td>Your AWS hostnames and database settings</td>
+</tr>
+</tbody>
+</table>
+<p>Use the exact topic names you created. Prefix consumer groups too, so each student's offsets and assignments are independent. Group IDs are not topics; you do not create them with <code>kafka-topics.sh</code>.</p>
+<p>The supplied <code>FakeKafka.java</code> contains this deliberate configuration problem:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>JAVA</span><button type="button" data-copy-code="aws-code-14" aria-describedby="aws-copy-status-14">Copy code</button></div><pre><code id="aws-code-14" class="language-java">broker.brokerListProperty(&quot;roflgator-spring.kafka.bootstrap-servers&quot;);
+</code></pre><p id="aws-copy-status-14" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p><strong>Repair exercise:</strong> This argument identifies a Spring configuration key, not a student-owned resource. Find the correct standard bootstrap property key in your properties file and use that exact key. Replacing <code>roflgator</code> with your own name here would still be wrong. [7]</p>
+<h3 id="prevent-embedded-kafka-from-starting-in-aws">Prevent embedded Kafka from starting in AWS</h3>
+<p>A configuration change might be needed later to ensure embedded Kafka does not run when the <code>aws</code> profile is active. You can address this if the problem arises during testing; no change is required for this step now.</p>
+<h2 id="6-complete-the-spring-properties">6. Complete the Spring properties</h2>
+<p>Use the supplied <code>application.properties</code> as your starting point. Keep shared serializers, deserializers, logging and Swagger settings above the <code>#---</code> profile separators. Use ordinary ASCII punctuation in comments if your editor saves properties as ISO-8859-1.</p>
+<p>Retain the development defaults:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>PROPERTIES</span><button type="button" data-copy-code="aws-code-15" aria-describedby="aws-copy-status-15">Copy code</button></div><pre><code id="aws-code-15" class="language-properties">spring.profiles.default=dev
+server.port=8080
+</code></pre><p id="aws-copy-status-15" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Keep H2 under the <code>dev</code> section. Complete the following AWS section yourself:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>PROPERTIES</span><button type="button" data-copy-code="aws-code-16" aria-describedby="aws-copy-status-16">Copy code</button></div><pre><code id="aws-code-16" class="language-properties">#---
+spring.config.activate.on-profile=aws
+
+server.port=5000
+
+spring.datasource.url=jdbc:postgresql://roflgator-postgres.livefree.click:xxxx/xxxx?sslmode=require
+spring.datasource.username=xxxx
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+spring.datasource.driver-class-name=xxxx
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.open-in-view=false
+spring.h2.console.enabled=false
+
+spring.kafka.bootstrap-servers=roflgator-linux.livefree.click:9092
+spring.kafka.security.protocol=PLAINTEXT
+</code></pre><p id="aws-copy-status-16" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Fill in the PostgreSQL port, your logical database name, username and JDBC driver class. Set the password through the runtime environment. Do not leave <code>xxxx</code> or the example token in your final configuration.</p>
+<p>Check <code>pom.xml</code> for the PostgreSQL JDBC driver (<code>org.postgresql:postgresql</code>, runtime scope) and retain the H2 dependency for local development. Let the existing Spring Boot dependency management select compatible versions.</p>
+<p><code>ddl-auto=update</code> can create/update tables inside an existing database; it does not create your named PostgreSQL database. Use it for this lab, not as a substitute for controlled production schema migrations.</p>
+<p><strong>Explain:</strong> Why must both the producer and consumers use the same student database when Kafka messages carry only a purchase ID?</p>
+<h2 id="7-test-the-aws-profile-locally-before-deploying">7. Test the AWS profile locally before deploying</h2>
+<p>In your IDE, activate only <code>aws</code>, or in PowerShell use:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-17" aria-describedby="aws-copy-status-17">Copy code</button></div><pre><code id="aws-code-17" class="language-powershell">$env:SPRING_PROFILES_ACTIVE=&quot;aws&quot;
+$env:SPRING_DATASOURCE_PASSWORD=&quot;REPLACE-WITH-DATABASE-PASSWORD&quot;
+.\mvnw.cmd spring-boot:run
+</code></pre><p id="aws-copy-status-17" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Supply the real password through your IDE or secure local environment handling; do not submit it in your lab evidence. On Linux/macOS use <code>./mvnw</code> with equivalent environment variables.</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>Local page URL</th>
+<th>Infrastructure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dev</code></td>
+<td><code>http://localhost:8080</code></td>
+<td>H2 and embedded Kafka</td>
+</tr>
+<tr>
+<td><code>aws</code>, run on your laptop</td>
+<td><code>http://localhost:5000</code></td>
+<td>Lightsail PostgreSQL and Kafka</td>
+</tr>
+<tr>
+<td><code>aws</code>, run in Beanstalk</td>
+<td>Environment HTTP/HTTPS URL, without <code>:5000</code></td>
+<td>Lightsail PostgreSQL and Kafka</td>
+</tr>
+</tbody>
+</table>
+<p>Check the startup log for the active profile, database connection, port 5000 and successful Kafka listener assignments. No embedded broker should start.</p>
+<p>Open <code>http://localhost:5000/swagger-ui.html</code> or the HTML pages still in the application's static directory. Confirm the API Base URL input uses port 5000; an older saved value may still say 8080.</p>
+<p>Use Swagger's actual request schemas to create the required customer/product/purchase data. Do not assume your old H2 rows exist in the new PostgreSQL database. Investigate any startup data initializer to ensure it does not delete or duplicate AWS data on every restart.</p>
+<p>Test a valid queued purchase and observe <code>VALIDATED</code>, followed by <code>COMPLETED</code>. The supplied processing listener deliberately waits <strong>60 seconds</strong>. Test a product with a non-positive price or quantity and expect <code>REJECTED</code> if the application's request validation allows creating that test case.</p>
+<p>To observe topic messages:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>BASH</span><button type="button" data-copy-code="aws-code-18" aria-describedby="aws-copy-status-18">Copy code</button></div><pre><code id="aws-code-18" class="language-bash">sudo docker exec -it -e KAFKA_HEAP_OPTS=&quot;-Xms32m -Xmx128m&quot; kafka /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:19092 --topic roflgator-purchases.process --from-beginning
+</code></pre><p id="aws-copy-status-18" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Replace the token; press Ctrl+C to stop. Retained messages are purchase IDs, not complete purchase objects. Reading does not delete them. Do not join the application's consumer group just to inspect messages.</p>
+<p><strong>Timing investigation:</strong> A 60-second record handler can exceed <code>max.poll.interval.ms</code> when several records are returned in one poll. For this slow demonstration, consider <code>spring.kafka.consumer.max-poll-records=1</code>; explain why before adding it. Three partitions do not automatically create three listener threads in one application.</p>
+<p>Stop your local AWS-mode application before final Beanstalk testing. Otherwise it can consume records alongside the deployed instance and make the deployment appear to work when the local process actually handled the purchase.</p>
+<h2 id="8-prepare-the-api-for-an-s3-frontend">8. Prepare the API for an S3 frontend</h2>
+<p>The application's controllers already have CORS <code>*</code> enabled, allowing requests from any origin, including your S3 website. No additional CORS configuration is needed for this lab step.</p>
+<h2 id="9-build-and-deploy-the-executable-jar-to-beanstalk">9. Build and deploy the executable JAR to Beanstalk</h2>
+<ol>
+<li>Confirm the student names and AWS profile settings are complete. If embedded Kafka started unexpectedly during AWS-profile testing, resolve that before deploying.</li>
+<li>Check the project Java version and choose a compatible <strong>Java SE / Corretto</strong> Beanstalk platform. This lab deploys an executable Spring Boot JAR, not a WAR to Tomcat.</li>
+<li>Run your normal build from the project root:</li>
+</ol>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-19" aria-describedby="aws-copy-status-19">Copy code</button></div><pre><code id="aws-code-19" class="language-powershell">.\mvnw.cmd clean package
+</code></pre><p id="aws-copy-status-19" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Do not skip failed tests just to get a JAR. Diagnose which profile and infrastructure the tests require. If a PostgreSQL password is required during the build, supply it through the environment, not source control.</p>
+<ol start="4">
+<li>Locate the executable application JAR under <code>target/</code>. Do not select <code>.jar.original</code>, a sources JAR or a test JAR.</li>
+<li>Sanity-check it locally with the AWS environment variables set:</li>
+</ol>
+<div class="aws-code-block"><div class="aws-code-bar"><span>POWERSHELL</span><button type="button" data-copy-code="aws-code-20" aria-describedby="aws-copy-status-20">Copy code</button></div><pre><code id="aws-code-20" class="language-powershell">java -jar target/YOUR-APPLICATION.jar --spring.profiles.active=aws
+</code></pre><p id="aws-copy-status-20" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Stop that local process after the check.</p>
+<ol start="6">
+<li>Create or select your Beanstalk web environment. Select the existing lab service role and EC2 instance profile with the required Beanstalk permissions. Upload the executable JAR as the application version.</li>
+<li>Set these Beanstalk environment properties before expecting the deployment to become healthy:</li>
+</ol>
+<div class="aws-code-block"><div class="aws-code-bar"><span>TEXT</span><button type="button" data-copy-code="aws-code-21" aria-describedby="aws-copy-status-21">Copy code</button></div><pre><code id="aws-code-21" class="language-text">SPRING_PROFILES_ACTIVE=aws
+SPRING_DATASOURCE_PASSWORD=&lt;database-password&gt;
+</code></pre><p id="aws-copy-status-21" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<ol start="8">
+<li>Confirm the app listens on port <strong>5000</strong>, matching the Java SE proxy's default upstream port. Public requests normally arrive on port 80 or configured HTTPS 443, not port 5000. [10]</li>
+<li>Ensure the Beanstalk instances have outbound connectivity to PostgreSQL 5432 and Kafka 9092, and that the Kafka firewall accepts their outbound source addresses.</li>
+<li>Check environment health and application logs. If a load balancer is used, choose an existing successful HTTP health-check path, such as <code>/</code> if the static index is retained, or a configured health endpoint.</li>
+<li>Test the Beanstalk environment's own URL with Swagger and an actual queued purchase before adding DNS.</li>
+</ol>
+<p><strong>Profile reminder:</strong> Building while <code>aws</code> is active does not permanently select that profile inside the JAR. Beanstalk must activate <code>aws</code> at runtime. A packaged <code>spring.profiles.default=dev</code> is fine only when the deployment supplies the AWS override.</p>
+<h2 id="10-add-the-beanstalk-route-53-record">10. Add the Beanstalk Route 53 record</h2>
+<p>Create <code>app-roflgator</code>, replacing the token:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value to choose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Record type</td>
+<td><code>A</code></td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Target</td>
+<td>Your regional Beanstalk environment</td>
+</tr>
+<tr>
+<td>Region</td>
+<td>The actual environment Region</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Simple</td>
+</tr>
+</tbody>
+</table>
+<p>Use an <strong>alias A record</strong>, not an ordinary A record with an environment hostname pasted into the IP field. Do not pin the record to a temporary resolved load-balancer/instance IP.</p>
+<p>If the environment is not an eligible alias target, inspect its regional endpoint and account. For this subdomain, a CNAME to the environment hostname is a valid fallback; do not keep both records at the same name. [11]</p>
+<p>Test <code>http://app-roflgator.livefree.click/swagger-ui.html</code> after substituting your name. If HTTPS has been explicitly configured, test the HTTPS version with its valid certificate instead. Merely creating the record does not enable HTTPS.</p>
+<h2 id="11-point-the-s3-javascript-at-your-deployed-api">11. Point the S3 JavaScript at your deployed API</h2>
+<p>Edit the <strong>file</strong> <code>common.js</code> in your local static assets, then re-upload it to S3.</p>
+<p>In the supplied code, <code>defaultBaseUrl()</code> returns <code>window.location.origin</code> whenever an origin exists. When hosted on S3, that returns the frontend's origin, so requests go to S3 instead of Beanstalk. Changing only the <code>localhost:8080</code> fallback will not fix that branch.</p>
+<p><strong>Your task:</strong> Change the default selection so the deployed frontend uses your backend base URL, for example:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>TEXT</span><button type="button" data-copy-code="aws-code-22" aria-describedby="aws-copy-status-22">Copy code</button></div><pre><code id="aws-code-22" class="language-text">http://app-roflgator.livefree.click
+</code></pre><p id="aws-copy-status-22" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Replace the name and use the scheme actually configured on Beanstalk. Use the base URL only: no <code>/swagger-ui.html</code>, <code>/api</code> suffix or port 5000. Preserve the editable API Base URL input if you want to switch between local and deployed testing.</p>
+<p>Read <code>initBaseUrlInput()</code> and <code>getBaseUrl()</code> before assuming your edit failed. They prefer a saved value under the localStorage key <code>storeDemoBaseUrl</code>. On your S3 website, clear that override using the browser console:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>JAVASCRIPT</span><button type="button" data-copy-code="aws-code-23" aria-describedby="aws-copy-status-23">Copy code</button></div><pre><code id="aws-code-23" class="language-javascript">localStorage.removeItem(&quot;storeDemoBaseUrl&quot;);
+location.reload();
+</code></pre><p id="aws-copy-status-23" class="aws-copy-status" role="status" aria-live="polite"></p></div>
+<p>Alternatively, set the visible API Base URL input to your new backend URL. Re-upload the changed <code>common.js</code>, hard-refresh, and inspect the Network tab to confirm the browser fetched the new file. Verify the JavaScript response has an appropriate content type rather than an HTML error page.</p>
+<p><strong>Final test:</strong> From the S3 custom hostname, create and submit a purchase. Verify the request goes to the Beanstalk custom hostname, the row appears in your PostgreSQL database, and your Kafka consumers move it through the expected statuses with your laptop application stopped.</p>
+<h2 id="troubleshooting-checkpoints">Troubleshooting checkpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Investigate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S3 <code>NoSuchBucket</code></td>
+<td>Bucket name must match the requested website hostname</td>
+</tr>
+<tr>
+<td>S3 403</td>
+<td>Public-read policy, Block Public Access and index object</td>
+</tr>
+<tr>
+<td>Broken CSS or links</td>
+<td>Missing assets, wrong filename case or extra upload directory</td>
+</tr>
+<tr>
+<td>Website tries HTTPS and fails</td>
+<td>Direct S3 website hosting is HTTP-only</td>
+</tr>
+<tr>
+<td>PostgreSQL database does not exist</td>
+<td>Create the student SQL database; resource names are different</td>
+</tr>
+<tr>
+<td>PostgreSQL driver not found</td>
+<td>Runtime driver dependency and driver-class setting</td>
+</tr>
+<tr>
+<td>PostgreSQL authentication fails</td>
+<td>Username/password, runtime environment and correct endpoint</td>
+</tr>
+<tr>
+<td>Kafka bootstrap disconnected</td>
+<td>DNS, 9092 firewall, broker logs, advertised hostname and memory</td>
+</tr>
+<tr>
+<td>Java native memory allocation fails in CLI</td>
+<td>Keep the small <code>docker exec -e KAFKA_HEAP_OPTS=...</code> override; inspect <code>free -h</code></td>
+</tr>
+<tr>
+<td>Topic exists but listeners see nothing</td>
+<td>Exact producer/listener/topic strings, group offsets and active profile</td>
+</tr>
+<tr>
+<td>Purchase ID cannot be found</td>
+<td>Student database mismatch or retained messages referencing old data</td>
+</tr>
+<tr>
+<td>Embedded Kafka starts in AWS</td>
+<td>Remaining static startup call or incorrectly activated profiles</td>
+</tr>
+<tr>
+<td>Beanstalk 502/unhealthy</td>
+<td>Java version, executable JAR, port 5000, profile and startup logs</td>
+</tr>
+<tr>
+<td>Browser CORS error</td>
+<td>Backend origin/method/header rules and security preflight handling</td>
+</tr>
+<tr>
+<td>API calls still go to S3/localhost</td>
+<td><code>defaultBaseUrl()</code> origin branch, localStorage or cached JavaScript</td>
+</tr>
+<tr>
+<td>Purchases handled but no Beanstalk log</td>
+<td>A local AWS-mode consumer may still be running</td>
+</tr>
+<tr>
+<td>Processing repeatedly rebalances</td>
+<td>Long handler plus too many records per poll</td>
+</tr>
+</tbody>
+</table>
+<h2 id="submit-your-evidence">Submit your evidence</h2>
+<ul>
+<li>Your completed naming table and DNS record types/targets, without credentials.</li>
+<li>S3 website custom URL and a screenshot showing CSS and navigation loaded.</li>
+<li>PostgreSQL query showing your logical database name.</li>
+<li>Topic descriptions showing the two names and three partitions each.</li>
+<li>Source diff showing consistent topic/group names, plus any embedded startup fix that was needed during testing.</li>
+<li>AWS startup log showing profile <code>aws</code> and port 5000, with credentials removed.</li>
+<li>A browser Network request from S3 to your Beanstalk custom hostname.</li>
+<li>One valid purchase completing and one rejected test, where supported.</li>
+<li>A short explanation of bootstrap versus advertised Kafka addresses, and why CORS is required.</li>
+</ul>
+<h2 id="cleanup">Cleanup</h2>
+<p>When your lab work no longer needs to remain available, delete only your own Beanstalk environment and student resources. Remove website DNS before deleting its matching S3 bucket to avoid leaving a dangling hostname. Do not delete the shared broker, Docker volume, Linux instance or managed database. Delete your student topics or logical database only after you have finished testing and confirmed that no other application uses them.</p>
+<h2 id="official-references">Official references</h2>
+<ol>
+<li><a href="https://docs.docker.com/engine/install/ubuntu/">Docker Engine on Ubuntu</a></li>
+<li><a href="https://www.pgadmin.org/docs/">pgAdmin documentation</a></li>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/RoutingToS3Bucket.html">Route 53 routing to an S3 website</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html">S3 website endpoints</a></li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-connecting-to-your-postgres-database.html">Connecting to Lightsail PostgreSQL</a></li>
+<li><a href="https://jdbc.postgresql.org/documentation/ssl/">PostgreSQL JDBC SSL configuration</a></li>
+<li><a href="https://docs.spring.io/spring-kafka/reference/testing.html">Spring Kafka embedded broker support</a></li>
+<li><a href="https://docs.spring.io/spring-framework/reference/core/beans/environment.html">Spring profiles and environment</a></li>
+<li><a href="https://docs.spring.io/spring-framework/reference/web/webmvc-cors.html">Spring MVC CORS</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/java-se-nginx.html">Beanstalk Java SE proxy configuration</a></li>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-beanstalk-environment.html">Route 53 routing to Beanstalk</a></li>
+</ol></article></div></main><footer class="aws-footer"><img src="../assets/images/art-432eb4f67934ec13.png" alt="The Québec crew celebrates a working deployment"><p><a href="../index.html">Course home</a> · <a href="s3_website_setup.html">S3 setup helper</a> · <a href="https://www.theserverside.com/fightquiz">Fight Quiz</a> · <a href="https://github.com/scrumtuous?tab=repositories">Starter repositories</a></p></footer><section class="course-video" aria-labelledby="course-video-title"><h2 id="course-video-title">One more stop before you go</h2><div class="course-video-frame"><iframe src="https://www.youtube.com/embed/EQ8ViYIeH04" title="Course video on YouTube" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p><a href="https://youtu.be/EQ8ViYIeH04?si=PxIZoHEAvUCronxr" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></p></section><script src="../assets/bootstrap/bootstrap.bundle.min.js"></script><script src="../assets/aws-lab.js"></script></body></html>
