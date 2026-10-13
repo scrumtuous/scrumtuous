@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Deploy a Spring Boot API to Elastic Beanstalk with Spot capacity, existing roles and Route 53."><title>API Deployment Lab | The Full Stack Breakfast Club</title><link rel="stylesheet" href="../assets/bootstrap/bootstrap-navbar-scoped.min.css"><link rel="stylesheet" href="../assets/landing.css"><link rel="stylesheet" href="../assets/course-nav.css"><link rel="stylesheet" href="../assets/graphics-video.css"><link rel="stylesheet" href="../assets/aws-lab.css"><link rel="stylesheet" href="../assets/api-lab.css"></head><body><a class="skip" href="#main">Skip to lab</a><header class="course-nav"><nav class="navbar navbar-expand-xl" aria-label="Course navigation"><div class="container-fluid"><a class="navbar-brand" href="../index.html"><span aria-hidden="true">🥞</span> Angular Week</a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#courseMenu" aria-controls="courseMenu" aria-expanded="false" aria-label="Toggle course menu"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="courseMenu"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="../pages/html_fundamentals_maple_fun.html">HTML</a></li><li class="nav-item"><a class="nav-link" href="../pages/css_fundamentals_maple_fun.html">CSS</a></li><li class="nav-item"><a class="nav-link" href="../pages/javascript_dom_muskoka_fun.html">JS</a></li><li class="nav-item"><a class="nav-link" href="../pages/fetch_http_muskoka_fun.html">HTTP</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_fundamentals_boston_slide_fun.html">Angular</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_components_templates_new_hampshire_fun.html">Components</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_services_quebec_winter_fun.html">Services</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_http_spring_boot_rhode_island_fun.html">Spring</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_reactive_forms_new_england_summer_fun.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_routing_boston_breakfast_fun.html">Routes</a></li><li class="nav-item"><a class="nav-link" href="../pages/angular_authenticated_flows_toronto_fun.html">Auth</a></li><li class="nav-item"><a class="nav-link" href="../pages/s3_website_setup.html">s3</a></li><li class="nav-item"><a class="nav-link" href="../pages/aws_store_deployment_lab.html">aws</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="../pages/api_beanstalk_deployment.html">api</a></li></ul></div></div></nav></header><figure class="aws-hero"><img src="../assets/images/art-15005640f30f656e.png" alt="Raccoon and Beaver ride their motorcycle through New Hampshire’s White Mountains with pancakes and a small ironing board"></figure><main id="main"><section class="aws-intro"><div class="eyebrow">API deployment lab · Live Free or Die</div><h1>Your API hits the open road</h1><p class="lead">Build your Spring Boot JAR, launch it on Elastic Beanstalk, test a working API request, then give it a Route 53 hostname. The New Hampshire motorcycle crew has pancakes waiting at the finish.</p><div class="aws-roadmap"><a href="#1-build-your-application">Build the JAR</a><a href="#4-set-the-application-profile-port-and-service-access">Profile &amp; roles</a><a href="#9-test-the-beanstalk-url-first">Test the API</a><a href="#completion-checklist">Completion checklist</a></div><p class="small">Follow the classroom configuration below. Replace <code>roflgator</code> with your own name. <a href="../resources/api-beanstalk-deployment.md" download>Download these instructions</a>.</p></section><div class="aws-layout"><aside class="aws-toc" aria-label="Lab contents"><h2>Your route</h2><div class="toc">
+<ul>
+<li><a href="#1-build-your-application">1. Build your application</a></li>
+<li><a href="#2-create-the-environment">2. Create the environment</a></li>
+<li><a href="#3-choose-the-java-platform-and-upload-your-jar">3. Choose the Java platform and upload your JAR</a></li>
+<li><a href="#4-set-the-application-profile-port-and-service-access">4. Set the application profile, port, and service access</a><ul>
+<li><a href="#configure-service-access">Configure service access</a></li>
+</ul>
+</li>
+<li><a href="#5-configure-a-single-spot-instance">5. Configure a single Spot Instance</a></li>
+<li><a href="#6-select-instance-types">6. Select instance types</a></li>
+<li><a href="#7-configure-networking-and-the-security-group">7. Configure networking and the security group</a></li>
+<li><a href="#8-create-and-monitor-the-environment">8. Create and monitor the environment</a></li>
+<li><a href="#9-test-the-beanstalk-url-first">9. Test the Beanstalk URL first</a></li>
+<li><a href="#10-create-your-route-53-a-record-after-testing">10. Create your Route 53 A record after testing</a></li>
+<li><a href="#11-deploy-future-updates">11. Deploy future updates</a></li>
+<li><a href="#completion-checklist">Completion checklist</a></li>
+<li><a href="#aws-documentation">AWS documentation</a></li>
+</ul>
+</div>
+</aside><article class="aws-lab" aria-label="API deployment instructions"><p>In this lab, you will upload your application, run it on a Spot Instance, test its public URL, and create a Route 53 A record for your own hostname.</p>
+<p><strong>Replace <code>roflgator</code> with your own name throughout the configuration.</strong></p>
+<h2 id="1-build-your-application">1. Build your application</h2>
+<p>From the project directory containing <code>pom.xml</code>, run:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-1" aria-describedby="api-copy-1">Copy</button></div><pre><code id="api-code-1" class="language-bash">mvn clean package
+</code></pre><p class="aws-copy-status" id="api-copy-1" role="status" aria-live="polite"></p></div>
+<p>Confirm that the build finishes successfully. Your deployable JAR will be inside <code>target</code>.</p>
+<p>The screenshots use:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-2" aria-describedby="api-copy-2">Copy</button></div><pre><code id="api-code-2" class="language-text">target/simple-kafka-store-1.0.0.jar
+</code></pre><p class="aws-copy-status" id="api-copy-2" role="status" aria-live="polite"></p></div>
+<p>Upload the executable <code>.jar</code> file, not a <code>.jar.original</code> file.</p>
+<p>Before deploying, check that your AWS configuration uses your own database name, database connection details, and Kafka address. Once deployed, <code>localhost</code> refers to the Beanstalk instance.</p>
+<h2 id="2-create-the-environment">2. Create the environment</h2>
+<p>Open <strong>Elastic Beanstalk</strong> in the AWS console and select <strong>US East (N. Virginia), <code>us-east-1</code></strong>, matching the screenshots.</p>
+<p>Choose <strong>Create environment</strong>, then select <strong>Standard</strong> deployment mode.</p>
+<p>Use your own name for these fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Screenshot example</th>
+<th>Your value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application name</td>
+<td><code>roflgator-store</code></td>
+<td><code>yourname-store</code></td>
+</tr>
+<tr>
+<td>Environment name</td>
+<td><code>Roflgator-store-env</code></td>
+<td><code>yourname-store-env</code></td>
+</tr>
+<tr>
+<td>Domain name prefix</td>
+<td><code>roflgator-store</code></td>
+<td><code>yourname-store</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, a student named Cameron could use <code>cameron-store</code>.</p>
+<p>Use letters, numbers, and hyphens. Avoid spaces, and do not begin or end the name with a hyphen. Check that your domain prefix is available.</p>
+<p><figure class="api-screenshot"><a href="../assets/images/api-beanstalk-step-1.png" target="_blank" rel="noopener"><img alt="Screenshot 1: Elastic Beanstalk configuration" src="../assets/images/api-beanstalk-step-1.png" loading="lazy" /></a><figcaption>Screenshot 1: Elastic Beanstalk configuration. Select the image to see it at full resolution.</figcaption></figure></p>
+<h2 id="3-choose-the-java-platform-and-upload-your-jar">3. Choose the Java platform and upload your JAR</h2>
+<p>Under <strong>Platform details</strong>:</p>
+<ul>
+<li>Select <strong>Java</strong>.</li>
+<li>Choose a Corretto platform compatible with the Java version used to build your application.</li>
+<li>Use the recommended platform version for that branch.</li>
+</ul>
+<p>The first screenshot shows <strong>Corretto 25 running on 64bit Amazon Linux 2023</strong>. Confirm compatibility with your project before copying that selection.</p>
+<p>Under <strong>Application code</strong>, select <strong>Local file</strong>, then upload the JAR from <code>target</code>.</p>
+<p>You can leave the version label blank or enter a label such as <code>yourname-store-v1</code>.</p>
+<p><figure class="api-screenshot"><a href="../assets/images/api-beanstalk-step-2.png" target="_blank" rel="noopener"><img alt="Screenshot 2: Elastic Beanstalk configuration" src="../assets/images/api-beanstalk-step-2.png" loading="lazy" /></a><figcaption>Screenshot 2: Elastic Beanstalk configuration. Select the image to see it at full resolution.</figcaption></figure></p>
+<h2 id="4-set-the-application-profile-port-and-service-access">4. Set the application profile, port, and service access</h2>
+<p>Under <strong>Environment properties</strong>, select <strong>Add environment properties</strong>.</p>
+<p>If your project uses an <code>aws</code> Spring profile, add:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SPRING_PROFILES_ACTIVE</code></td>
+<td><code>aws</code></td>
+</tr>
+<tr>
+<td><code>SERVER_PORT</code></td>
+<td><code>5000</code></td>
+</tr>
+</tbody>
+</table>
+<p>Use the profile name your project defines.</p>
+<p>The Java SE platform's proxy forwards incoming HTTP requests to application port <strong>5000</strong> by default. Setting <code>SERVER_PORT=5000</code> aligns Spring Boot with that configuration. You will access the public URL without adding <code>:5000</code>.</p>
+<p>Add any other environment variables required by your application, including database credentials if your configuration reads them from environment variables.</p>
+<h3 id="configure-service-access">Configure service access</h3>
+<p>Expand <strong>Service access</strong>, choose <strong>Use another role</strong>, and select these existing roles:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Select</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service role</td>
+<td><code>aws-elasticbeanstalk-service-role</code></td>
+</tr>
+<tr>
+<td>EC2 instance profile</td>
+<td><code>aws-elasticbeanstalk-ec2-role</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Select these existing roles. Do not use automatic role creation for this lab.</strong></p>
+<p>The service role lets Beanstalk manage the environment. The EC2 instance profile supplies AWS permissions to the instance running your application.</p>
+<p>If a role is missing or you receive an error saying that you cannot pass the role, report the error so the classroom permissions can be corrected. Choosing the all-access security group does not fix IAM role permissions.</p>
+<h2 id="5-configure-a-single-spot-instance">5. Configure a single Spot Instance</h2>
+<p>Under <strong>Infrastructure</strong>, select:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Selection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Environment tier</td>
+<td><strong>Web server environment</strong></td>
+</tr>
+<tr>
+<td>Environment type</td>
+<td><strong>Single instance</strong></td>
+</tr>
+<tr>
+<td>Minimum instances</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>Maximum instances</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>Fleet composition</td>
+<td><strong>Spot Instance</strong></td>
+</tr>
+<tr>
+<td>Spot allocation strategy</td>
+<td><strong>Capacity optimized</strong></td>
+</tr>
+<tr>
+<td>On-Demand base</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>On-Demand above base</td>
+<td><strong><code>0</code></strong></td>
+</tr>
+<tr>
+<td>Maximum Spot price</td>
+<td><strong>On-Demand price</strong></td>
+</tr>
+<tr>
+<td>Architecture</td>
+<td><strong>x86_64</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Change the screenshot's On-Demand above base value from <code>70</code> to <code>0</code>.</strong> For a single-instance Spot environment, both On-Demand settings should be zero.</p>
+<p>We use <strong>Spot Instances to save money</strong>. Spot Instances use spare EC2 capacity at discounted rates. AWS can interrupt them, so your application may temporarily become unavailable while replacement capacity is obtained.</p>
+<p>The <strong>On-Demand price</strong> option under Maximum Spot price is a price ceiling. It does not change your selected fleet composition to On-Demand.</p>
+<p><figure class="api-screenshot"><a href="../assets/images/api-beanstalk-step-3.png" target="_blank" rel="noopener"><img alt="Screenshot 3: Elastic Beanstalk configuration" src="../assets/images/api-beanstalk-step-3.png" loading="lazy" /></a><figcaption>Screenshot 3: Elastic Beanstalk configuration. Select the image to see it at full resolution.</figcaption></figure></p>
+<h2 id="6-select-instance-types">6. Select instance types</h2>
+<p>The fourth screenshot includes:</p>
+<ul>
+<li><code>t3.micro</code></li>
+<li><code>t3.small</code></li>
+</ul>
+<p>Use these classroom-approved options if available. Providing multiple eligible types gives AWS more capacity options.</p>
+<p>Leave the root volume settings at their platform defaults unless your lab requires something different.</p>
+<h2 id="7-configure-networking-and-the-security-group">7. Configure networking and the security group</h2>
+<p>Under <strong>Networking</strong>:</p>
+<ol>
+<li>Select the classroom VPC. The screenshot uses the default VPC.</li>
+<li>Select public subnets that support your chosen instance types.</li>
+<li>Ensure the instance will have a public IP address for browser access.</li>
+<li>Under <strong>EC2 security groups</strong>, select <strong><code>grasshoppers-allow-all</code></strong>.</li>
+</ol>
+<p><strong>The required all-access classroom security group is <code>grasshoppers-allow-all</code>.</strong> Selecting only the <code>default</code> group does not match this lab.</p>
+<p>The screenshot includes both groups. Confirm that <code>grasshoppers-allow-all</code> appears among your selections. Security groups belong to a particular VPC, so if it is missing, check your VPC selection.</p>
+<p>Your application must also be able to reach its PostgreSQL database and Kafka broker. The security group on the application instance does not automatically configure access on those destination services.</p>
+<p><figure class="api-screenshot"><a href="../assets/images/api-beanstalk-step-4.png" target="_blank" rel="noopener"><img alt="Screenshot 4: Elastic Beanstalk configuration" src="../assets/images/api-beanstalk-step-4.png" loading="lazy" /></a><figcaption>Screenshot 4: Elastic Beanstalk configuration. Select the image to see it at full resolution.</figcaption></figure></p>
+<h2 id="8-create-and-monitor-the-environment">8. Create and monitor the environment</h2>
+<p>Review your settings, then choose <strong>Create environment</strong>.</p>
+<p>Watch the environment's <strong>Events</strong> and <strong>Health</strong> sections while AWS provisions the resources and starts the application.</p>
+<p>If deployment fails, inspect the events and request application logs. Check the specific error before creating another environment.</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unable to assign or pass a role</td>
+<td>Existing role selections and the deploying user's <code>iam:PassRole</code> permissions</td>
+</tr>
+<tr>
+<td>Failed to create the instance profile automatically</td>
+<td>Choose <strong>Use another role</strong> and select the existing EC2 instance profile</td>
+</tr>
+<tr>
+<td><code>502 Bad Gateway</code></td>
+<td>Application startup and <code>SERVER_PORT=5000</code></td>
+</tr>
+<tr>
+<td>Java version error</td>
+<td>Build Java version and selected Corretto branch</td>
+</tr>
+<tr>
+<td>Database connection failure</td>
+<td>AWS profile, hostname, database name, credentials, and network access</td>
+</tr>
+<tr>
+<td>Kafka connection failure</td>
+<td>Broker address, advertised listeners, and network access</td>
+</tr>
+<tr>
+<td>Instance launch failure</td>
+<td>Spot capacity, eligible instance types, permissions, and quotas</td>
+</tr>
+</tbody>
+</table>
+<p>If the AWS profile unexpectedly starts embedded Kafka, an additional configuration change may be needed to disable it for that profile. Address that if it occurs.</p>
+<h2 id="9-test-the-beanstalk-url-first">9. Test the Beanstalk URL first</h2>
+<p>Copy the domain shown on your environment's overview page.</p>
+<p>For the prefix shown in the screenshot, the base testing URL is:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-3" aria-describedby="api-copy-3">Copy</button></div><pre><code id="api-code-3" class="language-text">http://roflgator-store.us-east-1.elasticbeanstalk.com
+</code></pre><p class="aws-copy-status" id="api-copy-3" role="status" aria-live="polite"></p></div>
+<p>With your own prefix, use:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-4" aria-describedby="api-copy-4">Copy</button></div><pre><code id="api-code-4" class="language-text">http://yourname-store.us-east-1.elasticbeanstalk.com
+</code></pre><p class="aws-copy-status" id="api-copy-4" role="status" aria-live="polite"></p></div>
+<p><strong>Use the address AWS displays if it differs from this pattern.</strong></p>
+<p>If your application exposes Swagger UI at the standard Springdoc path, test:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-5" aria-describedby="api-copy-5">Copy</button></div><pre><code id="api-code-5" class="language-text">http://yourname-store.us-east-1.elasticbeanstalk.com/swagger-ui/index.html
+</code></pre><p class="aws-copy-status" id="api-copy-5" role="status" aria-live="polite"></p></div>
+<p>Open Swagger UI and execute an API request. Check that a database-backed request succeeds, and test an operation that uses Kafka if your application includes one.</p>
+<p>A <code>404</code> at <code>/</code> can simply mean your application has no homepage. Test a defined API endpoint before concluding that deployment failed.</p>
+<p>Use <strong>HTTP</strong> for this initial setup. HTTPS requires additional certificate and server configuration.</p>
+<h2 id="10-create-your-route-53-a-record-after-testing">10. Create your Route 53 A record after testing</h2>
+<p><strong>Complete and test your Beanstalk deployment before creating the DNS record.</strong></p>
+<p>Once the Beanstalk URL works, create a custom hostname using an <strong>A record with Alias enabled</strong>.</p>
+<p>In <strong>Route 53</strong>:</p>
+<ol>
+<li>Open <strong>Hosted zones</strong>.</li>
+<li>Select your assigned domain's public hosted zone.</li>
+<li>Choose <strong>Create record</strong>.</li>
+<li>Enter your record name, such as <code>yourname-store</code>.</li>
+<li>Select <strong>A</strong> as the record type.</li>
+<li>Turn <strong>Alias</strong> on.</li>
+<li>Select <strong>Alias to Elastic Beanstalk environment</strong>.</li>
+<li>Choose <strong>US East (N. Virginia)</strong>.</li>
+<li>Select your own Beanstalk environment.</li>
+<li>Use <strong>Simple routing</strong> and create the record.</li>
+</ol>
+<p>For an assigned domain of <code>example.com</code>, your new testing URL would be:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-6" aria-describedby="api-copy-6">Copy</button></div><pre><code id="api-code-6" class="language-text">http://yourname-store.example.com/swagger-ui/index.html
+</code></pre><p class="aws-copy-status" id="api-copy-6" role="status" aria-live="polite"></p></div>
+<p>Substitute your assigned domain and the endpoint you successfully tested earlier.</p>
+<p>Choose the Beanstalk environment as the alias target instead of copying an EC2 instance's current IP address. The alias follows the environment's address changes.</p>
+<p>Allow time for DNS updates, then repeat the same API tests through your custom hostname. Creating the DNS record does not enable HTTPS.</p>
+<h2 id="11-deploy-future-updates">11. Deploy future updates</h2>
+<p>After changing your code, run:</p>
+<div class="aws-code-block"><div class="aws-code-bar"><span>COMMAND / REFERENCE</span><button type="button" data-copy-code="api-code-7" aria-describedby="api-copy-7">Copy</button></div><pre><code id="api-code-7" class="language-bash">mvn clean package
+</code></pre><p class="aws-copy-status" id="api-copy-7" role="status" aria-live="polite"></p></div>
+<p>Open your existing Beanstalk environment and choose <strong>Upload and deploy</strong>. Upload the updated JAR and give it a new version label.</p>
+<p>When the lab environment is no longer needed, terminate it through Elastic Beanstalk to stop its ongoing resource usage. Remove the custom DNS record if it is no longer needed.</p>
+<h2 id="completion-checklist">Completion checklist</h2>
+<ul>
+<li class="api-check"><label><input type="checkbox"> <span>Replaced <code>roflgator</code> with my own name.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Uploaded the executable JAR.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Selected the appropriate Java platform and AWS profile.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Set <code>SERVER_PORT</code> to <code>5000</code>.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Chose <strong>Use another role</strong>.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Selected <code>aws-elasticbeanstalk-service-role</code>.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Selected <code>aws-elasticbeanstalk-ec2-role</code> as the EC2 instance profile.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Selected <strong>Spot Instance</strong> with both On-Demand values set to <code>0</code>.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Selected the <strong><code>grasshoppers-allow-all</code></strong> security group.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Tested the Beanstalk URL and an application request.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Created the Route 53 <strong>A alias record</strong> after testing.</span></label></li>
+<li class="api-check"><label><input type="checkbox"> <span>Tested the custom hostname.</span></label></li>
+</ul>
+<h2 id="aws-documentation">AWS documentation</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/java-se-nginx.html">Java SE proxy configuration</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-autoscaling-spot-and-demand.html">Managing On-Demand instances and Spot Instances</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html">Beanstalk service roles and instance profiles</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html">Managing Beanstalk instance profiles</a></li>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-beanstalk-environment.html">Routing traffic to a Beanstalk environment with Route 53</a></li>
+</ul></article></div></main><footer class="aws-footer"><img src="../assets/images/art-15005640f30f656e.png" alt="The New Hampshire motorcycle crew celebrates a working API with pancakes"><p><a href="../index.html">Course home</a> · <a href="aws_store_deployment_lab.html">Full AWS lab</a> · <a href="angular_http_spring_boot_rhode_island_fun.html">Spring &amp; HTTP</a></p></footer><section class="course-video" aria-labelledby="course-video-title"><h2 id="course-video-title">One more stop before you go</h2><div class="course-video-frame"><iframe src="https://www.youtube.com/embed/EQ8ViYIeH04" title="Course video on YouTube" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p><a href="https://youtu.be/EQ8ViYIeH04?si=PxIZoHEAvUCronxr" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></p></section><script src="../assets/bootstrap/bootstrap.bundle.min.js"></script><script src="../assets/api-lab.js"></script></body></html>
