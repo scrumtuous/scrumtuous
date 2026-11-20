@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Associate Foundations Exam | CCAO-F</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e0e8;
+      --primary: #a65435;
+      --primary-dark: #804027;
+      --secondary: #667085;
+      --success: #16803c;
+      --success-bg: #eaf8ef;
+      --danger: #b42318;
+      --danger-bg: #fff0ee;
+      --warning: #9a6700;
+      --warning-bg: #fff7d6;
+      --shadow: 0 10px 28px rgba(23, 32, 51, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: .62rem .92rem;
+      cursor: pointer;
+      font-weight: 650;
+      transition: transform .08s ease, background .15s ease, opacity .15s ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-secondary { background: #e8edf3; color: var(--text); }
+    .btn-warning { background: #ffd96a; color: #4b3500; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-success { background: var(--success); color: white; }
+
+    .page-shell {
+      width: min(1040px, calc(100% - 28px));
+      margin: 28px auto 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #222236, #6b4039);
+      color: white;
+      border-radius: 18px;
+      padding: 24px 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 { margin: 0 0 6px; font-size: clamp(1.55rem, 3.1vw, 2rem); }
+    .hero p { margin: 0; opacity: .88; }
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.1);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .9rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-weight: 750;
+    }
+
+    .card-body { padding: 18px; }
+
+    .results {
+      border-left: 5px solid var(--primary);
+    }
+    .results strong { font-size: 1.1rem; }
+
+    .query {
+      white-space: pre-line;
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .choose-note {
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 0 0 16px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 11px 12px;
+      margin: 8px 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+    }
+
+    .option input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      flex: 0 0 auto;
+    }
+
+    .option.reveal-correct {
+      border-color: #75c991;
+      background: var(--success-bg);
+    }
+
+    .option.reveal-wrong-selected {
+      border-color: #e9a7a0;
+      background: var(--danger-bg);
+    }
+
+    .option small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .answer-panel {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: var(--warning-bg);
+      border: 1px solid #f0d783;
+    }
+
+    .answer-panel p:first-child { margin-top: 0; }
+    .answer-panel ul { margin-bottom: 0; }
+    .answer-panel .tip-html { margin-top: 12px; }
+    .answer-panel .reference-note { margin: 14px 0 0; color: var(--muted); font-size: .84rem; }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .collapsible-title { cursor: pointer; user-select: none; }
+    .chevron { font-size: .9rem; color: var(--muted); }
+
+    .jumper-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .jump-btn {
+      min-width: 38px;
+      padding: 7px 9px;
+      background: #eef2f6;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .jump-btn.viewed { background: #d7dee7; }
+    .jump-btn.current { background: var(--primary); color: white; border-color: var(--primary); }
+    .jump-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+    .jump-btn.incorrect { background: var(--danger); color: white; border-color: var(--danger); }
+
+    .history-empty { color: var(--muted); margin: 0; }
+    .history-exam {
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+    }
+    .history-exam:first-child { border-top: 0; padding-top: 0; }
+    .history-summary {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 9px;
+    }
+    .history-dots { display: flex; flex-wrap: wrap; gap: 5px; }
+    .history-dot {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: grid; place-items: center;
+      font-size: .76rem; color: white;
+      background: var(--danger);
+    }
+    .history-dot.correct { background: var(--success); }
+
+    .status-line {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-top: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .88rem;
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 640px) {
+      .page-shell { width: min(100% - 16px, 1040px); margin-top: 8px; }
+      .hero { border-radius: 12px; padding: 19px 17px; }
+      .card-body { padding: 14px; }
+      .card-header { padding: 12px 14px; }
+      .controls { align-items: stretch; }
+      .control-group { width: 100%; }
+      .control-group button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <claude-exam-app></claude-exam-app>
+
+  <script>
+    const QUESTION_BANK = [{"query":"A communications officer wants Claude to draft an all-staff email announcing a change to the office entry system. Her first prompt was \"Write an email about the new door access cards\" and the draft was generic. Which revision is most likely to produce a usable first draft?","type":"multiple-choice","options":[{"text":"\"Draft a 200-word all-staff email from Facilities: new access cards replace the keypads from 1 March; reassuring tone; close with where to collect a card.\"","explanation":"An effective business prompt states the sender, audience, length, the specific facts to convey, the tone and the closing action. Claude can only be specific when the prompt is.","correct":true},{"text":"\"Write a professional, reassuring email about the new door access cards that staff across all our offices will find easy to read and act on.\"","explanation":"Adds tone but still omits the facts, sender and call to action.","correct":false},{"text":"\"Write three different emails about the new door access cards, each in a different tone, so that I can choose the strongest one to send.\"","explanation":"Multiplies a vague request rather than improving it.","correct":false},{"text":"\"You are an award-winning corporate communicator with decades of experience writing for large organisations. Write an email about the new door access cards.\"","explanation":"Assigns a role without saying what the email must contain.","correct":false}],"answer":"<p>Correct answer: <strong>&quot;Draft a 200-word all-staff email from Facilities: new access cards replace the keypads from 1 March; reassuring tone; close with where to collect a card.&quot;</strong></p><p>An effective business prompt states the sender, audience, length, the specific facts to convey, the tone and the closing action. Claude can only be specific when the prompt is.</p>","tip":"<p>Why not the others: B adds tone but still omits the facts, sender and call to action; C multiplies a vague request rather than improving it; D assigns a role without saying what the email must contain.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.1.","answerStatus":"source"},{"query":"A policy analyst uses the same prompt structure for every task: a role, the task and a word limit. It works well for summaries, but brainstorming requests keep returning a short, safe list of ideas. Which adjustment best reflects adapting the prompting strategy to the task type?","type":"multiple-choice","options":[{"text":"Raise the word limit so that Claude has room to explain each idea in more depth and justify it.","explanation":"Produces longer explanations of the same few ideas.","correct":false},{"text":"Drop the word limit, ask for many varied ideas, and judge quality only once the list exists.","explanation":"Brainstorming rewards breadth and deferred judgement; summarising rewards compression. A template tuned for one task type will constrain the other, so the constraints need to change with the task.","correct":true},{"text":"Ask Claude for the single best idea with a full justification, so that quality replaces quantity.","explanation":"Narrows the output further when the problem is too little range.","correct":false},{"text":"Add \"be creative\" to the role description and keep the task line and the word limit exactly as they are.","explanation":"Changes a label, not the constraints that are suppressing range.","correct":false}],"answer":"<p>Correct answer: <strong>Drop the word limit, ask for many varied ideas, and judge quality only once the list exists.</strong></p><p>Brainstorming rewards breadth and deferred judgement; summarising rewards compression. A template tuned for one task type will constrain the other, so the constraints need to change with the task.</p>","tip":"<p>Why not the others: A produces longer explanations of the same few ideas; C narrows the output further when the problem is too little range; D changes a label, not the constraints that are suppressing range.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.2.","answerStatus":"source"},{"query":"An operations lead asks Claude, in one prompt, to review 40 supplier contracts, extract the renewal dates, flag unfavourable terms and draft renegotiation emails. The output covers some contracts thoroughly and skips others. Which change is most likely to fix the problem?","type":"multiple-choice","options":[{"text":"Resubmit the same prompt with \"make sure that every one of the 40 contracts is covered\" added at the end.","explanation":"Restates the demand without changing the structure that caused the gaps.","correct":false},{"text":"Switch to a more capable model so that the single prompt can handle the full workload in one pass.","explanation":"Treats capability as the limit when the request's structure is.","correct":false},{"text":"Split the request into stages (dates, then terms, then emails) and check each stage before moving on.","explanation":"Skipping items on a large multi-part request is a sign of a decomposition problem. Sequenced sub-tasks give each step a focused context and an output that can be checked before the next step depends on it.","correct":true},{"text":"Ask Claude to work through the contracts in alphabetical order and number each one so that none are overlooked.","explanation":"Changes the order but not the size of the task in one context.","correct":false}],"answer":"<p>Correct answer: <strong>Split the request into stages (dates, then terms, then emails) and check each stage before moving on.</strong></p><p>Skipping items on a large multi-part request is a sign of a decomposition problem. Sequenced sub-tasks give each step a focused context and an output that can be checked before the next step depends on it.</p>","tip":"<p>Why not the others: A restates the demand without changing the structure that caused the gaps; B treats capability as the limit when the request&#x27;s structure is; D changes the order but not the size of the task in one context.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.3.","answerStatus":"source"},{"query":"A grants officer asked Claude to rewrite a funding application summary. The draft is accurate, but the tone is too informal and it omits the project's $240,000 budget. Which follow-up prompt best reflects effective iteration?","type":"multiple-choice","options":[{"text":"\"That is not quite right for a funding application. Please try again and produce a better, more polished version.\"","explanation":"Gives Claude nothing to act on.","correct":false},{"text":"\"Rewrite the whole summary from scratch, and this time make it formal enough for a government assessor to read.\"","explanation":"Discards the accurate content and still does not mention the budget.","correct":false},{"text":"\"Which parts of the summary do you think are too informal, and what would you change about them before I send it?\"","explanation":"Asks for diagnosis when the officer already knows what needs to change.","correct":false},{"text":"\"Keep the content, make the tone formal for a government assessor, and add the $240,000 budget to the first paragraph.\"","explanation":"Good iteration keeps what worked and names exactly what must change. Both gaps (tone and the missing budget) are specific, so the follow-up should address both specifically.","correct":true}],"answer":"<p>Correct answer: <strong>&quot;Keep the content, make the tone formal for a government assessor, and add the $240,000 budget to the first paragraph.&quot;</strong></p><p>Good iteration keeps what worked and names exactly what must change. Both gaps (tone and the missing budget) are specific, so the follow-up should address both specifically.</p>","tip":"<p>Why not the others: A gives Claude nothing to act on; B discards the accurate content and still does not mention the budget; C asks for diagnosis when the officer already knows what needs to change.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.4.","answerStatus":"source"},{"query":"A sales coordinator is drafting a prompt for Claude to turn her notes from a client meeting into a follow-up email. Which two elements should the prompt include? (Choose two.)","type":"multiple-choice","options":[{"text":"An instruction to make the email as long as necessary to cover everything discussed.","explanation":"A follow-up email should be short; length should be constrained, not opened up.","correct":false},{"text":"Every email the coordinator has sent this year, so that the writing style is reproduced exactly.","explanation":"One or two example emails would help, but a year of them bloats the context.","correct":false},{"text":"The meeting notes themselves, clearly separated from the instructions.","explanation":"A drafting prompt needs the purpose and audience, and it needs the source material presented so that Claude can tell instructions from content.","correct":true},{"text":"A request for Claude to rate how confident it is in the accuracy of the email.","explanation":"A self-reported confidence rating is not a reliable accuracy signal.","correct":false},{"text":"The intended reader and the outcome the email should achieve, such as confirming next steps and securing a demonstration date.","explanation":"A drafting prompt needs the purpose and audience, and it needs the source material presented so that Claude can tell instructions from content.","correct":true}],"answer":"<p>Correct answers: <strong>The meeting notes themselves, clearly separated from the instructions.; The intended reader and the outcome the email should achieve, such as confirming next steps and securing a demonstration date.</strong></p><p>A drafting prompt needs the purpose and audience, and it needs the source material presented so that Claude can tell instructions from content.</p>","tip":"<p>Why not the others: A a follow-up email should be short; length should be constrained, not opened up; B one or two example emails would help, but a year of them bloats the context; D a self-reported confidence rating is not a reliable accuracy signal.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.5.","answerStatus":"source"},{"query":"A project manager is decomposing \"prepare the quarterly board pack\" into tasks that Claude can help with. Which two sub-tasks are well formed for a single prompt each? (Choose two.)","type":"multiple-choice","options":[{"text":"Summarise the attached risk register into five bullet points for a non-technical audience.","explanation":"A well-formed sub-task has one clear input, one clear output and a defined audience. Both correct options can be completed, checked and reused independently.","correct":true},{"text":"Review all of the attachments and point out anything the board might want to know.","explanation":"Has no defined output and no criteria for what matters.","correct":false},{"text":"Produce the entire board pack, including financials, risks and recommendations, in one pass.","explanation":"Is the undecomposed task.","correct":false},{"text":"Convert the attached project status table into a short narrative paragraph for each project.","explanation":"A well-formed sub-task has one clear input, one clear output and a defined audience. Both correct options can be completed, checked and reused independently.","correct":true},{"text":"Decide which projects the board should cancel, based on the status table.","explanation":"Is a decision for the board, not a drafting task.","correct":false}],"answer":"<p>Correct answers: <strong>Summarise the attached risk register into five bullet points for a non-technical audience.; Convert the attached project status table into a short narrative paragraph for each project.</strong></p><p>A well-formed sub-task has one clear input, one clear output and a defined audience. Both correct options can be completed, checked and reused independently.</p>","tip":"<p>Why not the others: B has no defined output and no criteria for what matters; C is the undecomposed task; E is a decision for the board, not a drafting task.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.6.","answerStatus":"source"},{"query":"Claude's first draft of a product FAQ is accurate, but each answer runs to three paragraphs and the language is too technical for first-time customers. Which two refinements would most improve the draft? (Choose two.)","type":"multiple-choice","options":[{"text":"Resubmit the original prompt and ask Claude to try harder this time to keep the answers short.","explanation":"Changes nothing about the prompt.","correct":false},{"text":"Provide one example answer in the style the team wants and ask Claude to match it.","explanation":"Explicit constraints and a concrete example both give Claude a target it can hit. Each targets a diagnosed weakness: length and register.","correct":true},{"text":"Ask Claude to explain why the answers came out so long and technical before it makes any changes.","explanation":"Produces commentary, not a better draft.","correct":false},{"text":"Specify two sentences per answer at most, and a reading level suited to first-time customers.","explanation":"Explicit constraints and a concrete example both give Claude a target it can hit. Each targets a diagnosed weakness: length and register.","correct":true},{"text":"Remove the attached product specification so that Claude has less material to expand on in each answer.","explanation":"Removes the source that keeps the answers accurate.","correct":false}],"answer":"<p>Correct answers: <strong>Provide one example answer in the style the team wants and ask Claude to match it.; Specify two sentences per answer at most, and a reading level suited to first-time customers.</strong></p><p>Explicit constraints and a concrete example both give Claude a target it can hit. Each targets a diagnosed weakness: length and register.</p>","tip":"<p>Why not the others: A changes nothing about the prompt; C produces commentary, not a better draft; E removes the source that keeps the answers accurate.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.7.","answerStatus":"source"},{"query":"You are a marketing coordinator preparing a prompt for a research-style task: a comparison of three competitors' loyalty programmes. Which is the correct order of steps? (1) Write the prompt, referring to the attached sources and stating the task, the comparison criteria and the output format. (2) Define the question the comparison must answer and who will read it. (3) Refine the prompt to address the gaps and run it again. (4) Review the output against the sources and note the gaps. (5) Gather and attach the source material on each programme.","type":"multiple-choice","options":[{"text":"2, 1, 5, 4, 3","explanation":"Writes the prompt before the sources are available to reference.","correct":false},{"text":"1, 5, 2, 4, 3","explanation":"Writes the prompt before the question is defined.","correct":false},{"text":"2, 5, 1, 4, 3","explanation":"Research-style prompts work best when the question and audience are fixed first, the sources are in hand before the prompt is written, and iteration follows a review against those sources.","correct":true},{"text":"5, 2, 1, 3, 4","explanation":"Refines before reviewing, so there is nothing to refine against.","correct":false}],"answer":"<p>Correct answer: <strong>2, 5, 1, 4, 3</strong></p><p>Research-style prompts work best when the question and audience are fixed first, the sources are in hand before the prompt is written, and iteration follows a review against those sources.</p>","tip":"<p>Why not the others: A writes the prompt before the sources are available to reference; B writes the prompt before the question is defined; D refines before reviewing, so there is nothing to refine against.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 1.8.","answerStatus":"source"},{"query":"A communications officer asked Claude to summarise a 30-page annual report. The summary includes a direct quote attributed to the chief executive that the officer does not recognise. What is the most appropriate first step?","type":"multiple-choice","options":[{"text":"Search the report for the quote; if it is absent, remove it and tell Claude to use only wording from the document.","explanation":"A specific-looking detail that cannot be located in the source is the classic sign of a fabrication. Checking against the source is quick and decisive, and the instruction prevents a repeat.","correct":true},{"text":"Keep the quote, since Claude had the full 30-page report available and is unlikely to invent a direct quotation from it.","explanation":"Assumes availability of the source prevents fabrication, which it does not.","correct":false},{"text":"Paraphrase the quote and attribute it loosely, so that it no longer has to be reproduced word for word.","explanation":"Hides the problem rather than resolving it.","correct":false},{"text":"Ask Claude whether the quote is genuine and where it appears, and keep it if Claude confirms that it is real.","explanation":"Asks the model to verify itself.","correct":false}],"answer":"<p>Correct answer: <strong>Search the report for the quote; if it is absent, remove it and tell Claude to use only wording from the document.</strong></p><p>A specific-looking detail that cannot be located in the source is the classic sign of a fabrication. Checking against the source is quick and decisive, and the instruction prevents a repeat.</p>","tip":"<p>Why not the others: B assumes availability of the source prevents fabrication, which it does not; C hides the problem rather than resolving it; D asks the model to verify itself.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.1.","answerStatus":"source"},{"query":"An HR adviser asked Claude to list every type of leave mentioned in the enterprise agreement. The list looks right, but she needs to be sure that it is complete. Which check is most effective?","type":"multiple-choice","options":[{"text":"Ask the same question again in a new chat and accept the list if both answers match.","explanation":"Two consistent answers can both be incomplete.","correct":false},{"text":"Search the agreement for the word \"leave\" and compare each occurrence with Claude's list.","explanation":"Completeness can only be confirmed against the source. A keyword sweep of the agreement is a direct, repeatable test that catches anything the model skipped.","correct":true},{"text":"Ask Claude to confirm that the list is complete and add anything that was missed.","explanation":"Relies on the model to find its own omissions.","correct":false},{"text":"Count the items in Claude's list against the number of leave clauses in the table of contents.","explanation":"The table of contents may not list every leave type.","correct":false}],"answer":"<p>Correct answer: <strong>Search the agreement for the word &quot;leave&quot; and compare each occurrence with Claude&#x27;s list.</strong></p><p>Completeness can only be confirmed against the source. A keyword sweep of the agreement is a direct, repeatable test that catches anything the model skipped.</p>","tip":"<p>Why not the others: A two consistent answers can both be incomplete; C relies on the model to find its own omissions; D the table of contents may not list every leave type.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.2.","answerStatus":"source"},{"query":"A recruiter asked Claude to draft a shortlisting rationale for a graduate programme. The draft notes that applicants from two named universities \"tend to be stronger communicators\". Which response from the recruiter is most appropriate?","type":"multiple-choice","options":[{"text":"Keep the statement, since it reflects a pattern the selection panel has also noticed informally over several intakes.","explanation":"An informal impression does not make a generalisation fair or evidence-based.","correct":false},{"text":"Keep the rankings but delete the rationale, so that the statement is not visible to the panel when it meets.","explanation":"Conceals the reasoning instead of correcting it, and the rankings may still rest on it.","correct":false},{"text":"Add a sentence noting that the observation may not apply to every applicant, and keep the rest of the rationale as it is.","explanation":"Leaves the biased reasoning in place with a disclaimer.","correct":false},{"text":"Remove the generalisation and have Claude justify each ranking from the evidence in that applicant's application.","explanation":"A group-level generalisation applied to individuals is a bias in the output. The fix is to replace it with evidence specific to each applicant, not to caveat it or hide it.","correct":true}],"answer":"<p>Correct answer: <strong>Remove the generalisation and have Claude justify each ranking from the evidence in that applicant&#x27;s application.</strong></p><p>A group-level generalisation applied to individuals is a bias in the output. The fix is to replace it with evidence specific to each applicant, not to caveat it or hide it.</p>","tip":"<p>Why not the others: A an informal impression does not make a generalisation fair or evidence-based; B conceals the reasoning instead of correcting it, and the rankings may still rest on it; C leaves the biased reasoning in place with a disclaimer.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.3.","answerStatus":"source"},{"query":"A finance analyst at Brightmere Energy used Claude to draft a reply to a customer disputing a $3,200 invoice. The draft offers a partial credit. Which factor most strongly indicates that a person should review the reply before it is sent?","type":"multiple-choice","options":[{"text":"The reply was produced in a single pass, without any of the prompt iteration the team normally applies.","explanation":"The number of iterations says nothing about the stakes.","correct":false},{"text":"The reply commits the organisation to a credit that the analyst may not have the authority to offer.","explanation":"Human review is required when an output commits the organisation to something with consequences: money, legal position or reputation. Authority to make the concession is the issue.","correct":true},{"text":"The draft is written in a more formal register than the analyst usually uses with this customer.","explanation":"Register is a style preference, not a reason for sign-off.","correct":false},{"text":"The customer's original email was considerably longer and more detailed than the drafted reply.","explanation":"Length is not a risk signal.","correct":false}],"answer":"<p>Correct answer: <strong>The reply commits the organisation to a credit that the analyst may not have the authority to offer.</strong></p><p>Human review is required when an output commits the organisation to something with consequences: money, legal position or reputation. Authority to make the concession is the issue.</p>","tip":"<p>Why not the others: A the number of iterations says nothing about the stakes; C register is a style preference, not a reason for sign-off; D length is not a risk signal.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.4.","answerStatus":"source"},{"query":"A policy officer has a Claude-drafted briefing written for the executive team and now needs a version for frontline staff. Which approach is most effective?","type":"multiple-choice","options":[{"text":"Ask Claude to adapt it for frontline staff: what they must do differently, minus the budget and strategy detail.","explanation":"Adapting for an audience means changing what is included and what the reader is asked to do, not just the length or vocabulary.","correct":true},{"text":"Ask Claude to cut the briefing to half its length, since frontline staff have less time to read than executives do.","explanation":"Shortens without reconsidering what the audience needs.","correct":false},{"text":"Send the executive briefing unchanged with a covering note saying that staff may skip any sections that do not apply.","explanation":"Pushes the adaptation work onto the reader.","correct":false},{"text":"Ask Claude to replace the technical terms with simpler words and keep the structure and content otherwise unchanged.","explanation":"Changes words while keeping content written for a different audience.","correct":false}],"answer":"<p>Correct answer: <strong>Ask Claude to adapt it for frontline staff: what they must do differently, minus the budget and strategy detail.</strong></p><p>Adapting for an audience means changing what is included and what the reader is asked to do, not just the length or vocabulary.</p>","tip":"<p>Why not the others: B shortens without reconsidering what the audience needs; C pushes the adaptation work onto the reader; D changes words while keeping content written for a different audience.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.5.","answerStatus":"source"},{"query":"A project coordinator has asked Claude to compile a comparison of four venue quotes. The team will sort and filter the comparison by price, capacity and available dates. Which output format should she request?","type":"multiple-choice","options":[{"text":"A table with a row per venue and a column per criterion, in a format she can open in a spreadsheet.","explanation":"When the next step is sorting and filtering, structured data is the right format. Prose and bullets have to be re-keyed before they can be used that way.","correct":true},{"text":"A slide for each venue so that the comparison can be presented and discussed at the next team meeting.","explanation":"Slides suit presenting, not comparing on criteria.","correct":false},{"text":"A narrative summary of each venue's strengths and weaknesses in prose, with a recommendation at the end.","explanation":"Prose cannot be sorted or filtered.","correct":false},{"text":"An inline bulleted list grouped by venue, with the price, capacity and dates for each shown in bold.","explanation":"Bullets are readable but not structured.","correct":false}],"answer":"<p>Correct answer: <strong>A table with a row per venue and a column per criterion, in a format she can open in a spreadsheet.</strong></p><p>When the next step is sorting and filtering, structured data is the right format. Prose and bullets have to be re-keyed before they can be used that way.</p>","tip":"<p>Why not the others: B slides suit presenting, not comparing on criteria; C prose cannot be sorted or filtered; D bullets are readable but not structured.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.6.","answerStatus":"source"},{"query":"Claude's summary of a competitor's media release includes three specific figures: revenue, headcount and number of stores. The marketing manager has the media release open in another window. Which validation approach is most appropriate?","type":"multiple-choice","options":[{"text":"Check one of the three figures at random; if it is correct, the other two are very likely to be correct as well.","explanation":"Sampling one of three figures is not validation.","correct":false},{"text":"Compare the figures with the competitor's reported figures from last year to see whether they look reasonable.","explanation":"Plausibility is not accuracy.","correct":false},{"text":"Ask Claude to re-read the media release carefully and confirm whether each of the three figures is accurate.","explanation":"Asks the model to mark its own work.","correct":false},{"text":"Check each figure against the release and ask Claude to quote the source sentence for any it cannot find.","explanation":"Specific figures with the source at hand should each be checked directly. Asking for the supporting sentence exposes any figure that was inferred rather than extracted.","correct":true}],"answer":"<p>Correct answer: <strong>Check each figure against the release and ask Claude to quote the source sentence for any it cannot find.</strong></p><p>Specific figures with the source at hand should each be checked directly. Asking for the supporting sentence exposes any figure that was inferred rather than extracted.</p>","tip":"<p>Why not the others: A sampling one of three figures is not validation; B plausibility is not accuracy; C asks the model to mark its own work.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.7.","answerStatus":"source"},{"query":"A procurement officer is reviewing a Claude-drafted market analysis before it goes to the tender committee. Which two signs most strongly suggest that the analysis may contain hallucinated material? (Choose two.)","type":"multiple-choice","options":[{"text":"A cited industry report has a title and publication date, but the officer cannot locate it anywhere.","explanation":"Unlocatable citations and internal inconsistency are two of the most reliable indicators of fabricated content.","correct":true},{"text":"The analysis is written in a confident tone with few hedging phrases or qualifications.","explanation":"Confident tone is normal for the model and not a sign either way.","correct":false},{"text":"The analysis uses Australian spelling throughout, while most of the source material uses American spelling.","explanation":"Spelling convention is a style matter.","correct":false},{"text":"Two paragraphs give different figures for the size of the same market without noting the discrepancy.","explanation":"Unlocatable citations and internal inconsistency are two of the most reliable indicators of fabricated content.","correct":true},{"text":"The analysis is noticeably shorter than the officer expected for a topic of this breadth and complexity.","explanation":"Length is not an accuracy signal.","correct":false}],"answer":"<p>Correct answers: <strong>A cited industry report has a title and publication date, but the officer cannot locate it anywhere.; Two paragraphs give different figures for the size of the same market without noting the discrepancy.</strong></p><p>Unlocatable citations and internal inconsistency are two of the most reliable indicators of fabricated content.</p>","tip":"<p>Why not the others: B confident tone is normal for the model and not a sign either way; C spelling convention is a style matter; E length is not an accuracy signal.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.8.","answerStatus":"source"},{"query":"A customer-support team leader is deciding which Claude-drafted outputs may be sent without a second reviewer. Which two outputs most clearly require human review before release? (Choose two.)","type":"multiple-choice","options":[{"text":"An internal summary of the week's most common support topics for the team meeting.","explanation":"Is internal and low stakes.","correct":false},{"text":"An apology email that offers a refund outside the published refund policy.","explanation":"Legal statements to customers and commitments outside policy both carry consequences if wrong. These are the outputs a person must own before they leave the organisation.","correct":true},{"text":"A reply to a routine password-reset request that follows the standard template.","explanation":"Is routine and templated.","correct":false},{"text":"A plain-language rewording of an existing approved help-centre article.","explanation":"Is grounded in approved content and easily checked.","correct":false},{"text":"A response to a complaint that explains the customer's rights under consumer law.","explanation":"Legal statements to customers and commitments outside policy both carry consequences if wrong. These are the outputs a person must own before they leave the organisation.","correct":true}],"answer":"<p>Correct answers: <strong>An apology email that offers a refund outside the published refund policy.; A response to a complaint that explains the customer&#x27;s rights under consumer law.</strong></p><p>Legal statements to customers and commitments outside policy both carry consequences if wrong. These are the outputs a person must own before they leave the organisation.</p>","tip":"<p>Why not the others: A is internal and low stakes; C is routine and templated; D is grounded in approved content and easily checked.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.9.","answerStatus":"source"},{"query":"A communications officer asked Claude for two versions of a media statement and must choose one. Which two criteria are the most useful basis for the comparison? (Choose two.)","type":"multiple-choice","options":[{"text":"Which version Claude recommends when asked to pick its own best effort.","explanation":"The model's preference is not the audience's.","correct":false},{"text":"Which version is longer, since a longer statement covers more ground.","explanation":"Length is not quality.","correct":false},{"text":"Whether each version's tone matches what the intended readers, local journalists, expect.","explanation":"Comparison should be against the purpose: required content and audience fit. Everything else is incidental.","correct":true},{"text":"Which version Claude produced first, since the first attempt is usually closest to the original intent.","explanation":"Order of generation is irrelevant.","correct":false},{"text":"Whether each version includes the three facts the organisation has agreed to disclose.","explanation":"Comparison should be against the purpose: required content and audience fit. Everything else is incidental.","correct":true}],"answer":"<p>Correct answers: <strong>Whether each version&#x27;s tone matches what the intended readers, local journalists, expect.; Whether each version includes the three facts the organisation has agreed to disclose.</strong></p><p>Comparison should be against the purpose: required content and audience fit. Everything else is incidental.</p>","tip":"<p>Why not the others: A the model&#x27;s preference is not the audience&#x27;s; B length is not quality; D order of generation is irrelevant.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.10.","answerStatus":"source"},{"query":"An education coordinator wants Claude's help turning 80 free-text survey comments into something useful for a staff meeting. Which two outputs are appropriate for the purpose? (Choose two.)","type":"multiple-choice","options":[{"text":"A summary that emphasises the positive comments so that the meeting ends on a high note.","explanation":"Misrepresents the data.","correct":false},{"text":"All 80 comments rewritten in a consistent tone so that they read smoothly when projected.","explanation":"Preserves the volume and alters the respondents' words.","correct":false},{"text":"A short list of recurring themes, each with a count and one or two illustrative quotes.","explanation":"Curating information means reducing it to what the audience needs while keeping a path back to the evidence. Themes with counts and quotes, plus a filterable table, do both.","correct":true},{"text":"A single overall sentiment score, presented without the supporting comments or detail.","explanation":"Removes all the detail the meeting needs.","correct":false},{"text":"A table of comments tagged by theme and sentiment that staff can filter after the meeting.","explanation":"Curating information means reducing it to what the audience needs while keeping a path back to the evidence. Themes with counts and quotes, plus a filterable table, do both.","correct":true}],"answer":"<p>Correct answers: <strong>A short list of recurring themes, each with a count and one or two illustrative quotes.; A table of comments tagged by theme and sentiment that staff can filter after the meeting.</strong></p><p>Curating information means reducing it to what the audience needs while keeping a path back to the evidence. Themes with counts and quotes, plus a filterable table, do both.</p>","tip":"<p>Why not the others: A misrepresents the data; B preserves the volume and alters the respondents&#x27; words; D removes all the detail the meeting needs.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.11.","answerStatus":"source"},{"query":"You are an analyst validating a Claude-generated summary of a government consultation paper before it goes to your director. Which is the correct order of steps? (1) Locate each highlighted claim in the consultation paper. (2) Choose between fixing the summary yourself, re-running the prompt with the paper, or raising it with your director. (3) Read the summary and highlight every claim, figure and citation that can be checked. (4) Add a note to the summary saying what has been checked and what was changed. (5) Note any claim you could not find, and how much it matters.","type":"multiple-choice","options":[{"text":"3, 1, 5, 2, 4","explanation":"Validation runs from identifying claims, to checking them, to recording findings, to deciding, to documenting. Each step depends on the one before it.","correct":true},{"text":"1, 3, 5, 2, 4","explanation":"Looks for claims in the paper before they have been identified in the summary.","correct":false},{"text":"3, 1, 2, 5, 4","explanation":"Chooses a course of action before the findings have been weighed.","correct":false},{"text":"3, 5, 1, 2, 4","explanation":"Notes missing claims before any have been looked for.","correct":false}],"answer":"<p>Correct answer: <strong>3, 1, 5, 2, 4</strong></p><p>Validation runs from identifying claims, to checking them, to recording findings, to deciding, to documenting. Each step depends on the one before it.</p>","tip":"<p>Why not the others: B looks for claims in the paper before they have been identified in the summary; C chooses a course of action before the findings have been weighed; D notes missing claims before any have been looked for.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.12.","answerStatus":"source"},{"query":"You are a marketing coordinator adapting a Claude-drafted internal product briefing into a customer-facing article. Which is the correct order of steps? (1) Ask Claude to rewrite for that audience with the stated tone and length. (2) Send the article to the product owner for approval before publishing. (3) Identify the audience and what they need from the article. (4) Check the rewrite for accuracy against the original briefing. (5) Strip internal-only content, such as pricing strategy and the product roadmap, from the briefing before it is used as the source.","type":"multiple-choice","options":[{"text":"3, 1, 5, 4, 2","explanation":"Rewrites before internal content is removed, so it may be carried into the article.","correct":false},{"text":"3, 5, 1, 4, 2","explanation":"Audience first, then strip what the audience must not see, then rewrite, then verify, then approve. Removing internal content before the rewrite stops it leaking into the new draft.","correct":true},{"text":"5, 3, 1, 2, 4","explanation":"Sends for approval before the accuracy check.","correct":false},{"text":"3, 5, 4, 1, 2","explanation":"Checks accuracy before there is a rewrite to check.","correct":false}],"answer":"<p>Correct answer: <strong>3, 5, 1, 4, 2</strong></p><p>Audience first, then strip what the audience must not see, then rewrite, then verify, then approve. Removing internal content before the rewrite stops it leaking into the new draft.</p>","tip":"<p>Why not the others: A rewrites before internal content is removed, so it may be carried into the article; C sends for approval before the accuracy check; D checks accuracy before there is a rewrite to check.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 2.13.","answerStatus":"source"},{"query":"A grants officer prepares a similar assessment report every fortnight using the same scoring rubric and report template. Which Claude feature best fits this pattern of work?","type":"multiple-choice","options":[{"text":"A single long-running chat that is never closed, so that the rubric and the earlier reports stay in context.","explanation":"A never-ending chat accumulates unrelated context and eventually degrades.","correct":false},{"text":"A fresh chat each fortnight with the rubric and template pasted in, which keeps the context small and current.","explanation":"Works, but repeats the setup every fortnight and invites inconsistency.","correct":false},{"text":"Research mode, so that Claude can look up each applicant organisation before applying the rubric.","explanation":"Research mode gathers external information; the task is applying a known rubric.","correct":false},{"text":"A Project with the rubric and template as knowledge and instructions, so that each new chat starts with them.","explanation":"Projects exist for recurring work with stable reference material: the rubric and template are set once and inherited by every chat.","correct":true}],"answer":"<p>Correct answer: <strong>A Project with the rubric and template as knowledge and instructions, so that each new chat starts with them.</strong></p><p>Projects exist for recurring work with stable reference material: the rubric and template are set once and inherited by every chat.</p>","tip":"<p>Why not the others: A a never-ending chat accumulates unrelated context and eventually degrades; B works, but repeats the setup every fortnight and invites inconsistency; C research mode gathers external information; the task is applying a known rubric.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.1.","answerStatus":"source"},{"query":"A customer-service manager wants Claude to tag 5,000 short feedback comments with one of eight topic labels. Speed and cost matter, and the judgement needed per comment is light. Which model choice best aligns with the task?","type":"multiple-choice","options":[{"text":"Sonnet, because the mid-tier model is the safe default whenever accuracy and cost both matter.","explanation":"A reasonable fallback, but not the best fit when the task is simple.","correct":false},{"text":"Alternate between the three models so that no single model's weaknesses affect the whole batch.","explanation":"Mixes models without a reason and complicates checking.","correct":false},{"text":"Haiku, because the per-item reasoning is simple and the volume rewards speed and low cost.","explanation":"High volume, light judgement and a fixed label set is the profile the fastest, lowest-cost tier is designed for. Check a sample, then run the batch.","correct":true},{"text":"Opus, because the most capable model gives the highest accuracy on any labelling task.","explanation":"Pays for reasoning depth the task does not use.","correct":false}],"answer":"<p>Correct answer: <strong>Haiku, because the per-item reasoning is simple and the volume rewards speed and low cost.</strong></p><p>High volume, light judgement and a fixed label set is the profile the fastest, lowest-cost tier is designed for. Check a sample, then run the batch.</p>","tip":"<p>Why not the others: A a reasonable fallback, but not the best fit when the task is simple; B mixes models without a reason and complicates checking; D pays for reasoning depth the task does not use.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.2.","answerStatus":"source"},{"query":"A business analyst has been working in one long chat with Claude for three days, covering four unrelated pieces of work. Claude has started mixing details from the different pieces. What is the most appropriate action?","type":"multiple-choice","options":[{"text":"Start a new chat per piece of work, seeded with a short summary of the decisions made so far.","explanation":"Long, mixed conversations degrade. The remedy is a fresh context per task, seeded with a concise summary of what still matters.","correct":true},{"text":"Paste the whole chat history into a new chat so that no detail from the three days is lost.","explanation":"Recreates the problem in a new chat.","correct":false},{"text":"Switch to a more capable model within the same chat so that it can keep track of more context at once.","explanation":"A bigger model inherits the same tangled context.","correct":false},{"text":"Continue in the same chat but tell Claude to ignore everything before today and treat each request as new.","explanation":"The earlier context is still present and still interfering.","correct":false}],"answer":"<p>Correct answer: <strong>Start a new chat per piece of work, seeded with a short summary of the decisions made so far.</strong></p><p>Long, mixed conversations degrade. The remedy is a fresh context per task, seeded with a concise summary of what still matters.</p>","tip":"<p>Why not the others: B recreates the problem in a new chat; C a bigger model inherits the same tangled context; D the earlier context is still present and still interfering.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.3.","answerStatus":"source"},{"query":"A policy officer needs an up-to-date overview of how five Australian states regulate short-term rental accommodation, with sources she can cite. Which feature is the best fit?","type":"multiple-choice","options":[{"text":"An artifact, because the final output will be a structured document.","explanation":"An artifact is an output surface, not a way of gathering information.","correct":false},{"text":"Research mode, because the task needs current information gathered from multiple sources with citations.","explanation":"Current, multi-source, citable information is exactly the case for research mode.","correct":true},{"text":"A Project containing her existing policy notes, because the answer should be grounded in the organisation's documents.","explanation":"Her notes are not the source of current regulation.","correct":false},{"text":"A standard chat, because Claude's training knowledge already covers Australian regulation.","explanation":"Training knowledge may be out of date and gives no citations.","correct":false}],"answer":"<p>Correct answer: <strong>Research mode, because the task needs current information gathered from multiple sources with citations.</strong></p><p>Current, multi-source, citable information is exactly the case for research mode.</p>","tip":"<p>Why not the others: A an artifact is an output surface, not a way of gathering information; C her notes are not the source of current regulation; D training knowledge may be out of date and gives no citations.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.4.","answerStatus":"source"},{"query":"A legal operations lead is choosing a model for reviewing complex contract clauses. A missed nuance could be costly, and the volume is low: around ten documents a week. Which two statements support a sound selection? (Choose two.)","type":"multiple-choice","options":[{"text":"The cost of a missed nuance outweighs the speed advantage of a lighter model.","explanation":"Model selection balances cost, speed and quality against the task. Here quality dominates and cost is immaterial at ten documents a week.","correct":true},{"text":"The fastest model is the best choice because lawyers need quick turnaround.","explanation":"Speed is not the binding requirement.","correct":false},{"text":"All models produce the same results on text analysis, so the cheapest should be chosen.","explanation":"Models differ materially in reasoning depth.","correct":false},{"text":"The mid-tier model should always be used for legal content because it is the recommended default.","explanation":"There is no fixed rule by content type.","correct":false},{"text":"The low volume means the higher cost of the most capable model has little effect on the overall budget.","explanation":"Model selection balances cost, speed and quality against the task. Here quality dominates and cost is immaterial at ten documents a week.","correct":true}],"answer":"<p>Correct answers: <strong>The cost of a missed nuance outweighs the speed advantage of a lighter model.; The low volume means the higher cost of the most capable model has little effect on the overall budget.</strong></p><p>Model selection balances cost, speed and quality against the task. Here quality dominates and cost is immaterial at ten documents a week.</p>","tip":"<p>Why not the others: B speed is not the binding requirement; C models differ materially in reasoning depth; D there is no fixed rule by content type.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.5.","answerStatus":"source"},{"query":"A communications manager uses Claude for a long campaign-planning conversation that runs over several weeks. Which two practices help manage context limitations well? (Choose two.)","type":"multiple-choice","options":[{"text":"Keep all of the team's campaigns in one chat so that Claude can draw connections between them over time.","explanation":"Mixes unrelated work and degrades quality.","correct":false},{"text":"Paste every related email thread into the chat so that Claude has the complete history of the campaign to draw on.","explanation":"Fills the context with mostly irrelevant material.","correct":false},{"text":"Avoid asking follow-up questions where possible, since each one uses up some of the available context.","explanation":"Follow-ups are how outputs improve; avoiding them defeats the purpose.","correct":false},{"text":"Ask Claude for a summary of decisions so far and use it to start a fresh chat when the conversation grows long.","explanation":"Summarise-and-restart and keeping stable material in a Project are the two standard ways of keeping context focused over a long piece of work.","correct":true},{"text":"Keep stable material such as the brand guidelines and campaign brief in a Project instead of re-pasting it.","explanation":"Summarise-and-restart and keeping stable material in a Project are the two standard ways of keeping context focused over a long piece of work.","correct":true}],"answer":"<p>Correct answers: <strong>Ask Claude for a summary of decisions so far and use it to start a fresh chat when the conversation grows long.; Keep stable material such as the brand guidelines and campaign brief in a Project instead of re-pasting it.</strong></p><p>Summarise-and-restart and keeping stable material in a Project are the two standard ways of keeping context focused over a long piece of work.</p>","tip":"<p>Why not the others: A mixes unrelated work and degrades quality; B fills the context with mostly irrelevant material; C follow-ups are how outputs improve; avoiding them defeats the purpose.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.6.","answerStatus":"source"},{"query":"You are an operations lead choosing a Claude model for a new recurring task. Which is the correct order of steps? (1) Test on a representative sample and compare the results with the requirement. (2) Define the task's requirements: the accuracy needed, volume, turnaround and budget. (3) Confirm the choice, or move up a tier and test again. (4) Choose the lightest model that is likely to satisfy that requirement. (5) Identify which requirement matters most.","type":"multiple-choice","options":[{"text":"2, 4, 5, 1, 3","explanation":"Chooses a model before knowing which requirement is the priority.","correct":false},{"text":"5, 2, 4, 1, 3","explanation":"Prioritises requirements before they have been defined.","correct":false},{"text":"2, 5, 1, 4, 3","explanation":"Tests before any model has been chosen to test.","correct":false},{"text":"2, 5, 4, 1, 3","explanation":"Requirements come first, then the priority among them, then the lightest candidate, then evidence, then the decision.","correct":true}],"answer":"<p>Correct answer: <strong>2, 5, 4, 1, 3</strong></p><p>Requirements come first, then the priority among them, then the lightest candidate, then evidence, then the decision.</p>","tip":"<p>Why not the others: A chooses a model before knowing which requirement is the priority; B prioritises requirements before they have been defined; C tests before any model has been chosen to test.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 3.7.","answerStatus":"source"},{"query":"A project manager has notes from six stakeholder interviews about a new leave-request process and wants to use Claude for requirements analysis. Which use of Claude is most appropriate?","type":"multiple-choice","options":[{"text":"Ask Claude to write the final process design directly from the interview notes, so that analysis and design happen in one step.","explanation":"Skips analysis and jumps to design.","correct":false},{"text":"Ask Claude to extract requirements into a list, noting the source stakeholder for each and where they conflict.","explanation":"Requirements analysis is extraction with traceability: every requirement tied to its source, and conflicts surfaced for people to resolve.","correct":true},{"text":"Ask Claude to generate the requirements for a leave-request process from general knowledge, then compare them with the notes.","explanation":"Invents requirements instead of deriving them from the stakeholders.","correct":false},{"text":"Ask Claude to decide which stakeholders' requirements take priority, based on their seniority and job titles.","explanation":"Delegates a judgement that belongs to the project's governance.","correct":false}],"answer":"<p>Correct answer: <strong>Ask Claude to extract requirements into a list, noting the source stakeholder for each and where they conflict.</strong></p><p>Requirements analysis is extraction with traceability: every requirement tied to its source, and conflicts surfaced for people to resolve.</p>","tip":"<p>Why not the others: A skips analysis and jumps to design; C invents requirements instead of deriving them from the stakeholders; D delegates a judgement that belongs to the project&#x27;s governance.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.1.","answerStatus":"source"},{"query":"A finance team's month-end process has twelve steps. One step, writing the variance commentary from a spreadsheet of figures, takes an analyst two days. Which integration approach is most sensible?","type":"multiple-choice","options":[{"text":"Wait until Claude can perform the full month-end process before changing anything, to avoid a half-done redesign.","explanation":"Forgoes an available gain for no reason.","correct":false},{"text":"Use Claude to produce the spreadsheet of figures, since that is the input to the slow step and the figures drive the commentary.","explanation":"Targets the wrong step and introduces a calculation risk.","correct":false},{"text":"Use Claude to draft the commentary from the spreadsheet, with the analyst reviewing and finalising it.","explanation":"Augment the step where the time goes, keep a person on review, and leave a working process alone elsewhere. That is the lowest-risk way to integrate.","correct":true},{"text":"Redesign all twelve steps around Claude so that the whole month-end process benefits at the same time.","explanation":"A wholesale redesign for a single bottleneck.","correct":false}],"answer":"<p>Correct answer: <strong>Use Claude to draft the commentary from the spreadsheet, with the analyst reviewing and finalising it.</strong></p><p>Augment the step where the time goes, keep a person on review, and leave a working process alone elsewhere. That is the lowest-risk way to integrate.</p>","tip":"<p>Why not the others: A forgoes an available gain for no reason; B targets the wrong step and introduces a calculation risk; D a wholesale redesign for a single bottleneck.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.2.","answerStatus":"source"},{"query":"An operations manager at Kerrigan Freight is presenting a Claude-assisted invoice-triage workflow to the executive team. Which statement best communicates Claude's value and its limitations?","type":"multiple-choice","options":[{"text":"\"Claude handles invoice triage from end to end, so the team can be redeployed to higher-value work from the start of next quarter.\"","explanation":"Overstates the capability and removes the human role.","correct":false},{"text":"\"Claude sorts and drafts replies for the 70 per cent of invoices that are routine; exceptions and approvals over $5,000 go to a person.\"","explanation":"Stakeholders need to know what Claude does, what it does not do, and where people remain in control, in concrete terms.","correct":true},{"text":"\"Claude is a tool like any other; the results depend entirely on how well our people use it, so training is the priority.\"","explanation":"So general that it says nothing about the workflow.","correct":false},{"text":"\"Claude will make occasional mistakes, so we recommend that the executive team reviews a sample of its output at the weekly meeting.\"","explanation":"Names a limitation but assigns review to the wrong people and omits the value.","correct":false}],"answer":"<p>Correct answer: <strong>&quot;Claude sorts and drafts replies for the 70 per cent of invoices that are routine; exceptions and approvals over $5,000 go to a person.&quot;</strong></p><p>Stakeholders need to know what Claude does, what it does not do, and where people remain in control, in concrete terms.</p>","tip":"<p>Why not the others: A overstates the capability and removes the human role; C so general that it says nothing about the workflow; D names a limitation but assigns review to the wrong people and omits the value.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.3.","answerStatus":"source"},{"query":"A community-engagement officer has to plan a six-week public consultation and has a clear brief: objectives, constraints and a stakeholder list. Which use of Claude best supports the planning?","type":"multiple-choice","options":[{"text":"Ask Claude to draft a week-by-week plan from the brief, then refine the plan with the team.","explanation":"Claude is strong at turning a brief into a structured first plan; the team then applies local knowledge. That is the division of labour the objective describes.","correct":true},{"text":"Ask Claude only to format the plan the officer has already written, since planning needs human judgement.","explanation":"Forgoes the planning help that is the point of the exercise.","correct":false},{"text":"Ask Claude to produce the plan and adopt it as final to save time.","explanation":"Skips the human refinement that catches what the brief did not say.","correct":false},{"text":"Ask Claude to run the consultation sessions so that the officer can concentrate on the analysis.","explanation":"Is not something Claude can do and misplaces the officer's role.","correct":false}],"answer":"<p>Correct answer: <strong>Ask Claude to draft a week-by-week plan from the brief, then refine the plan with the team.</strong></p><p>Claude is strong at turning a brief into a structured first plan; the team then applies local knowledge. That is the division of labour the objective describes.</p>","tip":"<p>Why not the others: B forgoes the planning help that is the point of the exercise; C skips the human refinement that catches what the brief did not say; D is not something Claude can do and misplaces the officer&#x27;s role.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.4.","answerStatus":"source"},{"query":"A training coordinator is using Claude to design a new onboarding checklist. After the first draft, the HR manager raises two concerns about the sequence of steps; the rest is accepted. What is the most effective way to iterate?","type":"multiple-choice","options":[{"text":"Fix the sequence issues and also ask Claude to improve the wording throughout, since the document is open anyway.","explanation":"Bundles unrequested changes with the requested ones, so the reviewer must re-read everything.","correct":false},{"text":"Ask Claude to regenerate the whole checklist with the two concerns included, since a fresh draft will be more coherent.","explanation":"Reopens content that was already accepted.","correct":false},{"text":"Accept the checklist as it stands and address the sequence concerns in a later version once it has been in use.","explanation":"Ships a known problem.","correct":false},{"text":"Ask Claude to revise only the sequence issues raised, keep the accepted content as it is, and record what changed.","explanation":"Targeted iteration preserves what has been approved, makes the change traceable and keeps the next review short.","correct":true}],"answer":"<p>Correct answer: <strong>Ask Claude to revise only the sequence issues raised, keep the accepted content as it is, and record what changed.</strong></p><p>Targeted iteration preserves what has been approved, makes the change traceable and keeps the next review short.</p>","tip":"<p>Why not the others: A bundles unrequested changes with the requested ones, so the reviewer must re-read everything; B reopens content that was already accepted; C ships a known problem.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.5.","answerStatus":"source"},{"query":"The customer-service lead at Marlow Shire Council is identifying where Claude could help the team. Which two use cases are the strongest candidates for a first pilot? (Choose two.)","type":"multiple-choice","options":[{"text":"Drafting replies to common enquiries from the published fees and opening-hours information, for staff to check and send.","explanation":"Good first pilots are drafting and summarising tasks with a person in the loop and low consequences if a draft is wrong.","correct":true},{"text":"Deciding which development applications to approve, based on the planning rules.","explanation":"A regulated decision with legal consequences.","correct":false},{"text":"Summarising long resident complaints into a short issue statement for the case officer.","explanation":"Good first pilots are drafting and summarising tasks with a person in the loop and low consequences if a draft is wrong.","correct":true},{"text":"Calculating the rates notice for every property, since the formula is published.","explanation":"Exact calculation at scale belongs in the rating system, not a language model.","correct":false},{"text":"Replacing the phone line with Claude so that residents no longer need to speak to staff.","explanation":"Removes the human role entirely.","correct":false}],"answer":"<p>Correct answers: <strong>Drafting replies to common enquiries from the published fees and opening-hours information, for staff to check and send.; Summarising long resident complaints into a short issue statement for the case officer.</strong></p><p>Good first pilots are drafting and summarising tasks with a person in the loop and low consequences if a draft is wrong.</p>","tip":"<p>Why not the others: B a regulated decision with legal consequences; D exact calculation at scale belongs in the rating system, not a language model; E removes the human role entirely.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.6.","answerStatus":"source"},{"query":"An HR team wants to integrate Claude into its existing position-description workflow without disrupting it. Which two actions reflect sound integration practice? (Choose two.)","type":"multiple-choice","options":[{"text":"Roll Claude out to the whole team on day one so that everyone benefits at once.","explanation":"Skips the pilot.","correct":false},{"text":"Ask each team member to find their own way of using Claude so that adoption is organic.","explanation":"Produces inconsistent practice and no measurable result.","correct":false},{"text":"Replace the existing approval step with Claude's own quality check to remove a bottleneck.","explanation":"Removes a human control.","correct":false},{"text":"Trial Claude on that step with three team members and compare the time taken with the current baseline.","explanation":"Integration starts with understanding the existing workflow and proving the change on a small scale against a baseline.","correct":true},{"text":"Map the current workflow first to find the step where drafting takes the most time.","explanation":"Integration starts with understanding the existing workflow and proving the change on a small scale against a baseline.","correct":true}],"answer":"<p>Correct answers: <strong>Trial Claude on that step with three team members and compare the time taken with the current baseline.; Map the current workflow first to find the step where drafting takes the most time.</strong></p><p>Integration starts with understanding the existing workflow and proving the change on a small scale against a baseline.</p>","tip":"<p>Why not the others: A skips the pilot; B produces inconsistent practice and no measurable result; C removes a human control.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.7.","answerStatus":"source"},{"query":"A project lead is writing a one-page note to stakeholders about a new Claude-assisted reporting process. Which two points belong in the note? (Choose two.)","type":"multiple-choice","options":[{"text":"Which parts of the report Claude drafts and which parts a person writes and signs off.","explanation":"Honest stakeholder communication describes where Claude assists, where people decide, and what can go wrong.","correct":true},{"text":"A statement that stakeholders no longer need to review the report, since Claude checks it.","explanation":"Removes the human review the process depends on.","correct":false},{"text":"The known limitations, such as the need to verify figures before the report is circulated.","explanation":"Honest stakeholder communication describes where Claude assists, where people decide, and what can go wrong.","correct":true},{"text":"A commitment that the process will not produce errors once it is fully configured.","explanation":"An impossible promise.","correct":false},{"text":"A detailed description of how the model was trained, so that stakeholders can trust it.","explanation":"Irrelevant detail that does not build warranted trust.","correct":false}],"answer":"<p>Correct answers: <strong>Which parts of the report Claude drafts and which parts a person writes and signs off.; The known limitations, such as the need to verify figures before the report is circulated.</strong></p><p>Honest stakeholder communication describes where Claude assists, where people decide, and what can go wrong.</p>","tip":"<p>Why not the others: B removes the human review the process depends on; D an impossible promise; E irrelevant detail that does not build warranted trust.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.8.","answerStatus":"source"},{"query":"You are an operations analyst using Claude to improve a slow purchase-order approval process. Which is the correct order of steps? (1) Identify the step causing the most delay. (2) Roll out and document the new process. (3) Ask Claude to propose options for that step, given the constraints. (4) Document the current process, who owns each step and how long each step takes. (5) Pilot the chosen option with one team and measure it against the baseline.","type":"multiple-choice","options":[{"text":"4, 3, 1, 5, 2","explanation":"Asks for options before the bottleneck is known.","correct":false},{"text":"1, 4, 3, 5, 2","explanation":"Identifies the bottleneck before the process has been measured.","correct":false},{"text":"4, 1, 3, 2, 5","explanation":"Rolls out before the pilot.","correct":false},{"text":"4, 1, 3, 5, 2","explanation":"Process optimisation is measure, locate, propose, test, then roll out. The baseline from the first step is what the pilot is measured against.","correct":true}],"answer":"<p>Correct answer: <strong>4, 1, 3, 5, 2</strong></p><p>Process optimisation is measure, locate, propose, test, then roll out. The baseline from the first step is what the pilot is measured against.</p>","tip":"<p>Why not the others: A asks for options before the bottleneck is known; B identifies the bottleneck before the process has been measured; C rolls out before the pilot.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.9.","answerStatus":"source"},{"query":"You are a learning designer using Claude to develop a new induction module. Which is the correct order of steps? (1) Ask Claude to draft a module outline against the outcomes and the policy documents. (2) Gather the existing policy documents the module must reflect. (3) Review the outline with the expert and note the changes. (4) Agree the learning outcomes and the audience with the subject-matter expert. (5) Ask Claude to revise the outline and draft the content for each section.","type":"multiple-choice","options":[{"text":"4, 2, 1, 5, 3","explanation":"Drafts full content before the outline has been reviewed.","correct":false},{"text":"4, 2, 1, 3, 5","explanation":"Design follows outcomes and sources; drafting follows design; content follows an approved outline.","correct":true},{"text":"1, 4, 2, 3, 5","explanation":"Drafts before the outcomes have been agreed.","correct":false},{"text":"4, 1, 2, 3, 5","explanation":"Drafts the outline before the source documents are gathered.","correct":false}],"answer":"<p>Correct answer: <strong>4, 2, 1, 3, 5</strong></p><p>Design follows outcomes and sources; drafting follows design; content follows an approved outline.</p>","tip":"<p>Why not the others: A drafts full content before the outline has been reviewed; C drafts before the outcomes have been agreed; D drafts the outline before the source documents are gathered.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 4.10.","answerStatus":"source"},{"query":"A communications team is setting up a Project for drafting media releases. Which combination best configures the Project?","type":"multiple-choice","options":[{"text":"Instructions describing the organisation's history, structure and values in detail, so that Claude understands the context.","explanation":"Background without any instruction on what to produce.","correct":false},{"text":"Every media release the organisation has issued in the last five years added as knowledge, with no instructions at all.","explanation":"Volume without guidance; old releases will contain superseded style.","correct":false},{"text":"Role, house style and release structure in the instructions; the style guide and three approved releases as knowledge.","explanation":"A well-configured Project pairs concise instructions (role, style, structure) with a small set of authoritative knowledge files.","correct":true},{"text":"Instructions giving Claude's role only, with the style guide pasted into each chat as and when it is needed for a particular release.","explanation":"The style guide belongs in the Project, not re-pasted.","correct":false}],"answer":"<p>Correct answer: <strong>Role, house style and release structure in the instructions; the style guide and three approved releases as knowledge.</strong></p><p>A well-configured Project pairs concise instructions (role, style, structure) with a small set of authoritative knowledge files.</p>","tip":"<p>Why not the others: A background without any instruction on what to produce; B volume without guidance; old releases will contain superseded style; D the style guide belongs in the Project, not re-pasted.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.1.","answerStatus":"source"},{"query":"An HR team's Project instructions read, in full, \"Be helpful and accurate.\" Outputs vary widely in format and tone. Which revision is most likely to improve consistency?","type":"multiple-choice","options":[{"text":"Add \"be consistent in format and tone\" to the existing instruction, so that both requirements are explicit.","explanation":"Another vague virtue.","correct":false},{"text":"Remove the instructions altogether so that Claude can use its own judgement about what each request needs.","explanation":"Removes the only lever for consistency.","correct":false},{"text":"Replace the instruction with a detailed description of the HR team's responsibilities and the services it provides.","explanation":"Describes the team, not the output.","correct":false},{"text":"State the audience, tone, standard output structure, and what to do when information is missing.","explanation":"System-level instructions work when they define the audience, tone, structure and behaviour under uncertainty. Vague virtues produce vague results.","correct":true}],"answer":"<p>Correct answer: <strong>State the audience, tone, standard output structure, and what to do when information is missing.</strong></p><p>System-level instructions work when they define the audience, tone, structure and behaviour under uncertainty. Vague virtues produce vague results.</p>","tip":"<p>Why not the others: A another vague virtue; B removes the only lever for consistency; C describes the team, not the output.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.2.","answerStatus":"source"},{"query":"A sales enablement manager at Orlo Office Supplies built a Project in February with the product catalogue as knowledge. In August, Claude is still quoting prices that changed in June. What is the most appropriate action?","type":"multiple-choice","options":[{"text":"Replace the catalogue in the Project with the current version and have Claude state the catalogue date in each answer.","explanation":"Knowledge sources must be maintained. Replacing the stale file fixes the cause; the date instruction makes staleness visible next time.","correct":true},{"text":"Add the new price list alongside the old catalogue in the Project so that Claude has both versions available.","explanation":"Leaves two conflicting sources for Claude to choose between.","correct":false},{"text":"Tell Claude at the start of each chat that prices changed in June and that any figures from the old catalogue should be ignored.","explanation":"A per-chat workaround that leaves the wrong source in place.","correct":false},{"text":"Delete the Project and use a plain chat with the current price list pasted in whenever a price is needed.","explanation":"Abandons a useful configuration for a maintenance task.","correct":false}],"answer":"<p>Correct answer: <strong>Replace the catalogue in the Project with the current version and have Claude state the catalogue date in each answer.</strong></p><p>Knowledge sources must be maintained. Replacing the stale file fixes the cause; the date instruction makes staleness visible next time.</p>","tip":"<p>Why not the others: B leaves two conflicting sources for Claude to choose between; C a per-chat workaround that leaves the wrong source in place; D abandons a useful configuration for a maintenance task.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.3.","answerStatus":"source"},{"query":"A project coordinator wants Claude to answer questions using the team's project documents, which live in Google Drive and change weekly. Which approach is most appropriate?","type":"multiple-choice","options":[{"text":"Copy the text of each document into the Project's instructions and update it when the documents change.","explanation":"Instructions are for guidance, not bulk content, and the copies go stale.","correct":false},{"text":"Download the documents each week and upload the latest versions to the chat as attachments.","explanation":"Works, but is manual, weekly and easy to forget.","correct":false},{"text":"Connect Google Drive so that Claude can reference the current documents when asked.","explanation":"A connector is the right tool when the source of truth lives elsewhere and keeps changing.","correct":true},{"text":"Upload the documents once and ask Claude to remember their contents for future conversations.","explanation":"A one-time upload is a snapshot; it will not track weekly changes.","correct":false}],"answer":"<p>Correct answer: <strong>Connect Google Drive so that Claude can reference the current documents when asked.</strong></p><p>A connector is the right tool when the source of truth lives elsewhere and keeps changing.</p>","tip":"<p>Why not the others: A instructions are for guidance, not bulk content, and the copies go stale; B works, but is manual, weekly and easy to forget; D a one-time upload is a snapshot; it will not track weekly changes.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.4.","answerStatus":"source"},{"query":"An operations team is choosing which files to add as knowledge to a Project that answers staff questions about procedures. Which two files are appropriate to include? (Choose two.)","type":"multiple-choice","options":[{"text":"The current standard operating procedures manual.","explanation":"Project knowledge should be current, authoritative and relevant to the questions the Project answers.","correct":true},{"text":"Every email the team has received in the past year, so that Claude has the full context.","explanation":"Volume without relevance.","correct":false},{"text":"A spreadsheet of staff home addresses used for emergency contact.","explanation":"Personal data with no bearing on procedures.","correct":false},{"text":"A short glossary of internal terms and system names.","explanation":"Project knowledge should be current, authoritative and relevant to the questions the Project answers.","correct":true},{"text":"The complete archive of superseded procedures, in case they are needed for comparison.","explanation":"Superseded content invites wrong answers.","correct":false}],"answer":"<p>Correct answers: <strong>The current standard operating procedures manual.; A short glossary of internal terms and system names.</strong></p><p>Project knowledge should be current, authoritative and relevant to the questions the Project answers.</p>","tip":"<p>Why not the others: B volume without relevance; C personal data with no bearing on procedures; E superseded content invites wrong answers.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.5.","answerStatus":"source"},{"query":"A marketing lead is writing Project instructions for a social-media drafting assistant. Which two instructions are well formed? (Choose two.)","type":"multiple-choice","options":[{"text":"\"Be creative and engaging, and make every post something that people will want to share.\"","explanation":"Aspirational, not actionable.","correct":false},{"text":"\"If a request needs a product fact that is not in the knowledge files, say so rather than guessing.\"","explanation":"Good instructions are specific about audience, tone and length, and tell Claude how to behave when it lacks information.","correct":true},{"text":"\"Use your best judgement about tone, length and audience for each post, depending on the request.\"","explanation":"Delegates the decisions the instructions exist to make.","correct":false},{"text":"\"Write for small-business owners in a warm, plain-English tone; keep each post under 80 words.\"","explanation":"Good instructions are specific about audience, tone and length, and tell Claude how to behave when it lacks information.","correct":true},{"text":"\"Always include at least ten hashtags to maximise reach, whatever the platform or the subject of the post.\"","explanation":"A rigid rule that is wrong for most platforms.","correct":false}],"answer":"<p>Correct answers: <strong>&quot;If a request needs a product fact that is not in the knowledge files, say so rather than guessing.&quot;; &quot;Write for small-business owners in a warm, plain-English tone; keep each post under 80 words.&quot;</strong></p><p>Good instructions are specific about audience, tone and length, and tell Claude how to behave when it lacks information.</p>","tip":"<p>Why not the others: A aspirational, not actionable; C delegates the decisions the instructions exist to make; E a rigid rule that is wrong for most platforms.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.6.","answerStatus":"source"},{"query":"You are the owner of a shared Project used by a team of twelve. A policy the Project relies on has changed. Which is the correct order of steps? (1) Update the instructions where they describe the old policy. (2) Tell the team what changed and the date it took effect. (3) Identify which knowledge files and instructions refer to the old policy. (4) Test with a few typical prompts to confirm that answers reflect the new policy. (5) Replace the outdated files with the current version.","type":"multiple-choice","options":[{"text":"3, 5, 1, 4, 2","explanation":"Maintenance is find, replace, update, verify, then communicate. Testing before telling the team avoids announcing a change that has not actually worked.","correct":true},{"text":"5, 3, 1, 4, 2","explanation":"Replaces files before knowing which ones are affected.","correct":false},{"text":"3, 5, 1, 2, 4","explanation":"Notifies the team before the change has been tested.","correct":false},{"text":"3, 1, 5, 2, 4","explanation":"Notifies the team before the change has been tested.","correct":false}],"answer":"<p>Correct answer: <strong>3, 5, 1, 4, 2</strong></p><p>Maintenance is find, replace, update, verify, then communicate. Testing before telling the team avoids announcing a change that has not actually worked.</p>","tip":"<p>Why not the others: B replaces files before knowing which ones are affected; C notifies the team before the change has been tested; D notifies the team before the change has been tested.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 5.7.","answerStatus":"source"},{"query":"A payroll officer wants Claude to find patterns in overtime claims. The spreadsheet contains employee names, tax file numbers and bank details. Policy prohibits sharing identifiable personal data with AI tools. What is the most appropriate action?","type":"multiple-choice","options":[{"text":"Upload the spreadsheet but instruct Claude not to read or use the columns that contain personal details.","explanation":"The data has already been shared once it is uploaded.","correct":false},{"text":"Upload only the first 50 rows so that the exposure is limited while the pattern analysis is tested.","explanation":"Shares less identifiable data, but still shares it.","correct":false},{"text":"Remove names, tax file numbers and bank details, keep an anonymised ID with each claim, and proceed.","explanation":"De-identify before upload. The analysis needs the claims, not the identities, so the policy and the task are both satisfied.","correct":true},{"text":"Ask Claude to anonymise the spreadsheet first, then analyse the anonymised version it has produced.","explanation":"Shares all of it in order to anonymise it.","correct":false}],"answer":"<p>Correct answer: <strong>Remove names, tax file numbers and bank details, keep an anonymised ID with each claim, and proceed.</strong></p><p>De-identify before upload. The analysis needs the claims, not the identities, so the policy and the task are both satisfied.</p>","tip":"<p>Why not the others: A the data has already been shared once it is uploaded; B shares less identifiable data, but still shares it; D shares all of it in order to anonymise it.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.1.","answerStatus":"source"},{"query":"A team leader in a government agency is considering tasks to hand to Claude. Which task is an appropriate use?","type":"multiple-choice","options":[{"text":"Producing a legal opinion on a contract dispute that will be relied on without a lawyer's review.","explanation":"Removes the professional review the output depends on.","correct":false},{"text":"Drafting a plain-language version of a published policy for the website, for review before publication.","explanation":"Drafting from public material with human review is squarely appropriate. The others are consequential decisions about people that require human accountability.","correct":true},{"text":"Determining whether an individual's application for a benefit should be approved, from the submitted form.","explanation":"An administrative decision with legal effect.","correct":false},{"text":"Making the final decision on which staff members receive a performance bonus this year, from their reviews.","explanation":"A personnel decision with significant impact on individuals.","correct":false}],"answer":"<p>Correct answer: <strong>Drafting a plain-language version of a published policy for the website, for review before publication.</strong></p><p>Drafting from public material with human review is squarely appropriate. The others are consequential decisions about people that require human accountability.</p>","tip":"<p>Why not the others: A removes the professional review the output depends on; C an administrative decision with legal effect; D a personnel decision with significant impact on individuals.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.2.","answerStatus":"source"},{"query":"A marketing associate at Tallowood Credit Union finds that Claude drafts customer emails much faster than the current approved tool. The organisation's AI policy requires new AI uses to be registered and assessed before use. What should she do?","type":"multiple-choice","options":[{"text":"Start using Claude for internal drafts only, since the policy is aimed at external communications.","explanation":"Reinterprets the policy to avoid it.","correct":false},{"text":"Use Claude for the emails now and register the use once the benefit has been proven.","explanation":"Inverts the order the policy requires.","correct":false},{"text":"Register the proposed use and complete the assessment before using Claude for customer emails.","explanation":"Governance processes exist to catch risks before they materialise. Following them is not optional because the tool is better.","correct":true},{"text":"Ask her manager for verbal approval and proceed while the assessment is scheduled.","explanation":"Substitutes informal approval for the required process.","correct":false}],"answer":"<p>Correct answer: <strong>Register the proposed use and complete the assessment before using Claude for customer emails.</strong></p><p>Governance processes exist to catch risks before they materialise. Following them is not optional because the tool is better.</p>","tip":"<p>Why not the others: A reinterprets the policy to avoid it; B inverts the order the policy requires; D substitutes informal approval for the required process.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.3.","answerStatus":"source"},{"query":"A communications team is using Claude to help draft a public awareness campaign. Which practice best reflects ethical use?","type":"multiple-choice","options":[{"text":"Avoid mentioning the AI involvement, since a person reviewed and approved the content before it was published and is named on it.","explanation":"Review does not remove the question of disclosure.","correct":false},{"text":"Attribute the campaign to Claude in the credits so that the audience knows that a person did not write it.","explanation":"Misplaces accountability on the tool.","correct":false},{"text":"Use Claude only for the first draft and rewrite it substantially so that disclosure is not required.","explanation":"Structures the work to dodge transparency rather than to meet it.","correct":false},{"text":"Disclose AI assistance where policy or audience expectations call for it, and keep a named person accountable.","explanation":"Ethical use rests on transparency where it matters and clear human accountability for what is published.","correct":true}],"answer":"<p>Correct answer: <strong>Disclose AI assistance where policy or audience expectations call for it, and keep a named person accountable.</strong></p><p>Ethical use rests on transparency where it matters and clear human accountability for what is published.</p>","tip":"<p>Why not the others: A review does not remove the question of disclosure; B misplaces accountability on the tool; C structures the work to dodge transparency rather than to meet it.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.4.","answerStatus":"source"},{"query":"A health-promotion officer is preparing to use Claude to analyse free-text responses from a community survey. Which two considerations are most important before the responses are uploaded? (Choose two.)","type":"multiple-choice","options":[{"text":"Whether the survey's privacy notice allowed the responses to be processed by a third-party tool.","explanation":"Identifiability and the terms under which the data was collected are the two privacy questions that decide whether the upload is permissible.","correct":true},{"text":"Whether the responses contain information that could identify an individual respondent.","explanation":"Identifiability and the terms under which the data was collected are the two privacy questions that decide whether the upload is permissible.","correct":true},{"text":"Whether the responses were collected through an online form or on paper at community events.","explanation":"The collection channel is irrelevant to the privacy obligation.","correct":false},{"text":"Whether the responses are long and detailed enough for Claude to find meaningful themes in them.","explanation":"A quality question, not a privacy one.","correct":false},{"text":"Whether Claude's analysis is likely to agree with the conclusions the officer has already reached.","explanation":"Confirmation is not the goal of analysis.","correct":false}],"answer":"<p>Correct answers: <strong>Whether the survey&#x27;s privacy notice allowed the responses to be processed by a third-party tool.; Whether the responses contain information that could identify an individual respondent.</strong></p><p>Identifiability and the terms under which the data was collected are the two privacy questions that decide whether the upload is permissible.</p>","tip":"<p>Why not the others: C the collection channel is irrelevant to the privacy obligation; D a quality question, not a privacy one; E confirmation is not the goal of analysis.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.5.","answerStatus":"source"},{"query":"An operations manager is reviewing Claude use cases proposed by her team. Which two should she decline or refer for further assessment? (Choose two.)","type":"multiple-choice","options":[{"text":"Summarising a client's unredacted contract that carries a confidentiality clause.","explanation":"Automated decisions about people and confidential third-party material are the two categories that need governance review before use.","correct":true},{"text":"Screening job applicants and automatically rejecting those Claude scores below a threshold.","explanation":"Automated decisions about people and confidential third-party material are the two categories that need governance review before use.","correct":true},{"text":"Drafting agendas and summarising the notes for the weekly team meeting, for the manager to check.","explanation":"Routine, internal and low risk.","correct":false},{"text":"Explaining an unfamiliar spreadsheet formula that a team member found in an inherited workbook.","explanation":"A learning task with no data concern.","correct":false},{"text":"Suggesting alternative wording for an internal staff newsletter before it goes to the editor.","explanation":"Routine drafting.","correct":false}],"answer":"<p>Correct answers: <strong>Summarising a client&#x27;s unredacted contract that carries a confidentiality clause.; Screening job applicants and automatically rejecting those Claude scores below a threshold.</strong></p><p>Automated decisions about people and confidential third-party material are the two categories that need governance review before use.</p>","tip":"<p>Why not the others: C routine, internal and low risk; D a learning task with no data concern; E routine drafting.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.6.","answerStatus":"source"},{"query":"A regional manager at Halden Insurance is rolling out Claude to 40 staff. Which two actions best support compliance with the organisation's AI governance standards? (Choose two.)","type":"multiple-choice","options":[{"text":"Restrict Claude to managers for the first year, since they are more accountable than other staff.","explanation":"Seniority is not a governance mechanism.","correct":false},{"text":"Provide a short guide listing approved use cases and the categories of data that must not be entered.","explanation":"Clear guidance and a defined review path are what turn a policy into practice.","correct":true},{"text":"Nominate a contact who reviews new use cases and records them in the organisation's AI register.","explanation":"Clear guidance and a defined review path are what turn a policy into practice.","correct":true},{"text":"Allow staff to use personal Claude accounts so that the rollout is not held up by the procurement process.","explanation":"Personal accounts sit outside the organisation's controls.","correct":false},{"text":"Ask staff to agree informally not to enter sensitive data, and trust them to apply common sense.","explanation":"Informal agreement is not a control.","correct":false}],"answer":"<p>Correct answers: <strong>Provide a short guide listing approved use cases and the categories of data that must not be entered.; Nominate a contact who reviews new use cases and records them in the organisation&#x27;s AI register.</strong></p><p>Clear guidance and a defined review path are what turn a policy into practice.</p>","tip":"<p>Why not the others: A seniority is not a governance mechanism; D personal accounts sit outside the organisation&#x27;s controls; E informal agreement is not a control.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.7.","answerStatus":"source"},{"query":"You are a team leader deciding whether a proposed Claude use case that involves customer records can go ahead. Which is the correct order of steps? (1) Work out who would be affected if an output were wrong, and whether the error could be undone. (2) List the data fields the use case needs and flag any that identify a person. (3) Write up the outcome and the reasons for it. (4) Compare the proposal with the AI policy and the privacy obligations that apply. (5) Approve it, approve it with changes such as removing identifiers, or decline it.","type":"multiple-choice","options":[{"text":"2, 4, 1, 3, 5","explanation":"Writes up an outcome that has not yet been decided.","correct":false},{"text":"2, 1, 4, 5, 3","explanation":"Understand the data and the impact first, then test against policy, then decide, then record.","correct":true},{"text":"2, 1, 5, 4, 3","explanation":"Approves or declines before the policy comparison.","correct":false},{"text":"4, 2, 1, 5, 3","explanation":"Compares the proposal with policy before knowing what data is involved.","correct":false}],"answer":"<p>Correct answer: <strong>2, 1, 4, 5, 3</strong></p><p>Understand the data and the impact first, then test against policy, then decide, then record.</p>","tip":"<p>Why not the others: A writes up an outcome that has not yet been decided; C approves or declines before the policy comparison; D compares the proposal with policy before knowing what data is involved.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.8.","answerStatus":"source"},{"query":"You are a communications officer who has discovered that a colleague pasted a customer list containing personal details into Claude last week. Which is the correct order of steps? (1) Record what data was entered, when, and in which account. (2) Stop any further use and ask the colleague not to repeat it. (3) Support any assessment of harm and any notifications that are required. (4) Report the incident, with that record, through the organisation's privacy or AI incident process. (5) Share the lesson with the team and update the guidance.","type":"multiple-choice","options":[{"text":"2, 1, 5, 4, 3","explanation":"Shares the lesson before the incident has been reported or assessed.","correct":false},{"text":"2, 4, 1, 3, 5","explanation":"Reports before there is a record of what happened.","correct":false},{"text":"2, 1, 4, 3, 5","explanation":"Contain, record, report, support, then learn. Containment comes first because it limits further exposure; the record is what the report is based on.","correct":true},{"text":"1, 2, 4, 3, 5","explanation":"Records before containing, allowing further exposure meanwhile.","correct":false}],"answer":"<p>Correct answer: <strong>2, 1, 4, 3, 5</strong></p><p>Contain, record, report, support, then learn. Containment comes first because it limits further exposure; the record is what the report is based on.</p>","tip":"<p>Why not the others: A shares the lesson before the incident has been reported or assessed; B reports before there is a record of what happened; D records before containing, allowing further exposure meanwhile.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 6.9.","answerStatus":"source"},{"query":"A recruitment coordinator asked Claude to \"review this position description\" and received a general comment on readability. She wanted specific gaps against the selection criteria. What is the most likely root cause?","type":"multiple-choice","options":[{"text":"The prompt did not state what to review for or what the output should contain.","explanation":"\"Review\" without criteria or an output specification leaves Claude to guess the purpose. The fix is in the prompt.","correct":true},{"text":"The position description was too long for Claude to analyse properly.","explanation":"A single position description is well within limits.","correct":false},{"text":"The model chosen was too light for a review task.","explanation":"Any tier can do a criteria check if asked for one.","correct":false},{"text":"Claude cannot compare a document against criteria unless they are presented in a table.","explanation":"Format is not a prerequisite for comparison.","correct":false}],"answer":"<p>Correct answer: <strong>The prompt did not state what to review for or what the output should contain.</strong></p><p>&quot;Review&quot; without criteria or an output specification leaves Claude to guess the purpose. The fix is in the prompt.</p>","tip":"<p>Why not the others: B a single position description is well within limits; C any tier can do a criteria check if asked for one; D format is not a prerequisite for comparison.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.1.","answerStatus":"source"},{"query":"Readers have described an analyst's weekly Claude-drafted dashboard commentary as \"too long and too hedged\". Which approach to adjusting is most effective?","type":"multiple-choice","options":[{"text":"Ask Claude to write the commentary twice in different styles and send whichever version is shorter.","explanation":"Picks between two unguided outputs instead of fixing the guidance.","correct":false},{"text":"Switch to a different model, since length and tone are characteristics of the model rather than the prompt.","explanation":"Length and hedging are controlled by the prompt, not the tier.","correct":false},{"text":"Turn the feedback into prompt constraints, such as a word limit, and check the next output against the complaint.","explanation":"Feedback becomes improvement when it is translated into specific instructions and the next result is checked against the original complaint.","correct":true},{"text":"Remove all constraints from the prompt so that Claude can decide on an appropriate length and level of certainty.","explanation":"Removes the levers that control length and tone.","correct":false}],"answer":"<p>Correct answer: <strong>Turn the feedback into prompt constraints, such as a word limit, and check the next output against the complaint.</strong></p><p>Feedback becomes improvement when it is translated into specific instructions and the next result is checked against the original complaint.</p>","tip":"<p>Why not the others: A picks between two unguided outputs instead of fixing the guidance; B length and hedging are controlled by the prompt, not the tier; D removes the levers that control length and tone.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.2.","answerStatus":"source"},{"query":"A policy team spends 20 minutes at the start of every Claude session pasting the same background documents and explaining the house style. Which change best optimises the workflow?","type":"multiple-choice","options":[{"text":"Move the documents and style guidance into a Project so that every session starts with them in place.","explanation":"Repeated setup is the signal that reference material belongs in a Project. The 20 minutes disappears for everyone.","correct":true},{"text":"Ask Claude at the end of each session to remember the documents and the style guidance for next time.","explanation":"Memory may retain stated preferences, but it does not carry whole background documents between sessions; a Project does.","correct":false},{"text":"Shorten the background documents so that pasting them and explaining the style takes less time.","explanation":"Reduces the waste slightly instead of removing it.","correct":false},{"text":"Assign one team member to do all of the pasting so that the others can start their work immediately.","explanation":"Moves the waste to one person.","correct":false}],"answer":"<p>Correct answer: <strong>Move the documents and style guidance into a Project so that every session starts with them in place.</strong></p><p>Repeated setup is the signal that reference material belongs in a Project. The 20 minutes disappears for everyone.</p>","tip":"<p>Why not the others: B memory may retain stated preferences, but it does not carry whole background documents between sessions; a Project does; C reduces the waste slightly instead of removing it; D moves the waste to one person.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.3.","answerStatus":"source"},{"query":"A prompt asked for \"a summary of the attached report, the three main risks, and a recommended next step\". Claude's response contains only the summary. Which two changes are most likely to fix the problem? (Choose two.)","type":"multiple-choice","options":[{"text":"Ask Claude to confirm that it has understood the request before answering.","explanation":"Adds a turn without clarifying the structure.","correct":false},{"text":"Replace \"summary\" with \"overview\", since the word may have narrowed the response.","explanation":"A vocabulary change that does not expose the three parts.","correct":false},{"text":"List the three required parts as numbered items in the prompt and ask for a heading for each.","explanation":"Multi-part requests buried in one sentence get partial answers. Enumerating the parts or supplying a template makes each one explicit.","correct":true},{"text":"Give the required output structure as a short template showing the three sections.","explanation":"Multi-part requests buried in one sentence get partial answers. Enumerating the parts or supplying a template makes each one explicit.","correct":true},{"text":"Attach the report twice so that Claude has it in context for each part of the answer.","explanation":"Duplicates the input and changes nothing about the output.","correct":false}],"answer":"<p>Correct answers: <strong>List the three required parts as numbered items in the prompt and ask for a heading for each.; Give the required output structure as a short template showing the three sections.</strong></p><p>Multi-part requests buried in one sentence get partial answers. Enumerating the parts or supplying a template makes each one explicit.</p>","tip":"<p>Why not the others: A adds a turn without clarifying the structure; B a vocabulary change that does not expose the three parts; E duplicates the input and changes nothing about the output.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.4.","answerStatus":"source"},{"query":"A team's Claude-drafted customer replies have improved after several prompt changes, but the team leader wants to know which change actually helped. Which two practices make that clear? (Choose two.)","type":"multiple-choice","options":[{"text":"Judge improvement by whether the team leader prefers the latest draft to the previous one.","explanation":"Preference without criteria is not measurement.","correct":false},{"text":"Score each output against the same checklist of criteria before and after a change.","explanation":"Attribution needs a controlled comparison: one variable, fixed inputs, fixed criteria.","correct":true},{"text":"Change one element of the prompt at a time and keep the test inputs the same.","explanation":"Attribution needs a controlled comparison: one variable, fixed inputs, fixed criteria.","correct":true},{"text":"Ask Claude which of the changes it found most helpful.","explanation":"The model cannot observe its own improvement.","correct":false},{"text":"Make all of the changes at once so that the improvement is as large as possible.","explanation":"Destroys attribution.","correct":false}],"answer":"<p>Correct answers: <strong>Score each output against the same checklist of criteria before and after a change.; Change one element of the prompt at a time and keep the test inputs the same.</strong></p><p>Attribution needs a controlled comparison: one variable, fixed inputs, fixed criteria.</p>","tip":"<p>Why not the others: A preference without criteria is not measurement; D the model cannot observe its own improvement; E destroys attribution.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.5.","answerStatus":"source"},{"query":"You are a project officer troubleshooting a Claude prompt that keeps producing an off-target weekly status report. Which is the correct order of steps? (1) Make one targeted change to the prompt. (2) Compare the output with what was expected and name the specific gap. (3) Keep the change if it helped; otherwise revert it and try the next hypothesis. (4) Check whether the prompt actually states the missing expectation. (5) Run the prompt again on the same inputs and compare it with the original expectation.","type":"multiple-choice","options":[{"text":"2, 4, 5, 1, 3","explanation":"Re-runs before anything has been changed.","correct":false},{"text":"4, 2, 1, 5, 3","explanation":"Inspects the prompt before the gap has been named.","correct":false},{"text":"2, 1, 4, 5, 3","explanation":"Changes the prompt before checking whether it is the cause.","correct":false},{"text":"2, 4, 1, 5, 3","explanation":"Diagnosis before treatment: name the gap, find its cause in the prompt, change one thing, re-test on the same inputs, then decide.","correct":true}],"answer":"<p>Correct answer: <strong>2, 4, 1, 5, 3</strong></p><p>Diagnosis before treatment: name the gap, find its cause in the prompt, change one thing, re-test on the same inputs, then decide.</p>","tip":"<p>Why not the others: A re-runs before anything has been changed; B inspects the prompt before the gap has been named; C changes the prompt before checking whether it is the cause.</p>","reference":"Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0), source question 7.6.","answerStatus":"source"}];
+
+    const CURRENT_KEY = "ccaoFExamCurrentV1";
+    const HISTORY_KEY = "ccaoFExamHistoryV1";
+    const EXAM_NAME = "Claude Associate Foundations Practice Exam";
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function isCorrect(question) {
+      return question.options.every(option => Boolean(option.selected) === Boolean(option.correct));
+    }
+
+    function correctCount(question) {
+      return question.options.filter(option => option.correct).length;
+    }
+
+    function formatDuration(ms) {
+      if (!Number.isFinite(ms) || ms < 0) return "0:00";
+      const total = Math.floor(ms / 1000);
+      const minutes = Math.floor(total / 60);
+      const seconds = total % 60;
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    class ExamQuestion extends HTMLElement {
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        if (!this._state) return;
+        const { question, index, total, graded, cheating } = this._state;
+        const reveal = graded || cheating;
+        const choose = correctCount(question);
+
+        this.innerHTML = `
+          <section class="card" aria-labelledby="question-title">
+            <div class="card-header">
+              <span>Question ${index + 1} of ${total}</span>
+              <span>${question.viewed ? "Viewed" : "New"}</span>
+            </div>
+            <div class="card-body">
+              <p class="query" id="question-title"></p>
+              <p class="choose-note">Choose ${choose}</p>
+              <div class="options"></div>
+              ${reveal ? `<div class="answer-panel"><strong>Answer</strong><div class="answer-html"></div><div class="tip-html"></div><p class="reference-note"></p></div>` : ""}
+            </div>
+          </section>
+        `;
+
+        this.querySelector(".query").textContent = question.query.replace(/\s+(?=\([1-5]\)\s)/g, "\n");
+        const options = this.querySelector(".options");
+
+        question.options.forEach((option, optionIndex) => {
+          const label = document.createElement("label");
+          label.className = "option";
+          if (reveal && option.correct) label.classList.add("reveal-correct");
+          if (reveal && option.selected && !option.correct) label.classList.add("reveal-wrong-selected");
+
+          const input = document.createElement("input");
+          input.type = choose === 1 ? "radio" : "checkbox";
+          if (choose === 1) input.name = `question-${index}`;
+          input.checked = Boolean(option.selected);
+          input.disabled = Boolean(graded);
+          input.addEventListener("change", () => {
+            this.dispatchEvent(new CustomEvent("option-toggle", {
+              bubbles: true,
+              detail: { optionIndex }
+            }));
+          });
+
+          const textWrap = document.createElement("span");
+          const text = document.createElement("span");
+          text.textContent = option.text;
+          textWrap.appendChild(text);
+
+          if (reveal && option.explanation) {
+            const explanation = document.createElement("small");
+            explanation.textContent = option.explanation;
+            textWrap.appendChild(explanation);
+          }
+
+          label.append(input, textWrap);
+          options.appendChild(label);
+        });
+
+        const answer = this.querySelector(".answer-html");
+        if (answer) answer.innerHTML = question.answer || "";
+        const tip = this.querySelector(".tip-html");
+        if (tip) tip.innerHTML = question.tip || "";
+        const reference = this.querySelector(".reference-note");
+        if (reference) reference.textContent = question.reference || "";
+      }
+    }
+    customElements.define("exam-question", ExamQuestion);
+
+    class QuestionJumper extends HTMLElement {
+      constructor() {
+        super();
+        this.collapsed = false;
+      }
+
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        if (!this._state) return;
+        const { questions, current, graded, cheating } = this._state;
+        const reveal = graded || cheating;
+
+        this.innerHTML = `
+          <section class="card">
+            <div class="card-header collapsible-title" role="button" tabindex="0">
+              <span>Question Jumper</span>
+              <span class="chevron">${this.collapsed ? "▼" : "▲"}</span>
+            </div>
+            <div class="card-body jumper-body" ${this.collapsed ? 'hidden' : ''}>
+              <div class="jumper-grid"></div>
+            </div>
+          </section>
+        `;
+
+        const title = this.querySelector(".collapsible-title");
+        const toggle = () => {
+          this.collapsed = !this.collapsed;
+          this.render();
+        };
+        title.addEventListener("click", toggle);
+        title.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
+
+        const grid = this.querySelector(".jumper-grid");
+        questions.forEach((question, index) => {
+          const button = document.createElement("button");
+          button.className = "jump-btn";
+          button.textContent = String(index + 1);
+          button.title = question.query;
+
+          if (question.viewed) button.classList.add("viewed");
+          if (index === current) button.classList.add("current");
+
+          if (reveal) {
+            button.classList.remove("viewed", "current");
+            button.classList.add(isCorrect(question) ? "correct" : "incorrect");
+            if (index === current) button.style.outline = "3px solid #111827";
+          }
+
+          button.addEventListener("click", () => {
+            this.dispatchEvent(new CustomEvent("jump", {
+              bubbles: true,
+              detail: { index }
+            }));
+          });
+          grid.appendChild(button);
+        });
+      }
+    }
+    customElements.define("question-jumper", QuestionJumper);
+
+    class ExamHistoryPanel extends HTMLElement {
+      constructor() {
+        super();
+        this.collapsed = false;
+      }
+
+      set state(value) {
+        this._state = value;
+        this.render();
+      }
+
+      render() {
+        const history = this._state?.history || { exams: [] };
+        const exams = Array.isArray(history.exams) ? history.exams : [];
+
+        this.innerHTML = `
+          <section class="card">
+            <div class="card-header">
+              <span class="collapsible-title" role="button" tabindex="0">Exam History</span>
+              <div class="control-group">
+                <button class="btn-secondary toggle-history">${this.collapsed ? "Show" : "Hide"}</button>
+                <button class="btn-danger clear-history" ${exams.length ? "" : "disabled"}>Clear History</button>
+              </div>
+            </div>
+            <div class="card-body history-body" ${this.collapsed ? "hidden" : ""}></div>
+          </section>
+        `;
+
+        const doToggle = () => {
+          this.collapsed = !this.collapsed;
+          this.render();
+        };
+        this.querySelector(".toggle-history").addEventListener("click", doToggle);
+        this.querySelector(".collapsible-title").addEventListener("click", doToggle);
+        this.querySelector(".clear-history").addEventListener("click", () => {
+          this.dispatchEvent(new CustomEvent("history-clear", { bubbles: true }));
+        });
+
+        const body = this.querySelector(".history-body");
+        if (!exams.length) {
+          body.innerHTML = `<p class="history-empty">No completed exams are stored on this device.</p>`;
+          return;
+        }
+
+        [...exams].reverse().forEach((exam, reverseIndex) => {
+          const questions = Array.isArray(exam.questions) ? exam.questions : [];
+          const score = questions.filter(isCorrect).length;
+          const number = exams.length - reverseIndex;
+          const finish = Number(exam.finish || exam.completedAt || 0);
+          const start = Number(exam.start || 0);
+          const stamp = finish ? new Date(finish).toLocaleString() : "Completed exam";
+          const duration = finish && start ? formatDuration(finish - start) : "";
+
+          const wrap = document.createElement("div");
+          wrap.className = "history-exam";
+
+          const summary = document.createElement("div");
+          summary.className = "history-summary";
+          summary.innerHTML = `<strong>Attempt ${number}: ${score} / ${questions.length}</strong><span>${stamp}${duration ? ` · ${duration}` : ""}</span>`;
+          wrap.appendChild(summary);
+
+          const dots = document.createElement("div");
+          dots.className = "history-dots";
+          questions.forEach((question, i) => {
+            const dot = document.createElement("span");
+            dot.className = "history-dot" + (isCorrect(question) ? " correct" : "");
+            dot.textContent = String(i + 1);
+            dot.title = question.query;
+            dots.appendChild(dot);
+          });
+          wrap.appendChild(dots);
+          body.appendChild(wrap);
+        });
+      }
+    }
+    customElements.define("exam-history-panel", ExamHistoryPanel);
+
+    class ClaudeExamApp extends HTMLElement {
+      constructor() {
+        super();
+        this.state = null;
+        this.timerHandle = null;
+      }
+
+      connectedCallback() {
+        this.load();
+        this.addEventListener("option-toggle", e => this.toggleOption(e.detail.optionIndex));
+        this.addEventListener("jump", e => this.setCurrentQuestion(e.detail.index));
+        this.addEventListener("history-clear", () => this.clearHistory());
+        this.render();
+        this.timerHandle = setInterval(() => this.updateTimer(), 1000);
+      }
+
+      disconnectedCallback() {
+        clearInterval(this.timerHandle);
+      }
+
+      load() {
+        let saved = null;
+        try {
+          saved = JSON.parse(localStorage.getItem(CURRENT_KEY));
+        } catch (_) {}
+
+        if (saved && Array.isArray(saved.questions) && saved.questions.length === QUESTION_BANK.length && !saved.graded) {
+          this.state = saved;
+        } else {
+          const questions = clone(QUESTION_BANK).map(q => ({
+            ...q,
+            viewed: false,
+            options: q.options.map(o => ({ ...o, selected: false }))
+          }));
+          questions[0].viewed = true;
+          this.state = {
+            name: EXAM_NAME,
+            graded: false,
+            start: Date.now(),
+            finish: 0,
+            questions,
+            currentQuestionNumber: 0,
+            cheating: new URLSearchParams(location.search).get("page") === "answer"
+          };
+          this.saveCurrent();
+        }
+      }
+
+      saveCurrent() {
+        if (!this.state.graded) {
+          localStorage.setItem(CURRENT_KEY, JSON.stringify(this.state));
+        }
+      }
+
+      getHistory() {
+        try {
+          const existing = JSON.parse(localStorage.getItem(HISTORY_KEY));
+          if (existing && Array.isArray(existing.exams)) return existing;
+        } catch (_) {}
+        const history = { name: "Exam History", exams: [] };
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        return history;
+      }
+
+      clearHistory() {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify({ name: "Exam History", exams: [] }));
+        this.render();
+      }
+
+      toggleOption(optionIndex) {
+        if (this.state.graded) return;
+        const q = this.state.questions[this.state.currentQuestionNumber];
+        if (correctCount(q) === 1) {
+          q.options.forEach((option, i) => { option.selected = i === optionIndex; });
+        } else {
+          q.options[optionIndex].selected = !q.options[optionIndex].selected;
+        }
+        q.viewed = true;
+        this.saveCurrent();
+        this.render();
+      }
+
+      setCurrentQuestion(index) {
+        const next = Math.max(0, Math.min(index, this.state.questions.length - 1));
+        this.state.currentQuestionNumber = next;
+        this.state.questions[next].viewed = true;
+        this.saveCurrent();
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      toggleCheat() {
+        this.state.cheating = !this.state.cheating;
+        this.saveCurrent();
+        this.render();
+      }
+
+      grade() {
+        if (this.state.graded) return;
+        this.state.graded = true;
+        this.state.cheating = true;
+        this.state.finish = Date.now();
+
+        const history = this.getHistory();
+        history.exams.push(clone(this.state));
+        history.exams = history.exams.slice(-15);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        localStorage.removeItem(CURRENT_KEY);
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      restart() {
+        localStorage.removeItem(CURRENT_KEY);
+        this.load();
+        this.render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      score() {
+        return this.state.questions.filter(isCorrect).length;
+      }
+
+      answeredCount() {
+        return this.state.questions.filter(q => q.options.some(o => o.selected)).length;
+      }
+
+      updateTimer() {
+        const el = this.querySelector("[data-timer]");
+        if (!el || !this.state) return;
+        const end = this.state.finish || Date.now();
+        el.textContent = formatDuration(end - this.state.start);
+      }
+
+      render() {
+        if (!this.state) return;
+        const qIndex = this.state.currentQuestionNumber;
+        const total = this.state.questions.length;
+        const answered = this.answeredCount();
+        const score = this.score();
+
+        this.innerHTML = `
+          <main class="page-shell">
+            <header class="hero">
+              <div class="hero-top">
+                <div>
+                  <h1>Claude Certified Associate - Foundations Practice Exam</h1>
+                  <p>CCAO-F practice questions · standalone Web Components exam · works offline</p>
+                </div>
+                <div class="pill">Elapsed <span data-timer>${formatDuration((this.state.finish || Date.now()) - this.state.start)}</span></div>
+              </div>
+              <div class="meta-row">
+                <span class="pill">${total} questions</span>
+                <span class="pill">${answered} answered</span>
+                <span class="pill">${this.state.questions.filter(q => q.viewed).length} viewed</span>
+                ${this.state.graded ? `<span class="pill">Score ${score} / ${total}</span>` : ""}
+              </div>
+            </header>
+
+            ${this.state.graded ? `
+              <section class="card results">
+                <div class="card-body">
+                  <strong>Your grade is ${score} out of ${total}.</strong>
+                  <div class="status-line">Correct answers and option explanations are now visible. Your completed attempt has been saved to local storage.</div>
+                </div>
+              </section>
+            ` : ""}
+
+            <exam-question></exam-question>
+
+            <div class="controls">
+              <div class="control-group">
+                <button class="btn-secondary previous" ${qIndex === 0 ? "disabled" : ""}>Back</button>
+                <button class="btn-primary next" ${qIndex === total - 1 ? "disabled" : ""}>Next</button>
+              </div>
+              <div class="control-group">
+                <button class="btn-warning cheat">${this.state.cheating ? "Be Honest" : "Cheat"}</button>
+                ${this.state.graded
+                  ? `<button class="btn-primary restart">Start New Attempt</button>`
+                  : `<button class="btn-primary finish">Finish</button>`}
+              </div>
+            </div>
+
+            <question-jumper></question-jumper>
+            <exam-history-panel></exam-history-panel>
+
+            <p class="footer-note">Progress and completed attempts are stored only in this browser. Question source: Matthew Purcell, CCAO-F Practice Questions v2 (CC BY-NC 4.0).</p>
+          </main>
+        `;
+
+        const questionEl = this.querySelector("exam-question");
+        questionEl.state = {
+          question: this.state.questions[qIndex],
+          index: qIndex,
+          total,
+          graded: this.state.graded,
+          cheating: this.state.cheating
+        };
+
+        const jumper = this.querySelector("question-jumper");
+        jumper.state = {
+          questions: this.state.questions,
+          current: qIndex,
+          graded: this.state.graded,
+          cheating: this.state.cheating
+        };
+
+        const history = this.querySelector("exam-history-panel");
+        history.state = { history: this.getHistory() };
+
+        this.querySelector(".previous").addEventListener("click", () => this.setCurrentQuestion(qIndex - 1));
+        this.querySelector(".next").addEventListener("click", () => this.setCurrentQuestion(qIndex + 1));
+        this.querySelector(".cheat").addEventListener("click", () => this.toggleCheat());
+
+        const finish = this.querySelector(".finish");
+        if (finish) finish.addEventListener("click", () => this.grade());
+
+        const restart = this.querySelector(".restart");
+        if (restart) restart.addEventListener("click", () => this.restart());
+      }
+    }
+    customElements.define("claude-exam-app", ClaudeExamApp);
+  </script>
+</body>
+</html>
